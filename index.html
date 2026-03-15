@@ -25,34 +25,37 @@
     <a href="#about" class="text-ivory hover:text-gold transition-colors text-sm font-medium tracking-wide">About</a>
   </nav>
   <div class="flex flex-1 justify-end gap-4">
-    <button onclick="window.location.href='/profile.html'" class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gold/10 text-gold transition-all">
+    <button onclick="window.location.href='/profile.html'" class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gold/10 text-gold transition-all" title="Wishlist">
       <span class="material-symbols-outlined">favorite</span>
     </button>
-    <button onclick="window.location.href='/orders.html'" class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gold/10 text-gold transition-all">
+    <button onclick="window.location.href='/orders.html'" class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gold/10 text-gold transition-all" title="Orders">
       <span class="material-symbols-outlined">shopping_cart</span>
     </button>
   </div>
 </header>
 
 <main class="flex flex-col items-center w-full max-w-[960px] mx-auto px-4 lg:px-0">
-  <!-- Hero Banner -->
+  <!-- Hero Banner — replace src with your own banner image URL -->
   <div class="w-full mt-6 px-0 lg:px-4">
-    <div class="w-full h-48 lg:h-64 rounded-xl overflow-hidden bg-center bg-cover border border-gold/10"
+    <div id="hero-banner" class="w-full h-48 lg:h-64 rounded-xl overflow-hidden bg-center bg-cover border border-gold/10"
       style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuChG4Yeu6YL28b0wBR1TWhZyeKJVmo_0-fkmxq91J9hnYgxTJ7EpCst8Amfcq1MZ-6phAb1ej0xojdvWBrfwvgIVA8kVr4m0ZJqtR3_9960FPDlAhe6F9PlBrgFZHd6Bn2t21MzCVewVYghSk05z1od4TjTtfY7VL3xWBSgi2itB0esOWMvVE3fSrjcnaunDCKy5Thc8f09AEkay95g1NH3Pbq9LUifxPIXsZf8Ezjj3JCsowo9-G3Zl_ELldtW8ZGJzFnyHVAJb-4')">
     </div>
   </div>
-  <!-- Profile -->
+
+  <!-- Profile / Brand — replace background-image URL with your logo -->
   <div class="flex flex-col items-center -mt-16 mb-8 z-10">
-    <div class="w-32 h-32 rounded-full border-4 border-midnight bg-center bg-cover shadow-2xl overflow-hidden"
+    <div id="brand-avatar" class="w-32 h-32 rounded-full border-4 border-midnight bg-center bg-cover shadow-2xl overflow-hidden"
       style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCgNUkWuuokBpqOkh-_CWzUYQMLax2np64cRyj_XbHnNlNd4nj3S5uM_mEn1EidBZN0p_dKgRhAqpk3-M3swq646-lIxKbGmniSU8f-Vs34Qi8QgI0W5ml4MJhSP8Zl_9llce7V_15t0M-XtZAQvKXrfP3htN4rDtFYBzomoLPCSmgJmeqKhEM4KoBMBlN1BC1oaOR7Z_jiPauXjALbkeqehzE9e0j2x-UUejMIqnaEn73LvlRmQZ3MZOhtDk62HAWCMIlSARuuVig')">
     </div>
     <h1 class="mt-4 text-2xl font-bold tracking-[0.1em] text-gold uppercase">AF WEALTH MINDSET</h1>
+    <p class="text-ivory/50 text-sm mt-1">Financial Freedom Through Smart Decisions</p>
+    <!-- Social Links — replace href="#" with your actual URLs -->
     <div class="flex items-center justify-center gap-8 mt-6">
       <a class="text-gold hover:text-signature-teal transition-colors" href="#" title="TikTok"><span class="material-symbols-outlined text-2xl">tiktok</span></a>
       <a class="text-gold hover:text-signature-teal transition-colors" href="#" title="YouTube"><span class="material-symbols-outlined text-2xl">play_circle</span></a>
       <a class="text-gold hover:text-signature-teal transition-colors" href="#" title="Instagram"><span class="material-symbols-outlined text-2xl">photo_camera</span></a>
       <a class="text-gold hover:text-signature-teal transition-colors" href="#" title="Facebook"><span class="material-symbols-outlined text-2xl">face_6</span></a>
-      <a class="text-gold hover:text-signature-teal transition-colors" href="#" title="X"><span class="material-symbols-outlined text-2xl">close</span></a>
+      <a class="text-gold hover:text-signature-teal transition-colors" href="#" title="X / Twitter"><span class="material-symbols-outlined text-2xl">close</span></a>
     </div>
   </div>
 
@@ -61,26 +64,26 @@
     <h2 class="text-sm font-bold tracking-[0.25em] text-gold uppercase">Premium Digital Collection</h2>
   </div>
 
-  <!-- Product List -->
+  <!-- Product List (rendered by JS) -->
   <div id="product-list" class="w-full space-y-4 mb-16"></div>
 
   <!-- Newsletter -->
   <section class="w-full mb-16 px-4 lg:px-0" id="about">
     <div class="bg-midnight/40 border border-gold/20 p-8 rounded-2xl flex flex-col items-center text-center">
-      <h3 class="text-2xl font-bold text-gold mb-2">Weekly Discount Receipt</h3>
+      <h3 class="text-2xl font-bold text-gold mb-2">Weekly Wealth Insights</h3>
       <p class="text-ivory/70 text-sm mb-6 max-w-md">Join our inner circle and receive exclusive offers and financial insights directly to your inbox.</p>
       <form id="subscribe-form" class="flex flex-col sm:flex-row gap-3 w-full max-w-lg">
         <input id="sub-email" class="flex-grow bg-midnight border border-gold/30 rounded-lg px-4 py-3 text-ivory placeholder:text-ivory/30 focus:outline-none focus:border-signature-teal transition-all" placeholder="Enter your email" type="email"/>
         <button class="bg-gold hover:bg-gold/80 text-midnight font-bold px-8 py-3 rounded-lg transition-all" type="submit">Subscribe</button>
       </form>
-      <p id="sub-msg" class="mt-3 text-signature-teal text-sm hidden">You're subscribed!</p>
+      <p id="sub-msg" class="mt-3 text-signature-teal text-sm hidden">You're in! Check your inbox soon.</p>
     </div>
   </section>
 </main>
 
 <footer class="w-full bg-midnight py-12 border-t border-gold/10">
   <div class="max-w-[960px] mx-auto flex flex-col items-center gap-6">
-    <p class="text-ivory/30 text-xs tracking-widest uppercase mt-4">© 2024 AF Wealth Mindset. All Rights Reserved.</p>
+    <p class="text-ivory/30 text-xs tracking-widest uppercase">© 2024 AF Wealth Mindset. All Rights Reserved.</p>
   </div>
 </footer>
 </div>
@@ -89,32 +92,44 @@
 <script>
   initHeader();
 
-  // Render products
   const list = document.getElementById('product-list');
+
   PRODUCTS.forEach(p => {
+    const priceHTML = p.comingSoon
+      ? `<span class="text-signature-teal font-bold text-sm">Notify Me</span>`
+      : `<span class="text-ivory/50 line-through text-sm">$${p.originalPrice}.00</span>
+         <span class="text-gold font-bold">$${p.price}.00</span>`;
+
+    const btnLabel = p.comingSoon ? 'Notify Me' : 'See More';
+    const btnClass = p.comingSoon
+      ? 'flex items-center gap-2 bg-white/5 text-ivory/50 border border-white/10 px-4 py-2 rounded-lg font-bold text-sm cursor-pointer hover:bg-white/10 transition-all'
+      : 'flex items-center gap-2 bg-signature-teal/10 text-signature-teal px-4 py-2 rounded-lg font-bold text-sm group-hover:bg-signature-teal group-hover:text-midnight transition-all';
+
+    const badgeHTML = p.badge
+      ? `<span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-gold/10 text-gold ml-2">${p.badge}</span>`
+      : '';
+
     list.innerHTML += `
-    <div class="flex items-center justify-between p-4 bg-midnight border border-gold/10 rounded-xl hover:border-gold/30 transition-all group">
+    <div class="flex items-center justify-between p-4 bg-midnight border border-gold/10 rounded-xl hover:border-gold/30 transition-all group cursor-pointer"
+      onclick="window.location.href='/product.html?id=${p.id}'">
       <div class="flex items-center gap-4">
         <div class="w-16 h-16 rounded-lg bg-center bg-cover bg-gold/5 flex-shrink-0" style="background-image: url('${p.image}')"></div>
         <div class="flex flex-col">
-          <span class="text-ivory font-semibold text-lg">${p.name}</span>
-          <div class="flex gap-2 text-sm">
-            <span class="text-ivory/50 line-through">$${p.originalPrice}.00</span>
-            <span class="text-gold font-bold">$${p.price}.00</span>
+          <div class="flex items-center flex-wrap gap-1">
+            <span class="text-ivory font-semibold text-lg">${p.name}</span>${badgeHTML}
           </div>
+          <div class="flex gap-2 text-sm mt-0.5">${priceHTML}</div>
         </div>
       </div>
-      <button onclick="window.location.href='/product.html?id=${p.id}'" class="flex items-center gap-2 bg-signature-teal/10 text-signature-teal px-4 py-2 rounded-lg font-bold text-sm group-hover:bg-signature-teal group-hover:text-midnight transition-all">
-        See More <span class="material-symbols-outlined text-sm">arrow_forward_ios</span>
+      <button class="${btnClass}" onclick="event.stopPropagation(); window.location.href='/product.html?id=${p.id}'">
+        ${btnLabel} <span class="material-symbols-outlined text-sm">arrow_forward_ios</span>
       </button>
     </div>`;
   });
 
-  // Newsletter form
   document.getElementById('subscribe-form').addEventListener('submit', function(e) {
     e.preventDefault();
-    const email = document.getElementById('sub-email').value;
-    if (email) {
+    if (document.getElementById('sub-email').value) {
       document.getElementById('sub-msg').classList.remove('hidden');
       document.getElementById('sub-email').value = '';
     }
