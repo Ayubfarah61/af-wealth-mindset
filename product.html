@@ -17,7 +17,6 @@
 <body class="dark:bg-background-dark font-display text-ivory antialiased">
 <div class="relative flex min-h-screen flex-col overflow-x-hidden">
 
-<!-- Header -->
 <header class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 bg-midnight/80 backdrop-blur-md border-b border-gold/10 lg:px-40">
   <div class="flex-1">
     <button onclick="window.location.href='/'" class="flex items-center gap-2 text-ivory/60 hover:text-gold transition-colors text-sm">
@@ -34,173 +33,191 @@
   </div>
 </header>
 
-<main class="flex-1 w-full max-w-[640px] mx-auto px-6 py-8">
+<main class="flex-1 w-full max-w-[640px] mx-auto px-6 py-8" id="page-main"></main>
 
-  <!-- Hero Image -->
-  <div class="w-full mt-4 mb-8">
-    <img id="hero-img" src="" alt="" class="w-full h-48 lg:h-64 rounded-xl object-cover border border-gold/10"/>
-  </div>
-
-  <!-- Badge -->
-  <div id="badge-wrap" class="text-center mb-3 hidden">
-    <span id="product-badge" class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-gold/10 text-gold border border-gold/20"></span>
-  </div>
-
-  <!-- Title & Description -->
-  <div class="text-center mb-8">
-    <h1 id="product-title" class="text-3xl font-extrabold text-gold uppercase tracking-wide mb-4"></h1>
-    <p id="product-desc" class="text-base text-ivory/70 leading-relaxed max-w-xl mx-auto"></p>
-  </div>
-
-  <!-- Price -->
-  <div id="price-wrap" class="text-center mb-6 hidden">
-    <span id="original-price" class="text-ivory/40 line-through text-lg mr-3"></span>
-    <span id="sale-price" class="text-gold font-bold text-3xl"></span>
-  </div>
-
-  <!-- CTA -->
-  <div id="cta-wrap" class="mb-10"></div>
-
-  <!-- Affiliate notice -->
-  <div id="affiliate-notice" class="hidden mb-8 p-4 bg-midnight border border-gold/10 rounded-xl" style="display:none;">
-    <div class="flex items-start gap-3">
-      <span class="material-symbols-outlined text-gold flex-shrink-0 mt-0.5">info</span>
-      <p class="text-ivory/50 text-xs leading-relaxed">
-        This is an affiliate product. Clicking "Get Access" will take you to our trusted partner's website to complete your purchase securely. We may earn a commission at no extra cost to you.
-      </p>
-    </div>
-  </div>
-
-  <!-- Features -->
-  <div class="mb-12">
-    <h3 class="text-center text-gold font-bold uppercase tracking-widest text-sm mb-6">What's Included</h3>
-    <div id="features-list" class="space-y-4"></div>
-  </div>
-
-  <!-- Instant / Lifetime access blocks -->
-  <div id="feature-blocks" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-16">
-    <div class="p-6 text-center rounded-2xl bg-midnight border border-gold/10">
-      <span class="material-symbols-outlined text-gold text-4xl mb-3">bolt</span>
-      <h4 class="font-bold text-ivory">Instant Access</h4>
-      <p class="text-sm text-ivory/50 mt-2">Immediate access to your digital content after purchase.</p>
-    </div>
-    <div class="p-6 text-center rounded-2xl bg-midnight border border-gold/10">
-      <span class="material-symbols-outlined text-gold text-4xl mb-3">history</span>
-      <h4 class="font-bold text-ivory">Lifetime Access</h4>
-      <p class="text-sm text-ivory/50 mt-2">Your purchase is yours forever. No recurring fees.</p>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <footer class="w-full bg-midnight py-12 border-t border-gold/10 mt-4 -mx-6 px-6">
-    <div class="flex flex-col items-center gap-6">
-      <span style="color:#1FE6D1;font-size:0.75rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;">Follow Us</span>
-      <div style="display:flex;gap:32px;">
-        <a href="https://www.tiktok.com/@afwealthsystems" target="_blank" rel="noopener" style="color:#D7B46A;"><span class="material-symbols-outlined" style="font-size:24px;">tiktok</span></a>
-        <a href="https://www.instagram.com/afwealthmindset/" target="_blank" rel="noopener" style="color:#D7B46A;"><span class="material-symbols-outlined" style="font-size:24px;">photo_camera</span></a>
-        <a href="https://www.facebook.com/AFWealthMidnset" target="_blank" rel="noopener" style="color:#D7B46A;"><span class="material-symbols-outlined" style="font-size:24px;">face_6</span></a>
-        <a href="https://x.com/AFWealth67" target="_blank" rel="noopener" style="color:#D7B46A;"><span class="material-symbols-outlined" style="font-size:24px;">close</span></a>
-      </div>
-      <p class="text-ivory/30 text-xs tracking-widest uppercase">© 2024 AF Wealth Mindset. All Rights Reserved.</p>
-    </div>
-  </footer>
-</main>
 </div>
 
 <script src="/js/app.js"></script>
 <script>
+// ---- PRODUCT DATA (self-contained, does not rely on app.js) ----
+var PAGES = {
+  1: {
+    name: 'Cashflow Secrets — The Course That Changes Everything',
+    badge: 'Featured',
+    image: '/images/product1.jpg',
+    originalPrice: '$400',
+    price: '$97',
+    description: 'Stop trading your time for money. Created by self-made millionaire Chris Miles (CNN Money, US News, Bankrate), Cashflow Secrets is the step-by-step system that takes you from financial stress to financial freedom — without a new job, side hustle, or extreme sacrifice.',
+    affiliateUrl: 'https://moneyripples.com/cashflow-secrets-affiliate/?aff=AyubFarah67',
+    features: [
+      { icon: 'play_circle',   title: '11 In-Depth Modules',            desc: 'Mindset, tracking, debt, passive income and more' },
+      { icon: 'calculate',     title: 'Cashflow Optimizer Spreadsheet', desc: 'Your personal financial command centre — FREE inside' },
+      { icon: 'verified_user', title: '60-Day Money-Back Guarantee',    desc: 'Zero risk — full refund if not satisfied' },
+      { icon: 'person',        title: 'By Chris Miles',                 desc: 'Self-made millionaire featured on CNN Money and US News' }
+    ]
+  },
+  2: {
+    name: 'The Money Control Code',
+    badge: 'Best Value',
+    image: '/images/product2.png',
+    originalPrice: '$14.99',
+    price: '$6.99',
+    description: 'Stop letting your money run your life. The Money Control Code reveals why willpower NEVER works with money — and replaces it with a structural 4-pillar system that runs on autopilot, giving you total authority over every dollar you earn.',
+    checkoutId: 2,
+    features: [
+      { icon: 'auto_stories',  title: '6 Power-Packed Chapters',      desc: 'From income illusion to total debt elimination' },
+      { icon: 'description',   title: 'Personal Financial Rule Sheet', desc: 'Your written financial constitution — print and use today' },
+      { icon: 'checklist',     title: 'Weekly Review Template',        desc: '15-min weekly ritual to keep your money on track' },
+      { icon: 'verified_user', title: '30-Day Money-Back Guarantee',   desc: 'Zero risk — every penny back, no questions asked' }
+    ]
+  },
+  3: {
+    name: 'Personal Finance Tracker',
+    badge: 'Coming Soon',
+    image: '/images/logo.png',
+    comingSoon: true,
+    description: 'A comprehensive personal finance tracking system to manage your income, expenses, savings goals and investments — all in one place. Coming soon.',
+    features: [
+      { icon: 'account_balance_wallet', title: 'Income and Expense Tracking', desc: 'Monitor every dollar in and out' },
+      { icon: 'savings',                title: 'Savings Goal Planner',        desc: 'Set and hit your financial milestones' },
+      { icon: 'trending_up',            title: 'Investment Dashboard',        desc: 'See your net worth grow over time' },
+      { icon: 'notifications',          title: 'Smart Alerts',                desc: 'Never miss a bill or overspend again' }
+    ]
+  },
+  4: {
+    name: 'Small Business Bookkeeping System',
+    badge: 'Coming Soon',
+    image: '/images/logo.png',
+    comingSoon: true,
+    description: 'A complete bookkeeping system built for small business owners. Manage invoices, expenses, payroll, and tax-ready reports without an accountant. Coming soon.',
+    features: [
+      { icon: 'receipt_long',    title: 'Invoice Management', desc: 'Create and send professional invoices' },
+      { icon: 'account_balance', title: 'Expense Tracking',   desc: 'Categorize and monitor all business costs' },
+      { icon: 'groups',          title: 'Payroll Ready',      desc: 'Simplified payroll for small teams' },
+      { icon: 'description',     title: 'Tax-Ready Reports',  desc: 'Export clean reports for your accountant' }
+    ]
+  }
+};
+
+var id = parseInt(new URLSearchParams(window.location.search).get('id')) || 1;
+var p = PAGES[id];
+if (!p) p = PAGES[1];
+
+document.title = p.name + ' | AF Wealth Mindset';
+
+// Auth header
 if (typeof initHeader === 'function') initHeader();
 
-var product = null;
-if (typeof getProductFromURL === 'function') {
-  product = getProductFromURL();
+// Build page
+var html = '';
+
+// Hero image
+html += '<div style="margin-top:16px;margin-bottom:28px;">'
+  + '<img src="' + p.image + '" alt="' + p.name + '" style="width:100%;height:220px;object-fit:cover;border-radius:12px;border:1px solid rgba(215,180,106,0.15);"/>'
+  + '</div>';
+
+// Badge
+if (p.badge) {
+  html += '<div style="text-align:center;margin-bottom:12px;">'
+    + '<span style="display:inline-block;padding:4px 14px;border-radius:999px;font-size:0.75rem;font-weight:700;background:rgba(215,180,106,0.1);color:#D7B46A;border:1px solid rgba(215,180,106,0.25);">'
+    + p.badge + '</span></div>';
 }
 
-if (!product) {
-  document.getElementById('product-title').textContent = 'Product not found';
-} else {
-  document.title = product.name + ' | AF Wealth Mindset';
+// Title
+html += '<h1 style="text-align:center;font-size:1.6rem;font-weight:800;color:#D7B46A;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:16px;line-height:1.3;">'
+  + p.name + '</h1>';
 
-  var heroImg = document.getElementById('hero-img');
-  heroImg.src = product.heroImage;
-  heroImg.alt = product.name;
+// Description
+html += '<p style="text-align:center;color:rgba(246,241,231,0.7);font-size:1rem;line-height:1.7;margin-bottom:24px;">'
+  + p.description + '</p>';
 
-  document.getElementById('product-title').textContent = product.name;
-  document.getElementById('product-desc').textContent = product.description;
+// Price + CTA
+if (p.affiliateUrl) {
+  html += '<div style="text-align:center;margin-bottom:20px;">'
+    + '<span style="color:rgba(246,241,231,0.35);text-decoration:line-through;font-size:1.1rem;margin-right:10px;">' + p.originalPrice + '</span>'
+    + '<span style="color:#D7B46A;font-weight:800;font-size:1.8rem;">' + p.price + '</span>'
+    + '</div>';
+  html += '<a href="' + p.affiliateUrl + '" target="_blank" rel="noopener" '
+    + 'style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:18px;background:#1FE6D1;color:#0B1220;border-radius:12px;font-weight:800;font-size:1.1rem;text-decoration:none;margin-bottom:8px;">'
+    + '<span class="material-symbols-outlined">open_in_new</span> Get Access Now — ' + p.price + '</a>';
+  html += '<p style="text-align:center;color:rgba(246,241,231,0.25);font-size:0.75rem;margin-bottom:28px;">You will be redirected to our partner\'s secure checkout</p>';
+  html += '<div style="display:flex;gap:12px;padding:14px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.15);border-radius:10px;margin-bottom:28px;">'
+    + '<span class="material-symbols-outlined" style="color:#D7B46A;flex-shrink:0;margin-top:2px;">info</span>'
+    + '<p style="color:rgba(246,241,231,0.45);font-size:0.75rem;line-height:1.6;">This is an affiliate product. Clicking Get Access will take you to our trusted partner\'s website. We may earn a commission at no extra cost to you.</p>'
+    + '</div>';
 
-  if (product.badge) {
-    document.getElementById('product-badge').textContent = product.badge;
-    document.getElementById('badge-wrap').classList.remove('hidden');
-  }
+} else if (p.comingSoon) {
+  html += '<div style="background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.2);border-radius:12px;padding:24px;text-align:center;margin-bottom:28px;">'
+    + '<span class="material-symbols-outlined" style="color:#D7B46A;font-size:2.5rem;display:block;margin-bottom:8px;">notifications</span>'
+    + '<h3 style="color:#D7B46A;font-weight:700;font-size:1.1rem;margin-bottom:6px;">Coming Soon</h3>'
+    + '<p style="color:rgba(246,241,231,0.5);font-size:0.875rem;margin-bottom:16px;">This product is launching soon. Enter your email to be notified first.</p>'
+    + '<form id="notify-form" style="display:flex;flex-direction:column;gap:10px;">'
+    + '<input id="notify-email" type="email" placeholder="your@email.com" required style="background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.2);border-radius:8px;padding:12px 16px;color:#F6F1E7;font-size:0.9rem;outline:none;"/>'
+    + '<button type="submit" style="background:#D7B46A;color:#0B1220;font-weight:700;padding:12px;border-radius:8px;font-size:0.95rem;cursor:pointer;border:none;">Notify Me</button>'
+    + '</form>'
+    + '<p id="notify-msg" style="display:none;color:#1FE6D1;font-size:0.875rem;margin-top:12px;">You are on the list! We will notify you at launch.</p>'
+    + '</div>';
 
-  var ctaWrap = document.getElementById('cta-wrap');
+} else if (p.checkoutId) {
+  html += '<div style="text-align:center;margin-bottom:20px;">'
+    + '<span style="color:rgba(246,241,231,0.35);text-decoration:line-through;font-size:1.1rem;margin-right:10px;">' + p.originalPrice + '</span>'
+    + '<span style="color:#D7B46A;font-weight:800;font-size:1.8rem;">' + p.price + '</span>'
+    + '</div>';
+  html += '<button onclick="window.location.href=\'/checkout.html?id=' + p.checkoutId + '\'" '
+    + 'style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:18px;background:#1FE6D1;color:#0B1220;border-radius:12px;font-weight:800;font-size:1.1rem;margin-bottom:28px;cursor:pointer;border:none;">'
+    + '<span class="material-symbols-outlined">download</span> Get Access Now — ' + p.price + '</button>';
+}
 
-  if (product.affiliateUrl) {
-    document.getElementById('price-wrap').classList.remove('hidden');
-    document.getElementById('original-price').textContent = '$' + product.originalPrice;
-    document.getElementById('sale-price').textContent = '$' + product.price;
-    document.getElementById('affiliate-notice').style.display = 'block';
-    document.getElementById('affiliate-notice').classList.remove('hidden');
+// Features heading
+html += '<h3 style="text-align:center;color:#D7B46A;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;font-size:0.8rem;margin-bottom:20px;">What\'s Included</h3>';
 
-    var affBtn = document.createElement('a');
-    affBtn.href = product.affiliateUrl;
-    affBtn.target = '_blank';
-    affBtn.rel = 'noopener';
-    affBtn.className = 'w-full py-5 bg-signature-teal hover:brightness-110 text-midnight rounded-xl font-bold text-lg shadow-lg transition-all flex items-center justify-center gap-2';
-    affBtn.innerHTML = '<span class="material-symbols-outlined">open_in_new</span> Get Access Now — $' + product.price;
-    ctaWrap.appendChild(affBtn);
+// Features list
+for (var i = 0; i < p.features.length; i++) {
+  var f = p.features[i];
+  html += '<div style="display:flex;align-items:center;gap:16px;padding:16px;border-radius:10px;border:1px solid rgba(215,180,106,0.12);background:rgba(11,18,32,0.6);margin-bottom:10px;">'
+    + '<div style="width:40px;height:40px;border-radius:50%;background:rgba(215,180,106,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">'
+    + '<span class="material-symbols-outlined" style="color:#D7B46A;">' + f.icon + '</span>'
+    + '</div>'
+    + '<div><p style="font-weight:700;color:#F6F1E7;margin-bottom:2px;">' + f.title + '</p>'
+    + '<p style="color:rgba(246,241,231,0.45);font-size:0.85rem;">' + f.desc + '</p></div>'
+    + '</div>';
+}
 
-    var affNote = document.createElement('p');
-    affNote.className = 'text-center text-ivory/30 text-xs mt-3';
-    affNote.textContent = "You'll be redirected to our partner's secure checkout";
-    ctaWrap.appendChild(affNote);
+// Instant + Lifetime blocks
+html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px;margin-bottom:40px;">'
+  + '<div style="padding:20px;text-align:center;border-radius:12px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);">'
+  + '<span class="material-symbols-outlined" style="color:#D7B46A;font-size:2rem;display:block;margin-bottom:6px;">bolt</span>'
+  + '<p style="font-weight:700;color:#F6F1E7;font-size:0.9rem;">Instant Access</p>'
+  + '<p style="color:rgba(246,241,231,0.4);font-size:0.75rem;margin-top:4px;">Immediate access after purchase.</p>'
+  + '</div>'
+  + '<div style="padding:20px;text-align:center;border-radius:12px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);">'
+  + '<span class="material-symbols-outlined" style="color:#D7B46A;font-size:2rem;display:block;margin-bottom:6px;">history</span>'
+  + '<p style="font-weight:700;color:#F6F1E7;font-size:0.9rem;">Lifetime Access</p>'
+  + '<p style="color:rgba(246,241,231,0.4);font-size:0.75rem;margin-top:4px;">Yours forever. No recurring fees.</p>'
+  + '</div></div>';
 
-  } else if (product.comingSoon) {
-    document.getElementById('feature-blocks').style.opacity = '0.5';
+// Footer
+html += '<div style="border-top:1px solid rgba(215,180,106,0.1);padding-top:36px;text-align:center;">'
+  + '<p style="color:#1FE6D1;font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px;">Follow Us</p>'
+  + '<div style="display:flex;justify-content:center;gap:28px;margin-bottom:20px;">'
+  + '<a href="https://www.tiktok.com/@afwealthsystems" target="_blank" rel="noopener" style="color:#D7B46A;"><span class="material-symbols-outlined">tiktok</span></a>'
+  + '<a href="https://www.instagram.com/afwealthmindset/" target="_blank" rel="noopener" style="color:#D7B46A;"><span class="material-symbols-outlined">photo_camera</span></a>'
+  + '<a href="https://www.facebook.com/AFWealthMidnset" target="_blank" rel="noopener" style="color:#D7B46A;"><span class="material-symbols-outlined">face_6</span></a>'
+  + '<a href="https://x.com/AFWealth67" target="_blank" rel="noopener" style="color:#D7B46A;"><span class="material-symbols-outlined">close</span></a>'
+  + '</div>'
+  + '<p style="color:rgba(246,241,231,0.2);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;">© 2024 AF Wealth Mindset. All Rights Reserved.</p>'
+  + '</div>';
 
-    ctaWrap.innerHTML = '<div class="bg-midnight border border-gold/20 rounded-xl p-6 text-center">'
-      + '<span class="material-symbols-outlined text-gold text-4xl mb-3 block">notifications</span>'
-      + '<h3 class="text-gold font-bold text-lg mb-1">Coming Soon</h3>'
-      + '<p class="text-ivory/50 text-sm mb-4">This product is launching soon. Enter your email to be notified first.</p>'
-      + '<form id="notify-form" class="flex flex-col sm:flex-row gap-3">'
-      + '<input id="notify-email" type="email" placeholder="your@email.com" required class="flex-grow bg-midnight/80 border border-gold/20 rounded-lg px-4 py-3 text-ivory placeholder:text-ivory/20 focus:border-signature-teal outline-none transition-all"/>'
-      + '<button type="submit" class="bg-gold hover:bg-gold/80 text-midnight font-bold px-6 py-3 rounded-lg transition-all">Notify Me</button>'
-      + '</form>'
-      + '<p id="notify-msg" class="hidden text-signature-teal text-sm mt-3">You are on the list! We will notify you when it launches.</p>'
-      + '</div>';
+document.getElementById('page-main').innerHTML = html;
 
-    document.getElementById('notify-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      document.getElementById('notify-msg').classList.remove('hidden');
-      document.getElementById('notify-email').value = '';
-    });
-
-  } else {
-    document.getElementById('price-wrap').classList.remove('hidden');
-    document.getElementById('original-price').textContent = '$' + product.originalPrice;
-    document.getElementById('sale-price').textContent = '$' + product.price;
-
-    var buyBtn = document.createElement('button');
-    buyBtn.onclick = function() { window.location.href = '/checkout.html?id=' + product.id; };
-    buyBtn.className = 'w-full py-5 bg-signature-teal hover:brightness-110 text-midnight rounded-xl font-bold text-lg shadow-lg transition-all flex items-center justify-center gap-2';
-    buyBtn.innerHTML = '<span class="material-symbols-outlined">download</span> Get Access Now — $' + product.price;
-    ctaWrap.appendChild(buyBtn);
-  }
-
-  var featuresList = document.getElementById('features-list');
-  for (var i = 0; i < product.features.length; i++) {
-    var f = product.features[i];
-    var div = document.createElement('div');
-    div.className = 'flex items-center gap-4 p-4 rounded-xl border border-gold/10 bg-midnight';
-    div.innerHTML = '<div class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center text-gold flex-shrink-0">'
-      + '<span class="material-symbols-outlined">' + f.icon + '</span>'
-      + '</div>'
-      + '<div class="flex-1">'
-      + '<h4 class="font-bold text-ivory">' + f.title + '</h4>'
-      + '<p class="text-sm text-ivory/50">' + f.desc + '</p>'
-      + '</div>';
-    featuresList.appendChild(div);
-  }
+// Notify form handler
+var nf = document.getElementById('notify-form');
+if (nf) {
+  nf.addEventListener('submit', function(e) {
+    e.preventDefault();
+    document.getElementById('notify-msg').style.display = 'block';
+    document.getElementById('notify-email').value = '';
+  });
 }
 </script>
 </body>
