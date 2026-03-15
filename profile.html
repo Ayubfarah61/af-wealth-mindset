@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>My Profile | AF Wealth Mindset</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: { extend: { colors: { "midnight": "#0B1220", "ivory": "#F6F1E7", "gold": "#D7B46A", "signature-teal": "#1FE6D1", "background-dark": "#0B1220" }, fontFamily: { "display": ["Manrope", "sans-serif"] }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" } } }
+  }
+</script>
+<style>
+  .custom-card-border { border: 1px solid rgba(215, 180, 106, 0.15); }
+</style>
+</head>
+<body class="dark:bg-background-dark text-ivory min-h-screen flex flex-col font-display">
+
+<!-- Header -->
+<header class="w-full border-b border-white/10 px-6 py-4 bg-midnight/80 backdrop-blur-md sticky top-0 z-50">
+  <div class="max-w-[1200px] mx-auto flex items-center justify-between">
+    <button onclick="window.location.href='/'" class="flex items-center gap-2 text-ivory/60 hover:text-gold transition-colors text-sm">
+      <span class="material-symbols-outlined text-sm">arrow_back_ios</span> Home
+    </button>
+    <span class="text-gold font-bold tracking-widest uppercase text-sm">My Account</span>
+    <div class="w-20"></div>
+  </div>
+</header>
+
+<main class="flex-grow flex flex-col items-center px-4 py-12">
+  <div class="w-full max-w-md flex flex-col items-center">
+    <!-- Profile Avatar -->
+    <div class="flex flex-col items-center mb-10 text-center">
+      <div class="w-28 h-28 rounded-full bg-gradient-to-tr from-signature-teal/20 to-gold/20 p-1 mb-4">
+        <div id="avatar" class="w-full h-full rounded-full bg-cover bg-center border-2 border-background-dark flex items-center justify-center bg-midnight">
+          <span class="material-symbols-outlined text-gold text-4xl">person</span>
+        </div>
+      </div>
+      <h1 id="profile-name" class="text-ivory text-2xl font-bold tracking-tight"></h1>
+      <p id="profile-email" class="text-gold text-sm font-medium mt-1"></p>
+      <p id="profile-joined" class="text-ivory/30 text-xs mt-1"></p>
+    </div>
+
+    <!-- Action Cards -->
+    <div class="w-full space-y-4">
+      <a href="/orders.html" class="group flex items-center justify-between w-full p-5 bg-white/5 custom-card-border rounded-xl hover:bg-white/10 transition-all duration-300">
+        <div class="flex items-center gap-4">
+          <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-gold/10">
+            <span class="material-symbols-outlined text-gold">package_2</span>
+          </div>
+          <div>
+            <span class="text-ivory font-semibold text-lg">My Orders</span>
+            <p id="order-count" class="text-ivory/40 text-xs"></p>
+          </div>
+        </div>
+        <span class="material-symbols-outlined text-signature-teal group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
+      </a>
+
+      <a href="/" class="group flex items-center justify-between w-full p-5 bg-white/5 custom-card-border rounded-xl hover:bg-white/10 transition-all duration-300">
+        <div class="flex items-center gap-4">
+          <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-gold/10">
+            <span class="material-symbols-outlined text-gold">store</span>
+          </div>
+          <span class="text-ivory font-semibold text-lg">Browse Products</span>
+        </div>
+        <span class="material-symbols-outlined text-signature-teal group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
+      </a>
+
+      <!-- Account Settings expandable -->
+      <button onclick="toggleSettings()" class="group flex items-center justify-between w-full p-5 bg-white/5 custom-card-border rounded-xl hover:bg-white/10 transition-all duration-300">
+        <div class="flex items-center gap-4">
+          <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-gold/10">
+            <span class="material-symbols-outlined text-gold">settings</span>
+          </div>
+          <span class="text-ivory font-semibold text-lg">Account Settings</span>
+        </div>
+        <span id="settings-arrow" class="material-symbols-outlined text-signature-teal group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
+      </button>
+
+      <!-- Settings Panel -->
+      <div id="settings-panel" class="hidden bg-midnight border border-gold/10 rounded-xl p-6 space-y-4">
+        <h3 class="text-gold text-sm font-bold uppercase tracking-widest mb-4">Update Account</h3>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-[0.1em] text-gold/60 mb-2">Full Name</label>
+          <input id="settings-name" type="text" class="w-full bg-midnight/50 border border-gold/20 rounded-lg px-4 py-3 text-ivory placeholder:text-ivory/20 focus:border-signature-teal outline-none transition-all"/>
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-[0.1em] text-gold/60 mb-2">Email</label>
+          <input id="settings-email" type="email" class="w-full bg-midnight/50 border border-gold/20 rounded-lg px-4 py-3 text-ivory placeholder:text-ivory/20 focus:border-signature-teal outline-none transition-all"/>
+        </div>
+        <button onclick="saveSettings()" class="w-full py-3 bg-signature-teal hover:brightness-110 text-midnight font-bold rounded-xl transition-all">Save Changes</button>
+        <p id="settings-msg" class="hidden text-center text-signature-teal text-sm">Changes saved!</p>
+      </div>
+    </div>
+
+    <!-- Sign Out -->
+    <div class="w-full mt-16">
+      <button onclick="logout()" class="w-full py-4 rounded-xl border border-white/10 text-ivory/40 hover:text-signature-teal hover:border-signature-teal/50 font-medium transition-all duration-300 tracking-widest uppercase text-xs">
+        Sign Out
+      </button>
+    </div>
+  </div>
+</main>
+
+<footer class="w-full py-8 border-t border-white/5">
+  <div class="max-w-[1200px] mx-auto text-center">
+    <div class="flex flex-col items-center gap-6">
+      <span class="text-signature-teal text-xs font-bold tracking-[0.2em] uppercase">Follow Us</span>
+      <div class="flex justify-center gap-8">
+        <a class="text-gold hover:text-signature-teal transition-colors" href="#"><span class="material-symbols-outlined text-2xl">tiktok</span></a>
+        <a class="text-gold hover:text-signature-teal transition-colors" href="#"><span class="material-symbols-outlined text-2xl">play_circle</span></a>
+        <a class="text-gold hover:text-signature-teal transition-colors" href="#"><span class="material-symbols-outlined text-2xl">photo_camera</span></a>
+        <a class="text-gold hover:text-signature-teal transition-colors" href="#"><span class="material-symbols-outlined text-2xl">facebook</span></a>
+        <a class="text-gold hover:text-signature-teal transition-colors" href="#"><span class="material-symbols-outlined text-2xl">close</span></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/app.js"></script>
+<script>
+  const user = getCurrentUser();
+  if (!user) window.location.href = '/signup.html';
+
+  document.getElementById('profile-name').textContent = user.name;
+  document.getElementById('profile-email').textContent = user.email;
+  const joined = new Date(user.joinedAt);
+  document.getElementById('profile-joined').textContent = 'Member since ' + joined.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+  const orders = getOrders();
+  document.getElementById('order-count').textContent = orders.length + (orders.length === 1 ? ' order' : ' orders');
+
+  document.getElementById('settings-name').value = user.name;
+  document.getElementById('settings-email').value = user.email;
+
+  function toggleSettings() {
+    const panel = document.getElementById('settings-panel');
+    const arrow = document.getElementById('settings-arrow');
+    panel.classList.toggle('hidden');
+    arrow.textContent = panel.classList.contains('hidden') ? 'arrow_forward_ios' : 'expand_less';
+  }
+
+  function saveSettings() {
+    const name = document.getElementById('settings-name').value.trim();
+    const email = document.getElementById('settings-email').value.trim();
+    if (!name || !email) return;
+    const users = JSON.parse(localStorage.getItem('afwm_users') || '[]');
+    const idx = users.findIndex(u => u.id === user.id);
+    if (idx !== -1) {
+      users[idx].name = name;
+      users[idx].email = email;
+      localStorage.setItem('afwm_users', JSON.stringify(users));
+      localStorage.setItem('afwm_user', JSON.stringify(users[idx]));
+    }
+    document.getElementById('profile-name').textContent = name;
+    document.getElementById('settings-msg').classList.remove('hidden');
+    setTimeout(() => document.getElementById('settings-msg').classList.add('hidden'), 2000);
+  }
+</script>
+</body>
+</html>
