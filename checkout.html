@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Checkout | AF Wealth Mindset</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: { extend: { colors: { "midnight": "#0B1220", "ivory": "#F6F1E7", "gold": "#D7B46A", "signature-teal": "#1FE6D1", "background-dark": "#0B1220" }, fontFamily: { "display": ["Manrope", "sans-serif"] }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" } } }
+  }
+</script>
+</head>
+<body class="dark:bg-background-dark font-display text-ivory antialiased">
+<div class="relative flex flex-col items-center w-full min-h-screen">
+
+<!-- Header -->
+<header class="sticky top-0 z-50 flex items-center justify-between w-full px-6 py-4 bg-midnight/80 backdrop-blur-md border-b border-gold/10 lg:px-40">
+  <div class="flex-1">
+    <button onclick="history.back()" class="flex items-center gap-2 text-ivory/60 hover:text-gold transition-colors text-sm">
+      <span class="material-symbols-outlined text-sm">arrow_back_ios</span> Back
+    </button>
+  </div>
+  <nav class="flex items-center gap-10">
+    <a id="nav-auth-link" href="/signup.html" class="text-ivory hover:text-gold transition-colors text-sm font-medium tracking-wide">Sign Up</a>
+  </nav>
+  <div class="flex flex-1 justify-end gap-4">
+    <button class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gold/10 text-gold transition-all">
+      <span class="material-symbols-outlined">lock</span>
+    </button>
+  </div>
+</header>
+
+<main class="w-full max-w-[580px] px-4 py-12 flex flex-col gap-8">
+  <!-- Brand -->
+  <div class="flex flex-col items-center text-center gap-4">
+    <div class="w-24 h-24 rounded-full border-4 border-midnight bg-center bg-cover shadow-2xl overflow-hidden"
+      style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCgNUkWuuokBpqOkh-_CWzUYQMLax2np64cRyj_XbHnNlNd4nj3S5uM_mEn1EidBZN0p_dKgRhAqpk3-M3swq646-lIxKbGmniSU8f-Vs34Qi8QgI0W5ml4MJhSP8Zl_9llce7V_15t0M-XtZAQvKXrfP3htN4rDtFYBzomoLPCSmgJmeqKhEM4KoBMBlN1BC1oaOR7Z_jiPauXjALbkeqehzE9e0j2x-UUejMIqnaEn73LvlRmQZ3MZOhtDk62HAWCMIlSARuuVig')">
+    </div>
+    <div>
+      <h2 class="text-2xl font-bold tracking-[0.1em] text-gold uppercase">Complete Your Purchase</h2>
+      <p class="text-ivory/60 text-sm mt-1">Secure checkout for your curated selection</p>
+    </div>
+  </div>
+
+  <!-- Order Summary -->
+  <section class="bg-midnight border border-gold/10 rounded-xl p-6">
+    <h3 class="text-sm font-bold tracking-[0.2em] text-gold uppercase mb-6 flex items-center gap-2">
+      <span class="material-symbols-outlined text-gold">receipt_long</span> Order Summary
+    </h3>
+    <div class="space-y-4">
+      <div class="flex items-center gap-4">
+        <div id="order-img" class="w-16 h-16 rounded-lg bg-cover bg-center flex-shrink-0 border border-gold/10"></div>
+        <div class="flex-1">
+          <p id="order-name" class="font-bold text-ivory"></p>
+          <p id="order-edition" class="text-xs text-ivory/50"></p>
+        </div>
+        <p id="order-price" class="font-bold text-ivory"></p>
+      </div>
+      <hr class="border-gold/10"/>
+      <div class="space-y-3 text-sm">
+        <div class="flex justify-between"><span class="text-ivory/50">Subtotal</span><span id="order-subtotal" class="text-ivory"></span></div>
+        <div class="flex justify-between"><span class="text-ivory/50">Delivery</span><span class="text-signature-teal font-bold">Digital Download</span></div>
+        <div class="flex justify-between text-lg font-bold pt-3 border-t border-gold/10">
+          <span class="text-ivory">Total</span><span id="order-total" class="text-gold"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="bg-midnight border border-gold/10 rounded-xl p-6">
+    <h3 class="text-sm font-bold tracking-[0.2em] text-gold uppercase mb-6 flex items-center gap-2">
+      <span class="material-symbols-outlined text-gold">contact_mail</span> Contact Information
+    </h3>
+    <div>
+      <label class="block text-xs font-bold uppercase tracking-[0.1em] text-gold/60 mb-2">Email Address</label>
+      <input id="checkout-email" type="email" placeholder="your@email.com"
+        class="w-full bg-midnight border border-gold/20 rounded-lg px-4 py-3 text-ivory placeholder:text-ivory/20 focus:border-signature-teal outline-none transition-all"/>
+    </div>
+  </section>
+
+  <!-- Payment Method -->
+  <section class="bg-midnight border border-gold/10 rounded-xl p-6">
+    <h3 class="text-sm font-bold tracking-[0.2em] text-gold uppercase mb-6 flex items-center gap-2">
+      <span class="material-symbols-outlined text-gold">account_balance_wallet</span> Payment Method
+    </h3>
+    <div class="grid grid-cols-1 gap-3 mb-6">
+      <!-- PayPal -->
+      <label id="opt-paypal" onclick="selectPayment('paypal')" class="relative flex items-center p-4 border-2 border-signature-teal bg-signature-teal/5 rounded-xl cursor-pointer">
+        <span class="material-symbols-outlined mr-3 text-signature-teal">payments</span>
+        <div class="flex-1"><p class="text-sm font-bold text-ivory">PayPal</p><p class="text-xs text-ivory/50">Fast and secure checkout</p></div>
+        <div id="radio-paypal" class="w-5 h-5 rounded-full border-2 border-signature-teal flex items-center justify-center"><div class="w-2.5 h-2.5 rounded-full bg-signature-teal"></div></div>
+      </label>
+      <!-- Credit Card -->
+      <label id="opt-card" onclick="selectPayment('card')" class="relative flex items-center p-4 border border-gold/10 rounded-xl cursor-pointer hover:bg-gold/5 transition-colors">
+        <span class="material-symbols-outlined mr-3 text-gold/40">credit_card</span>
+        <div class="flex-1"><p class="text-sm font-bold text-ivory">Credit / Debit Card</p><p class="text-xs text-ivory/50">Visa, Mastercard, Amex</p></div>
+        <div id="radio-card" class="w-5 h-5 rounded-full border-2 border-gold/20"></div>
+      </label>
+      <!-- Bank Transfer -->
+      <label id="opt-bank" onclick="selectPayment('bank')" class="relative flex items-center p-4 border border-gold/10 rounded-xl cursor-pointer hover:bg-gold/5 transition-colors">
+        <span class="material-symbols-outlined mr-3 text-gold/40">account_balance</span>
+        <div class="flex-1"><p class="text-sm font-bold text-ivory">Bank Transfer</p><p class="text-xs text-ivory/50">Direct wire via ACH/SWIFT</p></div>
+        <div id="radio-bank" class="w-5 h-5 rounded-full border-2 border-gold/20"></div>
+      </label>
+    </div>
+
+    <!-- PayPal Button Container -->
+    <div id="paypal-section">
+      <div id="paypal-button-container"></div>
+      <p id="paypal-config-warning" class="hidden text-center text-ivory/40 text-xs mt-4 p-4 border border-gold/10 rounded-lg">
+        ⚙️ Add your PayPal Client ID in <code>checkout.html</code> to enable live payments.
+      </p>
+    </div>
+
+    <!-- Card Section (handled by PayPal button with card funding) -->
+    <div id="card-section" class="hidden">
+      <div id="card-button-container"></div>
+      <p id="card-config-warning" class="hidden text-center text-ivory/40 text-xs mt-4 p-4 border border-gold/10 rounded-lg">
+        ⚙️ Add your PayPal Client ID to enable card payments.
+      </p>
+    </div>
+
+    <!-- Bank Transfer Details -->
+    <div id="bank-section" class="hidden">
+      <div class="bg-midnight/80 border border-gold/20 rounded-xl p-6 space-y-4">
+        <h4 class="text-gold font-bold uppercase tracking-widest text-sm mb-4 flex items-center gap-2">
+          <span class="material-symbols-outlined text-sm">info</span> Bank Transfer Instructions
+        </h4>
+        <div class="space-y-3 text-sm">
+          <div class="flex justify-between"><span class="text-ivory/50">Bank Name</span><span class="text-ivory font-medium">YOUR BANK NAME</span></div>
+          <div class="flex justify-between"><span class="text-ivory/50">Account Name</span><span class="text-ivory font-medium">AF Wealth Mindset</span></div>
+          <div class="flex justify-between"><span class="text-ivory/50">Account Number</span><span class="text-ivory font-medium">XXXX-XXXX-XXXX</span></div>
+          <div class="flex justify-between"><span class="text-ivory/50">Routing Number</span><span class="text-ivory font-medium">XXXXXXXXX</span></div>
+          <div class="flex justify-between"><span class="text-ivory/50">SWIFT/BIC</span><span class="text-ivory font-medium">XXXXXXXXXX</span></div>
+          <hr class="border-gold/10"/>
+          <div class="flex justify-between"><span class="text-ivory/50">Reference</span><span id="bank-ref" class="text-signature-teal font-mono font-bold"></span></div>
+        </div>
+        <p class="text-ivory/40 text-xs mt-4">⚠️ Please include the reference number in your transfer. Orders are activated within 1-2 business days after payment confirmation.</p>
+        <button onclick="confirmBankTransfer()" class="w-full mt-4 py-4 bg-signature-teal hover:brightness-110 text-midnight font-bold rounded-xl transition-all flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined">check_circle</span> I've Sent the Transfer
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SSL badges -->
+  <div class="flex items-center justify-center gap-6 text-ivory/30">
+    <div class="flex items-center gap-1 text-[10px] uppercase font-bold tracking-widest">
+      <span class="material-symbols-outlined text-xs">verified_user</span> SSL Encrypted
+    </div>
+    <div class="flex items-center gap-1 text-[10px] uppercase font-bold tracking-widest">
+      <span class="material-symbols-outlined text-xs">local_mall</span> Secure Checkout
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="w-full bg-midnight py-12 border-t border-gold/10 mt-4">
+    <div class="flex flex-col items-center gap-6">
+      <span class="text-signature-teal text-xs font-bold tracking-[0.2em] uppercase">Follow Us</span>
+      <div class="flex justify-center gap-8">
+        <a class="text-gold hover:text-signature-teal transition-colors" href="#"><span class="material-symbols-outlined text-2xl">tiktok</span></a>
+        <a class="text-gold hover:text-signature-teal transition-colors" href="#"><span class="material-symbols-outlined text-2xl">play_circle</span></a>
+        <a class="text-gold hover:text-signature-teal transition-colors" href="#"><span class="material-symbols-outlined text-2xl">photo_camera</span></a>
+        <a class="text-gold hover:text-signature-teal transition-colors" href="#"><span class="material-symbols-outlined text-2xl">facebook</span></a>
+        <a class="text-gold hover:text-signature-teal transition-colors" href="#"><span class="material-symbols-outlined text-2xl">close</span></a>
+      </div>
+      <p class="text-ivory/30 text-xs tracking-widest uppercase">© 2024 AF Wealth Mindset. All Rights Reserved.</p>
+      <p class="text-[10px] text-ivory/20">By completing your purchase, you agree to our <a class="underline" href="#">Terms</a> and <a class="underline" href="#">Privacy</a>.</p>
+    </div>
+  </footer>
+</main>
+</div>
+
+<script src="/js/app.js"></script>
+<script>
+  // ===== CONFIGURATION =====
+  // Replace with your PayPal Client ID from developer.paypal.com
+  const PAYPAL_CLIENT_ID = 'YOUR_PAYPAL_CLIENT_ID';
+  // =========================
+
+  initHeader();
+
+  const product = getProductFromURL();
+  const user = getCurrentUser();
+
+  // Fill order summary
+  document.getElementById('order-img').style.backgroundImage = `url('${product.image}')`;
+  document.getElementById('order-name').textContent = product.name;
+  document.getElementById('order-edition').textContent = `Qty: 1 • ${product.edition}`;
+  document.getElementById('order-price').textContent = formatPrice(product.price);
+  document.getElementById('order-subtotal').textContent = formatPrice(product.price);
+  document.getElementById('order-total').textContent = formatPrice(product.price);
+  document.getElementById('bank-ref').textContent = 'AFWM-' + product.id + '-' + Date.now().toString().slice(-6);
+
+  // Pre-fill email
+  if (user) document.getElementById('checkout-email').value = user.email;
+
+  // Redirect to signup if not logged in
+  if (!user) {
+    const params = new URLSearchParams(window.location.search);
+    window.location.href = '/signup.html?redirect=/checkout.html?' + params.toString();
+  }
+
+  // Payment method selection
+  let selectedPayment = 'paypal';
+
+  function selectPayment(method) {
+    selectedPayment = method;
+    const opts = ['paypal', 'card', 'bank'];
+    opts.forEach(o => {
+      const opt = document.getElementById('opt-' + o);
+      const radio = document.getElementById('radio-' + o);
+      const section = document.getElementById(o === 'card' ? 'card-section' : o + '-section');
+      if (o === method) {
+        opt.className = opt.className.replace('border border-gold/10', 'border-2 border-signature-teal bg-signature-teal/5');
+        radio.innerHTML = '<div class="w-2.5 h-2.5 rounded-full bg-signature-teal"></div>';
+        radio.className = 'w-5 h-5 rounded-full border-2 border-signature-teal flex items-center justify-center';
+        if (section) section.classList.remove('hidden');
+      } else {
+        opt.className = opt.className.replace('border-2 border-signature-teal bg-signature-teal/5', 'border border-gold/10');
+        radio.innerHTML = '';
+        radio.className = 'w-5 h-5 rounded-full border-2 border-gold/20';
+        if (section) section.classList.add('hidden');
+      }
+    });
+  }
+
+  function confirmBankTransfer() {
+    const email = document.getElementById('checkout-email').value;
+    if (!email) return alert('Please enter your email address.');
+    addOrder(product.id, product.price, 'Bank Transfer', 'BANK-' + Date.now());
+    window.location.href = '/orders.html?success=1&method=bank';
+  }
+
+  // Load PayPal SDK
+  if (PAYPAL_CLIENT_ID === 'YOUR_PAYPAL_CLIENT_ID') {
+    document.getElementById('paypal-config-warning').classList.remove('hidden');
+    document.getElementById('card-config-warning').classList.remove('hidden');
+  } else {
+    const script = document.createElement('script');
+    script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
+    script.onload = function() {
+      // PayPal button
+      paypal.Buttons({
+        style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal' },
+        createOrder: function(data, actions) {
+          const email = document.getElementById('checkout-email').value;
+          if (!email) { alert('Please enter your email address.'); return; }
+          return actions.order.create({
+            purchase_units: [{ amount: { value: product.price.toString(), currency_code: 'USD' }, description: product.name }]
+          });
+        },
+        onApprove: function(data, actions) {
+          return actions.order.capture().then(function(details) {
+            addOrder(product.id, product.price, 'PayPal', details.id);
+            window.location.href = '/orders.html?success=1&method=paypal';
+          });
+        },
+        onError: function(err) { console.error(err); alert('Payment failed. Please try again.'); }
+      }).render('#paypal-button-container');
+
+      // Card button
+      if (paypal.FUNDING) {
+        paypal.Buttons({
+          fundingSource: paypal.FUNDING.CARD,
+          style: { layout: 'vertical', color: 'black', shape: 'rect', label: 'pay' },
+          createOrder: function(data, actions) {
+            const email = document.getElementById('checkout-email').value;
+            if (!email) { alert('Please enter your email address.'); return; }
+            return actions.order.create({
+              purchase_units: [{ amount: { value: product.price.toString(), currency_code: 'USD' }, description: product.name }]
+            });
+          },
+          onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+              addOrder(product.id, product.price, 'Credit Card', details.id);
+              window.location.href = '/orders.html?success=1&method=card';
+            });
+          },
+          onError: function(err) { console.error(err); alert('Card payment failed. Please try again.'); }
+        }).render('#card-button-container');
+      }
+    };
+    document.head.appendChild(script);
+  }
+</script>
+</body>
+</html>
