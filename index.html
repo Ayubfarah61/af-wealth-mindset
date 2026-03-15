@@ -25,7 +25,7 @@
     <a href="#about" class="text-ivory hover:text-gold transition-colors text-sm font-medium tracking-wide">About</a>
   </nav>
   <div class="flex flex-1 justify-end gap-4">
-    <button onclick="window.location.href='/profile.html'" class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gold/10 text-gold transition-all" title="Wishlist">
+    <button onclick="window.location.href='/profile.html'" class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gold/10 text-gold transition-all" title="Profile">
       <span class="material-symbols-outlined">favorite</span>
     </button>
     <button onclick="window.location.href='/orders.html'" class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gold/10 text-gold transition-all" title="Orders">
@@ -35,24 +35,125 @@
 </header>
 
 <main class="flex flex-col items-center w-full max-w-[960px] mx-auto px-4 lg:px-0">
-  <!-- Profile / Brand -->
-  <div class="relative w-full flex flex-col items-center pt-10 pb-10 mb-4 rounded-2xl overflow-hidden"
-    style="background: radial-gradient(ellipse at 15% 60%, rgba(215,180,106,0.18) 0%, transparent 55%), radial-gradient(ellipse at 85% 25%, rgba(31,230,209,0.13) 0%, transparent 50%), radial-gradient(ellipse at 55% 90%, rgba(215,180,106,0.10) 0%, transparent 45%), #0B1220;">
-    <!-- abstract shimmer lines -->
-    <div class="absolute inset-0 pointer-events-none" style="background: repeating-linear-gradient(120deg, transparent, transparent 60px, rgba(215,180,106,0.03) 61px, transparent 62px);"></div>
-    <img src="/images/logo.png" alt="AF Wealth Mindset" class="w-52 h-52 object-contain drop-shadow-2xl relative z-10"/>
-    <h1 class="mt-4 text-2xl font-bold tracking-[0.1em] text-gold uppercase relative z-10">AF WEALTH MINDSET</h1>
-    <p class="text-ivory/50 text-sm mt-1 relative z-10">Financial Freedom Through Smart Decisions</p>
-    <div id="index-social-links" class="flex items-center justify-center gap-8 mt-6 relative z-10"></div>
+
+  <!-- Hero / Brand -->
+  <div class="relative w-full flex flex-col items-center pt-10 pb-8 mb-4 rounded-2xl overflow-hidden"
+    style="background: radial-gradient(ellipse at 15% 60%, rgba(215,180,106,0.18) 0%, transparent 55%), radial-gradient(ellipse at 85% 25%, rgba(31,230,209,0.13) 0%, transparent 50%), #0B1220;">
+    <img src="/images/logo.png" alt="AF Wealth Mindset" style="width:200px;height:200px;object-fit:contain;"/>
+    <h1 style="margin-top:16px;font-size:1.25rem;font-weight:800;letter-spacing:0.1em;color:#D7B46A;text-transform:uppercase;">AF WEALTH MINDSET</h1>
+    <p style="color:rgba(246,241,231,0.5);font-size:0.875rem;margin-top:4px;">Financial Freedom Through Smart Decisions</p>
+    <!-- Social Links -->
+    <div style="display:flex;gap:32px;margin-top:20px;">
+      <a href="https://www.tiktok.com/@afwealthsystems" target="_blank" rel="noopener" style="color:#D7B46A;"><span class="material-symbols-outlined" style="font-size:24px;">tiktok</span></a>
+      <a href="https://www.instagram.com/afwealthmindset/" target="_blank" rel="noopener" style="color:#D7B46A;"><span class="material-symbols-outlined" style="font-size:24px;">photo_camera</span></a>
+      <a href="https://www.facebook.com/AFWealthMidnset" target="_blank" rel="noopener" style="color:#D7B46A;"><span class="material-symbols-outlined" style="font-size:24px;">face_6</span></a>
+      <a href="https://x.com/AFWealth67" target="_blank" rel="noopener" style="color:#D7B46A;"><span class="material-symbols-outlined" style="font-size:24px;">close</span></a>
+    </div>
   </div>
 
   <!-- Collection Title -->
-  <div class="w-full py-8 text-center border-t border-gold/10">
-    <h2 class="text-sm font-bold tracking-[0.25em] text-gold uppercase">Premium Digital Collection</h2>
+  <div style="width:100%;padding:24px 0;text-align:center;border-top:1px solid rgba(215,180,106,0.1);">
+    <h2 style="font-size:0.75rem;font-weight:700;letter-spacing:0.25em;color:#D7B46A;text-transform:uppercase;">Premium Digital Collection</h2>
   </div>
 
-  <!-- Product List (rendered by JS) -->
-  <div id="product-list" class="w-full space-y-4 mb-16"></div>
+  <!-- PRODUCT LIST — STATIC HTML -->
+  <div style="width:100%;display:flex;flex-direction:column;gap:16px;margin-bottom:64px;">
+
+    <!-- Product 1: Cashflow Secrets -->
+    <div onclick="window.location.href='/product.html?id=1'"
+      style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;background:rgba(255,255,255,0.04);border:1px solid rgba(215,180,106,0.25);border-radius:12px;cursor:pointer;">
+      <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+        <img src="/images/product1.jpg" alt="Cashflow Secrets"
+          style="width:64px;height:64px;border-radius:8px;object-fit:cover;flex-shrink:0;border:1px solid rgba(215,180,106,0.2);"
+          onerror="this.style.background='rgba(215,180,106,0.1)'"/>
+        <div style="min-width:0;">
+          <div style="font-weight:700;color:#F6F1E7;font-size:1rem;">Cashflow Secrets</div>
+          <div style="margin-top:2px;">
+            <span style="font-size:0.75rem;padding:1px 8px;border-radius:999px;background:rgba(215,180,106,0.1);color:#D7B46A;border:1px solid rgba(215,180,106,0.2);">&#11088; Featured</span>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:4px;align-items:center;">
+            <span style="color:rgba(246,241,231,0.4);text-decoration:line-through;font-size:0.8rem;">$400</span>
+            <span style="color:#D7B46A;font-weight:700;font-size:0.9rem;">$97</span>
+          </div>
+        </div>
+      </div>
+      <button onclick="event.stopPropagation(); window.location.href='/product.html?id=1'"
+        style="flex-shrink:0;padding:8px 14px;background:rgba(31,230,209,0.1);color:#1FE6D1;border:1px solid rgba(31,230,209,0.3);border-radius:8px;font-weight:700;font-size:0.75rem;cursor:pointer;">
+        See More
+      </button>
+    </div>
+
+    <!-- Product 2: The Money Control Code -->
+    <div onclick="window.location.href='/product.html?id=2'"
+      style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;background:rgba(255,255,255,0.04);border:1px solid rgba(215,180,106,0.25);border-radius:12px;cursor:pointer;">
+      <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+        <img src="/images/product2.png" alt="The Money Control Code"
+          style="width:64px;height:64px;border-radius:8px;object-fit:cover;flex-shrink:0;border:1px solid rgba(215,180,106,0.2);"
+          onerror="this.style.background='rgba(215,180,106,0.1)'"/>
+        <div style="min-width:0;">
+          <div style="font-weight:700;color:#F6F1E7;font-size:1rem;">The Money Control Code</div>
+          <div style="margin-top:2px;">
+            <span style="font-size:0.75rem;padding:1px 8px;border-radius:999px;background:rgba(215,180,106,0.1);color:#D7B46A;border:1px solid rgba(215,180,106,0.2);">&#128293; Best Value</span>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:4px;align-items:center;">
+            <span style="color:rgba(246,241,231,0.4);text-decoration:line-through;font-size:0.8rem;">$14.99</span>
+            <span style="color:#D7B46A;font-weight:700;font-size:0.9rem;">$6.99</span>
+          </div>
+        </div>
+      </div>
+      <button onclick="event.stopPropagation(); window.location.href='/product.html?id=2'"
+        style="flex-shrink:0;padding:8px 14px;background:rgba(31,230,209,0.1);color:#1FE6D1;border:1px solid rgba(31,230,209,0.3);border-radius:8px;font-weight:700;font-size:0.75rem;cursor:pointer;">
+        See More
+      </button>
+    </div>
+
+    <!-- Product 3: Personal Finance Tracker (Coming Soon) -->
+    <div onclick="window.location.href='/product.html?id=3'"
+      style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;background:rgba(255,255,255,0.02);border:1px solid rgba(215,180,106,0.12);border-radius:12px;cursor:pointer;opacity:0.8;">
+      <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+        <img src="/images/logo.png" alt="Personal Finance Tracker"
+          style="width:64px;height:64px;border-radius:8px;object-fit:contain;flex-shrink:0;border:1px solid rgba(215,180,106,0.15);background:rgba(215,180,106,0.05);"
+          onerror="this.style.background='rgba(215,180,106,0.1)'"/>
+        <div style="min-width:0;">
+          <div style="font-weight:700;color:#F6F1E7;font-size:1rem;">Personal Finance Tracker</div>
+          <div style="margin-top:2px;">
+            <span style="font-size:0.75rem;padding:1px 8px;border-radius:999px;background:rgba(255,255,255,0.05);color:rgba(246,241,231,0.4);border:1px solid rgba(255,255,255,0.1);">&#128284; Coming Soon</span>
+          </div>
+          <div style="margin-top:4px;">
+            <span style="color:#1FE6D1;font-size:0.8rem;font-weight:600;">Notify Me</span>
+          </div>
+        </div>
+      </div>
+      <button onclick="event.stopPropagation(); window.location.href='/product.html?id=3'"
+        style="flex-shrink:0;padding:8px 14px;background:rgba(255,255,255,0.04);color:rgba(246,241,231,0.4);border:1px solid rgba(255,255,255,0.1);border-radius:8px;font-weight:700;font-size:0.75rem;cursor:pointer;">
+        Notify Me
+      </button>
+    </div>
+
+    <!-- Product 4: Small Business Bookkeeping System (Coming Soon) -->
+    <div onclick="window.location.href='/product.html?id=4'"
+      style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;background:rgba(255,255,255,0.02);border:1px solid rgba(215,180,106,0.12);border-radius:12px;cursor:pointer;opacity:0.8;">
+      <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+        <img src="/images/logo.png" alt="Small Business Bookkeeping System"
+          style="width:64px;height:64px;border-radius:8px;object-fit:contain;flex-shrink:0;border:1px solid rgba(215,180,106,0.15);background:rgba(215,180,106,0.05);"
+          onerror="this.style.background='rgba(215,180,106,0.1)'"/>
+        <div style="min-width:0;">
+          <div style="font-weight:700;color:#F6F1E7;font-size:1rem;">Small Business Bookkeeping System</div>
+          <div style="margin-top:2px;">
+            <span style="font-size:0.75rem;padding:1px 8px;border-radius:999px;background:rgba(255,255,255,0.05);color:rgba(246,241,231,0.4);border:1px solid rgba(255,255,255,0.1);">&#128284; Coming Soon</span>
+          </div>
+          <div style="margin-top:4px;">
+            <span style="color:#1FE6D1;font-size:0.8rem;font-weight:600;">Notify Me</span>
+          </div>
+        </div>
+      </div>
+      <button onclick="event.stopPropagation(); window.location.href='/product.html?id=4'"
+        style="flex-shrink:0;padding:8px 14px;background:rgba(255,255,255,0.04);color:rgba(246,241,231,0.4);border:1px solid rgba(255,255,255,0.1);border-radius:8px;font-weight:700;font-size:0.75rem;cursor:pointer;">
+        Notify Me
+      </button>
+    </div>
+
+  </div>
 
   <!-- Newsletter -->
   <section class="w-full mb-16 px-4 lg:px-0" id="about">
@@ -70,7 +171,13 @@
 
 <footer class="w-full bg-midnight py-12 border-t border-gold/10">
   <div class="max-w-[960px] mx-auto flex flex-col items-center gap-6">
-    <div id="index-footer-social" class="flex flex-col items-center gap-4"></div>
+    <span style="color:#1FE6D1;font-size:0.75rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;">Follow Us</span>
+    <div style="display:flex;gap:32px;">
+      <a href="https://www.tiktok.com/@afwealthsystems" target="_blank" rel="noopener" style="color:#D7B46A;"><span class="material-symbols-outlined" style="font-size:24px;">tiktok</span></a>
+      <a href="https://www.instagram.com/afwealthmindset/" target="_blank" rel="noopener" style="color:#D7B46A;"><span class="material-symbols-outlined" style="font-size:24px;">photo_camera</span></a>
+      <a href="https://www.facebook.com/AFWealthMidnset" target="_blank" rel="noopener" style="color:#D7B46A;"><span class="material-symbols-outlined" style="font-size:24px;">face_6</span></a>
+      <a href="https://x.com/AFWealth67" target="_blank" rel="noopener" style="color:#D7B46A;"><span class="material-symbols-outlined" style="font-size:24px;">close</span></a>
+    </div>
     <p class="text-ivory/30 text-xs tracking-widest uppercase">© 2024 AF Wealth Mindset. All Rights Reserved.</p>
   </div>
 </footer>
@@ -78,44 +185,7 @@
 
 <script src="/js/app.js"></script>
 <script>
-  initHeader();
-  renderSocialFooter('index-footer-social');
-
-  // Populate hero social icons (no label)
-  const heroSocial = document.getElementById('index-social-links');
-  if (heroSocial) {
-    SOCIAL_LINKS.forEach(s => {
-      heroSocial.innerHTML += `<a class="text-gold hover:text-signature-teal transition-colors" href="${s.url}" target="_blank" rel="noopener" title="${s.title}"><span class="material-symbols-outlined text-2xl">${s.icon}</span></a>`;
-    });
-  }
-
-  const list = document.getElementById('product-list');
-
-  PRODUCTS.forEach(p => {
-    const priceHTML = p.comingSoon
-      ? '<span class="text-signature-teal font-bold text-sm">Coming Soon</span>'
-      : '<span class="text-ivory/50 line-through text-sm">$' + p.originalPrice + '</span> <span class="text-gold font-bold">$' + p.price + '</span>';
-
-    const badgeHTML = p.badge
-      ? '<span class="inline-block px-2 py-0.5 rounded-full text-xs font-bold bg-gold/10 text-gold border border-gold/20">' + p.badge + '</span>'
-      : '';
-
-    const btnHTML = p.comingSoon
-      ? '<button onclick="event.stopPropagation(); window.location.href=\'/product.html?id=' + p.id + '\'" class="flex-shrink-0 px-3 py-2 bg-white/5 text-ivory/50 border border-white/10 rounded-lg font-bold text-xs">Notify Me</button>'
-      : '<button onclick="event.stopPropagation(); window.location.href=\'/product.html?id=' + p.id + '\'" class="flex-shrink-0 px-3 py-2 bg-signature-teal/10 text-signature-teal border border-signature-teal/20 rounded-lg font-bold text-xs hover:bg-signature-teal hover:text-midnight transition-all">See More</button>';
-
-    list.innerHTML += '<div onclick="window.location.href=\'/product.html?id=' + p.id + '\'" class="flex items-center justify-between gap-3 p-4 bg-white/5 border border-gold/20 rounded-xl hover:border-gold/50 transition-all cursor-pointer">'
-      + '<div class="flex items-center gap-3 min-w-0">'
-      + '<img src="' + p.image + '" class="w-16 h-16 rounded-lg object-cover flex-shrink-0 border border-gold/10" onerror="this.style.background=\'rgba(215,180,106,0.1)\'">'
-      + '<div class="flex flex-col min-w-0">'
-      + '<span class="text-ivory font-semibold text-base leading-snug">' + p.name + '</span>'
-      + '<div class="flex flex-wrap items-center gap-1 mt-0.5">' + badgeHTML + '</div>'
-      + '<div class="flex gap-2 text-sm mt-1">' + priceHTML + '</div>'
-      + '</div></div>'
-      + btnHTML
-      + '</div>';
-  });
-
+  if (typeof initHeader === 'function') initHeader();
   document.getElementById('subscribe-form').addEventListener('submit', function(e) {
     e.preventDefault();
     if (document.getElementById('sub-email').value) {
