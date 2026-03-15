@@ -26,7 +26,7 @@ function renderSocialFooter(containerId) {
 var PRODUCTS = [
   {
     id: 1,
-    name: 'Cashflow Secrets',
+    name: 'Cashflow Secrets — The Course That Changes Everything',
     originalPrice: 400,
     price: 97,
     edition: '11-Module Digital Course',
