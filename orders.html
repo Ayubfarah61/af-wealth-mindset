@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>My Orders | AF Wealth Mindset</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: { extend: { colors: { "midnight": "#0B1220", "ivory": "#F6F1E7", "gold": "#D7B46A", "signature-teal": "#1FE6D1", "background-dark": "#0B1220" }, fontFamily: { "display": ["Manrope", "sans-serif"] }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" } } }
+  }
+</script>
+</head>
+<body class="dark:bg-background-dark font-display text-ivory antialiased min-h-screen flex flex-col">
+
+<!-- Header -->
+<header class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 bg-midnight/80 backdrop-blur-md border-b border-gold/10">
+  <button onclick="window.location.href='/profile.html'" class="flex items-center gap-2 text-ivory/60 hover:text-gold transition-colors text-sm">
+    <span class="material-symbols-outlined text-sm">arrow_back_ios</span> Profile
+  </button>
+  <span class="text-gold font-bold tracking-widest uppercase text-sm">My Orders</span>
+  <div class="w-20"></div>
+</header>
+
+<main class="flex-1 w-full max-w-[640px] mx-auto px-4 py-8">
+
+  <!-- Success Banner -->
+  <div id="success-banner" class="hidden mb-6 p-4 bg-signature-teal/10 border border-signature-teal/30 rounded-xl flex items-center gap-3">
+    <span class="material-symbols-outlined text-signature-teal">check_circle</span>
+    <div>
+      <p class="font-bold text-signature-teal" id="success-title">Payment Successful!</p>
+      <p id="success-msg" class="text-ivory/60 text-sm"></p>
+    </div>
+  </div>
+
+  <h2 class="text-2xl font-bold text-gold uppercase tracking-[0.1em] mb-8">Order History</h2>
+
+  <!-- Orders list -->
+  <div id="orders-list"></div>
+
+  <!-- Empty state -->
+  <div id="empty-state" class="hidden text-center py-16">
+    <span class="material-symbols-outlined text-gold/20 text-7xl mb-4">shopping_bag</span>
+    <h3 class="text-ivory/40 font-bold text-lg mb-2">No orders yet</h3>
+    <p class="text-ivory/30 text-sm mb-6">Your purchases will appear here after checkout.</p>
+    <button onclick="window.location.href='/'" class="bg-gold hover:bg-gold/80 text-midnight font-bold px-8 py-3 rounded-xl transition-all">
+      Browse Products
+    </button>
+  </div>
+</main>
+
+<script src="/js/app.js"></script>
+<script>
+  const user = getCurrentUser();
+  if (!user) window.location.href = '/signup.html';
+
+  // Show success banner if redirected from checkout
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('success') === '1') {
+    const banner = document.getElementById('success-banner');
+    banner.classList.remove('hidden');
+    const method = params.get('method');
+    if (method === 'bank') {
+      document.getElementById('success-title').textContent = 'Transfer Instructions Noted!';
+      document.getElementById('success-msg').textContent = 'Your order will be activated within 1-2 business days after we confirm your payment.';
+    } else {
+      document.getElementById('success-msg').textContent = 'Thank you for your purchase! Your digital product is ready for download.';
+    }
+  }
+
+  const orders = getOrders();
+  const list = document.getElementById('orders-list');
+
+  if (orders.length === 0) {
+    document.getElementById('empty-state').classList.remove('hidden');
+  } else {
+    orders.forEach(order => {
+      const date = new Date(order.date);
+      const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const statusColor = order.status === 'Completed' ? 'text-signature-teal bg-signature-teal/10' :
+                          order.status === 'Pending' ? 'text-gold bg-gold/10' : 'text-ivory/50 bg-white/5';
+      list.innerHTML += `
+      <div class="bg-midnight border border-gold/10 rounded-xl p-5 mb-4 hover:border-gold/30 transition-all">
+        <div class="flex items-center gap-4">
+          <div class="w-16 h-16 rounded-lg bg-cover bg-center flex-shrink-0 border border-gold/10 bg-gold/5"
+            style="background-image: url('${order.productImage}')"></div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-ivory truncate">${order.productName}</h3>
+            <p class="text-ivory/40 text-xs mt-1">${order.id}</p>
+            <p class="text-ivory/40 text-xs">${dateStr} · ${order.paymentMethod}</p>
+          </div>
+          <div class="text-right flex-shrink-0">
+            <p class="font-bold text-gold">${formatPrice(order.amount)}</p>
+            <span class="inline-block mt-1 px-2 py-0.5 rounded-full text-xs font-bold ${statusColor}">${order.status}</span>
+          </div>
+        </div>
+        <div class="mt-4 pt-4 border-t border-gold/10 flex gap-3">
+          <button onclick="window.location.href='/product.html?id=${order.productId}'"
+            class="flex-1 py-2 bg-signature-teal/10 text-signature-teal rounded-lg font-bold text-sm hover:bg-signature-teal hover:text-midnight transition-all flex items-center justify-center gap-1">
+            <span class="material-symbols-outlined text-sm">download</span> Access Product
+          </button>
+        </div>
+      </div>`;
+    });
+  }
+</script>
+</body>
+</html>
