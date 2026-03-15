@@ -94,14 +94,7 @@
   <!-- Footer -->
   <footer class="w-full bg-midnight py-12 border-t border-gold/10 mt-12 -mx-6 px-6">
     <div class="flex flex-col items-center gap-6">
-      <span class="text-signature-teal text-xs font-bold tracking-[0.2em] uppercase">Follow Us</span>
-      <div class="flex justify-center gap-8">
-        <a class="text-gold hover:text-signature-teal transition-colors" href="#"><span class="material-symbols-outlined text-2xl">tiktok</span></a>
-        <a class="text-gold hover:text-signature-teal transition-colors" href="#"><span class="material-symbols-outlined text-2xl">play_circle</span></a>
-        <a class="text-gold hover:text-signature-teal transition-colors" href="#"><span class="material-symbols-outlined text-2xl">photo_camera</span></a>
-        <a class="text-gold hover:text-signature-teal transition-colors" href="#"><span class="material-symbols-outlined text-2xl">facebook</span></a>
-        <a class="text-gold hover:text-signature-teal transition-colors" href="#"><span class="material-symbols-outlined text-2xl">close</span></a>
-      </div>
+      <div id="product-social-footer" class="flex flex-col items-center gap-4"></div>
       <p class="text-ivory/30 text-xs tracking-widest uppercase">© 2024 AF Wealth Mindset. All Rights Reserved.</p>
     </div>
   </footer>
@@ -111,6 +104,7 @@
 <script src="/js/app.js"></script>
 <script>
   initHeader();
+  renderSocialFooter('product-social-footer');
   const product = getProductFromURL();
 
   document.title = product.name + ' | AF Wealth Mindset';
