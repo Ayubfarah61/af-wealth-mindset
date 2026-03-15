@@ -10,8 +10,8 @@ const PRODUCTS = [
     badge: "⭐ Featured",
     // Affiliate product — bypasses checkout, goes directly to partner site
     affiliateUrl: "https://moneyripples.com/cashflow-secrets-affiliate/?aff=AyubFarah67",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDq3sQhkxEChSweuHF8gM59pH_UGLFlp6_bw6V0j0MmHrTKNbt-o9Vc4_VAbtQ4VNlNdTn-lxRD8qfh3f4oUyfJJdCKCMXlDq1Hu07Ya8cw909FejwFnIWa2jxcufbSr373fhsiKizj4xGpOClbkY4HKLQsuQmHXobMM8bY8Tnwju4uHxWLDUCgKzQuEYoLdCanEsy34tstV8782sD1abTO8JDaO7vVK5soTbmU9xZZOg86JNoGQJ8xsZPZltHXe4CU8OUfRU2DWPk",
-    heroImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuDWJv1jPQoGKf9-cMWDMr8xuscN-eyA2V7CLJICU-dA2wJi3q7UTuxkKbHQOZGOQ6UMYFhALCBigCxGs9DMStJu8Lot-_qVmBhfnphzj_V3VTce4plV4feMOlRXX24Nnf-TkBMpdk5DzNRR2F70uWy6K_ub5zvW268AGh32UfKr240O3w4qC74qz6veFdUsvetLFR8Ww3pOUcYFEq3n5k3R_BEjtfFWZ0xH99RFf_5gAIborYGibP6FOCu8U-0ea6ai1a2zIcsTOmA",
+    image: "/images/product1.jpg",
+    heroImage: "/images/product1.jpg",
     description: "Unlock additional money from your current situation — no new job, business, or side hustle required. Chris Miles' proven 11-module system teaches you to optimize your cashflow and build wealth by working RIGHT, not just harder.",
     features: [
       { icon: "play_circle", title: "11 Comprehensive Modules", desc: "Mindset, tracking, debt, passive income & more" },
@@ -28,8 +28,8 @@ const PRODUCTS = [
     edition: "Digital Tool",
     badge: "🔜 Coming Soon",
     comingSoon: true,
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuB_-QDuyckMHzM_k9zNI3bJbnm2HZXwDFEayAXvl4dSXEWS36I1dAB2L18Yg3Vu1mjEVCHNPadvjk2YsCs3Qp3E8HD0USyPrEQ4MWHTUtm_2r-aHOKa7IPtT93l4dE5sClJ-l8aQaZiaw6xDBVhZhOufnZuatf2-o7ofvACk8Z-ZV6Xg2dpX_2OapVAiUOoSYT-GgKIZBZV4BAV0pocwqJBV0vme0Q5uVwnatt8KVI1mhvt41GOB3K99yLLs_kPmfXE2qYPPRYXBGI",
-    heroImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuDWJv1jPQoGKf9-cMWDMr8xuscN-eyA2V7CLJICU-dA2wJi3q7UTuxkKbHQOZGOQ6UMYFhALCBigCxGs9DMStJu8Lot-_qVmBhfnphzj_V3VTce4plV4feMOlRXX24Nnf-TkBMpdk5DzNRR2F70uWy6K_ub5zvW268AGh32UfKr240O3w4qC74qz6veFdUsvetLFR8Ww3pOUcYFEq3n5k3R_BEjtfFWZ0xH99RFf_5gAIborYGibP6FOCu8U-0ea6ai1a2zIcsTOmA",
+    image: "/images/product2.png",
+    heroImage: "/images/product2.png",
     description: "A comprehensive personal finance tracking system to manage your income, expenses, savings goals and investments — all in one place. Full details coming soon.",
     features: [
       { icon: "account_balance_wallet", title: "Income & Expense Tracking", desc: "Monitor every dollar in and out" },
@@ -46,8 +46,8 @@ const PRODUCTS = [
     edition: "Business Tool",
     badge: "🔜 Coming Soon",
     comingSoon: true,
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuA-LQHnHBbyAZtGO3ZDobbOr6tgXvoeqtjWx5qO38evmPQBs3CRA_ybqbzKW91wytJyt4S38UV3mg4pxz8S8rDMOBwXWtcrukt85Xo7iAiS37dpgMcONbHrUiArKAmpqfZ9MaoLPvEnhlfOjZUFoI3rXfvgY8ezIsnPeVVPnlr2xSutkjXv7cYNdc_wpYPXjszYbwzsX4QA_CKf-qbIrVI6RP_L4EKEFzmfOCsVRje111c84mUZrRM-wjdKsWM4Nzwl0CpcV-y3X-E",
-    heroImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuDWJv1jPQoGKf9-cMWDMr8xuscN-eyA2V7CLJICU-dA2wJi3q7UTuxkKbHQOZGOQ6UMYFhALCBigCxGs9DMStJu8Lot-_qVmBhfnphzj_V3VTce4plV4feMOlRXX24Nnf-TkBMpdk5DzNRR2F70uWy6K_ub5zvW268AGh32UfKr240O3w4qC74qz6veFdUsvetLFR8Ww3pOUcYFEq3n5k3R_BEjtfFWZ0xH99RFf_5gAIborYGibP6FOCu8U-0ea6ai1a2zIcsTOmA",
+    image: "/images/logo.png",
+    heroImage: "/images/logo.png",
     description: "A complete bookkeeping system built for small business owners. Manage invoices, expenses, payroll, and tax-ready reports without an accountant. Full details coming soon.",
     features: [
       { icon: "receipt_long", title: "Invoice Management", desc: "Create and send professional invoices" },
