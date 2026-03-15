@@ -3,72 +3,57 @@
 const PRODUCTS = [
   {
     id: 1,
-    name: "Financial Freedom Blueprint",
-    originalPrice: 99, price: 49, edition: "Gold Edition",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuD7Q3JX1W98ibjLfG7zgYua0LftaBJnne38Uwz5LvchTBu5ny1dlEDPVfVib30GiiXMZl2aVQRq4rCky6ZoePPs-JrR1mvLqLtmNhslkUNk_1g_mR0hZzJp4IwzqSi4QZee8O5OKLI4MNLdwZMljyns6q-y7G14UpLo-X1159Re5moZl9Ryl6Q5fCdZG1mp0gbSB_2l8OHxEMR2Hp-BfhsnFqKN-6zEKwv3e3m0T3wq5JsrBr-BHuPWwi5nCgSueLI7v4Lp2vE2_so",
+    name: "Cashflow Secrets",
+    originalPrice: 197,
+    price: 97,
+    edition: "11-Module Digital Course",
+    badge: "⭐ Featured",
+    // Affiliate product — bypasses checkout, goes directly to partner site
+    affiliateUrl: "https://moneyripples.com/cashflow-secrets-affiliate/?aff=AyubFarah67",
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDq3sQhkxEChSweuHF8gM59pH_UGLFlp6_bw6V0j0MmHrTKNbt-o9Vc4_VAbtQ4VNlNdTn-lxRD8qfh3f4oUyfJJdCKCMXlDq1Hu07Ya8cw909FejwFnIWa2jxcufbSr373fhsiKizj4xGpOClbkY4HKLQsuQmHXobMM8bY8Tnwju4uHxWLDUCgKzQuEYoLdCanEsy34tstV8782sD1abTO8JDaO7vVK5soTbmU9xZZOg86JNoGQJ8xsZPZltHXe4CU8OUfRU2DWPk",
     heroImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuDWJv1jPQoGKf9-cMWDMr8xuscN-eyA2V7CLJICU-dA2wJi3q7UTuxkKbHQOZGOQ6UMYFhALCBigCxGs9DMStJu8Lot-_qVmBhfnphzj_V3VTce4plV4feMOlRXX24Nnf-TkBMpdk5DzNRR2F70uWy6K_ub5zvW268AGh32UfKr240O3w4qC74qz6veFdUsvetLFR8Ww3pOUcYFEq3n5k3R_BEjtfFWZ0xH99RFf_5gAIborYGibP6FOCu8U-0ea6ai1a2zIcsTOmA",
-    description: "Master your financial destiny with our curated vault of professional strategies, high-conversion frameworks, and exclusive resources designed for the modern wealth-builder.",
+    description: "Unlock additional money from your current situation — no new job, business, or side hustle required. Chris Miles' proven 11-module system teaches you to optimize your cashflow and build wealth by working RIGHT, not just harder.",
     features: [
-      { icon: "update", title: "Lifetime Updates", desc: "Stay ahead with monthly content refreshes" },
-      { icon: "description", title: "Professional Templates", desc: "Ready-to-use executive layouts" },
-      { icon: "auto_stories", title: "Exclusive Resource Guide", desc: "The exact tools used by top industry leaders" },
-      { icon: "verified_user", title: "Premium Support", desc: "Direct line to our expert strategy team" }
+      { icon: "play_circle", title: "11 Comprehensive Modules", desc: "Mindset, tracking, debt, passive income & more" },
+      { icon: "calculate", title: "Cashflow Optimizer Spreadsheet", desc: "Track & optimize your monthly cashflow instantly" },
+      { icon: "verified_user", title: "60-Day Money-Back Guarantee", desc: "100% risk-free — full refund if unsatisfied" },
+      { icon: "person", title: "Taught by Chris Miles", desc: "Featured on CNN Money, US News & Bankrate.com" }
     ]
   },
   {
     id: 2,
-    name: "Wealth Accelerator Course",
-    originalPrice: 249, price: 129, edition: "Pro Edition",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBp6yiUT8Q9h-2lfgo4pg7G8XWqktsZw5S7hOMVelvOM3SE3VZg7l8HMVdapk422nSc8BwQSZWGYHkkUbsKXgRRGv3wxPJACleYy8g6wvCjLjfWWYd-CR6evXapDbZOy7oJit9InCLqQBp6ghAK3x7fKQAnybiEEhg4Nf4Zht821gOrKCTojXnc4p4N5frHO_HtoBxpNLniWTaovmQD46FD3WOkFbMYdZDtQfCLnquZtORgBCoXlDE5WklA24S3uhJYz5Pm7gwW5Sg",
+    name: "Personal Finance Tracker",
+    originalPrice: null,
+    price: null,
+    edition: "Digital Tool",
+    badge: "🔜 Coming Soon",
+    comingSoon: true,
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuB_-QDuyckMHzM_k9zNI3bJbnm2HZXwDFEayAXvl4dSXEWS36I1dAB2L18Yg3Vu1mjEVCHNPadvjk2YsCs3Qp3E8HD0USyPrEQ4MWHTUtm_2r-aHOKa7IPtT93l4dE5sClJ-l8aQaZiaw6xDBVhZhOufnZuatf2-o7ofvACk8Z-ZV6Xg2dpX_2OapVAiUOoSYT-GgKIZBZV4BAV0pocwqJBV0vme0Q5uVwnatt8KVI1mhvt41GOB3K99yLLs_kPmfXE2qYPPRYXBGI",
     heroImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuDWJv1jPQoGKf9-cMWDMr8xuscN-eyA2V7CLJICU-dA2wJi3q7UTuxkKbHQOZGOQ6UMYFhALCBigCxGs9DMStJu8Lot-_qVmBhfnphzj_V3VTce4plV4feMOlRXX24Nnf-TkBMpdk5DzNRR2F70uWy6K_ub5zvW268AGh32UfKr240O3w4qC74qz6veFdUsvetLFR8Ww3pOUcYFEq3n5k3R_BEjtfFWZ0xH99RFf_5gAIborYGibP6FOCu8U-0ea6ai1a2zIcsTOmA",
-    description: "Accelerate your path to wealth with our comprehensive 12-module course featuring proven strategies from industry leaders and successful entrepreneurs.",
+    description: "A comprehensive personal finance tracking system to manage your income, expenses, savings goals and investments — all in one place. Full details coming soon.",
     features: [
-      { icon: "play_circle", title: "12-Module Video Course", desc: "HD video lessons you can watch anywhere" },
-      { icon: "description", title: "Workbooks & Templates", desc: "Actionable worksheets for each module" },
-      { icon: "groups", title: "Private Community", desc: "Connect with like-minded wealth builders" },
-      { icon: "calendar_month", title: "Monthly Q&A Sessions", desc: "Live coaching with industry experts" }
+      { icon: "account_balance_wallet", title: "Income & Expense Tracking", desc: "Monitor every dollar in and out" },
+      { icon: "savings", title: "Savings Goal Planner", desc: "Set and hit your financial milestones" },
+      { icon: "trending_up", title: "Investment Dashboard", desc: "See your net worth grow over time" },
+      { icon: "notifications", title: "Smart Alerts", desc: "Never miss a bill or overspend again" }
     ]
   },
   {
     id: 3,
-    name: "Passive Income Guide",
-    originalPrice: 75, price: 29, edition: "Digital Edition",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuB_-QDuyckMHzM_k9zNI3bJbnm2HZXwDFEayAXvl4dSXEWS36I1dAB2L18Yg3Vu1mjEVCHNPadvjk2YsCs3Qp3E8HD0USyPrEQ4MWHTUtm_2r-aHOKa7IPtT93l4dE5sClJ-l8aQaZiaw6xDBVhZhOufnZuatf2-o7ofvACk8Z-ZV6Xg2dpX_2OapVAiUOoSYT-GgKIZBZV4BAV0pocwqJBV0vme0Q5uVwnatt8KVI1mhvt41GOB3K99yLLs_kPmfXE2qYPPRYXBGI",
-    heroImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuDWJv1jPQoGKf9-cMWDMr8xuscN-eyA2V7CLJICU-dA2wJi3q7UTuxkKbHQOZGOQ6UMYFhALCBigCxGs9DMStJu8Lot-_qVmBhfnphzj_V3VTce4plV4feMOlRXX24Nnf-TkBMpdk5DzNRR2F70uWy6K_ub5zvW268AGh32UfKr240O3w4qC74qz6veFdUsvetLFR8Ww3pOUcYFEq3n5k3R_BEjtfFWZ0xH99RFf_5gAIborYGibP6FOCu8U-0ea6ai1a2zIcsTOmA",
-    description: "Discover 10+ proven passive income streams and build a portfolio that earns while you sleep. Perfect for beginners and experienced investors alike.",
-    features: [
-      { icon: "account_balance", title: "10+ Income Streams", desc: "Diversified strategies for consistent income" },
-      { icon: "map", title: "Step-by-Step Roadmap", desc: "Clear path from $0 to passive income" },
-      { icon: "build", title: "Tools & Resources", desc: "Curated list of the best tools available" },
-      { icon: "support_agent", title: "Email Support", desc: "Get answers to your questions anytime" }
-    ]
-  },
-  {
-    id: 4,
-    name: "Elite Mastermind Access",
-    originalPrice: 499, price: 299, edition: "Exclusive Edition",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDq3sQhkxEChSweuHF8gM59pH_UGLFlp6_bw6V0j0MmHrTKNbt-o9Vc4_VAbtQ4VNlNdTn-lxRD8qfh3f4oUyfJJdCKCMXlDq1Hu07Ya8cw909FejwFnIWa2jxcufbSr373fhsiKizj4xGpOClbkY4HKLQsuQmHXobMM8bY8Tnwju4uHxWLDUCgKzQuEYoLdCanEsy34tstV8782sD1abTO8JDaO7vVK5soTbmU9xZZOg86JNoGQJ8xsZPZltHXe4CU8OUfRU2DWPk",
-    heroImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuDWJv1jPQoGKf9-cMWDMr8xuscN-eyA2V7CLJICU-dA2wJi3q7UTuxkKbHQOZGOQ6UMYFhALCBigCxGs9DMStJu8Lot-_qVmBhfnphzj_V3VTce4plV4feMOlRXX24Nnf-TkBMpdk5DzNRR2F70uWy6K_ub5zvW268AGh32UfKr240O3w4qC74qz6veFdUsvetLFR8Ww3pOUcYFEq3n5k3R_BEjtfFWZ0xH99RFf_5gAIborYGibP6FOCu8U-0ea6ai1a2zIcsTOmA",
-    description: "Join our exclusive mastermind group for high-achievers. Direct access to top mentors, weekly live coaching, and a private network of successful entrepreneurs.",
-    features: [
-      { icon: "groups", title: "Private Mastermind Group", desc: "Exclusive access for serious wealth builders" },
-      { icon: "live_tv", title: "Weekly Live Coaching", desc: "Real-time sessions with top coaches" },
-      { icon: "person", title: "Direct Mentor Access", desc: "Personalized guidance from industry leaders" },
-      { icon: "star", title: "VIP Resources", desc: "Premium tools and insider information" }
-    ]
-  },
-  {
-    id: 5,
-    name: "Startup Kit v2.0",
-    originalPrice: 120, price: 60, edition: "Business Edition",
+    name: "Small Business Bookkeeping System",
+    originalPrice: null,
+    price: null,
+    edition: "Business Tool",
+    badge: "🔜 Coming Soon",
+    comingSoon: true,
     image: "https://lh3.googleusercontent.com/aida-public/AB6AXuA-LQHnHBbyAZtGO3ZDobbOr6tgXvoeqtjWx5qO38evmPQBs3CRA_ybqbzKW91wytJyt4S38UV3mg4pxz8S8rDMOBwXWtcrukt85Xo7iAiS37dpgMcONbHrUiArKAmpqfZ9MaoLPvEnhlfOjZUFoI3rXfvgY8ezIsnPeVVPnlr2xSutkjXv7cYNdc_wpYPXjszYbwzsX4QA_CKf-qbIrVI6RP_L4EKEFzmfOCsVRje111c84mUZrRM-wjdKsWM4Nzwl0CpcV-y3X-E",
     heroImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuDWJv1jPQoGKf9-cMWDMr8xuscN-eyA2V7CLJICU-dA2wJi3q7UTuxkKbHQOZGOQ6UMYFhALCBigCxGs9DMStJu8Lot-_qVmBhfnphzj_V3VTce4plV4feMOlRXX24Nnf-TkBMpdk5DzNRR2F70uWy6K_ub5zvW268AGh32UfKr240O3w4qC74qz6veFdUsvetLFR8Ww3pOUcYFEq3n5k3R_BEjtfFWZ0xH99RFf_5gAIborYGibP6FOCu8U-0ea6ai1a2zIcsTOmA",
-    description: "Everything you need to launch your business from day one. Business plan templates, financial projections, brand identity guide, and a complete launch checklist.",
+    description: "A complete bookkeeping system built for small business owners. Manage invoices, expenses, payroll, and tax-ready reports without an accountant. Full details coming soon.",
     features: [
-      { icon: "article", title: "Business Plan Template", desc: "Professional, investor-ready template" },
-      { icon: "trending_up", title: "Financial Projections", desc: "Spreadsheet tools for forecasting growth" },
-      { icon: "palette", title: "Brand Identity Guide", desc: "Create a compelling brand from scratch" },
-      { icon: "checklist", title: "Launch Checklist", desc: "50-point checklist to launch confidently" }
+      { icon: "receipt_long", title: "Invoice Management", desc: "Create and send professional invoices" },
+      { icon: "account_balance", title: "Expense Tracking", desc: "Categorize and monitor all business costs" },
+      { icon: "groups", title: "Payroll Ready", desc: "Simplified payroll tracking for small teams" },
+      { icon: "description", title: "Tax-Ready Reports", desc: "Export clean reports for your accountant" }
     ]
   }
 ];
