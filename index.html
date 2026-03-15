@@ -35,22 +35,21 @@
 </header>
 
 <main class="flex flex-col items-center w-full max-w-[960px] mx-auto px-4 lg:px-0">
-  <!-- Profile / Brand -->
-  <div class="flex flex-col items-center mt-10 mb-8 z-10">
-    <div id="brand-avatar" class="w-36 h-36 rounded-full border-4 border-gold/30 bg-center bg-cover shadow-2xl overflow-hidden"
-      style="background-image: url('/images/logo.png')">
-    </div>
-    <h1 class="mt-4 text-2xl font-bold tracking-[0.1em] text-gold uppercase">AF WEALTH MINDSET</h1>
-    <p class="text-ivory/50 text-sm mt-1">Financial Freedom Through Smart Decisions</p>
-    <!-- Social Links — replace href="#" with your actual URLs -->
-    <div class="flex items-center justify-center gap-8 mt-6">
-      <a class="text-gold hover:text-signature-teal transition-colors" href="#" title="TikTok"><span class="material-symbols-outlined text-2xl">tiktok</span></a>
-      <a class="text-gold hover:text-signature-teal transition-colors" href="#" title="YouTube"><span class="material-symbols-outlined text-2xl">play_circle</span></a>
-      <a class="text-gold hover:text-signature-teal transition-colors" href="#" title="Instagram"><span class="material-symbols-outlined text-2xl">photo_camera</span></a>
-      <a class="text-gold hover:text-signature-teal transition-colors" href="#" title="Facebook"><span class="material-symbols-outlined text-2xl">face_6</span></a>
-      <a class="text-gold hover:text-signature-teal transition-colors" href="#" title="X / Twitter"><span class="material-symbols-outlined text-2xl">close</span></a>
+  <!-- Hero Banner -->
+  <div class="relative w-full h-56 lg:h-72 rounded-2xl overflow-hidden mb-4 mt-4 border border-gold/10"
+    style="background-image: url('/images/product1.jpg'); background-size: cover; background-position: center;">
+    <div class="absolute inset-0 bg-gradient-to-b from-midnight/60 via-midnight/40 to-midnight/90"></div>
+    <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 z-10">
+      <div class="w-28 h-28 lg:w-36 lg:h-36 rounded-full border-4 border-gold/50 bg-center bg-cover shadow-2xl overflow-hidden"
+        style="background-image: url('/images/logo.png')">
+      </div>
+      <h1 class="text-2xl lg:text-3xl font-bold tracking-[0.1em] text-gold uppercase drop-shadow-lg">AF WEALTH MINDSET</h1>
+      <p class="text-ivory/70 text-sm drop-shadow">Financial Freedom Through Smart Decisions</p>
     </div>
   </div>
+
+  <!-- Social Links -->
+  <div id="index-social-links" class="flex items-center justify-center gap-8 mt-4 mb-2"></div>
 
   <!-- Collection Title -->
   <div class="w-full py-8 text-center border-t border-gold/10">
@@ -76,6 +75,7 @@
 
 <footer class="w-full bg-midnight py-12 border-t border-gold/10">
   <div class="max-w-[960px] mx-auto flex flex-col items-center gap-6">
+    <div id="index-footer-social" class="flex flex-col items-center gap-4"></div>
     <p class="text-ivory/30 text-xs tracking-widest uppercase">© 2024 AF Wealth Mindset. All Rights Reserved.</p>
   </div>
 </footer>
@@ -84,6 +84,15 @@
 <script src="/js/app.js"></script>
 <script>
   initHeader();
+  renderSocialFooter('index-footer-social');
+
+  // Populate hero social icons (no label)
+  const heroSocial = document.getElementById('index-social-links');
+  if (heroSocial) {
+    SOCIAL_LINKS.forEach(s => {
+      heroSocial.innerHTML += `<a class="text-gold hover:text-signature-teal transition-colors" href="${s.url}" target="_blank" rel="noopener" title="${s.title}"><span class="material-symbols-outlined text-2xl">${s.icon}</span></a>`;
+    });
+  }
 
   const list = document.getElementById('product-list');
 
