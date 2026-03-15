@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sign Up / Login | AF Wealth Mindset</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: { extend: { colors: { "midnight": "#0B1220", "ivory": "#F6F1E7", "gold": "#D7B46A", "signature-teal": "#1FE6D1", "background-dark": "#0B1220" }, fontFamily: { "display": ["Manrope", "sans-serif"] }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" } } }
+  }
+</script>
+</head>
+<body class="dark:bg-background-dark font-display text-ivory antialiased min-h-screen flex flex-col">
+
+<!-- Header -->
+<header class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 bg-midnight/80 backdrop-blur-md border-b border-gold/10">
+  <button onclick="window.location.href='/'" class="flex items-center gap-2 text-ivory/60 hover:text-gold transition-colors text-sm">
+    <span class="material-symbols-outlined text-sm">arrow_back_ios</span> Back
+  </button>
+  <span class="text-gold font-bold tracking-widest uppercase text-sm">AF Wealth Mindset</span>
+  <div class="w-16"></div>
+</header>
+
+<main class="flex-1 flex items-center justify-center px-4 py-12">
+  <div class="w-full max-w-md">
+    <!-- Logo -->
+    <div class="text-center mb-8">
+      <h1 class="text-2xl font-bold tracking-[0.1em] text-gold uppercase">AF Wealth Mindset</h1>
+      <p class="text-ivory/50 text-sm mt-2">Your premium digital collection awaits</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="flex bg-midnight border border-gold/20 rounded-xl p-1 mb-8">
+      <button id="tab-signup" onclick="switchTab('signup')" class="flex-1 py-2.5 rounded-lg font-bold text-sm transition-all bg-gold text-midnight">Create Account</button>
+      <button id="tab-login" onclick="switchTab('login')" class="flex-1 py-2.5 rounded-lg font-bold text-sm transition-all text-ivory/60">Log In</button>
+    </div>
+
+    <!-- Error message -->
+    <div id="auth-error" class="hidden mb-4 p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm"></div>
+
+    <!-- Sign Up Form -->
+    <form id="signup-form" onsubmit="handleSignup(event)">
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-[0.1em] text-gold/60 mb-2">Full Name</label>
+          <input id="reg-name" type="text" placeholder="Your full name" required
+            class="w-full bg-midnight border border-gold/20 rounded-lg px-4 py-3 text-ivory placeholder:text-ivory/20 focus:border-signature-teal outline-none transition-all"/>
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-[0.1em] text-gold/60 mb-2">Email Address</label>
+          <input id="reg-email" type="email" placeholder="your@email.com" required
+            class="w-full bg-midnight border border-gold/20 rounded-lg px-4 py-3 text-ivory placeholder:text-ivory/20 focus:border-signature-teal outline-none transition-all"/>
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-[0.1em] text-gold/60 mb-2">Password</label>
+          <input id="reg-password" type="password" placeholder="Create a password" required minlength="6"
+            class="w-full bg-midnight border border-gold/20 rounded-lg px-4 py-3 text-ivory placeholder:text-ivory/20 focus:border-signature-teal outline-none transition-all"/>
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-[0.1em] text-gold/60 mb-2">Confirm Password</label>
+          <input id="reg-confirm" type="password" placeholder="Confirm your password" required minlength="6"
+            class="w-full bg-midnight border border-gold/20 rounded-lg px-4 py-3 text-ivory placeholder:text-ivory/20 focus:border-signature-teal outline-none transition-all"/>
+        </div>
+        <button type="submit" class="w-full py-4 bg-signature-teal hover:brightness-110 text-midnight font-bold rounded-xl transition-all mt-2">
+          Create Account
+        </button>
+      </div>
+      <p class="text-center text-ivory/40 text-xs mt-4">
+        Already have an account? <button type="button" onclick="switchTab('login')" class="text-gold underline">Log in</button>
+      </p>
+    </form>
+
+    <!-- Login Form -->
+    <form id="login-form" onsubmit="handleLogin(event)" class="hidden">
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-[0.1em] text-gold/60 mb-2">Email Address</label>
+          <input id="login-email" type="email" placeholder="your@email.com" required
+            class="w-full bg-midnight border border-gold/20 rounded-lg px-4 py-3 text-ivory placeholder:text-ivory/20 focus:border-signature-teal outline-none transition-all"/>
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-[0.1em] text-gold/60 mb-2">Password</label>
+          <input id="login-password" type="password" placeholder="Your password" required
+            class="w-full bg-midnight border border-gold/20 rounded-lg px-4 py-3 text-ivory placeholder:text-ivory/20 focus:border-signature-teal outline-none transition-all"/>
+        </div>
+        <button type="submit" class="w-full py-4 bg-signature-teal hover:brightness-110 text-midnight font-bold rounded-xl transition-all mt-2">
+          Log In
+        </button>
+      </div>
+      <p class="text-center text-ivory/40 text-xs mt-4">
+        Don't have an account? <button type="button" onclick="switchTab('signup')" class="text-gold underline">Create one</button>
+      </p>
+    </form>
+  </div>
+</main>
+
+<script src="/js/app.js"></script>
+<script>
+  // Redirect if already logged in
+  if (isLoggedIn()) window.location.href = '/profile.html';
+
+  const redirect = new URLSearchParams(window.location.search).get('redirect') || '/profile.html';
+
+  function switchTab(tab) {
+    document.getElementById('auth-error').classList.add('hidden');
+    if (tab === 'signup') {
+      document.getElementById('signup-form').classList.remove('hidden');
+      document.getElementById('login-form').classList.add('hidden');
+      document.getElementById('tab-signup').className = 'flex-1 py-2.5 rounded-lg font-bold text-sm transition-all bg-gold text-midnight';
+      document.getElementById('tab-login').className = 'flex-1 py-2.5 rounded-lg font-bold text-sm transition-all text-ivory/60';
+    } else {
+      document.getElementById('login-form').classList.remove('hidden');
+      document.getElementById('signup-form').classList.add('hidden');
+      document.getElementById('tab-login').className = 'flex-1 py-2.5 rounded-lg font-bold text-sm transition-all bg-gold text-midnight';
+      document.getElementById('tab-signup').className = 'flex-1 py-2.5 rounded-lg font-bold text-sm transition-all text-ivory/60';
+    }
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('auth-error');
+    el.textContent = msg;
+    el.classList.remove('hidden');
+  }
+
+  function handleSignup(e) {
+    e.preventDefault();
+    const name = document.getElementById('reg-name').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const password = document.getElementById('reg-password').value;
+    const confirm = document.getElementById('reg-confirm').value;
+    if (password !== confirm) return showError('Passwords do not match.');
+    if (password.length < 6) return showError('Password must be at least 6 characters.');
+    const result = register(name, email, password);
+    if (result.error) return showError(result.error);
+    window.location.href = redirect;
+  }
+
+  function handleLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    const result = login(email, password);
+    if (result.error) return showError(result.error);
+    window.location.href = redirect;
+  }
+</script>
+</body>
+</html>
