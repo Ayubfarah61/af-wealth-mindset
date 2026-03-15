@@ -132,11 +132,11 @@
           <span class="material-symbols-outlined text-sm">info</span> Bank Transfer Instructions
         </h4>
         <div class="space-y-3 text-sm">
-          <div class="flex justify-between"><span class="text-ivory/50">Bank Name</span><span class="text-ivory font-medium">YOUR BANK NAME</span></div>
-          <div class="flex justify-between"><span class="text-ivory/50">Account Name</span><span class="text-ivory font-medium">AF Wealth Mindset</span></div>
-          <div class="flex justify-between"><span class="text-ivory/50">Account Number</span><span class="text-ivory font-medium">XXXX-XXXX-XXXX</span></div>
-          <div class="flex justify-between"><span class="text-ivory/50">Routing Number</span><span class="text-ivory font-medium">XXXXXXXXX</span></div>
-          <div class="flex justify-between"><span class="text-ivory/50">SWIFT/BIC</span><span class="text-ivory font-medium">XXXXXXXXXX</span></div>
+          <div class="flex justify-between"><span class="text-ivory/50">Bank Name</span><span id="bank-name" class="text-ivory font-medium"></span></div>
+          <div class="flex justify-between"><span class="text-ivory/50">Account Name</span><span id="bank-acct-name" class="text-ivory font-medium"></span></div>
+          <div class="flex justify-between"><span class="text-ivory/50">Account Number</span><span id="bank-acct-num" class="text-ivory font-medium font-mono"></span></div>
+          <div class="flex justify-between"><span class="text-ivory/50">Sort Code</span><span id="bank-sort" class="text-ivory font-medium font-mono"></span></div>
+          <div class="flex justify-between"><span class="text-ivory/50">SWIFT/BIC</span><span id="bank-swift" class="text-ivory font-medium font-mono"></span></div>
           <hr class="border-gold/10"/>
           <div class="flex justify-between"><span class="text-ivory/50">Reference</span><span id="bank-ref" class="text-signature-teal font-mono font-bold"></span></div>
         </div>
@@ -162,13 +162,7 @@
   <footer class="w-full bg-midnight py-12 border-t border-gold/10 mt-4">
     <div class="flex flex-col items-center gap-6">
       <span class="text-signature-teal text-xs font-bold tracking-[0.2em] uppercase">Follow Us</span>
-      <div class="flex justify-center gap-8">
-        <a class="text-gold hover:text-signature-teal transition-colors" href="#"><span class="material-symbols-outlined text-2xl">tiktok</span></a>
-        <a class="text-gold hover:text-signature-teal transition-colors" href="#"><span class="material-symbols-outlined text-2xl">play_circle</span></a>
-        <a class="text-gold hover:text-signature-teal transition-colors" href="#"><span class="material-symbols-outlined text-2xl">photo_camera</span></a>
-        <a class="text-gold hover:text-signature-teal transition-colors" href="#"><span class="material-symbols-outlined text-2xl">facebook</span></a>
-        <a class="text-gold hover:text-signature-teal transition-colors" href="#"><span class="material-symbols-outlined text-2xl">close</span></a>
-      </div>
+      <div id="checkout-social-footer" class="flex justify-center gap-8"></div>
       <p class="text-ivory/30 text-xs tracking-widest uppercase">© 2024 AF Wealth Mindset. All Rights Reserved.</p>
       <p class="text-[10px] text-ivory/20">By completing your purchase, you agree to our <a class="underline" href="#">Terms</a> and <a class="underline" href="#">Privacy</a>.</p>
     </div>
@@ -184,6 +178,14 @@
   // =========================
 
   initHeader();
+  renderSocialFooter('checkout-social-footer');
+
+  // Populate bank details from shared BANK_DETAILS object
+  document.getElementById('bank-name').textContent     = BANK_DETAILS.bankName;
+  document.getElementById('bank-acct-name').textContent = BANK_DETAILS.accountName;
+  document.getElementById('bank-acct-num').textContent  = BANK_DETAILS.accountNumber;
+  document.getElementById('bank-sort').textContent      = BANK_DETAILS.sortCode;
+  document.getElementById('bank-swift').textContent     = BANK_DETAILS.swift;
 
   const product = getProductFromURL();
   const user = getCurrentUser();
