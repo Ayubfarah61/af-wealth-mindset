@@ -26,7 +26,6 @@
   </div>
   <nav class="flex items-center gap-10">
     <a id="nav-auth-link" href="/signup.html" class="text-ivory hover:text-gold transition-colors text-sm font-medium tracking-wide">Sign Up</a>
-    <a href="/#about" class="text-ivory hover:text-gold transition-colors text-sm font-medium tracking-wide">About</a>
   </nav>
   <div class="flex flex-1 justify-end gap-4">
     <button onclick="window.location.href='/orders.html'" class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gold/10 text-gold transition-all">
@@ -35,10 +34,11 @@
   </div>
 </header>
 
-<main class="flex-1 w-full max-w-[640px] mx-auto px-6 py-12">
+<main class="flex-1 w-full max-w-[640px] mx-auto px-6 py-8">
+
   <!-- Hero Image -->
-  <div class="w-full mt-6 mb-8">
-    <div id="hero-img" class="w-full h-48 lg:h-64 rounded-xl overflow-hidden bg-center bg-cover border border-gold/10"></div>
+  <div class="w-full mt-4 mb-8">
+    <img id="hero-img" src="" alt="" class="w-full h-48 lg:h-64 rounded-xl object-cover border border-gold/10"/>
   </div>
 
   <!-- Badge -->
@@ -47,37 +47,37 @@
   </div>
 
   <!-- Title & Description -->
-  <div class="text-center mb-10">
-    <h1 id="product-title" class="text-4xl font-extrabold text-gold uppercase tracking-[0.1em] mb-4"></h1>
-    <p id="product-desc" class="text-lg text-ivory/70 leading-relaxed max-w-xl mx-auto"></p>
+  <div class="text-center mb-8">
+    <h1 id="product-title" class="text-3xl font-extrabold text-gold uppercase tracking-wide mb-4"></h1>
+    <p id="product-desc" class="text-base text-ivory/70 leading-relaxed max-w-xl mx-auto"></p>
   </div>
 
-  <!-- Price display (non-coming-soon) -->
-  <div id="price-wrap" class="text-center mb-4 hidden">
+  <!-- Price -->
+  <div id="price-wrap" class="text-center mb-6 hidden">
     <span id="original-price" class="text-ivory/40 line-through text-lg mr-3"></span>
     <span id="sale-price" class="text-gold font-bold text-3xl"></span>
   </div>
 
-  <!-- CTA Button -->
-  <div id="cta-wrap" class="mb-12">
-    <!-- Shown dynamically based on product type -->
+  <!-- CTA -->
+  <div id="cta-wrap" class="mb-10"></div>
+
+  <!-- Affiliate notice -->
+  <div id="affiliate-notice" class="hidden mb-8 p-4 bg-midnight border border-gold/10 rounded-xl" style="display:none;">
+    <div class="flex items-start gap-3">
+      <span class="material-symbols-outlined text-gold flex-shrink-0 mt-0.5">info</span>
+      <p class="text-ivory/50 text-xs leading-relaxed">
+        This is an affiliate product. Clicking "Get Access" will take you to our trusted partner's website to complete your purchase securely. We may earn a commission at no extra cost to you.
+      </p>
+    </div>
   </div>
 
-  <!-- Affiliate trust notice -->
-  <div id="affiliate-notice" class="hidden mb-8 p-4 bg-midnight border border-gold/10 rounded-xl flex items-start gap-3">
-    <span class="material-symbols-outlined text-gold flex-shrink-0 mt-0.5">info</span>
-    <p class="text-ivory/50 text-xs leading-relaxed">
-      This is an affiliate product. Clicking "Get Access" will take you to our trusted partner's website to complete your purchase securely. We may earn a commission at no extra cost to you.
-    </p>
-  </div>
-
-  <!-- What's Included -->
+  <!-- Features -->
   <div class="mb-12">
     <h3 class="text-center text-gold font-bold uppercase tracking-widest text-sm mb-6">What's Included</h3>
     <div id="features-list" class="space-y-4"></div>
   </div>
 
-  <!-- Feature Blocks -->
+  <!-- Instant / Lifetime access blocks -->
   <div id="feature-blocks" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-16">
     <div class="p-6 text-center rounded-2xl bg-midnight border border-gold/10">
       <span class="material-symbols-outlined text-gold text-4xl mb-3">bolt</span>
@@ -92,9 +92,15 @@
   </div>
 
   <!-- Footer -->
-  <footer class="w-full bg-midnight py-12 border-t border-gold/10 mt-12 -mx-6 px-6">
+  <footer class="w-full bg-midnight py-12 border-t border-gold/10 mt-4 -mx-6 px-6">
     <div class="flex flex-col items-center gap-6">
-      <div id="product-social-footer" class="flex flex-col items-center gap-4"></div>
+      <span style="color:#1FE6D1;font-size:0.75rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;">Follow Us</span>
+      <div style="display:flex;gap:32px;">
+        <a href="https://www.tiktok.com/@afwealthsystems" target="_blank" rel="noopener" style="color:#D7B46A;"><span class="material-symbols-outlined" style="font-size:24px;">tiktok</span></a>
+        <a href="https://www.instagram.com/afwealthmindset/" target="_blank" rel="noopener" style="color:#D7B46A;"><span class="material-symbols-outlined" style="font-size:24px;">photo_camera</span></a>
+        <a href="https://www.facebook.com/AFWealthMidnset" target="_blank" rel="noopener" style="color:#D7B46A;"><span class="material-symbols-outlined" style="font-size:24px;">face_6</span></a>
+        <a href="https://x.com/AFWealth67" target="_blank" rel="noopener" style="color:#D7B46A;"><span class="material-symbols-outlined" style="font-size:24px;">close</span></a>
+      </div>
       <p class="text-ivory/30 text-xs tracking-widest uppercase">© 2024 AF Wealth Mindset. All Rights Reserved.</p>
     </div>
   </footer>
@@ -103,53 +109,66 @@
 
 <script src="/js/app.js"></script>
 <script>
-  initHeader();
-  renderSocialFooter('product-social-footer');
-  const product = getProductFromURL();
+if (typeof initHeader === 'function') initHeader();
 
+var product = null;
+if (typeof getProductFromURL === 'function') {
+  product = getProductFromURL();
+}
+
+if (!product) {
+  document.getElementById('product-title').textContent = 'Product not found';
+} else {
   document.title = product.name + ' | AF Wealth Mindset';
-  document.getElementById('hero-img').style.backgroundImage = `url('${product.heroImage}')`;
+
+  var heroImg = document.getElementById('hero-img');
+  heroImg.src = product.heroImage;
+  heroImg.alt = product.name;
+
   document.getElementById('product-title').textContent = product.name;
   document.getElementById('product-desc').textContent = product.description;
 
-  // Badge
   if (product.badge) {
     document.getElementById('product-badge').textContent = product.badge;
     document.getElementById('badge-wrap').classList.remove('hidden');
   }
 
-  // CTA — three cases: affiliate, coming soon, normal checkout
-  const ctaWrap = document.getElementById('cta-wrap');
+  var ctaWrap = document.getElementById('cta-wrap');
 
   if (product.affiliateUrl) {
-    // AFFILIATE: show price + buy button that goes to external partner site
     document.getElementById('price-wrap').classList.remove('hidden');
-    document.getElementById('original-price').textContent = '$' + product.originalPrice + '.00';
-    document.getElementById('sale-price').textContent = '$' + product.price + '.00';
+    document.getElementById('original-price').textContent = '$' + product.originalPrice;
+    document.getElementById('sale-price').textContent = '$' + product.price;
+    document.getElementById('affiliate-notice').style.display = 'block';
     document.getElementById('affiliate-notice').classList.remove('hidden');
-    ctaWrap.innerHTML = `
-      <a href="${product.affiliateUrl}" target="_blank" rel="noopener"
-        class="w-full py-5 bg-signature-teal hover:brightness-110 text-midnight rounded-xl font-bold text-lg shadow-lg shadow-signature-teal/20 transition-all flex items-center justify-center gap-2">
-        <span class="material-symbols-outlined">open_in_new</span>
-        Get Access Now — $${product.price}
-      </a>
-      <p class="text-center text-ivory/30 text-xs mt-3">You'll be redirected to our partner's secure checkout</p>`;
+
+    var affBtn = document.createElement('a');
+    affBtn.href = product.affiliateUrl;
+    affBtn.target = '_blank';
+    affBtn.rel = 'noopener';
+    affBtn.className = 'w-full py-5 bg-signature-teal hover:brightness-110 text-midnight rounded-xl font-bold text-lg shadow-lg transition-all flex items-center justify-center gap-2';
+    affBtn.innerHTML = '<span class="material-symbols-outlined">open_in_new</span> Get Access Now — $' + product.price;
+    ctaWrap.appendChild(affBtn);
+
+    var affNote = document.createElement('p');
+    affNote.className = 'text-center text-ivory/30 text-xs mt-3';
+    affNote.textContent = "You'll be redirected to our partner's secure checkout";
+    ctaWrap.appendChild(affNote);
 
   } else if (product.comingSoon) {
-    // COMING SOON: notify form
-    document.getElementById('feature-blocks').classList.add('opacity-50');
-    ctaWrap.innerHTML = `
-      <div class="bg-midnight border border-gold/20 rounded-xl p-6 text-center">
-        <span class="material-symbols-outlined text-gold text-4xl mb-3 block">notifications</span>
-        <h3 class="text-gold font-bold text-lg mb-1">Coming Soon</h3>
-        <p class="text-ivory/50 text-sm mb-4">This product is launching soon. Enter your email to be notified first.</p>
-        <form id="notify-form" class="flex flex-col sm:flex-row gap-3">
-          <input id="notify-email" type="email" placeholder="your@email.com" required
-            class="flex-grow bg-midnight/80 border border-gold/20 rounded-lg px-4 py-3 text-ivory placeholder:text-ivory/20 focus:border-signature-teal outline-none transition-all"/>
-          <button type="submit" class="bg-gold hover:bg-gold/80 text-midnight font-bold px-6 py-3 rounded-lg transition-all">Notify Me</button>
-        </form>
-        <p id="notify-msg" class="hidden text-signature-teal text-sm mt-3">You're on the list! We'll notify you when it launches.</p>
-      </div>`;
+    document.getElementById('feature-blocks').style.opacity = '0.5';
+
+    ctaWrap.innerHTML = '<div class="bg-midnight border border-gold/20 rounded-xl p-6 text-center">'
+      + '<span class="material-symbols-outlined text-gold text-4xl mb-3 block">notifications</span>'
+      + '<h3 class="text-gold font-bold text-lg mb-1">Coming Soon</h3>'
+      + '<p class="text-ivory/50 text-sm mb-4">This product is launching soon. Enter your email to be notified first.</p>'
+      + '<form id="notify-form" class="flex flex-col sm:flex-row gap-3">'
+      + '<input id="notify-email" type="email" placeholder="your@email.com" required class="flex-grow bg-midnight/80 border border-gold/20 rounded-lg px-4 py-3 text-ivory placeholder:text-ivory/20 focus:border-signature-teal outline-none transition-all"/>'
+      + '<button type="submit" class="bg-gold hover:bg-gold/80 text-midnight font-bold px-6 py-3 rounded-lg transition-all">Notify Me</button>'
+      + '</form>'
+      + '<p id="notify-msg" class="hidden text-signature-teal text-sm mt-3">You are on the list! We will notify you when it launches.</p>'
+      + '</div>';
+
     document.getElementById('notify-form').addEventListener('submit', function(e) {
       e.preventDefault();
       document.getElementById('notify-msg').classList.remove('hidden');
@@ -157,32 +176,32 @@
     });
 
   } else {
-    // NORMAL: show price + go to checkout
     document.getElementById('price-wrap').classList.remove('hidden');
-    document.getElementById('original-price').textContent = '$' + product.originalPrice + '.00';
-    document.getElementById('sale-price').textContent = '$' + product.price + '.00';
-    ctaWrap.innerHTML = `
-      <button onclick="window.location.href='/checkout.html?id=${product.id}'"
-        class="w-full py-5 bg-signature-teal hover:brightness-110 text-midnight rounded-xl font-bold text-lg shadow-lg shadow-signature-teal/20 transition-all flex items-center justify-center gap-2">
-        <span class="material-symbols-outlined">download</span>
-        Get Access Now — $${product.price}
-      </button>`;
+    document.getElementById('original-price').textContent = '$' + product.originalPrice;
+    document.getElementById('sale-price').textContent = '$' + product.price;
+
+    var buyBtn = document.createElement('button');
+    buyBtn.onclick = function() { window.location.href = '/checkout.html?id=' + product.id; };
+    buyBtn.className = 'w-full py-5 bg-signature-teal hover:brightness-110 text-midnight rounded-xl font-bold text-lg shadow-lg transition-all flex items-center justify-center gap-2';
+    buyBtn.innerHTML = '<span class="material-symbols-outlined">download</span> Get Access Now — $' + product.price;
+    ctaWrap.appendChild(buyBtn);
   }
 
-  // Features
-  const featuresList = document.getElementById('features-list');
-  product.features.forEach(f => {
-    featuresList.innerHTML += `
-    <div class="flex items-center gap-4 p-4 rounded-xl border border-gold/10 bg-midnight">
-      <div class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center text-gold flex-shrink-0">
-        <span class="material-symbols-outlined">${f.icon}</span>
-      </div>
-      <div class="flex-1">
-        <h4 class="font-bold text-ivory">${f.title}</h4>
-        <p class="text-sm text-ivory/50">${f.desc}</p>
-      </div>
-    </div>`;
-  });
+  var featuresList = document.getElementById('features-list');
+  for (var i = 0; i < product.features.length; i++) {
+    var f = product.features[i];
+    var div = document.createElement('div');
+    div.className = 'flex items-center gap-4 p-4 rounded-xl border border-gold/10 bg-midnight';
+    div.innerHTML = '<div class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center text-gold flex-shrink-0">'
+      + '<span class="material-symbols-outlined">' + f.icon + '</span>'
+      + '</div>'
+      + '<div class="flex-1">'
+      + '<h4 class="font-bold text-ivory">' + f.title + '</h4>'
+      + '<p class="text-sm text-ivory/50">' + f.desc + '</p>'
+      + '</div>';
+    featuresList.appendChild(div);
+  }
+}
 </script>
 </body>
 </html>
