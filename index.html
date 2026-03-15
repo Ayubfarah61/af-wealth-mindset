@@ -1,131 +1,124 @@
 <!DOCTYPE html>
-
-<html class="dark" lang="en"><head>
+<html class="dark" lang="en">
+<head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AF Wealth Mindset | Premium Digital Collection</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#0a111e", // Midnight Navy approximation
-                        "accent-teal": "#1FE6D1", // Signature Teal
-                        "accent-gold": "#D7B46A", // Champagne Gold
-                        "ivory": "#F6F1E7",
-                        "background-light": "#f6f7f8",
-                        "background-dark": "#0B1220", // The requested Midnight Navy
-                    },
-                    fontFamily: {
-                        "display": ["Manrope", "sans-serif"]
-                    },
-                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
-                },
-            },
-        }
-    </script>
-<style>
-        body {
-            font-family: 'Manrope', sans-serif;
-        }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .custom-card-border {
-            border: 1px solid rgba(215, 180, 106, 0.15); /* Subtle Gold border */
-        }
-    </style>
+  tailwind.config = {
+    darkMode: "class",
+    theme: { extend: { colors: { "midnight": "#0B1220", "ivory": "#F6F1E7", "gold": "#D7B46A", "signature-teal": "#1FE6D1", "background-dark": "#0B1220" }, fontFamily: { "display": ["Manrope", "sans-serif"] }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" } } }
+  }
+</script>
 </head>
-<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-ivory min-h-screen flex flex-col font-display">
-<!-- Header Section -->
-<header class="w-full border-b border-white/10 px-6 py-4">
-<div class="max-w-[1200px] mx-auto flex items-center justify-between">
-<div class="flex-1"></div> <!-- Spacer -->
-<nav class="flex items-center gap-10">
-<a class="text-ivory/80 hover:text-accent-teal text-sm font-medium transition-colors uppercase tracking-widest" href="#">Sign Up</a>
-<a class="text-ivory/80 hover:text-accent-teal text-sm font-medium transition-colors uppercase tracking-widest" href="#">About</a>
-</nav>
-<div class="flex flex-1 justify-end gap-5">
-<button class="text-ivory/80 hover:text-accent-teal transition-colors">
-<span class="material-symbols-outlined">favorite</span>
-</button>
-<button class="text-ivory/80 hover:text-accent-teal transition-colors">
-<span class="material-symbols-outlined">shopping_cart</span>
-</button>
-</div>
-</div>
+<body class="dark:bg-background-dark font-display text-ivory antialiased">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+
+<!-- Header -->
+<header class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 bg-midnight/80 backdrop-blur-md border-b border-gold/10 lg:px-40">
+  <div class="flex-1"></div>
+  <nav class="flex items-center gap-10">
+    <a id="nav-auth-link" href="/signup.html" class="text-ivory hover:text-gold transition-colors text-sm font-medium tracking-wide">Sign Up</a>
+    <a href="#about" class="text-ivory hover:text-gold transition-colors text-sm font-medium tracking-wide">About</a>
+  </nav>
+  <div class="flex flex-1 justify-end gap-4">
+    <button onclick="window.location.href='/profile.html'" class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gold/10 text-gold transition-all">
+      <span class="material-symbols-outlined">favorite</span>
+    </button>
+    <button onclick="window.location.href='/orders.html'" class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gold/10 text-gold transition-all">
+      <span class="material-symbols-outlined">shopping_cart</span>
+    </button>
+  </div>
 </header>
-<!-- Main Content: Link-in-bio Column -->
-<main class="flex-grow flex flex-col items-center px-4 py-12">
-<div class="w-full max-w-md flex flex-col items-center">
-<!-- Profile Section -->
-<div class="flex flex-col items-center mb-10 text-center">
-<div class="w-28 h-28 rounded-full bg-gradient-to-tr from-accent-teal/20 to-accent-gold/20 p-1 mb-4">
-<div class="w-full h-full rounded-full bg-cover bg-center border-2 border-background-dark" data-alt="Minimalist circular user profile avatar placeholder" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD05TqOOol-QW-B4Bz82HCMPW1FhCJu35_Rxi9B1CucyVqd3bRXblwiWor9cuZRkbbxTNIF3gnxoh2DVo-HceuxcL4G3RRUPV8O2bz6gsRvTfs03JeUKW_Q8VB-rQzkgZKS48kUJ6lBJBJi-WtHo3gZaZRZFGWK1-9ajqmS5lAsl4s9L41BO5FxrrZGkhIs4LiMmZg3piDJcoU6y53D_vmg9SKZq2yon3MBRcL5OCj1WYG2_FknBjVL9dwXlCii8CH25nKDlvvA8lk')">
-</div>
-</div>
-<h1 class="text-ivory text-2xl font-bold tracking-tight">Alex Sterling</h1>
-<p class="text-accent-gold text-sm font-medium mt-1">@alex_creative</p>
-</div>
-<!-- Social Icons Section -->
-<!-- Action Cards -->
-<div class="w-full space-y-4">
-<!-- My Orders -->
-<a class="group flex items-center justify-between w-full p-5 bg-white/5 custom-card-border rounded-xl hover:bg-white/10 transition-all duration-300" href="#">
-<div class="flex items-center gap-4">
-<div class="flex items-center justify-center w-10 h-10 rounded-lg bg-accent-gold/10">
-<span class="material-symbols-outlined text-accent-gold">package_2</span>
-</div>
-<span class="text-ivory font-semibold text-lg">My Orders</span>
-</div>
-<span class="material-symbols-outlined text-accent-teal group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
-</a>
-<!-- Account Settings -->
-<a class="group flex items-center justify-between w-full p-5 bg-white/5 custom-card-border rounded-xl hover:bg-white/10 transition-all duration-300" href="#">
-<div class="flex items-center gap-4">
-<div class="flex items-center justify-center w-10 h-10 rounded-lg bg-accent-gold/10">
-<span class="material-symbols-outlined text-accent-gold">settings</span>
-</div>
-<span class="text-ivory font-semibold text-lg">Account Settings</span>
-</div>
-<span class="material-symbols-outlined text-accent-teal group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
-</a>
-</div>
-<!-- Sign Out Button -->
-<div class="w-full mt-16">
-<button class="w-full py-4 rounded-xl border border-white/10 text-ivory/40 hover:text-accent-teal hover:border-accent-teal/50 font-medium transition-all duration-300 tracking-widest uppercase text-xs">
-                    Sign Out
-                </button>
-</div>
-</div>
+
+<main class="flex flex-col items-center w-full max-w-[960px] mx-auto px-4 lg:px-0">
+  <!-- Hero Banner -->
+  <div class="w-full mt-6 px-0 lg:px-4">
+    <div class="w-full h-48 lg:h-64 rounded-xl overflow-hidden bg-center bg-cover border border-gold/10"
+      style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuChG4Yeu6YL28b0wBR1TWhZyeKJVmo_0-fkmxq91J9hnYgxTJ7EpCst8Amfcq1MZ-6phAb1ej0xojdvWBrfwvgIVA8kVr4m0ZJqtR3_9960FPDlAhe6F9PlBrgFZHd6Bn2t21MzCVewVYghSk05z1od4TjTtfY7VL3xWBSgi2itB0esOWMvVE3fSrjcnaunDCKy5Thc8f09AEkay95g1NH3Pbq9LUifxPIXsZf8Ezjj3JCsowo9-G3Zl_ELldtW8ZGJzFnyHVAJb-4')">
+    </div>
+  </div>
+  <!-- Profile -->
+  <div class="flex flex-col items-center -mt-16 mb-8 z-10">
+    <div class="w-32 h-32 rounded-full border-4 border-midnight bg-center bg-cover shadow-2xl overflow-hidden"
+      style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCgNUkWuuokBpqOkh-_CWzUYQMLax2np64cRyj_XbHnNlNd4nj3S5uM_mEn1EidBZN0p_dKgRhAqpk3-M3swq646-lIxKbGmniSU8f-Vs34Qi8QgI0W5ml4MJhSP8Zl_9llce7V_15t0M-XtZAQvKXrfP3htN4rDtFYBzomoLPCSmgJmeqKhEM4KoBMBlN1BC1oaOR7Z_jiPauXjALbkeqehzE9e0j2x-UUejMIqnaEn73LvlRmQZ3MZOhtDk62HAWCMIlSARuuVig')">
+    </div>
+    <h1 class="mt-4 text-2xl font-bold tracking-[0.1em] text-gold uppercase">AF WEALTH MINDSET</h1>
+    <div class="flex items-center justify-center gap-8 mt-6">
+      <a class="text-gold hover:text-signature-teal transition-colors" href="#" title="TikTok"><span class="material-symbols-outlined text-2xl">tiktok</span></a>
+      <a class="text-gold hover:text-signature-teal transition-colors" href="#" title="YouTube"><span class="material-symbols-outlined text-2xl">play_circle</span></a>
+      <a class="text-gold hover:text-signature-teal transition-colors" href="#" title="Instagram"><span class="material-symbols-outlined text-2xl">photo_camera</span></a>
+      <a class="text-gold hover:text-signature-teal transition-colors" href="#" title="Facebook"><span class="material-symbols-outlined text-2xl">face_6</span></a>
+      <a class="text-gold hover:text-signature-teal transition-colors" href="#" title="X"><span class="material-symbols-outlined text-2xl">close</span></a>
+    </div>
+  </div>
+
+  <!-- Collection Title -->
+  <div class="w-full py-8 text-center border-t border-gold/10">
+    <h2 class="text-sm font-bold tracking-[0.25em] text-gold uppercase">Premium Digital Collection</h2>
+  </div>
+
+  <!-- Product List -->
+  <div id="product-list" class="w-full space-y-4 mb-16"></div>
+
+  <!-- Newsletter -->
+  <section class="w-full mb-16 px-4 lg:px-0" id="about">
+    <div class="bg-midnight/40 border border-gold/20 p-8 rounded-2xl flex flex-col items-center text-center">
+      <h3 class="text-2xl font-bold text-gold mb-2">Weekly Discount Receipt</h3>
+      <p class="text-ivory/70 text-sm mb-6 max-w-md">Join our inner circle and receive exclusive offers and financial insights directly to your inbox.</p>
+      <form id="subscribe-form" class="flex flex-col sm:flex-row gap-3 w-full max-w-lg">
+        <input id="sub-email" class="flex-grow bg-midnight border border-gold/30 rounded-lg px-4 py-3 text-ivory placeholder:text-ivory/30 focus:outline-none focus:border-signature-teal transition-all" placeholder="Enter your email" type="email"/>
+        <button class="bg-gold hover:bg-gold/80 text-midnight font-bold px-8 py-3 rounded-lg transition-all" type="submit">Subscribe</button>
+      </form>
+      <p id="sub-msg" class="mt-3 text-signature-teal text-sm hidden">You're subscribed!</p>
+    </div>
+  </section>
 </main>
-<!-- Footer -->
-<footer class="w-full py-8 border-t border-white/5">
-<div class="max-w-[1200px] mx-auto text-center">
-<div class="flex flex-col items-center gap-6">
-<span class="text-accent-teal text-xs font-bold tracking-[0.2em] uppercase">Follow Us</span>
-<div class="flex justify-center gap-8">
-<a class="text-accent-gold hover:text-accent-teal transition-colors" href="#" title="TikTok">
-<span class="material-symbols-outlined text-2xl">tiktok</span>
-</a>
-<a class="text-accent-gold hover:text-accent-teal transition-colors" href="#" title="YouTube">
-<span class="material-symbols-outlined text-2xl">play_circle</span>
-</a>
-<a class="text-accent-gold hover:text-accent-teal transition-colors" href="#" title="Instagram">
-<span class="material-symbols-outlined text-2xl">photo_camera</span>
-</a>
-<a class="text-accent-gold hover:text-accent-teal transition-colors" href="#" title="Facebook">
-<span class="material-symbols-outlined text-2xl">facebook</span>
-</a>
-<a class="text-accent-gold hover:text-accent-teal transition-colors" href="#" title="X">
-<span class="material-symbols-outlined text-2xl">close</span>
-</a>
-</div>
-</div>
-</div>
+
+<footer class="w-full bg-midnight py-12 border-t border-gold/10">
+  <div class="max-w-[960px] mx-auto flex flex-col items-center gap-6">
+    <p class="text-ivory/30 text-xs tracking-widest uppercase mt-4">© 2024 AF Wealth Mindset. All Rights Reserved.</p>
+  </div>
 </footer>
-</body></html>
+</div>
+
+<script src="/js/app.js"></script>
+<script>
+  initHeader();
+
+  // Render products
+  const list = document.getElementById('product-list');
+  PRODUCTS.forEach(p => {
+    list.innerHTML += `
+    <div class="flex items-center justify-between p-4 bg-midnight border border-gold/10 rounded-xl hover:border-gold/30 transition-all group">
+      <div class="flex items-center gap-4">
+        <div class="w-16 h-16 rounded-lg bg-center bg-cover bg-gold/5 flex-shrink-0" style="background-image: url('${p.image}')"></div>
+        <div class="flex flex-col">
+          <span class="text-ivory font-semibold text-lg">${p.name}</span>
+          <div class="flex gap-2 text-sm">
+            <span class="text-ivory/50 line-through">$${p.originalPrice}.00</span>
+            <span class="text-gold font-bold">$${p.price}.00</span>
+          </div>
+        </div>
+      </div>
+      <button onclick="window.location.href='/product.html?id=${p.id}'" class="flex items-center gap-2 bg-signature-teal/10 text-signature-teal px-4 py-2 rounded-lg font-bold text-sm group-hover:bg-signature-teal group-hover:text-midnight transition-all">
+        See More <span class="material-symbols-outlined text-sm">arrow_forward_ios</span>
+      </button>
+    </div>`;
+  });
+
+  // Newsletter form
+  document.getElementById('subscribe-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = document.getElementById('sub-email').value;
+    if (email) {
+      document.getElementById('sub-msg').classList.remove('hidden');
+      document.getElementById('sub-email').value = '';
+    }
+  });
+</script>
+</body>
+</html>
