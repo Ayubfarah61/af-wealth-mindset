@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pricing | AF Wealth Mindset</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: { extend: { colors: { "midnight": "#0B1220", "ivory": "#F6F1E7", "gold": "#D7B46A", "signature-teal": "#1FE6D1", "background-dark": "#0B1220" }, fontFamily: { "display": ["Manrope", "sans-serif"] } } }
+  }
+</script>
+</head>
+<body class="dark:bg-background-dark font-display text-ivory antialiased">
+<div class="relative flex min-h-screen w-full flex-col">
+
+<!-- Header -->
+<header class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 bg-midnight/80 backdrop-blur-md border-b border-gold/10 lg:px-40">
+  <div class="flex-1">
+    <button onclick="history.back()" class="flex items-center gap-2 text-ivory/60 hover:text-gold transition-colors text-sm">
+      <span class="material-symbols-outlined" style="font-size:16px">arrow_back_ios</span> Back
+    </button>
+  </div>
+  <a href="/index.html" class="text-gold font-bold tracking-[0.15em] uppercase text-sm">AF Wealth Mindset</a>
+  <div class="flex-1 flex justify-end">
+    <a href="/index.html" class="text-ivory/60 hover:text-gold text-sm transition-colors">All Products</a>
+  </div>
+</header>
+
+<main class="w-full max-w-[900px] mx-auto px-4 py-16 flex flex-col gap-16">
+
+  <!-- Hero -->
+  <div class="text-center flex flex-col items-center gap-4">
+    <span class="text-xs font-bold tracking-[0.3em] text-signature-teal uppercase">Simple &amp; Transparent</span>
+    <h1 class="text-4xl font-bold text-gold tracking-tight">Pricing</h1>
+    <p class="text-ivory/60 max-w-lg text-sm leading-relaxed">Every product comes with a money-back guarantee. Pay once. Access forever. No subscriptions.</p>
+  </div>
+
+  <!-- Products Available Now -->
+  <div class="flex flex-col gap-6">
+    <h2 class="text-xs font-bold tracking-[0.25em] text-gold/60 uppercase text-center">Available Now</h2>
+
+    <!-- Product 1: Cashflow Secrets -->
+    <div class="relative bg-midnight border border-gold/30 rounded-2xl p-8 flex flex-col gap-6"
+      style="background: radial-gradient(ellipse at 90% 10%, rgba(31,230,209,0.06) 0%, transparent 60%), #0B1220;">
+      <!-- Featured badge -->
+      <div class="absolute -top-3 left-8">
+        <span class="bg-gold text-midnight text-[10px] font-bold tracking-[0.2em] uppercase px-3 py-1 rounded-full">⭐ Featured</span>
+      </div>
+      <div class="flex flex-col sm:flex-row sm:items-start gap-6">
+        <img src="/images/product1.jpg" alt="Cashflow Secrets"
+          class="w-20 h-20 rounded-xl object-cover border border-gold/20 flex-shrink-0"
+          onerror="this.style.background='rgba(215,180,106,0.1)'"/>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold text-ivory">Cashflow Secrets</h3>
+          <p class="text-ivory/50 text-sm mt-1">The Course That Changes Everything</p>
+          <p class="text-ivory/60 text-sm mt-3 leading-relaxed">Stop trading time for money. The step-by-step system from self-made millionaire Chris Miles that takes you from financial stress to freedom — without a new job or extreme sacrifice.</p>
+        </div>
+        <div class="flex flex-col items-end gap-2 flex-shrink-0">
+          <span class="text-ivory/30 line-through text-sm">$400.00</span>
+          <span class="text-4xl font-bold text-gold">$97</span>
+          <span class="text-xs text-ivory/40">one-time payment</span>
+        </div>
+      </div>
+      <!-- Features -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="flex items-center gap-3 text-sm">
+          <span class="material-symbols-outlined text-signature-teal" style="font-size:18px">play_circle</span>
+          <span class="text-ivory/70">11 In-Depth Video Modules</span>
+        </div>
+        <div class="flex items-center gap-3 text-sm">
+          <span class="material-symbols-outlined text-signature-teal" style="font-size:18px">calculate</span>
+          <span class="text-ivory/70">Cashflow Optimizer Spreadsheet (FREE)</span>
+        </div>
+        <div class="flex items-center gap-3 text-sm">
+          <span class="material-symbols-outlined text-signature-teal" style="font-size:18px">all_inclusive</span>
+          <span class="text-ivory/70">Lifetime Access</span>
+        </div>
+        <div class="flex items-center gap-3 text-sm">
+          <span class="material-symbols-outlined text-gold" style="font-size:18px">verified_user</span>
+          <span class="text-ivory/70"><strong class="text-gold">60-Day</strong> Money-Back Guarantee</span>
+        </div>
+      </div>
+      <div class="flex gap-3">
+        <button onclick="window.location.href='/product.html?id=1'"
+          class="flex-1 py-4 bg-gold hover:brightness-110 text-midnight font-bold rounded-xl transition-all text-sm tracking-wide">
+          Get Cashflow Secrets — $97
+        </button>
+        <button onclick="window.location.href='/product.html?id=1'"
+          class="px-5 py-4 border border-gold/30 text-gold hover:bg-gold/10 rounded-xl transition-all text-sm">
+          Learn More
+        </button>
+      </div>
+    </div>
+
+    <!-- Product 2: Money Control Code -->
+    <div class="bg-midnight border border-gold/20 rounded-2xl p-8 flex flex-col gap-6">
+      <div class="absolute -top-3 left-8"></div>
+      <div class="flex flex-col sm:flex-row sm:items-start gap-6">
+        <img src="/images/product2.png" alt="The Money Control Code"
+          class="w-20 h-20 rounded-xl object-cover border border-gold/20 flex-shrink-0"
+          onerror="this.style.background='rgba(215,180,106,0.1)'"/>
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            <h3 class="text-xl font-bold text-ivory">The Money Control Code</h3>
+            <span class="text-[10px] font-bold tracking-widest bg-signature-teal/10 text-signature-teal border border-signature-teal/20 px-2 py-0.5 rounded-full">🔥 Best Value</span>
+          </div>
+          <p class="text-ivory/50 text-sm mt-1">6-Chapter Digital Guide</p>
+          <p class="text-ivory/60 text-sm mt-3 leading-relaxed">The 4-pillar system that runs on autopilot — giving you total authority over every dollar you earn, without relying on willpower.</p>
+        </div>
+        <div class="flex flex-col items-end gap-2 flex-shrink-0">
+          <span class="text-ivory/30 line-through text-sm">$14.99</span>
+          <span class="text-4xl font-bold text-gold">$6.99</span>
+          <span class="text-xs text-ivory/40">one-time payment</span>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="flex items-center gap-3 text-sm">
+          <span class="material-symbols-outlined text-signature-teal" style="font-size:18px">auto_stories</span>
+          <span class="text-ivory/70">6 Power-Packed Chapters</span>
+        </div>
+        <div class="flex items-center gap-3 text-sm">
+          <span class="material-symbols-outlined text-signature-teal" style="font-size:18px">description</span>
+          <span class="text-ivory/70">Personal Financial Rule Sheet</span>
+        </div>
+        <div class="flex items-center gap-3 text-sm">
+          <span class="material-symbols-outlined text-signature-teal" style="font-size:18px">download</span>
+          <span class="text-ivory/70">Instant Digital Download</span>
+        </div>
+        <div class="flex items-center gap-3 text-sm">
+          <span class="material-symbols-outlined text-gold" style="font-size:18px">verified_user</span>
+          <span class="text-ivory/70"><strong class="text-gold">30-Day</strong> Money-Back Guarantee</span>
+        </div>
+      </div>
+      <div class="flex gap-3">
+        <button onclick="window.location.href='/product.html?id=2'"
+          class="flex-1 py-4 bg-signature-teal/10 hover:bg-signature-teal/20 border border-signature-teal/30 text-signature-teal font-bold rounded-xl transition-all text-sm tracking-wide">
+          Get The Money Control Code — $6.99
+        </button>
+        <button onclick="window.location.href='/product.html?id=2'"
+          class="px-5 py-4 border border-gold/20 text-gold/60 hover:bg-gold/5 rounded-xl transition-all text-sm">
+          Learn More
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Coming Soon -->
+  <div class="flex flex-col gap-4">
+    <h2 class="text-xs font-bold tracking-[0.25em] text-gold/40 uppercase text-center">Coming Soon</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="bg-midnight/50 border border-gold/10 rounded-xl p-6 opacity-70">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="material-symbols-outlined text-gold/40">account_balance_wallet</span>
+          <h3 class="font-bold text-ivory/60">Personal Finance Tracker</h3>
+        </div>
+        <p class="text-ivory/30 text-xs leading-relaxed">Track income, expenses, savings goals and investments — all in one place.</p>
+        <span class="mt-4 inline-block text-[10px] font-bold tracking-[0.2em] text-ivory/30 border border-ivory/10 rounded-full px-3 py-1">🔔 Coming Soon</span>
+      </div>
+      <div class="bg-midnight/50 border border-gold/10 rounded-xl p-6 opacity-70">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="material-symbols-outlined text-gold/40">receipt_long</span>
+          <h3 class="font-bold text-ivory/60">Small Business Bookkeeping</h3>
+        </div>
+        <p class="text-ivory/30 text-xs leading-relaxed">Manage invoices, expenses, payroll and tax-ready reports without an accountant.</p>
+        <span class="mt-4 inline-block text-[10px] font-bold tracking-[0.2em] text-ivory/30 border border-ivory/10 rounded-full px-3 py-1">🔔 Coming Soon</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Guarantee strip -->
+  <div class="bg-midnight border border-gold/10 rounded-2xl p-8 flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
+    <span class="material-symbols-outlined text-gold text-5xl flex-shrink-0">verified_user</span>
+    <div>
+      <h3 class="font-bold text-gold text-lg">Risk-Free Guarantee</h3>
+      <p class="text-ivory/60 text-sm mt-1 leading-relaxed">Every purchase is covered by our money-back guarantee. If you're not satisfied, we'll refund you — no questions asked. <a href="/refund.html" class="text-signature-teal hover:underline">Read our full refund policy →</a></p>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="flex flex-col gap-6">
+    <h2 class="text-center text-xs font-bold tracking-[0.25em] text-gold/60 uppercase">Frequently Asked Questions</h2>
+    <div class="flex flex-col gap-3">
+      <details class="bg-midnight border border-gold/10 rounded-xl p-5 group">
+        <summary class="font-bold text-ivory text-sm cursor-pointer list-none flex justify-between items-center">
+          Do I need a PayPal account to pay?
+          <span class="material-symbols-outlined text-gold/40 group-open:rotate-180 transition-transform text-sm">expand_more</span>
+        </summary>
+        <p class="text-ivory/60 text-sm mt-3 leading-relaxed">No. You can pay with any Visa, Mastercard, or Amex card directly on our checkout page — no PayPal account required.</p>
+      </details>
+      <details class="bg-midnight border border-gold/10 rounded-xl p-5 group">
+        <summary class="font-bold text-ivory text-sm cursor-pointer list-none flex justify-between items-center">
+          How do I receive my purchase?
+          <span class="material-symbols-outlined text-gold/40 group-open:rotate-180 transition-transform text-sm">expand_more</span>
+        </summary>
+        <p class="text-ivory/60 text-sm mt-3 leading-relaxed">All products are digital. After payment, your download link is sent immediately to your email address. No account needed — just your email.</p>
+      </details>
+      <details class="bg-midnight border border-gold/10 rounded-xl p-5 group">
+        <summary class="font-bold text-ivory text-sm cursor-pointer list-none flex justify-between items-center">
+          What payment methods do you accept?
+          <span class="material-symbols-outlined text-gold/40 group-open:rotate-180 transition-transform text-sm">expand_more</span>
+        </summary>
+        <p class="text-ivory/60 text-sm mt-3 leading-relaxed">We accept all major credit and debit cards (Visa, Mastercard, Amex), PayPal, Pay Later, Venmo, Google Pay, and Apple Pay.</p>
+      </details>
+      <details class="bg-midnight border border-gold/10 rounded-xl p-5 group">
+        <summary class="font-bold text-ivory text-sm cursor-pointer list-none flex justify-between items-center">
+          What if I'm not satisfied?
+          <span class="material-symbols-outlined text-gold/40 group-open:rotate-180 transition-transform text-sm">expand_more</span>
+        </summary>
+        <p class="text-ivory/60 text-sm mt-3 leading-relaxed">Cashflow Secrets has a 60-day guarantee and The Money Control Code has a 30-day guarantee. Email us at <a href="mailto:sales@afwealthmindset.com" class="text-signature-teal">sales@afwealthmindset.com</a> for a full refund.</p>
+      </details>
+    </div>
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="w-full bg-midnight py-12 border-t border-gold/10 mt-8">
+  <div class="max-w-[900px] mx-auto flex flex-col items-center gap-6">
+    <span style="color:#1FE6D1;font-size:0.75rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;">Follow Us</span>
+    <div style="display:flex;gap:28px;align-items:center;">
+      <a href="https://www.tiktok.com/@afwealthsystems" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-tiktok"></i></a>
+      <a href="https://www.youtube.com/@afwealthmindset" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-youtube"></i></a>
+      <a href="https://www.instagram.com/afwealthmindset/" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://www.facebook.com/AFWealthMidnset" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-facebook"></i></a>
+      <a href="https://x.com/AFWealth67" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-x-twitter"></i></a>
+    </div>
+    <div class="flex gap-6 text-xs text-ivory/30">
+      <a href="/pricing.html" class="hover:text-gold transition-colors">Pricing</a>
+      <a href="/terms.html" class="hover:text-gold transition-colors">Terms</a>
+      <a href="/privacy.html" class="hover:text-gold transition-colors">Privacy</a>
+      <a href="/refund.html" class="hover:text-gold transition-colors">Refunds</a>
+    </div>
+    <p class="text-ivory/30 text-xs tracking-widest uppercase">© 2025 AF Wealth Mindset. All Rights Reserved.</p>
+  </div>
+</footer>
+</div>
+</body>
+</html>
