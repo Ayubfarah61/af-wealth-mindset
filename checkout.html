@@ -325,6 +325,7 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
   async function createOrder() {
     const res = await fetch(`${WORKER_URL}/paypal-api/checkout/orders/create`, {
       method:  'POST',
+      mode:    'cors',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({
         amount:      product.price.toFixed(2),
@@ -332,7 +333,10 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
         currency:    'USD'
       })
     });
-    if (!res.ok) throw new Error('Order creation failed: ' + res.status);
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error('Order creation failed (' + res.status + '): ' + (err.error || res.statusText));
+    }
     const data = await res.json();
     return { orderId: data.id };
   }
@@ -340,9 +344,13 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
   async function captureOrder(orderId) {
     const res = await fetch(`${WORKER_URL}/paypal-api/checkout/orders/${orderId}/capture`, {
       method:  'POST',
+      mode:    'cors',
       headers: { 'Content-Type': 'application/json' }
     });
-    if (!res.ok) throw new Error('Capture failed: ' + res.status);
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error('Capture failed (' + res.status + '): ' + (err.error || res.statusText));
+    }
     return res.json();
   }
 
@@ -471,6 +479,12 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
       document.getElementById('paypal-sdk-error').classList.remove('hidden');
     }
   }
+
+  // Hide loading spinner after 8s max regardless of SDK state
+  setTimeout(() => {
+    const el = document.getElementById('payment-loading');
+    if (el) el.classList.add('hidden');
+  }, 8000);
 
   // Run init once the v6 SDK script is ready
   if (window.paypal && window.paypal.createInstance) {
