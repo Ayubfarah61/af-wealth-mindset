@@ -7,6 +7,10 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<!-- PayPal v6 SDK -->
+<script src="https://www.paypal.com/web-sdk/v6/core"></script>
+<!-- EmailJS for order email notifications -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script id="tailwind-config">
   tailwind.config = {
     darkMode: "class",
@@ -15,6 +19,13 @@
 </script>
 </head>
 <body class="dark:bg-background-dark font-display text-ivory antialiased">
+
+<!-- Loading Overlay -->
+<div id="loading-overlay" class="hidden fixed inset-0 z-[100] flex flex-col items-center justify-center bg-midnight/90 backdrop-blur-sm">
+  <div class="w-12 h-12 rounded-full border-4 border-signature-teal/30 border-t-signature-teal animate-spin mb-4"></div>
+  <p id="loading-msg" class="text-ivory/60 text-sm tracking-widest uppercase">Processing…</p>
+</div>
+
 <div class="relative flex flex-col items-center w-full min-h-screen">
 
 <!-- Header -->
@@ -35,11 +46,11 @@
 </header>
 
 <main class="w-full max-w-[580px] px-4 py-12 flex flex-col gap-8">
+
   <!-- Brand -->
   <div class="flex flex-col items-center text-center gap-4">
     <div class="w-24 h-24 rounded-full border-4 border-midnight bg-center bg-cover shadow-2xl overflow-hidden"
-      style="background-image: url('/images/logo.png')">
-    </div>
+      style="background-image: url('/images/logo.png')"></div>
     <div>
       <h2 class="text-2xl font-bold tracking-[0.1em] text-gold uppercase">Complete Your Purchase</h2>
       <p class="text-ivory/60 text-sm mt-1">Secure checkout for your curated selection</p>
@@ -80,70 +91,102 @@
       <label class="block text-xs font-bold uppercase tracking-[0.1em] text-gold/60 mb-2">Email Address</label>
       <input id="checkout-email" type="email" placeholder="your@email.com"
         class="w-full bg-midnight border border-gold/20 rounded-lg px-4 py-3 text-ivory placeholder:text-ivory/20 focus:border-signature-teal outline-none transition-all"/>
+      <p class="text-xs text-ivory/30 mt-2">Your download link will be sent here after payment. No account required.</p>
     </div>
   </section>
 
   <!-- Payment Method -->
   <section class="bg-midnight border border-gold/10 rounded-xl p-6">
-    <h3 class="text-sm font-bold tracking-[0.2em] text-gold uppercase mb-6 flex items-center gap-2">
+    <h3 class="text-sm font-bold tracking-[0.2em] text-gold uppercase mb-2 flex items-center gap-2">
       <span class="material-symbols-outlined text-gold">account_balance_wallet</span> Payment Method
     </h3>
-    <div class="grid grid-cols-1 gap-3 mb-6">
-      <!-- PayPal -->
-      <label id="opt-paypal" onclick="selectPayment('paypal')" class="relative flex items-center p-4 border-2 border-signature-teal bg-signature-teal/5 rounded-xl cursor-pointer">
-        <span class="material-symbols-outlined mr-3 text-signature-teal">payments</span>
-        <div class="flex-1"><p class="text-sm font-bold text-ivory">PayPal</p><p class="text-xs text-ivory/50">Fast and secure checkout</p></div>
-        <div id="radio-paypal" class="w-5 h-5 rounded-full border-2 border-signature-teal flex items-center justify-center"><div class="w-2.5 h-2.5 rounded-full bg-signature-teal"></div></div>
-      </label>
-      <!-- Credit Card -->
-      <label id="opt-card" onclick="selectPayment('card')" class="relative flex items-center p-4 border border-gold/10 rounded-xl cursor-pointer hover:bg-gold/5 transition-colors">
-        <span class="material-symbols-outlined mr-3 text-gold/40">credit_card</span>
-        <div class="flex-1"><p class="text-sm font-bold text-ivory">Credit / Debit Card</p><p class="text-xs text-ivory/50">Visa, Mastercard, Amex</p></div>
-        <div id="radio-card" class="w-5 h-5 rounded-full border-2 border-gold/20"></div>
-      </label>
-      <!-- Bank Transfer -->
-      <label id="opt-bank" onclick="selectPayment('bank')" class="relative flex items-center p-4 border border-gold/10 rounded-xl cursor-pointer hover:bg-gold/5 transition-colors">
-        <span class="material-symbols-outlined mr-3 text-gold/40">account_balance</span>
-        <div class="flex-1"><p class="text-sm font-bold text-ivory">Bank Transfer</p><p class="text-xs text-ivory/50">Direct wire via ACH/SWIFT</p></div>
-        <div id="radio-bank" class="w-5 h-5 rounded-full border-2 border-gold/20"></div>
-      </label>
-    </div>
+    <p class="text-xs text-ivory/40 mb-6">Available payment methods are shown based on your device and location.</p>
 
-    <!-- PayPal Button Container -->
-    <div id="paypal-section">
-      <div id="paypal-button-container"></div>
-      <p id="paypal-config-warning" class="hidden text-center text-ivory/40 text-xs mt-4 p-4 border border-gold/10 rounded-lg">
-        ⚙️ Add your PayPal Client ID in <code>checkout.html</code> to enable live payments.
+    <!-- ── Digital payments via PayPal v6 ── -->
+    <div id="digital-payment-section" class="space-y-3 mb-6">
+
+      <!-- Loading state -->
+      <div id="payment-loading" class="flex items-center justify-center gap-3 py-6">
+        <div class="w-5 h-5 rounded-full border-2 border-signature-teal/30 border-t-signature-teal animate-spin"></div>
+        <span class="text-ivory/40 text-sm">Loading payment methods…</span>
+      </div>
+
+      <!-- PayPal v6 web components — shown by JS when eligible -->
+      <paypal-button hidden style="display:block;width:100%"></paypal-button>
+      <paypal-pay-later-button hidden style="display:block;width:100%"></paypal-pay-later-button>
+      <paypal-credit-button hidden style="display:block;width:100%"></paypal-credit-button>
+
+      <!-- Venmo (US only) — custom styled button, session launched by JS -->
+      <button id="btn-venmo" hidden
+        class="w-full py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-3 transition-all"
+        style="background:#3D95CE;color:#fff;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.5 2c.9 2.1 1.3 4 1.3 6.1 0 5.4-4.6 12.4-8.3 17.3H4.7L1.5 2.8l7-1.1 1.8 9.8C11.8 8.7 13.4 5 14.6 2z"/></svg>
+        Pay with Venmo
+      </button>
+
+      <!-- Google Pay — custom styled button -->
+      <button id="btn-googlepay" hidden
+        class="w-full py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-3 transition-all"
+        style="background:#fff;color:#000;border:1px solid #dadce0;">
+        <svg width="22" height="22" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Pay with Google Pay
+      </button>
+
+      <!-- Apple Pay — custom styled button -->
+      <button id="btn-applepay" hidden
+        class="w-full py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-3 transition-all"
+        style="background:#000;color:#fff;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.15-2.18 1.27-2.16 3.8.03 3.02 2.65 4.03 2.68 4.04l-.07.28zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        Pay with Apple Pay
+      </button>
+
+      <!-- Config / error warning -->
+      <p id="paypal-config-warning" class="hidden text-center text-ivory/40 text-xs p-4 border border-gold/10 rounded-lg">
+        ⚙️ Configure your PayPal Client ID and Worker URL in <code>checkout.html</code> to enable payments.
       </p>
     </div>
 
-    <!-- Card Section (handled by PayPal button with card funding) -->
-    <div id="card-section" class="hidden">
-      <div id="card-button-container"></div>
-      <p id="card-config-warning" class="hidden text-center text-ivory/40 text-xs mt-4 p-4 border border-gold/10 rounded-lg">
-        ⚙️ Add your PayPal Client ID to enable card payments.
-      </p>
+    <!-- Divider -->
+    <div class="flex items-center gap-3 mb-6">
+      <hr class="flex-1 border-gold/10"/>
+      <span class="text-ivory/30 text-xs uppercase tracking-widest font-bold">or</span>
+      <hr class="flex-1 border-gold/10"/>
     </div>
 
-    <!-- Bank Transfer Details -->
-    <div id="bank-section" class="hidden">
-      <div class="bg-midnight/80 border border-gold/20 rounded-xl p-6 space-y-4">
-        <h4 class="text-gold font-bold uppercase tracking-widest text-sm mb-4 flex items-center gap-2">
-          <span class="material-symbols-outlined text-sm">info</span> Bank Transfer Instructions
-        </h4>
-        <div class="space-y-3 text-sm">
-          <div class="flex justify-between"><span class="text-ivory/50">Bank Name</span><span id="bank-name" class="text-ivory font-medium"></span></div>
-          <div class="flex justify-between"><span class="text-ivory/50">Account Name</span><span id="bank-acct-name" class="text-ivory font-medium"></span></div>
-          <div class="flex justify-between"><span class="text-ivory/50">Account Number</span><span id="bank-acct-num" class="text-ivory font-medium font-mono"></span></div>
-          <div class="flex justify-between"><span class="text-ivory/50">Sort Code</span><span id="bank-sort" class="text-ivory font-medium font-mono"></span></div>
-          <div class="flex justify-between"><span class="text-ivory/50">SWIFT/BIC</span><span id="bank-swift" class="text-ivory font-medium font-mono"></span></div>
-          <hr class="border-gold/10"/>
-          <div class="flex justify-between"><span class="text-ivory/50">Reference</span><span id="bank-ref" class="text-signature-teal font-mono font-bold"></span></div>
+    <!-- Bank Transfer (collapsible) -->
+    <div>
+      <button onclick="toggleBankTransfer()"
+        class="w-full flex items-center justify-between p-4 border border-gold/10 rounded-xl hover:bg-gold/5 transition-colors">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-gold/60">account_balance</span>
+          <div class="text-left">
+            <p class="text-sm font-bold text-ivory">Bank Transfer</p>
+            <p class="text-xs text-ivory/50">Direct wire via ACH / SWIFT</p>
+          </div>
         </div>
-        <p class="text-ivory/40 text-xs mt-4">⚠️ Please include the reference number in your transfer. Orders are activated within 1-2 business days after payment confirmation.</p>
-        <button onclick="confirmBankTransfer()" class="w-full mt-4 py-4 bg-signature-teal hover:brightness-110 text-midnight font-bold rounded-xl transition-all flex items-center justify-center gap-2">
-          <span class="material-symbols-outlined">check_circle</span> I've Sent the Transfer
-        </button>
+        <span id="bank-toggle-icon" class="material-symbols-outlined text-gold/40 transition-transform">expand_more</span>
+      </button>
+
+      <div id="bank-section" class="hidden mt-3">
+        <div class="bg-midnight/80 border border-gold/20 rounded-xl p-6 space-y-4">
+          <h4 class="text-gold font-bold uppercase tracking-widest text-sm mb-4 flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm">info</span> Bank Transfer Instructions
+          </h4>
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between"><span class="text-ivory/50">Bank Name</span><span id="bank-name" class="text-ivory font-medium"></span></div>
+            <div class="flex justify-between"><span class="text-ivory/50">Account Name</span><span id="bank-acct-name" class="text-ivory font-medium"></span></div>
+            <div class="flex justify-between"><span class="text-ivory/50">Account Number</span><span id="bank-acct-num" class="text-ivory font-medium font-mono"></span></div>
+            <div class="flex justify-between"><span class="text-ivory/50">Sort Code</span><span id="bank-sort" class="text-ivory font-medium font-mono"></span></div>
+            <div class="flex justify-between"><span class="text-ivory/50">SWIFT / BIC</span><span id="bank-swift" class="text-ivory font-medium font-mono"></span></div>
+            <hr class="border-gold/10"/>
+            <div class="flex justify-between"><span class="text-ivory/50">Reference</span><span id="bank-ref" class="text-signature-teal font-mono font-bold"></span></div>
+          </div>
+          <p class="text-ivory/40 text-xs mt-4">⚠️ Include the reference number in your transfer. Orders activate within 1–2 business days after payment confirmation.</p>
+          <button onclick="confirmBankTransfer()"
+            class="w-full mt-4 py-4 bg-signature-teal hover:brightness-110 text-midnight font-bold rounded-xl transition-all flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined">check_circle</span> I've Sent the Transfer
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -163,7 +206,7 @@
     <div class="flex flex-col items-center gap-6">
       <span class="text-signature-teal text-xs font-bold tracking-[0.2em] uppercase">Follow Us</span>
       <div id="checkout-social-footer" class="flex justify-center gap-8"></div>
-      <p class="text-ivory/30 text-xs tracking-widest uppercase">© 2024 AF Wealth Mindset. All Rights Reserved.</p>
+      <p class="text-ivory/30 text-xs tracking-widest uppercase">© 2025 AF Wealth Mindset. All Rights Reserved.</p>
       <p class="text-[10px] text-ivory/20">By completing your purchase, you agree to our <a class="underline" href="#">Terms</a> and <a class="underline" href="#">Privacy</a>.</p>
     </div>
   </footer>
@@ -172,123 +215,281 @@
 
 <script src="/js/app.js"></script>
 <script>
-  // ===== CONFIGURATION =====
-  // Replace with your PayPal Client ID from developer.paypal.com
-  const PAYPAL_CLIENT_ID = 'YOUR_PAYPAL_CLIENT_ID';
-  // =========================
+// ============================================================
+//  CONFIGURATION — replace all YOUR_* values before deploying
+// ============================================================
+const PAYPAL_CLIENT_ID   = 'YOUR_PAYPAL_CLIENT_ID';    // developer.paypal.com → Apps & Credentials → Client ID
+const WORKER_URL         = 'YOUR_WORKER_URL';           // e.g. https://paypal-api.yourname.workers.dev
+const EMAILJS_USER_ID    = 'YOUR_EMAILJS_USER_ID';      // emailjs.com → Account → Public Key
+const EMAILJS_SERVICE_ID = 'YOUR_EMAILJS_SERVICE_ID';   // emailjs.com → Email Services → Service ID
+const EMAILJS_TEMPLATE_ID= 'YOUR_EMAILJS_TEMPLATE_ID';  // emailjs.com → Email Templates → Template ID
+const NOTIFY_EMAIL       = 'YOUR_EMAIL@example.com';    // Your email to receive order alerts
+// ============================================================
 
   initHeader();
   renderSocialFooter('checkout-social-footer');
 
-  // Populate bank details from shared BANK_DETAILS object
-  document.getElementById('bank-name').textContent     = BANK_DETAILS.bankName;
+  document.getElementById('bank-name').textContent      = BANK_DETAILS.bankName;
   document.getElementById('bank-acct-name').textContent = BANK_DETAILS.accountName;
   document.getElementById('bank-acct-num').textContent  = BANK_DETAILS.accountNumber;
   document.getElementById('bank-sort').textContent      = BANK_DETAILS.sortCode;
   document.getElementById('bank-swift').textContent     = BANK_DETAILS.swift;
 
   const product = getProductFromURL();
-  const user = getCurrentUser();
+  const user    = getCurrentUser();
 
-  // Fill order summary
   document.getElementById('order-img').style.backgroundImage = `url('${product.image}')`;
-  document.getElementById('order-name').textContent = product.name;
-  document.getElementById('order-edition').textContent = `Qty: 1 • ${product.edition}`;
-  document.getElementById('order-price').textContent = formatPrice(product.price);
+  document.getElementById('order-name').textContent     = product.name;
+  document.getElementById('order-edition').textContent  = `Qty: 1 • ${product.edition}`;
+  document.getElementById('order-price').textContent    = formatPrice(product.price);
   document.getElementById('order-subtotal').textContent = formatPrice(product.price);
-  document.getElementById('order-total').textContent = formatPrice(product.price);
-  document.getElementById('bank-ref').textContent = 'AFWM-' + product.id + '-' + Date.now().toString().slice(-6);
+  document.getElementById('order-total').textContent    = formatPrice(product.price);
+  document.getElementById('bank-ref').textContent       = 'AFWM-' + product.id + '-' + Date.now().toString().slice(-6);
 
-  // Pre-fill email
   if (user) document.getElementById('checkout-email').value = user.email;
 
-  // Redirect to signup if not logged in
-  if (!user) {
-    const params = new URLSearchParams(window.location.search);
-    window.location.href = '/signup.html?redirect=/checkout.html?' + params.toString();
+  // Init EmailJS
+  if (EMAILJS_USER_ID !== 'YOUR_EMAILJS_USER_ID') {
+    emailjs.init({ publicKey: EMAILJS_USER_ID });
   }
 
-  // Payment method selection
-  let selectedPayment = 'paypal';
+  // ── Helpers ──────────────────────────────────────────────
 
-  function selectPayment(method) {
-    selectedPayment = method;
-    const opts = ['paypal', 'card', 'bank'];
-    opts.forEach(o => {
-      const opt = document.getElementById('opt-' + o);
-      const radio = document.getElementById('radio-' + o);
-      const section = document.getElementById(o === 'card' ? 'card-section' : o + '-section');
-      if (o === method) {
-        opt.className = opt.className.replace('border border-gold/10', 'border-2 border-signature-teal bg-signature-teal/5');
-        radio.innerHTML = '<div class="w-2.5 h-2.5 rounded-full bg-signature-teal"></div>';
-        radio.className = 'w-5 h-5 rounded-full border-2 border-signature-teal flex items-center justify-center';
-        if (section) section.classList.remove('hidden');
-      } else {
-        opt.className = opt.className.replace('border-2 border-signature-teal bg-signature-teal/5', 'border border-gold/10');
-        radio.innerHTML = '';
-        radio.className = 'w-5 h-5 rounded-full border-2 border-gold/20';
-        if (section) section.classList.add('hidden');
-      }
+  function showLoading(msg) {
+    document.getElementById('loading-msg').textContent = msg || 'Processing…';
+    document.getElementById('loading-overlay').classList.remove('hidden');
+  }
+  function hideLoading() {
+    document.getElementById('loading-overlay').classList.add('hidden');
+  }
+
+  function validateEmail() {
+    const v = document.getElementById('checkout-email').value.trim();
+    if (!v || !v.includes('@')) {
+      alert('Please enter a valid email address before paying.');
+      document.getElementById('checkout-email').focus();
+      return false;
+    }
+    return true;
+  }
+
+  function toggleBankTransfer() {
+    const section = document.getElementById('bank-section');
+    const icon    = document.getElementById('bank-toggle-icon');
+    const opening = section.classList.contains('hidden');
+    section.classList.toggle('hidden', !opening);
+    icon.textContent = opening ? 'expand_less' : 'expand_more';
+  }
+
+  // ── Email notification ────────────────────────────────────
+
+  async function sendOrderEmail(customerEmail, transactionId, paymentMethod) {
+    if (EMAILJS_USER_ID === 'YOUR_EMAILJS_USER_ID') return;
+    try {
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        customer_email: customerEmail,
+        product_name:   product.name,
+        amount:         formatPrice(product.price),
+        transaction_id: transactionId,
+        payment_method: paymentMethod,
+        to_email:       NOTIFY_EMAIL
+      });
+    } catch(e) {
+      console.warn('Email notification failed:', e);
+    }
+  }
+
+  // ── Server calls (Cloudflare Worker) ─────────────────────
+
+  async function createOrder() {
+    const res = await fetch(`${WORKER_URL}/paypal-api/checkout/orders/create`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({
+        amount:      product.price.toFixed(2),
+        description: product.name,
+        currency:    'USD'
+      })
     });
+    if (!res.ok) throw new Error('Order creation failed: ' + res.status);
+    const data = await res.json();
+    return { orderId: data.id };
   }
+
+  async function captureOrder(orderId) {
+    const res = await fetch(`${WORKER_URL}/paypal-api/checkout/orders/${orderId}/capture`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+    if (!res.ok) throw new Error('Capture failed: ' + res.status);
+    return res.json();
+  }
+
+  // ── Shared payment session callbacks ─────────────────────
+
+  function buildSessionOptions() {
+    return {
+      async onApprove(data) {
+        const email = document.getElementById('checkout-email').value.trim();
+        showLoading('Processing payment…');
+        try {
+          const orderData = await captureOrder(data.orderId);
+          const txId = orderData?.purchase_units?.[0]?.payments?.captures?.[0]?.id || data.orderId;
+          addOrder(product.id, product.price, 'PayPal', txId);
+          await sendOrderEmail(email, txId, 'PayPal');
+          window.location.href = '/orders.html?success=1&method=paypal';
+        } catch(err) {
+          hideLoading();
+          console.error('Capture error:', err);
+          alert('Payment was approved but capture failed.\nPlease contact support with reference: ' + data.orderId);
+        }
+      },
+      onCancel() { hideLoading(); },
+      onError(err) {
+        hideLoading();
+        console.error('PayPal error:', err);
+        alert('Payment failed. Please try again or choose another method.');
+      }
+    };
+  }
+
+  // ── Bank Transfer ─────────────────────────────────────────
 
   function confirmBankTransfer() {
-    const email = document.getElementById('checkout-email').value;
-    if (!email) return alert('Please enter your email address.');
+    const email = document.getElementById('checkout-email').value.trim();
+    if (!email) { alert('Please enter your email address.'); return; }
+    const ref = document.getElementById('bank-ref').textContent;
     addOrder(product.id, product.price, 'Bank Transfer', 'BANK-' + Date.now());
+    sendOrderEmail(email, ref, 'Bank Transfer');
     window.location.href = '/orders.html?success=1&method=bank';
   }
 
-  // Load PayPal SDK
-  if (PAYPAL_CLIENT_ID === 'YOUR_PAYPAL_CLIENT_ID') {
-    document.getElementById('paypal-config-warning').classList.remove('hidden');
-    document.getElementById('card-config-warning').classList.remove('hidden');
-  } else {
-    const script = document.createElement('script');
-    script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
-    script.onload = function() {
-      // PayPal button
-      paypal.Buttons({
-        style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal' },
-        createOrder: function(data, actions) {
-          const email = document.getElementById('checkout-email').value;
-          if (!email) { alert('Please enter your email address.'); return; }
-          return actions.order.create({
-            purchase_units: [{ amount: { value: product.price.toString(), currency_code: 'USD' }, description: product.name }]
-          });
-        },
-        onApprove: function(data, actions) {
-          return actions.order.capture().then(function(details) {
-            addOrder(product.id, product.price, 'PayPal', details.id);
-            window.location.href = '/orders.html?success=1&method=paypal';
-          });
-        },
-        onError: function(err) { console.error(err); alert('Payment failed. Please try again.'); }
-      }).render('#paypal-button-container');
+  // ── PayPal v6 SDK Init ────────────────────────────────────
 
-      // Card button
-      if (paypal.FUNDING) {
-        paypal.Buttons({
-          fundingSource: paypal.FUNDING.CARD,
-          style: { layout: 'vertical', color: 'black', shape: 'rect', label: 'pay' },
-          createOrder: function(data, actions) {
-            const email = document.getElementById('checkout-email').value;
-            if (!email) { alert('Please enter your email address.'); return; }
-            return actions.order.create({
-              purchase_units: [{ amount: { value: product.price.toString(), currency_code: 'USD' }, description: product.name }]
-            });
-          },
-          onApprove: function(data, actions) {
-            return actions.order.capture().then(function(details) {
-              addOrder(product.id, product.price, 'Credit Card', details.id);
-              window.location.href = '/orders.html?success=1&method=card';
-            });
-          },
-          onError: function(err) { console.error(err); alert('Card payment failed. Please try again.'); }
-        }).render('#card-button-container');
+  async function initPayPalV6() {
+    const loadingEl = document.getElementById('payment-loading');
+
+    if (PAYPAL_CLIENT_ID === 'YOUR_PAYPAL_CLIENT_ID' || WORKER_URL === 'YOUR_WORKER_URL') {
+      loadingEl.classList.add('hidden');
+      document.getElementById('paypal-config-warning').classList.remove('hidden');
+      return;
+    }
+
+    try {
+      const sdkInstance = await window.paypal.createInstance({
+        clientId:   PAYPAL_CLIENT_ID,
+        components: ['paypal-payments', 'venmo-payments', 'googlepay-payments', 'applepay-payments'],
+        pageType:   'checkout',
+        locale:     'en-US'
+      });
+
+      const methods = await sdkInstance.findEligibleMethods({ currencyCode: 'USD' });
+      loadingEl.classList.add('hidden');
+
+      let anyEligible = false;
+
+      // ── PayPal ──
+      if (methods.isEligible('paypal')) {
+        anyEligible = true;
+        const session = sdkInstance.createPayPalOneTimePaymentSession(buildSessionOptions());
+        const btn = document.querySelector('paypal-button');
+        btn.removeAttribute('hidden');
+        btn.addEventListener('click', async () => {
+          if (!validateEmail()) return;
+          try { await session.start({ presentationMode: 'auto' }, createOrder()); }
+          catch(e) { hideLoading(); console.error(e); }
+        });
       }
-    };
-    document.head.appendChild(script);
+
+      // ── Pay Later ──
+      if (methods.isEligible('paylater')) {
+        anyEligible = true;
+        const details = methods.getDetails('paylater');
+        const session = sdkInstance.createPayLaterOneTimePaymentSession(buildSessionOptions());
+        const btn = document.querySelector('paypal-pay-later-button');
+        btn.productCode = details.productCode;
+        btn.countryCode = details.countryCode;
+        btn.removeAttribute('hidden');
+        btn.addEventListener('click', async () => {
+          if (!validateEmail()) return;
+          try { await session.start({ presentationMode: 'auto' }, createOrder()); }
+          catch(e) { hideLoading(); console.error(e); }
+        });
+      }
+
+      // ── PayPal Credit ──
+      if (methods.isEligible('credit')) {
+        anyEligible = true;
+        const details = methods.getDetails('credit');
+        const session = sdkInstance.createPayPalCreditOneTimePaymentSession(buildSessionOptions());
+        const btn = document.querySelector('paypal-credit-button');
+        btn.countryCode = details.countryCode;
+        btn.removeAttribute('hidden');
+        btn.addEventListener('click', async () => {
+          if (!validateEmail()) return;
+          try { await session.start({ presentationMode: 'auto' }, createOrder()); }
+          catch(e) { hideLoading(); console.error(e); }
+        });
+      }
+
+      // ── Venmo (US only) ──
+      if (methods.isEligible('venmo')) {
+        anyEligible = true;
+        const session = sdkInstance.createVenmoOneTimePaymentSession(buildSessionOptions());
+        const btn = document.getElementById('btn-venmo');
+        btn.removeAttribute('hidden');
+        btn.addEventListener('click', async () => {
+          if (!validateEmail()) return;
+          try { await session.start({ presentationMode: 'auto' }, createOrder()); }
+          catch(e) { hideLoading(); console.error(e); }
+        });
+      }
+
+      // ── Google Pay ──
+      if (methods.isEligible('googlepay')) {
+        anyEligible = true;
+        const session = sdkInstance.createGooglePayOneTimePaymentSession(buildSessionOptions());
+        const btn = document.getElementById('btn-googlepay');
+        btn.removeAttribute('hidden');
+        btn.addEventListener('click', async () => {
+          if (!validateEmail()) return;
+          try { await session.start({ presentationMode: 'auto' }, createOrder()); }
+          catch(e) { hideLoading(); console.error(e); }
+        });
+      }
+
+      // ── Apple Pay ──
+      if (methods.isEligible('applepay')) {
+        anyEligible = true;
+        const session = sdkInstance.createApplePayOneTimePaymentSession(buildSessionOptions());
+        const btn = document.getElementById('btn-applepay');
+        btn.removeAttribute('hidden');
+        btn.addEventListener('click', async () => {
+          if (!validateEmail()) return;
+          try { await session.start({ presentationMode: 'auto' }, createOrder()); }
+          catch(e) { hideLoading(); console.error(e); }
+        });
+      }
+
+      if (!anyEligible) {
+        const warn = document.getElementById('paypal-config-warning');
+        warn.textContent = 'No digital payment methods are available in your region. Please use Bank Transfer below.';
+        warn.classList.remove('hidden');
+      }
+
+    } catch(err) {
+      console.error('PayPal v6 init failed:', err);
+      document.getElementById('payment-loading').classList.add('hidden');
+      document.getElementById('paypal-config-warning').classList.remove('hidden');
+    }
+  }
+
+  // Run init once the v6 SDK script is ready
+  if (window.paypal && window.paypal.createInstance) {
+    initPayPalV6();
+  } else {
+    document.querySelector('script[src*="web-sdk/v6/core"]')
+      .addEventListener('load', initPayPalV6);
   }
 </script>
 </body>
