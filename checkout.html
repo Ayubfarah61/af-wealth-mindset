@@ -7,8 +7,8 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<!-- PayPal v6 SDK — swapped to sandbox/live by JS below -->
-<script id="paypal-sdk-script" src="https://www.sandbox.paypal.com/web-sdk/v6/core"></script>
+<!-- PayPal v6 SDK — live -->
+<script id="paypal-sdk-script" src="https://www.paypal.com/web-sdk/v6/core"></script>
 <!-- Paystack inline SDK for card payments -->
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <!-- EmailJS for order email notifications -->
@@ -252,7 +252,7 @@ const PAYPAL_CLIENT_ID_SANDBOX = 'AQrCZ0APprE81CJX6qCTt0FEkhK3r30g6M5VXroyxL_Dr7
 const PAYPAL_CLIENT_ID_LIVE    = 'Ad6A68c1Z85fPgH7ac693rp1HGA8Uu4H3SEEqkwfu8WywbBmSM3ZwcVKPYME593v8HnGpCjR00wNI7VQ';
 const PAYPAL_CLIENT_ID         = SANDBOX_MODE ? PAYPAL_CLIENT_ID_SANDBOX : PAYPAL_CLIENT_ID_LIVE;
 
-const PAYSTACK_PUBLIC_KEY = 'pk_test_a59bc43c2b7da99e604cc1f9d3933f761e0c712e';
+const PAYSTACK_PUBLIC_KEY = 'pk_live_ec052b80eca5f2f86a6ed09d1f50a51d18285631';
 
 const WORKER_URL         = 'https://afwm-paypal-api.ayubfarah67.workers.dev';
 const EMAILJS_USER_ID    = 'ylGXXn8CD-YXxPyFm';
@@ -260,12 +260,6 @@ const EMAILJS_SERVICE_ID = 'service_046t8c7';
 const EMAILJS_TEMPLATE_ID= 'template_wpxuynk';
 const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
 // ============================================================
-
-// Swap SDK script to live URL if not sandbox
-if (!SANDBOX_MODE) {
-  const s = document.getElementById('paypal-sdk-script');
-  if (s) s.src = 'https://www.paypal.com/web-sdk/v6/core';
-}
 
   initHeader();
   renderSocialFooter('checkout-social-footer');
@@ -288,6 +282,9 @@ if (!SANDBOX_MODE) {
   document.getElementById('bank-ref').textContent       = 'AFWM-' + product.id + '-' + Date.now().toString().slice(-6);
 
   if (user) document.getElementById('checkout-email').value = user.email;
+
+  // Show card button immediately — Paystack needs no SDK init
+  document.getElementById('btn-card').removeAttribute('hidden');
 
   // Init EmailJS
   if (EMAILJS_USER_ID !== 'YOUR_EMAILJS_USER_ID') {
@@ -417,6 +414,10 @@ if (!SANDBOX_MODE) {
 
   function paystackPay() {
     if (!validateEmail()) return;
+    if (typeof PaystackPop === 'undefined') {
+      alert('Payment is loading. Please wait a moment and try again.');
+      return;
+    }
     const email = document.getElementById('checkout-email').value.trim();
     const ref   = 'AFWM-' + product.id + '-' + Date.now();
 
@@ -510,9 +511,6 @@ if (!SANDBOX_MODE) {
       const methods = await sdkInstance.findEligibleMethods({ currencyCode: 'USD' });
       loadingEl.classList.add('hidden');
 
-      // Card — Paystack popup button (always shown)
-      document.getElementById('btn-card').removeAttribute('hidden');
-
       // PayPal (docs: createPayPalOneTimePaymentSession)
       if (methods.isEligible('paypal')) {
         wireBtn('btn-paypal', () => sdkInstance.createPayPalOneTimePaymentSession(buildSessionOptions()));
@@ -545,10 +543,13 @@ if (!SANDBOX_MODE) {
     }
   }
 
-  // Hide loading after 8s max (safety net)
+  // Hide loading after 8s max — show card button regardless
   setTimeout(() => {
     const el = document.getElementById('payment-loading');
-    if (el) el.classList.add('hidden');
+    if (el && !el.classList.contains('hidden')) {
+      el.classList.add('hidden');
+      // PayPal failed to load — card (Paystack) is still fully functional
+    }
   }, 8000);
 
   // Step 6 (docs): run setup once SDK script is ready
