@@ -423,7 +423,8 @@ if (!SANDBOX_MODE) {
     const handler = PaystackPop.setup({
       key:      PAYSTACK_PUBLIC_KEY,
       email:    email,
-      amount:   Math.round(product.price * 100), // smallest currency unit
+      amount:   Math.round(product.price * 100), // smallest currency unit (cents)
+      currency: 'USD',
       ref:      ref,
       metadata: { product_name: product.name, product_id: product.id },
       onSuccess: async function(response) {
