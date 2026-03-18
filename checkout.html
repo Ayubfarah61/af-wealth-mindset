@@ -452,6 +452,7 @@ if (!SANDBOX_MODE) {
   // ── Inline Card Form (standard PayPal SDK, lazy-loaded) ──
 
   let _cardFormReady = false;
+  let _sdkInstance   = null; // set in setupPayPal — used for PayPal popup fallback
 
   function toggleCardForm() {
     if (!validateEmail()) return;
@@ -525,8 +526,8 @@ if (!SANDBOX_MODE) {
       });
 
       if (!cf.isEligible()) {
-        console.warn('CardFields.isEligible() = false. Enable "Advanced Credit and Debit Card Payments" on your PayPal app at developer.paypal.com');
-        throw new Error('CardFields not eligible');
+        console.warn('CardFields not eligible — falling back to PayPal popup. Enable "Advanced Credit and Debit Card Payments" at developer.paypal.com to get inline fields.');
+        throw new Error('not-eligible');
       }
 
       await cf.NumberField().render('#card-number-field');
@@ -548,9 +549,22 @@ if (!SANDBOX_MODE) {
       loadingEl.classList.add('hidden');
       formEl.classList.remove('hidden');
     } catch(err) {
-      console.error('Card fields init:', err);
+      console.warn('Card fields init:', err.message);
       loadingEl.classList.add('hidden');
-      unavailEl.classList.remove('hidden');
+      // Fallback: close the expand panel and use PayPal popup for card payment
+      if (_sdkInstance) {
+        document.getElementById('card-form').classList.add('hidden');
+        document.getElementById('card-chevron').style.transform = '';
+        document.getElementById('btn-card-toggle').onclick = async () => {
+          if (!validateEmail()) return;
+          try {
+            const session = _sdkInstance.createPayPalOneTimePaymentSession(buildSessionOptions());
+            await session.start({ presentationMode: 'auto' }, createOrder());
+          } catch(e) { handlePaymentError(e, 'card-popup'); }
+        };
+      } else {
+        unavailEl.classList.remove('hidden');
+      }
     }
   }
 
@@ -594,6 +608,8 @@ if (!SANDBOX_MODE) {
         pageType:         'checkout',
         clientMetadataId: crypto.randomUUID()
       });
+
+      _sdkInstance = sdkInstance; // expose for card fallback
 
       // Step 2 — check eligibility (docs: findEligibleMethods)
       const methods = await sdkInstance.findEligibleMethods({ currencyCode: 'USD' });
