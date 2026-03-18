@@ -109,20 +109,61 @@
         <span class="text-ivory/40 text-sm">Loading payment methods…</span>
       </div>
 
-      <!-- Debit / Credit Card — shown first -->
-      <button id="btn-card" hidden
-        class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm hover:border-signature-teal/50 hover:bg-signature-teal/5 transition-all">
-        <span class="material-symbols-outlined text-gold" style="font-size:20px">credit_card</span>
-        <div class="flex-1 text-left">
-          <span class="block">Debit / Credit Card</span>
-          <span class="text-xs font-normal text-ivory/40">No PayPal account needed</span>
+      <!-- Debit / Credit Card — inline form, shown first -->
+      <div id="card-section" hidden>
+        <button id="btn-card-toggle"
+          class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm hover:border-signature-teal/50 hover:bg-signature-teal/5 transition-all"
+          onclick="toggleCardForm()">
+          <span class="material-symbols-outlined text-gold" style="font-size:20px">credit_card</span>
+          <div class="flex-1 text-left">
+            <span class="block">Debit / Credit Card</span>
+            <span class="text-xs font-normal text-ivory/40">No PayPal account needed</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="flex gap-1 opacity-50">
+              <span class="text-[10px] border border-gold/30 rounded px-1 font-mono">VISA</span>
+              <span class="text-[10px] border border-gold/30 rounded px-1 font-mono">MC</span>
+              <span class="text-[10px] border border-gold/30 rounded px-1 font-mono">AMEX</span>
+            </div>
+            <span id="card-chevron" class="material-symbols-outlined text-gold/40 text-sm transition-transform">expand_more</span>
+          </div>
+        </button>
+        <!-- Inline card form — lazy-loaded on first expand -->
+        <div id="card-form" class="hidden mt-3 p-4 border border-gold/10 rounded-xl bg-midnight/50">
+          <!-- Loading state -->
+          <div id="card-fields-loading" class="flex items-center justify-center gap-3 py-6">
+            <div class="w-5 h-5 rounded-full border-2 border-signature-teal/30 border-t-signature-teal animate-spin"></div>
+            <span class="text-ivory/40 text-sm">Loading card form…</span>
+          </div>
+          <!-- Card field iframes + submit -->
+          <div id="card-fields-form" class="hidden space-y-3">
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-[0.1em] text-gold/60 mb-2">Card Number</label>
+              <div id="card-number-field" class="w-full bg-midnight border border-gold/20 rounded-lg overflow-hidden" style="min-height:48px"></div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-[0.1em] text-gold/60 mb-2">Expiry</label>
+                <div id="card-expiry-field" class="w-full bg-midnight border border-gold/20 rounded-lg overflow-hidden" style="min-height:48px"></div>
+              </div>
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-[0.1em] text-gold/60 mb-2">CVV</label>
+                <div id="card-cvv-field" class="w-full bg-midnight border border-gold/20 rounded-lg overflow-hidden" style="min-height:48px"></div>
+              </div>
+            </div>
+            <p id="card-error" class="hidden text-red-400 text-xs mt-1"></p>
+            <button id="card-submit-btn"
+              class="w-full py-4 bg-gold hover:brightness-110 text-midnight font-bold rounded-xl transition-all flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined text-sm">lock</span>
+              <span>Pay Now — <span id="card-pay-amt"></span></span>
+            </button>
+          </div>
+          <!-- Fallback if CardFields not eligible -->
+          <p id="card-fields-unavail" class="hidden text-center text-ivory/40 text-xs p-4">
+            Inline card form unavailable. Use PayPal to pay by card, or try Bank Transfer.
+          </p>
         </div>
-        <div class="flex gap-1 opacity-50">
-          <span class="text-[10px] border border-gold/30 rounded px-1 font-mono">VISA</span>
-          <span class="text-[10px] border border-gold/30 rounded px-1 font-mono">MC</span>
-          <span class="text-[10px] border border-gold/30 rounded px-1 font-mono">AMEX</span>
-        </div>
-      </button>
+      </div>
 
       <!-- PayPal -->
       <button id="btn-paypal" hidden
@@ -243,7 +284,7 @@
 // ============================================================
 //  CONFIGURATION
 // ============================================================
-const SANDBOX_MODE = true; // ← set to false when going live
+const SANDBOX_MODE = false; // live
 
 const PAYPAL_CLIENT_ID_SANDBOX = 'AQrCZ0APprE81CJX6qCTt0FEkhK3r30g6M5VXroyxL_Dr7I3_rFEte6DbEuYJC5HlaAtDMFSeuhUFyPV';
 const PAYPAL_CLIENT_ID_LIVE    = 'Ad6A68c1Z85fPgH7ac693rp1HGA8Uu4H3SEEqkwfu8WywbBmSM3ZwcVKPYME593v8HnGpCjR00wNI7VQ';
@@ -408,6 +449,102 @@ if (!SANDBOX_MODE) {
     window.location.href = '/orders.html?success=1&method=bank';
   }
 
+  // ── Inline Card Form (standard PayPal SDK, lazy-loaded) ──
+
+  let _cardFormReady = false;
+
+  function toggleCardForm() {
+    if (!validateEmail()) return;
+    const form    = document.getElementById('card-form');
+    const chevron = document.getElementById('card-chevron');
+    const opening = form.classList.contains('hidden');
+    form.classList.toggle('hidden', !opening);
+    chevron.style.transform = opening ? 'rotate(180deg)' : '';
+    if (opening && !_cardFormReady) initCardFields();
+  }
+
+  function loadCardSDK() {
+    return new Promise((resolve, reject) => {
+      if (window._cardSdkLoaded) { resolve(); return; }
+      const base   = SANDBOX_MODE ? 'sandbox.' : '';
+      const script = document.createElement('script');
+      script.src   = `https://www.${base}paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&components=card-fields&currency=USD&intent=capture`;
+      script.onload  = () => { window._cardSdkLoaded = true; resolve(); };
+      script.onerror = () => reject(new Error('Failed to load card SDK'));
+      document.head.appendChild(script);
+    });
+  }
+
+  async function initCardFields() {
+    const loadingEl = document.getElementById('card-fields-loading');
+    const formEl    = document.getElementById('card-fields-form');
+    const unavailEl = document.getElementById('card-fields-unavail');
+    try {
+      await loadCardSDK();
+      const cf = window.paypal.CardFields({
+        style: {
+          input: {
+            'font-size':   '14px',
+            'font-family': 'Manrope, sans-serif',
+            'color':       '#F6F1E7'
+          },
+          ':focus':   { color: '#1FE6D1' },
+          '.invalid': { color: '#ef4444' }
+        },
+        createOrder: async () => {
+          const { orderId } = await createOrder();
+          return orderId;
+        },
+        onApprove: async (data) => {
+          const email = document.getElementById('checkout-email').value.trim();
+          showLoading('Processing payment…');
+          try {
+            const orderData = await captureOrder(data.orderID);
+            const txId = orderData?.purchase_units?.[0]?.payments?.captures?.[0]?.id || data.orderID;
+            addOrder(product.id, product.price, 'Card', txId);
+            await sendOrderEmail(email, txId, 'Debit/Credit Card');
+            window.location.href = '/orders.html?success=1&method=card';
+          } catch(err) {
+            hideLoading();
+            alert('Payment approved but capture failed. Contact support: ' + data.orderID);
+          }
+        },
+        onError: (err) => {
+          hideLoading();
+          console.error('CardFields error:', err);
+          const errEl = document.getElementById('card-error');
+          errEl.textContent = 'Payment failed. Please check your card details and try again.';
+          errEl.classList.remove('hidden');
+        }
+      });
+
+      if (!cf.isEligible()) throw new Error('CardFields not eligible in this region/browser');
+
+      await cf.NumberField().render('#card-number-field');
+      await cf.ExpiryField().render('#card-expiry-field');
+      await cf.CVVField().render('#card-cvv-field');
+
+      document.getElementById('card-pay-amt').textContent = formatPrice(product.price);
+      document.getElementById('card-submit-btn').addEventListener('click', async () => {
+        document.getElementById('card-error').classList.add('hidden');
+        try { await cf.submit(); }
+        catch(e) {
+          const errEl = document.getElementById('card-error');
+          errEl.textContent = e?.message || 'Payment failed. Please try again.';
+          errEl.classList.remove('hidden');
+        }
+      });
+
+      _cardFormReady = true;
+      loadingEl.classList.add('hidden');
+      formEl.classList.remove('hidden');
+    } catch(err) {
+      console.error('Card fields init:', err);
+      loadingEl.classList.add('hidden');
+      unavailEl.classList.remove('hidden');
+    }
+  }
+
   // ── PayPal v6 SDK — exact docs pattern ───────────────────
 
   function handlePaymentError(e, label) {
@@ -453,8 +590,8 @@ if (!SANDBOX_MODE) {
       const methods = await sdkInstance.findEligibleMethods({ currencyCode: 'USD' });
       loadingEl.classList.add('hidden');
 
-      // Card — uses the PayPal session; modal lets buyer pay with card without a PayPal account
-      wireBtn('btn-card', () => sdkInstance.createPayPalOneTimePaymentSession(buildSessionOptions()));
+      // Card — reveal inline card form (lazily loaded on first open)
+      document.getElementById('card-section').removeAttribute('hidden');
 
       // PayPal (docs: createPayPalOneTimePaymentSession)
       if (methods.isEligible('paypal')) {
