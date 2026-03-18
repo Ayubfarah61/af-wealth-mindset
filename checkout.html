@@ -7,8 +7,8 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<!-- PayPal v6 SDK -->
-<script src="https://www.paypal.com/web-sdk/v6/core"></script>
+<!-- PayPal v6 SDK — swapped to sandbox/live by JS below -->
+<script id="paypal-sdk-script" src="https://www.sandbox.paypal.com/web-sdk/v6/core"></script>
 <!-- EmailJS for order email notifications -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script id="tailwind-config">
@@ -237,15 +237,26 @@
 <script src="/js/app.js"></script>
 <script>
 // ============================================================
-//  CONFIGURATION — replace all YOUR_* values before deploying
+//  CONFIGURATION
 // ============================================================
-const PAYPAL_CLIENT_ID   = 'Ad6A68c1Z85fPgH7ac693rp1HGA8Uu4H3SEEqkwfu8WywbBmSM3ZwcVKPYME593v8HnGpCjR00wNI7VQ';
+const SANDBOX_MODE = true; // ← set to false when going live
+
+const PAYPAL_CLIENT_ID_SANDBOX = 'YOUR_SANDBOX_CLIENT_ID'; // developer.paypal.com → Sandbox
+const PAYPAL_CLIENT_ID_LIVE    = 'Ad6A68c1Z85fPgH7ac693rp1HGA8Uu4H3SEEqkwfu8WywbBmSM3ZwcVKPYME593v8HnGpCjR00wNI7VQ';
+const PAYPAL_CLIENT_ID         = SANDBOX_MODE ? PAYPAL_CLIENT_ID_SANDBOX : PAYPAL_CLIENT_ID_LIVE;
+
 const WORKER_URL         = 'https://afwm-paypal-api.ayubfarah67.workers.dev';
 const EMAILJS_USER_ID    = 'ylGXXn8CD-YXxPyFm';
 const EMAILJS_SERVICE_ID = 'service_046t8c7';
 const EMAILJS_TEMPLATE_ID= 'template_wpxuynk';
 const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
 // ============================================================
+
+// Swap SDK script to live URL if not sandbox
+if (!SANDBOX_MODE) {
+  const s = document.getElementById('paypal-sdk-script');
+  if (s) s.src = 'https://www.paypal.com/web-sdk/v6/core';
+}
 
   initHeader();
   renderSocialFooter('checkout-social-footer');
@@ -393,105 +404,103 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
     window.location.href = '/orders.html?success=1&method=bank';
   }
 
-  // ── PayPal v6 SDK Init ────────────────────────────────────
+  // ── PayPal v6 SDK — exact docs pattern ───────────────────
 
-  // Sessions are single-use — recreate one fresh on every click
-  function makeClickHandler(sdkInstance, sessionType, extraConfig) {
-    return async () => {
-      if (!validateEmail()) return;
-      try {
-        const session = sdkInstance[sessionType](buildSessionOptions());
-        if (extraConfig) Object.assign(session, extraConfig);
-        await session.start({ presentationMode: 'auto' }, createOrder());
-      } catch(e) {
-        hideLoading();
-        console.error(sessionType + ' error:', e);
-        const msg = e?.message || String(e);
-        if (msg.toLowerCase().includes('popup') || msg.toLowerCase().includes('blocked')) {
-          alert('Pop-up blocked. Please allow pop-ups for this site and try again.');
-        } else {
-          alert('Payment could not be started. Please try again or use Bank Transfer.\n\nError: ' + msg);
-        }
-      }
-    };
+  function handlePaymentError(e, label) {
+    hideLoading();
+    console.error(label + ' error:', e);
+    const msg = (e?.message || String(e)).toLowerCase();
+    if (msg.includes('popup') || msg.includes('blocked')) {
+      alert('Pop-up was blocked. Please allow pop-ups for this site and try again.');
+    } else {
+      alert('Payment could not be started. Please try again or use Bank Transfer.\n\nDetails: ' + (e?.message || e));
+    }
   }
 
-  function showBtn(id, handler) {
+  // Attach a button: show it and wire click → fresh session every time
+  function wireBtn(id, makeSession) {
     const btn = document.getElementById(id);
     if (!btn) return;
     btn.removeAttribute('hidden');
-    btn.addEventListener('click', handler);
+    btn.addEventListener('click', async () => {
+      if (!validateEmail()) return;
+      try {
+        const session = makeSession();
+        await session.start({ presentationMode: 'auto' }, createOrder());
+      } catch(e) {
+        handlePaymentError(e, id);
+      }
+    });
   }
 
-  async function initPayPalV6() {
+  async function setupPayPal() {
     const loadingEl = document.getElementById('payment-loading');
 
     try {
-      // Try all components first; fall back to paypal-payments only
-      let sdkInstance;
-      try {
-        sdkInstance = await window.paypal.createInstance({
-          clientId:         PAYPAL_CLIENT_ID,
-          components:       ['paypal-payments', 'venmo-payments', 'googlepay-payments', 'applepay-payments'],
-          pageType:         'checkout',
-          locale:           'en-US',
-          clientMetadataId: crypto.randomUUID()
-        });
-      } catch(e) {
-        console.warn('Full component list failed, falling back to paypal-payments only:', e.message);
-        sdkInstance = await window.paypal.createInstance({
-          clientId: PAYPAL_CLIENT_ID,
-          components: ['paypal-payments'],
-          pageType:  'checkout'
-        });
-      }
+      // Step 1 — initialise SDK (docs: createInstance)
+      const sdkInstance = await window.paypal.createInstance({
+        clientId:         PAYPAL_CLIENT_ID,
+        components:       ['paypal-payments', 'venmo-payments', 'googlepay-payments', 'applepay-payments'],
+        pageType:         'checkout',
+        clientMetadataId: crypto.randomUUID()
+      });
 
+      // Step 2 — check eligibility (docs: findEligibleMethods)
       const methods = await sdkInstance.findEligibleMethods({ currencyCode: 'USD' });
       loadingEl.classList.add('hidden');
 
-      // Card + PayPal — always shown; card option is inside the PayPal checkout modal
-      showBtn('btn-card',   makeClickHandler(sdkInstance, 'createPayPalOneTimePaymentSession'));
-      showBtn('btn-paypal', makeClickHandler(sdkInstance, 'createPayPalOneTimePaymentSession'));
+      // Card — uses the PayPal session; modal lets buyer pay with card without a PayPal account
+      wireBtn('btn-card', () => sdkInstance.createPayPalOneTimePaymentSession(buildSessionOptions()));
 
-      // Pay Later
-      if (methods.isEligible('paylater') && sdkInstance.createPayLaterOneTimePaymentSession) {
-        showBtn('btn-paylater', makeClickHandler(sdkInstance, 'createPayLaterOneTimePaymentSession'));
+      // PayPal (docs: createPayPalOneTimePaymentSession)
+      if (methods.isEligible('paypal')) {
+        wireBtn('btn-paypal', () => sdkInstance.createPayPalOneTimePaymentSession(buildSessionOptions()));
       }
 
-      // Venmo (US only)
+      // Pay Later (docs: createPayLaterOneTimePaymentSession — needs productCode + countryCode)
+      if (methods.isEligible('paylater')) {
+        const { productCode, countryCode } = methods.getDetails('paylater');
+        wireBtn('btn-paylater', () => {
+          const session = sdkInstance.createPayLaterOneTimePaymentSession(buildSessionOptions());
+          session.productCode  = productCode;
+          session.countryCode  = countryCode;
+          return session;
+        });
+      }
+
+      // Venmo — US only (docs: createVenmoOneTimePaymentSession)
       if (methods.isEligible('venmo') && sdkInstance.createVenmoOneTimePaymentSession) {
-        showBtn('btn-venmo', makeClickHandler(sdkInstance, 'createVenmoOneTimePaymentSession'));
+        wireBtn('btn-venmo', () => sdkInstance.createVenmoOneTimePaymentSession(buildSessionOptions()));
       }
 
-      // Google Pay
+      // Google Pay (docs: createGooglePayOneTimePaymentSession)
       if (methods.isEligible('googlepay') && sdkInstance.createGooglePayOneTimePaymentSession) {
-        showBtn('btn-googlepay', makeClickHandler(sdkInstance, 'createGooglePayOneTimePaymentSession'));
+        wireBtn('btn-googlepay', () => sdkInstance.createGooglePayOneTimePaymentSession(buildSessionOptions()));
       }
 
-      // Apple Pay
+      // Apple Pay (docs: createApplePayOneTimePaymentSession)
       if (methods.isEligible('applepay') && sdkInstance.createApplePayOneTimePaymentSession) {
-        showBtn('btn-applepay', makeClickHandler(sdkInstance, 'createApplePayOneTimePaymentSession'));
+        wireBtn('btn-applepay', () => sdkInstance.createApplePayOneTimePaymentSession(buildSessionOptions()));
       }
 
     } catch(err) {
-      console.error('PayPal v6 init failed:', err);
-      loadingEl.classList.add('hidden');
+      console.error('PayPal SDK init failed:', err);
+      document.getElementById('payment-loading').classList.add('hidden');
       document.getElementById('paypal-sdk-error').classList.remove('hidden');
     }
   }
 
-  // Hide loading spinner after 8s max regardless of SDK state
+  // Hide loading after 8s max (safety net)
   setTimeout(() => {
     const el = document.getElementById('payment-loading');
     if (el) el.classList.add('hidden');
   }, 8000);
 
-  // Run init once the v6 SDK script is ready
+  // Step 6 (docs): run setup once SDK script is ready
   if (window.paypal && window.paypal.createInstance) {
-    initPayPalV6();
+    setupPayPal();
   } else {
-    document.querySelector('script[src*="web-sdk/v6/core"]')
-      .addEventListener('load', initPayPalV6);
+    document.getElementById('paypal-sdk-script').addEventListener('load', setupPayPal);
   }
 </script>
 </body>
