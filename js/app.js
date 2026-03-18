@@ -2,23 +2,22 @@
 
 // ============= SOCIAL LINKS =============
 var SOCIAL_LINKS = [
-  { icon: 'tiktok',       url: 'https://www.tiktok.com/@afwealthsystems',    title: 'TikTok' },
-  { icon: 'photo_camera', url: 'https://www.instagram.com/afwealthmindset/', title: 'Instagram' },
-  { icon: 'face_6',       url: 'https://www.facebook.com/AFWealthMidnset',   title: 'Facebook' },
-  { icon: 'close',        url: 'https://x.com/AFWealth67',                   title: 'X / Twitter' }
+  { fa: 'fa-tiktok',     url: 'https://www.tiktok.com/@afwealthsystems',    title: 'TikTok' },
+  { fa: 'fa-youtube',    url: 'https://www.youtube.com/@afwealthmindset',   title: 'YouTube' },
+  { fa: 'fa-instagram',  url: 'https://www.instagram.com/afwealthmindset/', title: 'Instagram' },
+  { fa: 'fa-facebook',   url: 'https://www.facebook.com/AFWealthMidnset',   title: 'Facebook' },
+  { fa: 'fa-x-twitter',  url: 'https://x.com/AFWealth67',                   title: 'X / Twitter' }
 ];
 
 function renderSocialFooter(containerId) {
   var el = document.getElementById(containerId);
   if (!el) return;
-  var html = '<span class="text-signature-teal text-xs font-bold tracking-[0.2em] uppercase">Follow Us</span>';
-  html += '<div class="flex justify-center gap-8">';
+  var html = '';
   for (var i = 0; i < SOCIAL_LINKS.length; i++) {
     var s = SOCIAL_LINKS[i];
-    html += '<a class="text-gold hover:text-signature-teal transition-colors" href="' + s.url + '" target="_blank" rel="noopener" title="' + s.title + '">';
-    html += '<span class="material-symbols-outlined text-2xl">' + s.icon + '</span></a>';
+    html += '<a style="color:#D7B46A;font-size:22px;transition:color 0.2s;" href="' + s.url + '" target="_blank" rel="noopener" title="' + s.title + '" onmouseover="this.style.color=\'#1FE6D1\'" onmouseout="this.style.color=\'#D7B46A\'">';
+    html += '<i class="fa-brands ' + s.fa + '"></i></a>';
   }
-  html += '</div>';
   el.innerHTML = html;
 }
 
