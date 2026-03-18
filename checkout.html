@@ -111,38 +111,64 @@
         <span class="text-ivory/40 text-sm">Loading payment methods…</span>
       </div>
 
-      <!-- PayPal v6 web components — shown by JS when eligible -->
-      <paypal-button hidden style="display:block;width:100%"></paypal-button>
-      <paypal-pay-later-button hidden style="display:block;width:100%"></paypal-pay-later-button>
-      <paypal-credit-button hidden style="display:block;width:100%"></paypal-credit-button>
+      <!-- PayPal -->
+      <button id="btn-paypal" hidden
+        class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm hover:border-signature-teal/50 hover:bg-signature-teal/5 transition-all">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7.3 21H4.2l.5-3h3c3.2 0 5.5-1.4 6.4-4.3.6-2 .2-3.5-.9-4.5C14.8 10.4 16 12.3 15.3 15c-1 3.3-3.7 6-8 6z" fill="#003087"/><path d="M9.8 15.5H6.7l1.4-9h4.7c2.2 0 3.7.7 4.2 2.2.7 2.1-.6 4.5-3.4 5.5-.6.2-1.2.3-1.8.3H9.8z" fill="#009cde"/><path d="M12.8 5.5H8.1L6.7 15.5H9.8c.6 0 1.2-.1 1.8-.3 2.8-1 4.1-3.4 3.4-5.5C14.5 6.2 13 5.5 10.8 5.5h2z" fill="#012169"/></svg>
+        <span class="flex-1 text-left">Pay with PayPal</span>
+        <span class="material-symbols-outlined text-gold/40 text-sm">chevron_right</span>
+      </button>
 
-      <!-- Venmo (US only) — custom styled button, session launched by JS -->
+      <!-- Debit / Credit Card -->
+      <button id="btn-card" hidden
+        class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm hover:border-signature-teal/50 hover:bg-signature-teal/5 transition-all">
+        <span class="material-symbols-outlined text-gold" style="font-size:20px">credit_card</span>
+        <span class="flex-1 text-left">Debit / Credit Card</span>
+        <div class="flex gap-1 opacity-50">
+          <span class="text-[10px] border border-gold/30 rounded px-1 font-mono">VISA</span>
+          <span class="text-[10px] border border-gold/30 rounded px-1 font-mono">MC</span>
+          <span class="text-[10px] border border-gold/30 rounded px-1 font-mono">AMEX</span>
+        </div>
+      </button>
+
+      <!-- Pay Later -->
+      <button id="btn-paylater" hidden
+        class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm hover:border-signature-teal/50 hover:bg-signature-teal/5 transition-all">
+        <span class="material-symbols-outlined text-gold" style="font-size:20px">schedule</span>
+        <div class="flex-1 text-left">
+          <span class="block">Pay Later</span>
+          <span class="text-xs font-normal text-ivory/40">Split into instalments</span>
+        </div>
+        <span class="material-symbols-outlined text-gold/40 text-sm">chevron_right</span>
+      </button>
+
+      <!-- Venmo (US only) -->
       <button id="btn-venmo" hidden
-        class="w-full py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-3 transition-all"
-        style="background:#3D95CE;color:#fff;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.5 2c.9 2.1 1.3 4 1.3 6.1 0 5.4-4.6 12.4-8.3 17.3H4.7L1.5 2.8l7-1.1 1.8 9.8C11.8 8.7 13.4 5 14.6 2z"/></svg>
-        Pay with Venmo
+        class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm hover:border-signature-teal/50 hover:bg-signature-teal/5 transition-all">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#3D95CE"><path d="M19.5 2c.9 2.1 1.3 4 1.3 6.1 0 5.4-4.6 12.4-8.3 17.3H4.7L1.5 2.8l7-1.1 1.8 9.8C11.8 8.7 13.4 5 14.6 2z"/></svg>
+        <span class="flex-1 text-left">Venmo</span>
+        <span class="material-symbols-outlined text-gold/40 text-sm">chevron_right</span>
       </button>
 
-      <!-- Google Pay — custom styled button -->
+      <!-- Google Pay -->
       <button id="btn-googlepay" hidden
-        class="w-full py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-3 transition-all"
-        style="background:#fff;color:#000;border:1px solid #dadce0;">
-        <svg width="22" height="22" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-        Pay with Google Pay
+        class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm hover:border-signature-teal/50 hover:bg-signature-teal/5 transition-all">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        <span class="flex-1 text-left">Google Pay</span>
+        <span class="material-symbols-outlined text-gold/40 text-sm">chevron_right</span>
       </button>
 
-      <!-- Apple Pay — custom styled button -->
+      <!-- Apple Pay -->
       <button id="btn-applepay" hidden
-        class="w-full py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-3 transition-all"
-        style="background:#000;color:#fff;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.15-2.18 1.27-2.16 3.8.03 3.02 2.65 4.03 2.68 4.04l-.07.28zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-        Pay with Apple Pay
+        class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm hover:border-signature-teal/50 hover:bg-signature-teal/5 transition-all">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#F6F1E7"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.15-2.18 1.27-2.16 3.8.03 3.02 2.65 4.03 2.68 4.04l-.07.28zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        <span class="flex-1 text-left">Apple Pay</span>
+        <span class="material-symbols-outlined text-gold/40 text-sm">chevron_right</span>
       </button>
 
-      <!-- Config / error warning -->
-      <p id="paypal-config-warning" class="hidden text-center text-ivory/40 text-xs p-4 border border-gold/10 rounded-lg">
-        ⚙️ Configure your PayPal Client ID and Worker URL in <code>checkout.html</code> to enable payments.
+      <!-- SDK error (separate from config warning) -->
+      <p id="paypal-sdk-error" class="hidden text-center text-ivory/40 text-xs p-4 border border-gold/10 rounded-lg">
+        Unable to load payment methods. Please refresh the page or use Bank Transfer below.
       </p>
     </div>
 
@@ -366,121 +392,70 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
 
   // ── PayPal v6 SDK Init ────────────────────────────────────
 
+  function attachBtn(id, session) {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    btn.removeAttribute('hidden');
+    btn.addEventListener('click', async () => {
+      if (!validateEmail()) return;
+      try { await session.start({ presentationMode: 'auto' }, createOrder()); }
+      catch(e) { hideLoading(); console.error(e); }
+    });
+  }
+
   async function initPayPalV6() {
     const loadingEl = document.getElementById('payment-loading');
 
-    if (PAYPAL_CLIENT_ID === 'YOUR_PAYPAL_CLIENT_ID' || WORKER_URL === 'YOUR_WORKER_URL') {
-      loadingEl.classList.add('hidden');
-      document.getElementById('paypal-config-warning').classList.remove('hidden');
-      return;
-    }
-
     try {
-      const sdkInstance = await window.paypal.createInstance({
-        clientId:   PAYPAL_CLIENT_ID,
-        components: ['paypal-payments', 'venmo-payments', 'googlepay-payments', 'applepay-payments'],
-        pageType:   'checkout',
-        locale:     'en-US'
-      });
+      // Try loading all components; fall back to paypal-payments only if it fails
+      let sdkInstance;
+      try {
+        sdkInstance = await window.paypal.createInstance({
+          clientId:   PAYPAL_CLIENT_ID,
+          components: ['paypal-payments', 'venmo-payments', 'googlepay-payments', 'applepay-payments'],
+          pageType:   'checkout',
+          locale:     'en-US'
+        });
+      } catch(e) {
+        sdkInstance = await window.paypal.createInstance({
+          clientId: PAYPAL_CLIENT_ID,
+          components: ['paypal-payments'],
+          pageType:  'checkout'
+        });
+      }
 
       const methods = await sdkInstance.findEligibleMethods({ currencyCode: 'USD' });
       loadingEl.classList.add('hidden');
 
-      let anyEligible = false;
+      // PayPal + Card — always shown (card option appears inside the PayPal checkout modal)
+      const paypalSession = sdkInstance.createPayPalOneTimePaymentSession(buildSessionOptions());
+      attachBtn('btn-paypal', paypalSession);
+      attachBtn('btn-card',   paypalSession);
 
-      // ── PayPal ──
-      if (methods.isEligible('paypal')) {
-        anyEligible = true;
-        const session = sdkInstance.createPayPalOneTimePaymentSession(buildSessionOptions());
-        const btn = document.querySelector('paypal-button');
-        btn.removeAttribute('hidden');
-        btn.addEventListener('click', async () => {
-          if (!validateEmail()) return;
-          try { await session.start({ presentationMode: 'auto' }, createOrder()); }
-          catch(e) { hideLoading(); console.error(e); }
-        });
+      // Pay Later
+      if (methods.isEligible('paylater') && sdkInstance.createPayLaterOneTimePaymentSession) {
+        attachBtn('btn-paylater', sdkInstance.createPayLaterOneTimePaymentSession(buildSessionOptions()));
       }
 
-      // ── Pay Later ──
-      if (methods.isEligible('paylater')) {
-        anyEligible = true;
-        const details = methods.getDetails('paylater');
-        const session = sdkInstance.createPayLaterOneTimePaymentSession(buildSessionOptions());
-        const btn = document.querySelector('paypal-pay-later-button');
-        btn.productCode = details.productCode;
-        btn.countryCode = details.countryCode;
-        btn.removeAttribute('hidden');
-        btn.addEventListener('click', async () => {
-          if (!validateEmail()) return;
-          try { await session.start({ presentationMode: 'auto' }, createOrder()); }
-          catch(e) { hideLoading(); console.error(e); }
-        });
+      // Venmo (US only)
+      if (methods.isEligible('venmo') && sdkInstance.createVenmoOneTimePaymentSession) {
+        attachBtn('btn-venmo', sdkInstance.createVenmoOneTimePaymentSession(buildSessionOptions()));
       }
 
-      // ── PayPal Credit ──
-      if (methods.isEligible('credit')) {
-        anyEligible = true;
-        const details = methods.getDetails('credit');
-        const session = sdkInstance.createPayPalCreditOneTimePaymentSession(buildSessionOptions());
-        const btn = document.querySelector('paypal-credit-button');
-        btn.countryCode = details.countryCode;
-        btn.removeAttribute('hidden');
-        btn.addEventListener('click', async () => {
-          if (!validateEmail()) return;
-          try { await session.start({ presentationMode: 'auto' }, createOrder()); }
-          catch(e) { hideLoading(); console.error(e); }
-        });
+      // Google Pay
+      if (methods.isEligible('googlepay') && sdkInstance.createGooglePayOneTimePaymentSession) {
+        attachBtn('btn-googlepay', sdkInstance.createGooglePayOneTimePaymentSession(buildSessionOptions()));
       }
 
-      // ── Venmo (US only) ──
-      if (methods.isEligible('venmo')) {
-        anyEligible = true;
-        const session = sdkInstance.createVenmoOneTimePaymentSession(buildSessionOptions());
-        const btn = document.getElementById('btn-venmo');
-        btn.removeAttribute('hidden');
-        btn.addEventListener('click', async () => {
-          if (!validateEmail()) return;
-          try { await session.start({ presentationMode: 'auto' }, createOrder()); }
-          catch(e) { hideLoading(); console.error(e); }
-        });
-      }
-
-      // ── Google Pay ──
-      if (methods.isEligible('googlepay')) {
-        anyEligible = true;
-        const session = sdkInstance.createGooglePayOneTimePaymentSession(buildSessionOptions());
-        const btn = document.getElementById('btn-googlepay');
-        btn.removeAttribute('hidden');
-        btn.addEventListener('click', async () => {
-          if (!validateEmail()) return;
-          try { await session.start({ presentationMode: 'auto' }, createOrder()); }
-          catch(e) { hideLoading(); console.error(e); }
-        });
-      }
-
-      // ── Apple Pay ──
-      if (methods.isEligible('applepay')) {
-        anyEligible = true;
-        const session = sdkInstance.createApplePayOneTimePaymentSession(buildSessionOptions());
-        const btn = document.getElementById('btn-applepay');
-        btn.removeAttribute('hidden');
-        btn.addEventListener('click', async () => {
-          if (!validateEmail()) return;
-          try { await session.start({ presentationMode: 'auto' }, createOrder()); }
-          catch(e) { hideLoading(); console.error(e); }
-        });
-      }
-
-      if (!anyEligible) {
-        const warn = document.getElementById('paypal-config-warning');
-        warn.textContent = 'No digital payment methods are available in your region. Please use Bank Transfer below.';
-        warn.classList.remove('hidden');
+      // Apple Pay
+      if (methods.isEligible('applepay') && sdkInstance.createApplePayOneTimePaymentSession) {
+        attachBtn('btn-applepay', sdkInstance.createApplePayOneTimePaymentSession(buildSessionOptions()));
       }
 
     } catch(err) {
       console.error('PayPal v6 init failed:', err);
-      document.getElementById('payment-loading').classList.add('hidden');
-      document.getElementById('paypal-config-warning').classList.remove('hidden');
+      loadingEl.classList.add('hidden');
+      document.getElementById('paypal-sdk-error').classList.remove('hidden');
     }
   }
 
