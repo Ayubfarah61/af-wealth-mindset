@@ -100,8 +100,6 @@
     <h3 class="text-sm font-bold tracking-[0.2em] text-gold uppercase mb-2 flex items-center gap-2">
       <span class="material-symbols-outlined text-gold">account_balance_wallet</span> Payment Method
     </h3>
-    <p class="text-xs text-ivory/40 mb-6">Available payment methods are shown based on your device and location.</p>
-
     <!-- ── Digital payments via PayPal v6 ── -->
     <div id="digital-payment-section" class="space-y-3 mb-6">
 
@@ -111,15 +109,7 @@
         <span class="text-ivory/40 text-sm">Loading payment methods…</span>
       </div>
 
-      <!-- PayPal -->
-      <button id="btn-paypal" hidden
-        class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm hover:border-signature-teal/50 hover:bg-signature-teal/5 transition-all">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7.3 21H4.2l.5-3h3c3.2 0 5.5-1.4 6.4-4.3.6-2 .2-3.5-.9-4.5C14.8 10.4 16 12.3 15.3 15c-1 3.3-3.7 6-8 6z" fill="#003087"/><path d="M9.8 15.5H6.7l1.4-9h4.7c2.2 0 3.7.7 4.2 2.2.7 2.1-.6 4.5-3.4 5.5-.6.2-1.2.3-1.8.3H9.8z" fill="#009cde"/><path d="M12.8 5.5H8.1L6.7 15.5H9.8c.6 0 1.2-.1 1.8-.3 2.8-1 4.1-3.4 3.4-5.5C14.5 6.2 13 5.5 10.8 5.5h2z" fill="#012169"/></svg>
-        <span class="flex-1 text-left">Pay with PayPal</span>
-        <span class="material-symbols-outlined text-gold/40 text-sm">chevron_right</span>
-      </button>
-
-      <!-- Debit / Credit Card -->
+      <!-- Debit / Credit Card — shown first -->
       <button id="btn-card" hidden
         class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm hover:border-signature-teal/50 hover:bg-signature-teal/5 transition-all">
         <span class="material-symbols-outlined text-gold" style="font-size:20px">credit_card</span>
@@ -131,14 +121,19 @@
         </div>
       </button>
 
+      <!-- PayPal -->
+      <button id="btn-paypal" hidden
+        class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm hover:border-signature-teal/50 hover:bg-signature-teal/5 transition-all">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7.3 21H4.2l.5-3h3c3.2 0 5.5-1.4 6.4-4.3.6-2 .2-3.5-.9-4.5C14.8 10.4 16 12.3 15.3 15c-1 3.3-3.7 6-8 6z" fill="#003087"/><path d="M9.8 15.5H6.7l1.4-9h4.7c2.2 0 3.7.7 4.2 2.2.7 2.1-.6 4.5-3.4 5.5-.6.2-1.2.3-1.8.3H9.8z" fill="#009cde"/><path d="M12.8 5.5H8.1L6.7 15.5H9.8c.6 0 1.2-.1 1.8-.3 2.8-1 4.1-3.4 3.4-5.5C14.5 6.2 13 5.5 10.8 5.5h2z" fill="#012169"/></svg>
+        <span class="flex-1 text-left">Pay with PayPal</span>
+        <span class="material-symbols-outlined text-gold/40 text-sm">chevron_right</span>
+      </button>
+
       <!-- Pay Later -->
       <button id="btn-paylater" hidden
         class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm hover:border-signature-teal/50 hover:bg-signature-teal/5 transition-all">
         <span class="material-symbols-outlined text-gold" style="font-size:20px">schedule</span>
-        <div class="flex-1 text-left">
-          <span class="block">Pay Later</span>
-          <span class="text-xs font-normal text-ivory/40">Split into instalments</span>
-        </div>
+        <span class="flex-1 text-left">Pay Later</span>
         <span class="material-symbols-outlined text-gold/40 text-sm">chevron_right</span>
       </button>
 
@@ -392,31 +387,50 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
 
   // ── PayPal v6 SDK Init ────────────────────────────────────
 
-  function attachBtn(id, session) {
+  // Sessions are single-use — recreate one fresh on every click
+  function makeClickHandler(sdkInstance, sessionType, extraConfig) {
+    return async () => {
+      if (!validateEmail()) return;
+      try {
+        const session = sdkInstance[sessionType](buildSessionOptions());
+        if (extraConfig) Object.assign(session, extraConfig);
+        await session.start({ presentationMode: 'auto' }, createOrder());
+      } catch(e) {
+        hideLoading();
+        console.error(sessionType + ' error:', e);
+        const msg = e?.message || String(e);
+        if (msg.toLowerCase().includes('popup') || msg.toLowerCase().includes('blocked')) {
+          alert('Pop-up blocked. Please allow pop-ups for this site and try again.');
+        } else {
+          alert('Payment could not be started. Please try again or use Bank Transfer.\n\nError: ' + msg);
+        }
+      }
+    };
+  }
+
+  function showBtn(id, handler) {
     const btn = document.getElementById(id);
     if (!btn) return;
     btn.removeAttribute('hidden');
-    btn.addEventListener('click', async () => {
-      if (!validateEmail()) return;
-      try { await session.start({ presentationMode: 'auto' }, createOrder()); }
-      catch(e) { hideLoading(); console.error(e); }
-    });
+    btn.addEventListener('click', handler);
   }
 
   async function initPayPalV6() {
     const loadingEl = document.getElementById('payment-loading');
 
     try {
-      // Try loading all components; fall back to paypal-payments only if it fails
+      // Try all components first; fall back to paypal-payments only
       let sdkInstance;
       try {
         sdkInstance = await window.paypal.createInstance({
-          clientId:   PAYPAL_CLIENT_ID,
-          components: ['paypal-payments', 'venmo-payments', 'googlepay-payments', 'applepay-payments'],
-          pageType:   'checkout',
-          locale:     'en-US'
+          clientId:         PAYPAL_CLIENT_ID,
+          components:       ['paypal-payments', 'venmo-payments', 'googlepay-payments', 'applepay-payments'],
+          pageType:         'checkout',
+          locale:           'en-US',
+          clientMetadataId: crypto.randomUUID()
         });
       } catch(e) {
+        console.warn('Full component list failed, falling back to paypal-payments only:', e.message);
         sdkInstance = await window.paypal.createInstance({
           clientId: PAYPAL_CLIENT_ID,
           components: ['paypal-payments'],
@@ -427,29 +441,28 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
       const methods = await sdkInstance.findEligibleMethods({ currencyCode: 'USD' });
       loadingEl.classList.add('hidden');
 
-      // PayPal + Card — always shown (card option appears inside the PayPal checkout modal)
-      const paypalSession = sdkInstance.createPayPalOneTimePaymentSession(buildSessionOptions());
-      attachBtn('btn-paypal', paypalSession);
-      attachBtn('btn-card',   paypalSession);
+      // Card + PayPal — always shown; card option is inside the PayPal checkout modal
+      showBtn('btn-card',   makeClickHandler(sdkInstance, 'createPayPalOneTimePaymentSession'));
+      showBtn('btn-paypal', makeClickHandler(sdkInstance, 'createPayPalOneTimePaymentSession'));
 
       // Pay Later
       if (methods.isEligible('paylater') && sdkInstance.createPayLaterOneTimePaymentSession) {
-        attachBtn('btn-paylater', sdkInstance.createPayLaterOneTimePaymentSession(buildSessionOptions()));
+        showBtn('btn-paylater', makeClickHandler(sdkInstance, 'createPayLaterOneTimePaymentSession'));
       }
 
       // Venmo (US only)
       if (methods.isEligible('venmo') && sdkInstance.createVenmoOneTimePaymentSession) {
-        attachBtn('btn-venmo', sdkInstance.createVenmoOneTimePaymentSession(buildSessionOptions()));
+        showBtn('btn-venmo', makeClickHandler(sdkInstance, 'createVenmoOneTimePaymentSession'));
       }
 
       // Google Pay
       if (methods.isEligible('googlepay') && sdkInstance.createGooglePayOneTimePaymentSession) {
-        attachBtn('btn-googlepay', sdkInstance.createGooglePayOneTimePaymentSession(buildSessionOptions()));
+        showBtn('btn-googlepay', makeClickHandler(sdkInstance, 'createGooglePayOneTimePaymentSession'));
       }
 
       // Apple Pay
       if (methods.isEligible('applepay') && sdkInstance.createApplePayOneTimePaymentSession) {
-        attachBtn('btn-applepay', sdkInstance.createApplePayOneTimePaymentSession(buildSessionOptions()));
+        showBtn('btn-applepay', makeClickHandler(sdkInstance, 'createApplePayOneTimePaymentSession'));
       }
 
     } catch(err) {
