@@ -466,9 +466,13 @@ if (!SANDBOX_MODE) {
   function loadCardSDK() {
     return new Promise((resolve, reject) => {
       if (window._cardSdkLoaded) { resolve(); return; }
-      const base   = SANDBOX_MODE ? 'sandbox.' : '';
+      // Standard SDK always loads from paypal.com/sdk/js (sandbox vs live is
+      // determined by the client-id, NOT by a subdomain).
+      // data-namespace keeps it from clobbering window.paypal (used by v6).
+      const buyerCountry = SANDBOX_MODE ? '&buyer-country=US' : '';
       const script = document.createElement('script');
-      script.src   = `https://www.${base}paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&components=card-fields&currency=USD&intent=capture`;
+      script.setAttribute('data-namespace', 'paypalCard');
+      script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&components=card-fields&currency=USD&intent=capture${buyerCountry}`;
       script.onload  = () => { window._cardSdkLoaded = true; resolve(); };
       script.onerror = () => reject(new Error('Failed to load card SDK'));
       document.head.appendChild(script);
@@ -481,7 +485,9 @@ if (!SANDBOX_MODE) {
     const unavailEl = document.getElementById('card-fields-unavail');
     try {
       await loadCardSDK();
-      const cf = window.paypal.CardFields({
+      const ppCard = window.paypalCard;
+      if (!ppCard || !ppCard.CardFields) throw new Error('CardFields not in SDK');
+      const cf = ppCard.CardFields({
         style: {
           input: {
             'font-size':   '14px',
@@ -518,7 +524,10 @@ if (!SANDBOX_MODE) {
         }
       });
 
-      if (!cf.isEligible()) throw new Error('CardFields not eligible in this region/browser');
+      if (!cf.isEligible()) {
+        console.warn('CardFields.isEligible() = false. Enable "Advanced Credit and Debit Card Payments" on your PayPal app at developer.paypal.com');
+        throw new Error('CardFields not eligible');
+      }
 
       await cf.NumberField().render('#card-number-field');
       await cf.ExpiryField().render('#card-expiry-field');
