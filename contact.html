@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Contact Us | AF Wealth Mindset</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: { extend: { colors: { "midnight": "#0B1220", "ivory": "#F6F1E7", "gold": "#D7B46A", "signature-teal": "#1FE6D1", "background-dark": "#0B1220" }, fontFamily: { "display": ["Manrope", "sans-serif"] } } }
+  }
+</script>
+</head>
+<body class="dark:bg-background-dark font-display text-ivory antialiased">
+<div class="relative flex min-h-screen w-full flex-col">
+
+<!-- Header -->
+<header class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 bg-midnight/80 backdrop-blur-md border-b border-gold/10 lg:px-40">
+  <div class="flex-1">
+    <button onclick="history.back()" class="flex items-center gap-2 text-ivory/60 hover:text-gold transition-colors text-sm">
+      <span class="material-symbols-outlined" style="font-size:16px">arrow_back_ios</span> Back
+    </button>
+  </div>
+  <a href="/index.html" class="text-gold font-bold tracking-[0.15em] uppercase text-sm">AF Wealth Mindset</a>
+  <div class="flex-1"></div>
+</header>
+
+<main class="w-full max-w-[620px] mx-auto px-4 py-16 flex flex-col gap-10">
+
+  <!-- Heading -->
+  <div class="text-center flex flex-col items-center gap-3">
+    <span class="text-xs font-bold tracking-[0.3em] text-signature-teal uppercase">We'd love to hear from you</span>
+    <h1 class="text-3xl font-bold text-gold">Contact Us</h1>
+    <p class="text-ivory/50 text-sm leading-relaxed max-w-md">Have a question, complaint, or just want to reach out? Fill in the form below and we'll get back to you within 1 business day.</p>
+  </div>
+
+  <!-- Contact cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div class="bg-midnight border border-gold/10 rounded-xl p-5 flex items-center gap-4">
+      <span class="material-symbols-outlined text-gold">mail</span>
+      <div>
+        <p class="text-xs text-ivory/40 uppercase tracking-widest font-bold">Email</p>
+        <a href="mailto:contact@afwealthmindset.com" class="text-sm text-ivory hover:text-gold transition-colors">contact@afwealthmindset.com</a>
+      </div>
+    </div>
+    <div class="bg-midnight border border-gold/10 rounded-xl p-5 flex items-center gap-4">
+      <span class="material-symbols-outlined text-gold">schedule</span>
+      <div>
+        <p class="text-xs text-ivory/40 uppercase tracking-widest font-bold">Response Time</p>
+        <p class="text-sm text-ivory">Within 1 business day</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <section class="bg-midnight border border-gold/10 rounded-2xl p-8 flex flex-col gap-6">
+    <h2 class="text-sm font-bold tracking-[0.2em] text-gold uppercase flex items-center gap-2">
+      <span class="material-symbols-outlined text-gold" style="font-size:18px">edit_square</span>
+      Send a Message
+    </h2>
+
+    <!-- Success message (hidden by default) -->
+    <div id="form-success" class="hidden flex items-center gap-3 p-4 bg-signature-teal/10 border border-signature-teal/30 rounded-xl">
+      <span class="material-symbols-outlined text-signature-teal">check_circle</span>
+      <p class="text-signature-teal text-sm font-bold">Message sent! We'll get back to you within 1 business day.</p>
+    </div>
+
+    <!-- Error message (hidden by default) -->
+    <div id="form-error" class="hidden flex items-center gap-3 p-4 bg-red-900/20 border border-red-500/30 rounded-xl">
+      <span class="material-symbols-outlined text-red-400">error</span>
+      <p class="text-red-400 text-sm">Failed to send message. Please email us directly at <a href="mailto:contact@afwealthmindset.com" class="underline">contact@afwealthmindset.com</a>.</p>
+    </div>
+
+    <form id="contact-form" class="flex flex-col gap-5" novalidate>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-[0.1em] text-gold/60 mb-2">Full Name <span class="text-red-400">*</span></label>
+          <input id="contact-name" type="text" placeholder="Your name" required
+            class="w-full bg-midnight border border-gold/20 rounded-lg px-4 py-3 text-ivory placeholder:text-ivory/20 focus:border-signature-teal outline-none transition-all text-sm"/>
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-[0.1em] text-gold/60 mb-2">Email Address <span class="text-red-400">*</span></label>
+          <input id="contact-email" type="email" placeholder="your@email.com" required
+            class="w-full bg-midnight border border-gold/20 rounded-lg px-4 py-3 text-ivory placeholder:text-ivory/20 focus:border-signature-teal outline-none transition-all text-sm"/>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-[0.1em] text-gold/60 mb-2">Subject <span class="text-red-400">*</span></label>
+        <select id="contact-subject" required
+          class="w-full bg-midnight border border-gold/20 rounded-lg px-4 py-3 text-ivory focus:border-signature-teal outline-none transition-all text-sm appearance-none">
+          <option value="" disabled selected class="text-ivory/20">Select a subject…</option>
+          <option value="General Enquiry">General Enquiry</option>
+          <option value="Order / Purchase Issue">Order / Purchase Issue</option>
+          <option value="Refund Request">Refund Request</option>
+          <option value="Product Question">Product Question</option>
+          <option value="Complaint">Complaint</option>
+          <option value="Partnership / Collaboration">Partnership / Collaboration</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-[0.1em] text-gold/60 mb-2">Message <span class="text-red-400">*</span></label>
+        <textarea id="contact-message" rows="5" placeholder="Tell us how we can help…" required
+          class="w-full bg-midnight border border-gold/20 rounded-lg px-4 py-3 text-ivory placeholder:text-ivory/20 focus:border-signature-teal outline-none transition-all text-sm resize-none"></textarea>
+      </div>
+
+      <button id="contact-submit" type="submit"
+        class="w-full py-4 bg-gold hover:brightness-110 text-midnight font-bold rounded-xl transition-all flex items-center justify-center gap-2 text-sm tracking-wide">
+        <span class="material-symbols-outlined text-sm">send</span>
+        <span id="submit-label">Send Message</span>
+      </button>
+
+    </form>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="w-full bg-midnight py-12 border-t border-gold/10 mt-8">
+  <div class="max-w-[620px] mx-auto flex flex-col items-center gap-6">
+    <span style="color:#1FE6D1;font-size:0.75rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;">Follow Us</span>
+    <div style="display:flex;gap:28px;align-items:center;">
+      <a href="https://www.tiktok.com/@afwealthsystems" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-tiktok"></i></a>
+      <a href="https://www.youtube.com/@afwealthmindset" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-youtube"></i></a>
+      <a href="https://www.instagram.com/afwealthmindset/" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://www.facebook.com/AFWealthMidnset" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-facebook"></i></a>
+      <a href="https://x.com/AFWealth67" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-x-twitter"></i></a>
+    </div>
+    <div class="flex gap-6 text-xs text-ivory/30">
+      <a href="/pricing.html" class="hover:text-gold transition-colors">Pricing</a>
+      <a href="/terms.html" class="hover:text-gold transition-colors">Terms</a>
+      <a href="/privacy.html" class="hover:text-gold transition-colors">Privacy</a>
+      <a href="/refund.html" class="hover:text-gold transition-colors">Refunds</a>
+      <a href="/contact.html" class="hover:text-gold transition-colors">Contact</a>
+    </div>
+    <p class="text-ivory/30 text-xs tracking-widest uppercase">© 2025 AF Wealth Mindset. All Rights Reserved.</p>
+  </div>
+</footer>
+
+<script>
+  const EMAILJS_USER_ID     = 'ylGXXn8CD-YXxPyFm';
+  const EMAILJS_SERVICE_ID  = 'service_046t8c7';
+  // Create a separate EmailJS template for contact messages
+  // Template variables: from_name, from_email, subject, message, to_email
+  const CONTACT_TEMPLATE_ID = 'template_contact'; // ← you need to create this in EmailJS
+  const CONTACT_EMAIL       = 'contact@afwealthmindset.com';
+
+  emailjs.init({ publicKey: EMAILJS_USER_ID });
+
+  document.getElementById('contact-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const name    = document.getElementById('contact-name').value.trim();
+    const email   = document.getElementById('contact-email').value.trim();
+    const subject = document.getElementById('contact-subject').value;
+    const message = document.getElementById('contact-message').value.trim();
+
+    // Basic validation
+    if (!name || !email || !subject || !message) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+    if (!email.includes('@')) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+    const btn   = document.getElementById('contact-submit');
+    const label = document.getElementById('submit-label');
+    btn.disabled = true;
+    label.textContent = 'Sending…';
+
+    try {
+      await emailjs.send(EMAILJS_SERVICE_ID, CONTACT_TEMPLATE_ID, {
+        from_name:  name,
+        from_email: email,
+        subject:    subject,
+        message:    message,
+        to_email:   CONTACT_EMAIL
+      });
+      document.getElementById('form-success').classList.remove('hidden');
+      document.getElementById('contact-form').reset();
+    } catch(err) {
+      console.error('Contact form error:', err);
+      document.getElementById('form-error').classList.remove('hidden');
+    } finally {
+      btn.disabled = false;
+      label.textContent = 'Send Message';
+    }
+  });
+</script>
+</body>
+</html>
