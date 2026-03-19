@@ -59,14 +59,28 @@ var PAGES = {
     image: '/images/product2.png',
     originalPrice: '$14.99',
     price: '$6.99',
-    description: 'You\'re earning money — maybe even good money — and somehow there\'s still nothing left at the end of the month. You\'re not broke. You\'re not stupid. You\'re just running without a system. The Money Control Code is a step-by-step PDF guide that reveals why willpower NEVER works with money — and replaces it with a structural 4-pillar system that runs on autopilot. No new income needed. No extreme sacrifice. Just a proven system that puts YOU in command of every dollar you earn — permanently.',
+    description: 'A System for Building Wealth Through Structure, Not Willpower.',
     checkoutId: 2,
     features: [
-      { icon: 'menu_book',     title: '6 In-Depth Chapters',                 desc: 'Expose, audit, allocate, anchor, reinforce, and eliminate debt — step by step' },
-      { icon: 'description',   title: 'Personal Financial Rule Sheet',        desc: 'Your printable written financial constitution — included inside the PDF' },
-      { icon: 'checklist',     title: 'Weekly Financial Review Template',     desc: '15-minute weekly ritual to keep your money on track — included inside the PDF' },
-      { icon: 'verified_user', title: '14-Day Money-Back Guarantee',          desc: 'Zero risk — every penny back, no questions asked' }
-    ]
+      { icon: 'menu_book',     title: '6 In-Depth Chapters',              desc: 'Expose, audit, allocate, anchor, reinforce, and eliminate debt — step by step' },
+      { icon: 'description',   title: 'Personal Financial Rule Sheet',    desc: 'Your printable written financial constitution — included inside the PDF' },
+      { icon: 'checklist',     title: 'Weekly Financial Review Template', desc: '15-minute weekly ritual to keep your money on track — included inside the PDF' },
+      { icon: 'verified_user', title: '14-Day Money-Back Guarantee',      desc: 'Zero risk — every penny back, no questions asked' }
+    ],
+    salesPage: {
+      headline: 'From Financial Chaos to Structural Authority',
+      hardTruth: 'You earned more money last year. So why does it feel like you have less? This isn\'t random. It\'s a symptom. Your income is not your problem. <span style="color:#e05252;">Your system is.</span>',
+      problem: ['Earning more but staying broke', 'Money vanishes without reason', 'One paycheck from disaster', 'Motivation never lasts', 'Debt feels inescapable', 'No control over finances'],
+      solution: ['Replace willpower with systems', 'Expose every financial leak', 'Allocate money before it arrives', 'Lock in discipline with rules', 'Review and reinforce weekly', 'Debt elimination on YOUR terms'],
+      before: { title: 'Before: The Illusion Zone', items: ['$15,000/month income', '$14,500 in expenses', '3-day financial buffer', 'Constant stress & anxiety', 'Rich on paper, poor in reality', 'One emergency = crisis'] },
+      after:  { title: 'After: Real Authority',     items: ['$5,000/month income (same system)', '$3,000 in expenses (by design)', '2-month financial buffer', 'Sleep soundly every night', 'Actual wealth building', 'Prepared for anything'] },
+      pillars: [
+        { num: 'PILLAR 1', name: 'Expose',    desc: 'See the reality. Audit the leaks. Face the math. Understand why you\'re really broke.' },
+        { num: 'PILLAR 2', name: 'Allocate',  desc: 'Give every dollar a job. Design the flow. Split money before it arrives.' },
+        { num: 'PILLAR 3', name: 'Anchor',    desc: 'Lock the system. Set rules. Write your financial constitution.' },
+        { num: 'PILLAR 4', name: 'Reinforce', desc: 'Maintain the machine. Weekly reviews. Monthly recalibration. Stress test your system.' }
+      ]
+    }
   },
   3: {
     name: 'Personal Finance Tracker',
@@ -107,6 +121,126 @@ if (typeof initHeader === 'function') initHeader();
 
 // Build page
 var html = '';
+
+// ---- SALES PAGE LAYOUT (product 2) ----
+if (p.salesPage) {
+  var sp = p.salesPage;
+
+  // Hero block
+  html += '<div style="margin-top:16px;margin-bottom:32px;padding:40px 24px;text-align:center;background:linear-gradient(160deg,rgba(11,18,32,0.95),rgba(31,230,209,0.04));border:1px solid rgba(215,180,106,0.12);border-radius:16px;">'
+    + '<p style="font-size:0.7rem;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:rgba(246,241,231,0.4);margin-bottom:14px;">THE MONEY CONTROL CODE</p>'
+    + '<h1 style="font-size:1.9rem;font-weight:800;color:#F6F1E7;line-height:1.25;margin-bottom:14px;">' + sp.headline + '</h1>'
+    + '<p style="color:rgba(246,241,231,0.5);font-size:0.95rem;">' + p.description + '</p>'
+    + '</div>';
+
+  // Hard Truth
+  html += '<div style="border-left:3px solid #e05252;padding:16px 20px;background:rgba(224,82,82,0.06);border-radius:0 10px 10px 0;margin-bottom:28px;">'
+    + '<p style="font-size:0.85rem;line-height:1.7;color:rgba(246,241,231,0.8);">'
+    + '<span style="color:#e05252;font-weight:700;">⚠ The Hard Truth: </span>' + sp.hardTruth + '</p>'
+    + '</div>';
+
+  // Problem / Solution
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">';
+  // Problem
+  html += '<div style="padding:20px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);border-radius:12px;">'
+    + '<p style="font-weight:700;color:#F6F1E7;margin-bottom:14px;font-size:0.9rem;">The Problem</p>';
+  for (var i = 0; i < sp.problem.length; i++) {
+    html += '<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;">'
+      + '<span style="color:#e05252;font-size:0.75rem;margin-top:3px;flex-shrink:0;">✕</span>'
+      + '<p style="color:rgba(246,241,231,0.6);font-size:0.78rem;line-height:1.5;">' + sp.problem[i] + '</p>'
+      + '</div>';
+  }
+  html += '</div>';
+  // Solution
+  html += '<div style="padding:20px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);border-radius:12px;">'
+    + '<p style="font-weight:700;color:#F6F1E7;margin-bottom:14px;font-size:0.9rem;">The Solution</p>';
+  for (var i = 0; i < sp.solution.length; i++) {
+    html += '<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;">'
+      + '<span style="color:#1FE6D1;font-size:0.75rem;margin-top:3px;flex-shrink:0;">✓</span>'
+      + '<p style="color:rgba(246,241,231,0.6);font-size:0.78rem;line-height:1.5;">' + sp.solution[i] + '</p>'
+      + '</div>';
+  }
+  html += '</div></div>';
+
+  // Before / After
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px;">';
+  // Before
+  html += '<div style="padding:20px;background:rgba(224,82,82,0.05);border:1px solid rgba(224,82,82,0.25);border-radius:12px;">'
+    + '<p style="font-weight:700;color:#e05252;margin-bottom:14px;font-size:0.82rem;">' + sp.before.title + '</p>';
+  for (var i = 0; i < sp.before.items.length; i++) {
+    html += '<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;">'
+      + '<span style="color:#e05252;font-size:0.75rem;margin-top:3px;flex-shrink:0;">✕</span>'
+      + '<p style="color:rgba(246,241,231,0.6);font-size:0.78rem;line-height:1.5;">' + sp.before.items[i] + '</p>'
+      + '</div>';
+  }
+  html += '</div>';
+  // After
+  html += '<div style="padding:20px;background:rgba(31,230,209,0.05);border:1px solid rgba(31,230,209,0.25);border-radius:12px;">'
+    + '<p style="font-weight:700;color:#1FE6D1;margin-bottom:14px;font-size:0.82rem;">' + sp.after.title + '</p>';
+  for (var i = 0; i < sp.after.items.length; i++) {
+    html += '<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;">'
+      + '<span style="color:#1FE6D1;font-size:0.75rem;margin-top:3px;flex-shrink:0;">✓</span>'
+      + '<p style="color:rgba(246,241,231,0.6);font-size:0.78rem;line-height:1.5;">' + sp.after.items[i] + '</p>'
+      + '</div>';
+  }
+  html += '</div></div>';
+
+  // Price + CTA
+  html += '<div style="text-align:center;margin-bottom:20px;">'
+    + '<span style="color:rgba(246,241,231,0.35);text-decoration:line-through;font-size:1.1rem;margin-right:10px;">' + p.originalPrice + '</span>'
+    + '<span style="color:#D7B46A;font-weight:800;font-size:1.8rem;">' + p.price + '</span>'
+    + '</div>';
+  html += '<button onclick="window.location.href=\'/checkout.html?id=' + p.checkoutId + '\'" '
+    + 'style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:18px;background:#1FE6D1;color:#0B1220;border-radius:12px;font-weight:800;font-size:1.1rem;margin-bottom:12px;cursor:pointer;border:none;">'
+    + '<span class="material-symbols-outlined">download</span> Get Access Now — ' + p.price + '</button>';
+  html += '<p style="text-align:center;color:rgba(246,241,231,0.25);font-size:0.75rem;margin-bottom:32px;">This is a digital product. Delivered instantly to your email after purchase.</p>';
+
+  // Four Pillars
+  html += '<h3 style="text-align:center;color:#D7B46A;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;font-size:0.8rem;margin-bottom:20px;">Inside This Book: The Four Pillars</h3>';
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">';
+  for (var i = 0; i < sp.pillars.length; i++) {
+    var pl = sp.pillars[i];
+    html += '<div style="padding:20px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);border-radius:12px;">'
+      + '<p style="font-size:0.65rem;font-weight:700;letter-spacing:0.15em;color:#1FE6D1;text-transform:uppercase;margin-bottom:6px;">' + pl.num + '</p>'
+      + '<p style="font-weight:700;color:#F6F1E7;font-size:0.95rem;margin-bottom:8px;">' + pl.name + '</p>'
+      + '<p style="color:rgba(246,241,231,0.45);font-size:0.78rem;line-height:1.6;">' + pl.desc + '</p>'
+      + '</div>';
+  }
+  html += '</div>';
+
+  // Guarantee note
+  html += '<div style="display:flex;align-items:flex-start;gap:12px;padding:16px;background:rgba(31,230,209,0.05);border:1px solid rgba(31,230,209,0.2);border-radius:10px;margin-bottom:16px;">'
+    + '<span class="material-symbols-outlined" style="color:#1FE6D1;flex-shrink:0;">verified_user</span>'
+    + '<p style="color:rgba(246,241,231,0.7);font-size:0.8rem;line-height:1.6;"><strong style="color:#1FE6D1;">14-Day Money-Back Guarantee:</strong> Apply the system for 14 days. If you don\'t see at least one financial leak you didn\'t know about, or can\'t allocate your first month\'s income, we\'ll refund you completely. No questions asked.</p>'
+    + '</div>';
+
+  // Paddle trust
+  html += '<p style="text-align:center;color:rgba(246,241,231,0.3);font-size:0.72rem;margin-bottom:28px;">🔒 Payments are securely processed by Paddle</p>';
+
+  // Footer
+  html += '<div style="border-top:1px solid rgba(215,180,106,0.1);padding-top:36px;text-align:center;">'
+    + '<p style="color:#1FE6D1;font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px;">Follow Us</p>'
+    + '<div style="display:flex;justify-content:center;gap:28px;margin-bottom:20px;align-items:center;">'
+    + '<a href="https://www.tiktok.com/@afwealthsystems" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-tiktok"></i></a>'
+    + '<a href="https://www.youtube.com/@afwealthmindset" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-youtube"></i></a>'
+    + '<a href="https://www.instagram.com/afwealthmindset/" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-instagram"></i></a>'
+    + '<a href="https://www.facebook.com/AFWealthMidnset" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-facebook"></i></a>'
+    + '<a href="https://x.com/AFWealth67" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-x-twitter"></i></a>'
+    + '</div>'
+    + '<div style="display:flex;justify-content:center;gap:20px;margin-bottom:12px;">'
+    + '<a href="/terms.html" style="color:rgba(246,241,231,0.25);font-size:0.7rem;text-decoration:none;">Terms</a>'
+    + '<a href="/privacy.html" style="color:rgba(246,241,231,0.25);font-size:0.7rem;text-decoration:none;">Privacy</a>'
+    + '<a href="/refund.html" style="color:rgba(246,241,231,0.25);font-size:0.7rem;text-decoration:none;">Refunds</a>'
+    + '<a href="/contact.html" style="color:rgba(246,241,231,0.25);font-size:0.7rem;text-decoration:none;">Contact</a>'
+    + '</div>'
+    + '<p style="color:rgba(246,241,231,0.2);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;">© 2025 AF Wealth Mindset. All Rights Reserved.</p>'
+    + '</div>';
+
+  document.getElementById('page-main').innerHTML = html;
+
+} else {
+
+// ---- DEFAULT PAGE LAYOUT ----
 
 // Hero image
 html += '<div style="margin-top:16px;margin-bottom:28px;">'
@@ -234,6 +368,8 @@ html += '<div style="border-top:1px solid rgba(215,180,106,0.1);padding-top:36px
   + '</div>';
 
 document.getElementById('page-main').innerHTML = html;
+
+} // end default layout
 
 // Notify form handler
 var nf = document.getElementById('notify-form');
