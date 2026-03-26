@@ -79,7 +79,9 @@ var PAGES = {
         { num: 'FEATURE 2', name: 'Automatic Alerts',  desc: 'Built-in warnings flag overspending instantly. Stay on track automatically.' },
         { num: 'FEATURE 3', name: 'Complete Coverage', desc: '8 expense categories + savings + debt tracking. Everything on one sheet.' },
         { num: 'FEATURE 4', name: 'Works in Excel',    desc: 'No subscriptions. No apps. No internet needed. One-time purchase, forever access.' }
-      ]
+      ],
+      ctaText: 'GET YOUR BUDGET PLANNER NOW',
+      guaranteeText: 'Download it, use it, see your entire budget laid out. If it doesn\'t work for you, get a full refund. Zero risk.'
     }
   },
   3: {
@@ -104,11 +106,13 @@ var PAGES = {
       before: { title: 'Before: Financial Fog', items: ['$50,000 income', 'No cash visibility', 'Expenses scattered everywhere', 'No idea where money went', 'Constantly surprised by low balance', 'Making decisions blind'] },
       after:  { title: 'After: Complete Clarity',     items: ['$50,000 income (same)', 'Real-time cash dashboard', 'All expenses organized', 'See exact cash flow trends', 'Predict future cash position', 'Make informed financial decisions'] },
       pillars: [
-        { num: 'FEATURE 1', name: 'KPI Dashboard',      desc: 'Total Income, Total Outflow, Net Cash Flow, Monthly Net, Cash Growth %, Best Month — all at a glance.' },
-        { num: 'FEATURE 2', name: 'Cash Balance Chart',  desc: 'Beautiful line chart shows how your cash position changes month by month throughout the year.' },
-        { num: 'FEATURE 3', name: 'Inflows vs Outflows', desc: 'Side-by-side bar chart compares your income and expenses for every month instantly.' },
+        { num: 'FEATURE 1', name: 'Cash Balance Chart',  desc: 'Beautiful line chart shows how your cash position changes month by month throughout the year.' },
+        { num: 'FEATURE 2', name: 'Inflows vs Outflows', desc: 'Side-by-side bar chart compares your income and expenses for every month instantly.' },
+        { num: 'FEATURE 3', name: 'Expense Breakdown',   desc: 'Pie chart breaks down where your money actually goes by category.' },
         { num: 'FEATURE 4', name: 'Works in Excel',      desc: 'No subscriptions. No apps. No internet needed. One-time purchase, forever access.' }
-      ]
+      ],
+      ctaText: 'GET YOUR CASH FLOW DASHBOARD NOW',
+      guaranteeText: 'Download it, watch your cash flow come alive. If it doesn\'t give you clarity, full refund. Zero risk.'
     }
   },
   4: {
@@ -137,7 +141,9 @@ var PAGES = {
         { num: 'FEATURE 2', name: 'Balance Over Time',     desc: 'Beautiful chart shows your total debt shrinking month by month. Watch yourself win.' },
         { num: 'FEATURE 3', name: 'Debt Composition',      desc: 'Pie chart breaks down what you owe on each debt type. Know exactly where you stand.' },
         { num: 'FEATURE 4', name: 'Works in Excel',        desc: 'No subscriptions. No apps. No internet needed. One-time purchase, forever access.' }
-      ]
+      ],
+      ctaText: 'GET YOUR DEBT PAYOFF DASHBOARD NOW',
+      guaranteeText: 'Download it, watch your debt shrink. See the finish line. If it doesn\'t motivate you, full refund. Zero risk.'
     }
   }
 };
@@ -231,7 +237,7 @@ if (p.salesPage) {
   
   html += '<button onclick="window.location.href=\'/checkout.html?id=' + p.checkoutId + '\'" '
     + 'style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:18px;background:#1FE6D1;color:#0B1220;border-radius:12px;font-weight:800;font-size:1.1rem;margin-bottom:28px;cursor:pointer;border:none;">'
-    + '<span class="material-symbols-outlined">download</span> GET YOUR BUDGET PLANNER NOW — ' + p.price + '</button>';
+    + '<span class="material-symbols-outlined">download</span> ' + (sp.ctaText || 'GET ACCESS NOW') + ' — ' + p.price + '</button>';
   html += '<p style="text-align:center;color:rgba(246,241,231,0.25);font-size:0.75rem;margin-bottom:32px;">This is a digital product. Delivered instantly to your email after purchase.</p>';
 
   // Four Features/Pillars
@@ -250,7 +256,7 @@ if (p.salesPage) {
   // Guarantee note
   html += '<div style="display:flex;align-items:flex-start;gap:12px;padding:16px;background:rgba(31,230,209,0.05);border:1px solid rgba(31,230,209,0.2);border-radius:10px;margin-bottom:16px;">'
     + '<span class="material-symbols-outlined" style="color:#1FE6D1;flex-shrink:0;">verified_user</span>'
-    + '<p style="color:rgba(246,241,231,0.7);font-size:0.8rem;line-height:1.6;"><strong style="color:#1FE6D1;">14-Day Money-Back Guarantee:</strong> Download it, watch your cash flow come alive. If it doesn\'t give you clarity, full refund. Zero risk.</p>'
+    + '<p style="color:rgba(246,241,231,0.7);font-size:0.8rem;line-height:1.6;"><strong style="color:#1FE6D1;">14-Day Money-Back Guarantee:</strong> ' + (sp.guaranteeText || 'Try it risk-free. If not satisfied, full refund. Zero risk.') + '</p>'
     + '</div>';
 
   // Paddle trust
