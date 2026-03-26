@@ -190,9 +190,16 @@ if (p.salesPage) {
     + '<span style="color:rgba(246,241,231,0.35);text-decoration:line-through;font-size:1.1rem;margin-right:10px;">' + p.originalPrice + '</span>'
     + '<span style="color:#D7B46A;font-weight:800;font-size:1.8rem;">' + p.price + '</span>'
     + '</div>';
+  
+  // One-Time Payment emphasis
+  html += '<div style="background:rgba(31,230,209,0.08);border:2px solid rgba(215,180,106,0.3);border-radius:12px;padding:20px;margin-bottom:24px;text-align:center;">'
+    + '<p style="color:#D7B46A;font-weight:700;font-size:0.95rem;margin-bottom:8px;">ONE-TIME PAYMENT</p>'
+    + '<p style="color:#1FE6D1;font-size:0.85rem;font-weight:600;">No subscriptions • No recurring fees • Forever yours</p>'
+    + '</div>';
+  
   html += '<button onclick="window.location.href=\'/checkout.html?id=' + p.checkoutId + '\'" '
-    + 'style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:18px;background:#1FE6D1;color:#0B1220;border-radius:12px;font-weight:800;font-size:1.1rem;margin-bottom:12px;cursor:pointer;border:none;">'
-    + '<span class="material-symbols-outlined">download</span> Get Access Now — ' + p.price + '</button>';
+    + 'style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:18px;background:#1FE6D1;color:#0B1220;border-radius:12px;font-weight:800;font-size:1.1rem;margin-bottom:28px;cursor:pointer;border:none;">'
+    + '<span class="material-symbols-outlined">download</span> GET YOUR BUDGET PLANNER NOW — ' + p.price + '</button>';
   html += '<p style="text-align:center;color:rgba(246,241,231,0.25);font-size:0.75rem;margin-bottom:32px;">This is a digital product. Delivered instantly to your email after purchase.</p>';
 
   // Four Pillars
@@ -347,6 +354,34 @@ if (p.checkoutId) {
     + '<p style="color:rgba(246,241,231,0.4);font-size:0.75rem;margin-top:4px;">Protected by our partner\'s platform.</p>'
     + '</div></div>';
 }
+
+// Who This Is For - Persona cards
+html += '<div style="margin-bottom:40px;">'
+  + '<h3 style="text-align:center;color:#D7B46A;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;font-size:0.8rem;margin-bottom:24px;">Who This Is For</h3>'
+  + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">'
+  // Persona 1
+  + '<div style="padding:16px;text-align:center;border-radius:10px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);">'
+  + '<p style="font-size:1.8rem;margin-bottom:8px;">💰</p>'
+  + '<p style="font-weight:700;color:#F6F1E7;font-size:0.85rem;">Living Paycheck<br/>to Paycheck</p>'
+  + '</div>'
+  // Persona 2
+  + '<div style="padding:16px;text-align:center;border-radius:10px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);">'
+  + '<p style="font-size:1.8rem;margin-bottom:8px;">📚</p>'
+  + '<p style="font-weight:700;color:#F6F1E7;font-size:0.85rem;">Paying Off Debt<br/>(Student/Credit)</p>'
+  + '</div>'
+  + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">'
+  // Persona 3
+  + '<div style="padding:16px;text-align:center;border-radius:10px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);">'
+  + '<p style="font-size:1.8rem;margin-bottom:8px;">🏦</p>'
+  + '<p style="font-weight:700;color:#F6F1E7;font-size:0.85rem;">Building Emergency<br/>Fund or Retirement</p>'
+  + '</div>'
+  // Persona 4
+  + '<div style="padding:16px;text-align:center;border-radius:10px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);">'
+  + '<p style="font-size:1.8rem;margin-bottom:8px;">🚀</p>'
+  + '<p style="font-weight:700;color:#F6F1E7;font-size:0.85rem;">Side Hustler<br/>Multiple Income</p>'
+  + '</div>'
+  + '</div>'
+  + '</div>';
 
 // Footer
 html += '<div style="border-top:1px solid rgba(215,180,106,0.1);padding-top:36px;text-align:center;">'
