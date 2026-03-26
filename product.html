@@ -83,17 +83,33 @@ var PAGES = {
     }
   },
   3: {
-    name: 'Personal Finance Tracker',
-    badge: 'Coming Soon',
+    name: 'Executive Cash Flow Dashboard | Excel Template',
+    badge: 'New',
     image: '/images/logo.png',
-    comingSoon: true,
-    description: 'A comprehensive personal finance tracking system to manage your income, expenses, savings goals and investments — all in one place. Coming soon.',
+    originalPrice: '$14.99',
+    price: '$9.99',
+    description: 'See your complete cash flow at a glance. Track income, expenses, and net cash flow with 6 automatic charts and KPI cards.',
+    checkoutId: 3,
     features: [
-      { icon: 'account_balance_wallet', title: 'Income and Expense Tracking', desc: 'Monitor every dollar in and out' },
-      { icon: 'savings',                title: 'Savings Goal Planner',        desc: 'Set and hit your financial milestones' },
-      { icon: 'trending_up',            title: 'Investment Dashboard',        desc: 'See your net worth grow over time' },
-      { icon: 'notifications',          title: 'Smart Alerts',                desc: 'Never miss a bill or overspend again' }
-    ]
+      { icon: 'dashboard',         title: 'Executive Dashboard',           desc: '6 KPI cards + 4 charts update instantly as you type' },
+      { icon: 'trending_up',       title: 'Cash Balance Trajectory',       desc: 'See your cash position grow or decline month by month' },
+      { icon: 'bar_chart',         title: 'Inflows vs Outflows',          desc: 'Visualize income vs expenses side by side for 12 months' },
+      { icon: 'verified_user',     title: '14-Day Money-Back Guarantee',   desc: 'Zero risk — every penny back, no questions asked' }
+    ],
+    salesPage: {
+      headline: 'See Your Cash Flow Like a CEO',
+      hardTruth: 'You track expenses. You know your income. But do you actually see your cash flow? Most people don\'t. <span style="color:#e05252;">That\'s why they feel broke no matter how much they earn.</span>',
+      problem: ['Income goes up but cash position stays flat', 'No visibility into monthly cash trends', 'Can\'t predict when cash runs out', 'Expense breakdown is confusing', 'No dashboard to monitor progress', 'Spreadsheets don\'t talk to each other'],
+      solution: ['Automatic dashboard shows real-time cash position', 'Track 12 months of cash flow at once', 'See exactly when and why cash changes', 'Expense breakdown pie chart included', '6 KPI cards update instantly', 'Charts do all the heavy lifting'],
+      before: { title: 'Before: Financial Fog', items: ['$50,000 income', 'No cash visibility', 'Expenses scattered everywhere', 'No idea where money went', 'Constantly surprised by low balance', 'Making decisions blind'] },
+      after:  { title: 'After: Complete Clarity',     items: ['$50,000 income (same)', 'Real-time cash dashboard', 'All expenses organized', 'See exact cash flow trends', 'Predict future cash position', 'Make informed financial decisions'] },
+      pillars: [
+        { num: 'FEATURE 1', name: 'KPI Dashboard',      desc: 'Total Income, Total Outflow, Net Cash Flow, Monthly Net, Cash Growth %, Best Month — all at a glance.' },
+        { num: 'FEATURE 2', name: 'Cash Balance Chart',  desc: 'Beautiful line chart shows how your cash position changes month by month throughout the year.' },
+        { num: 'FEATURE 3', name: 'Inflows vs Outflows', desc: 'Side-by-side bar chart compares your income and expenses for every month instantly.' },
+        { num: 'FEATURE 4', name: 'Works in Excel',      desc: 'No subscriptions. No apps. No internet needed. One-time purchase, forever access.' }
+      ]
+    }
   },
   4: {
     name: 'Small Business Bookkeeping System',
