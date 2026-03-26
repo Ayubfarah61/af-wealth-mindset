@@ -112,17 +112,33 @@ var PAGES = {
     }
   },
   4: {
-    name: 'Small Business Bookkeeping System',
-    badge: 'Coming Soon',
-    image: '/images/logo.png',
-    comingSoon: true,
-    description: 'A complete bookkeeping system built for small business owners. Manage invoices, expenses, payroll, and tax-ready reports without an accountant. Coming soon.',
+    name: 'Debt Payoff Dashboard | Excel Template',
+    badge: 'New',
+    image: '/images/product4.png',
+    originalPrice: '$14.99',
+    price: '$9.99',
+    description: 'Visualize your entire debt payoff journey. Track principal paid, interest accrued, and see exactly when you\'ll be debt-free.',
+    checkoutId: 4,
     features: [
-      { icon: 'receipt_long',    title: 'Invoice Management', desc: 'Create and send professional invoices' },
-      { icon: 'account_balance', title: 'Expense Tracking',   desc: 'Categorize and monitor all business costs' },
-      { icon: 'groups',          title: 'Payroll Ready',      desc: 'Simplified payroll for small teams' },
-      { icon: 'description',     title: 'Tax-Ready Reports',  desc: 'Export clean reports for your accountant' }
-    ]
+      { icon: 'trending_down',     title: 'Total Debt Balance Tracker',     desc: 'Watch your debt shrink month by month with automatic charts' },
+      { icon: 'donut_large',       title: 'Debt Composition Breakdown',     desc: 'See exactly how much you owe on each debt type' },
+      { icon: 'compare_arrows',    title: 'Starting vs Current Balance',    desc: 'Track progress on all debts side by side' },
+      { icon: 'verified_user',     title: '14-Day Money-Back Guarantee',    desc: 'Zero risk — every penny back, no questions asked' }
+    ],
+    salesPage: {
+      headline: 'Stop Drowning in Debt. Start Seeing the Light',
+      hardTruth: 'You have debt. Multiple debts probably. Student loans, credit cards, car payment, medical bills. You make payments but don\'t see progress. <span style="color:#e05252;">That feeling of being trapped is exactly why debt destroys dreams.</span>',
+      problem: ['No visibility into total debt', 'Don\'t know which debt to attack first', 'Payments feel pointless', 'Can\'t see the finish line', 'Interest keeps compounding', 'Debt strategy is scattered'],
+      solution: ['Automatic dashboard shows entire debt picture', 'Track every debt type separately', 'See exactly how much goes to principal vs interest', 'Know your debt payoff date', 'Watch progress month by month', 'Make intelligent payoff decisions'],
+      before: { title: 'Before: Drowning', items: ['$75,000+ in debt', 'Making minimum payments', 'No payoff timeline', 'Don\'t know the breakdown', 'Interest eating most payments', 'Feeling hopeless'] },
+      after:  { title: 'After: Empowered',     items: ['$75,000 - tracked completely', 'Strategic payment plan', 'Debt-free date visible', 'Know what\'s on each card', 'Watch principal grow faster', 'See the finish line'] },
+      pillars: [
+        { num: 'FEATURE 1', name: 'Debt Dashboard',        desc: 'Total debt, current balance, paid YTD, interest accrued, net reduction — all at a glance.' },
+        { num: 'FEATURE 2', name: 'Balance Over Time',     desc: 'Beautiful chart shows your total debt shrinking month by month. Watch yourself win.' },
+        { num: 'FEATURE 3', name: 'Debt Composition',      desc: 'Pie chart breaks down what you owe on each debt type. Know exactly where you stand.' },
+        { num: 'FEATURE 4', name: 'Works in Excel',        desc: 'No subscriptions. No apps. No internet needed. One-time purchase, forever access.' }
+      ]
+    }
   }
 };
 
