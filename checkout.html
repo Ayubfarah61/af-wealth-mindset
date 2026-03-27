@@ -507,13 +507,12 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
     }
   }, 8000);
 
-  // PayPal/Paystack hidden — Paddle is the active payment provider
-  // Uncomment below to re-enable PayPal when switching back:
-  // if (window.paypal && window.paypal.createInstance) {
-  //   setupPayPal();
-  // } else {
-  //   document.getElementById('paypal-sdk-script').addEventListener('load', setupPayPal);
-  // }
+  // PayPal initialization — enable all payment methods
+  if (window.paypal && window.paypal.createInstance) {
+    setupPayPal();
+  } else {
+    document.getElementById('paypal-sdk-script').addEventListener('load', setupPayPal);
+  }
 </script>
 </body>
 </html>
