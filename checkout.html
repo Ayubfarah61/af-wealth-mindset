@@ -110,56 +110,36 @@
       <span class="material-symbols-outlined text-gold">account_balance_wallet</span> Secure Payment
     </h3>
 
-    <!-- ── Paddle payment section (active) ── -->
-    <div id="paddle-section" class="space-y-4">
-      <button id="btn-paddle"
-        class="w-full flex items-center justify-center gap-3 px-5 py-5 rounded-xl bg-gold hover:brightness-110 text-midnight font-bold text-base transition-all"
-        onclick="paddlePay()">
-        <span class="material-symbols-outlined" style="font-size:20px">lock</span>
-        Complete Secure Purchase — <span id="paddle-price"></span>
-      </button>
-      <!-- Paddle trust badge -->
-      <div class="flex items-center justify-center gap-2 pt-1">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 1L3 5v6c0 5.25 3.75 10.15 9 11.25C17.25 21.15 21 16.25 21 11V5L12 1z" fill="rgba(31,230,209,0.2)" stroke="#1FE6D1" stroke-width="1.5"/><path d="M9 12l2 2 4-4" stroke="#1FE6D1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <p class="text-ivory/50 text-xs">Payments are securely processed by <strong class="text-ivory/70">Paddle</strong></p>
-      </div>
-      <!-- 14-day guarantee -->
-      <div class="flex items-center gap-3 px-4 py-3 border border-gold/10 rounded-xl">
-        <span class="material-symbols-outlined text-gold" style="font-size:18px">verified_user</span>
-        <p class="text-ivory/60 text-xs">14-day money-back guarantee. If you're not satisfied, email us for a full refund — no questions asked.</p>
-      </div>
-    </div>
-
-    <!-- ── PayPal / Paystack / Bank (hidden — preserved for future use) ── -->
-    <div id="legacy-payment-section" style="display:none" aria-hidden="true">
+    <!-- ── PayPal / Paystack (active) ── -->
+    <div id="legacy-payment-section" style="display:block" aria-hidden="false">
       <div id="digital-payment-section" class="space-y-3 mb-6">
         <div id="payment-loading" class="flex items-center justify-center gap-3 py-6">
           <div class="w-5 h-5 rounded-full border-2 border-signature-teal/30 border-t-signature-teal animate-spin"></div>
           <span class="text-ivory/40 text-sm">Loading payment methods…</span>
         </div>
-        <button id="btn-card" hidden class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm" onclick="paystackPay()">
+        <button id="btn-card" class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm" onclick="paystackPay()">
           <span class="material-symbols-outlined text-gold" style="font-size:20px">credit_card</span>
           <span class="flex-1 text-left">Debit / Credit Card</span>
         </button>
-        <button id="btn-paypal" hidden class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm">
+        <button id="btn-paypal" class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm">
           <span class="flex-1 text-left">Pay with PayPal</span>
         </button>
-        <button id="btn-paylater" hidden class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm">
+        <button id="btn-paylater" class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm">
           <span class="flex-1 text-left">Pay Later</span>
         </button>
-        <button id="btn-venmo" hidden class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm">
+        <button id="btn-venmo" class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm">
           <span class="flex-1 text-left">Venmo</span>
         </button>
-        <button id="btn-googlepay" hidden class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm">
+        <button id="btn-googlepay" class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm">
           <span class="flex-1 text-left">Google Pay</span>
         </button>
-        <button id="btn-applepay" hidden class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm">
+        <button id="btn-applepay" class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm">
           <span class="flex-1 text-left">Apple Pay</span>
         </button>
         <p id="paypal-sdk-error" class="hidden text-center text-ivory/40 text-xs p-4"></p>
       </div>
-      <!-- Bank Transfer -->
-      <div id="bank-section-wrapper">
+      <!-- Bank Transfer (hidden - not accepting) -->
+      <div id="bank-section-wrapper" hidden>
         <div id="bank-section" class="hidden">
           <div class="space-y-3 text-sm">
             <div class="flex justify-between"><span class="text-ivory/50">Bank Name</span><span id="bank-name" class="text-ivory font-medium"></span></div>
@@ -181,7 +161,10 @@
       <span class="material-symbols-outlined text-xs">verified_user</span> SSL Encrypted
     </div>
     <div class="flex items-center gap-1 text-[10px] uppercase font-bold tracking-widest">
-      <span class="material-symbols-outlined text-xs">lock</span> Paddle Secured
+      <span class="material-symbols-outlined text-xs">lock</span> PayPal Secured
+    </div>
+    <div class="flex items-center gap-1 text-[10px] uppercase font-bold tracking-widest">
+      <span class="material-symbols-outlined text-xs">lock</span> Paystack Secured
     </div>
     <div class="flex items-center gap-1 text-[10px] uppercase font-bold tracking-widest">
       <span class="material-symbols-outlined text-xs">replay</span> 14-Day Guarantee
