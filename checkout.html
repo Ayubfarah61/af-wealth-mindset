@@ -224,7 +224,6 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
   document.getElementById('order-price').textContent    = formatPrice(product.price);
   document.getElementById('order-subtotal').textContent = formatPrice(product.price);
   document.getElementById('order-total').textContent    = formatPrice(product.price);
-  document.getElementById('paddle-price').textContent   = formatPrice(product.price);
   document.getElementById('bank-ref').textContent       = 'AFWM-' + product.id + '-' + Date.now().toString().slice(-6);
 
   if (user) document.getElementById('checkout-email').value = user.email;
