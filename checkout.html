@@ -220,10 +220,10 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
 
   document.getElementById('order-img').style.backgroundImage = `url('${product.image}')`;
   document.getElementById('order-name').textContent     = product.name;
-  document.getElementById('order-edition').textContent  = `Qty: 1 • ${product.edition}`;
-  document.getElementById('order-price').textContent    = formatPrice(product.price);
-  document.getElementById('order-subtotal').textContent = formatPrice(product.price);
-  document.getElementById('order-total').textContent    = formatPrice(product.price);
+  document.getElementById('order-edition').textContent  = `Qty: 1 • ${product.description || 'Digital Product'}`;
+  document.getElementById('order-price').textContent    = product.price;
+  document.getElementById('order-subtotal').textContent = product.price;
+  document.getElementById('order-total').textContent    = product.price;
   document.getElementById('bank-ref').textContent       = 'AFWM-' + product.id + '-' + Date.now().toString().slice(-6);
 
   if (user) document.getElementById('checkout-email').value = user.email;
@@ -369,7 +369,7 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
     const handler = PaystackPop.setup({
       key:      PAYSTACK_PUBLIC_KEY,
       email:    email,
-      amount:   Math.round(product.price * 100), // smallest currency unit (cents)
+      amount:   Math.round(parseFloat(product.price.replace('$', '')) * 100), // smallest currency unit (cents)
       currency: 'USD',
       ref:      ref,
       metadata: { product_name: product.name, product_id: product.id },
