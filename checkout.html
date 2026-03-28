@@ -290,7 +290,7 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
       mode:    'cors',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({
-        amount:      product.price.toFixed(2),
+        amount:      parseFloat(product.price.replace('$', '')).toFixed(2),
         description: product.name,
         currency:    'USD'
       })
