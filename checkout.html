@@ -221,9 +221,9 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
   document.getElementById('order-img').style.backgroundImage = `url('${product.image}')`;
   document.getElementById('order-name').textContent     = product.name;
   document.getElementById('order-edition').textContent  = `Qty: 1 • ${product.description || 'Digital Product'}`;
-  document.getElementById('order-price').textContent    = product.price;
-  document.getElementById('order-subtotal').textContent = product.price;
-  document.getElementById('order-total').textContent    = product.price;
+  document.getElementById('order-price').textContent    = formatPrice(product.price);
+  document.getElementById('order-subtotal').textContent = formatPrice(product.price);
+  document.getElementById('order-total').textContent    = formatPrice(product.price);
   document.getElementById('bank-ref').textContent       = 'AFWM-' + product.id + '-' + Date.now().toString().slice(-6);
 
   if (user) document.getElementById('checkout-email').value = user.email;
@@ -237,6 +237,13 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
   }
 
   // ── Helpers ──────────────────────────────────────────────
+
+  function formatPrice(price) {
+    // If already formatted (string like "$9.99"), return as-is
+    if (typeof price === 'string' && price.startsWith('$')) return price;
+    // If number, format it
+    return '$' + parseFloat(price).toFixed(2);
+  }
 
   function showLoading(msg) {
     document.getElementById('loading-msg').textContent = msg || 'Processing…';
