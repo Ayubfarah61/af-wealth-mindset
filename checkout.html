@@ -415,11 +415,16 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
   // PayPal Expanded Checkout (NEW - keeps customer on your site!)
   // ============================================================
 
-  document.addEventListener('DOMContentLoaded', function() {
-
+  function initializePayPalButtons() {
     // Only initialize if PayPal SDK loaded
     if (typeof paypal === 'undefined') {
       console.error('PayPal SDK failed to load');
+      return;
+    }
+
+    // Check if product is loaded
+    if (typeof product === 'undefined' || !product) {
+      console.error('Product not loaded yet');
       return;
     }
 
@@ -506,6 +511,13 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
 
     }).render('#paypal-buttons-container');
 
+  }
+
+  // Initialize PayPal after product loads
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+      initializePayPalButtons();
+    }, 500);
   });
 
   // Helper function for payment errors
