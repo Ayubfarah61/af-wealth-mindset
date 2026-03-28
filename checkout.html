@@ -445,57 +445,93 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
   // ── Paystack card payment ─────────────────────────────────
 
   function paystackPay() {
-    if (!validateEmail()) return;
+    if (!validateEmail()) {
+      console.error('Email validation failed');
+      return;
+    }
     if (typeof PaystackPop === 'undefined') {
+      console.error('PaystackPop SDK not loaded');
       alert('Payment is loading. Please wait a moment and try again.');
       return;
     }
+    
     const email = document.getElementById('checkout-email').value.trim();
     const ref   = 'AFWM-' + product.id + '-' + Date.now();
+    const priceNum = parseFloat(product.price.replace('$', ''));
+    const amountInCents = Math.round(priceNum * 100);
+
+    console.log('=== PAYSTACK PAYMENT DEBUG ===');
+    console.log('Product ID:', product.id);
+    console.log('Product Name:', product.name);
+    console.log('Product Price (string):', product.price);
+    console.log('Price Numeric:', priceNum);
+    console.log('Amount in cents:', amountInCents);
+    console.log('Email:', email);
+    console.log('Reference:', ref);
+    console.log('Public Key:', PAYSTACK_PUBLIC_KEY);
+    console.log('==============================');
 
     const handler = PaystackPop.setup({
       key:      PAYSTACK_PUBLIC_KEY,
       email:    email,
-      amount:   Math.round(parseFloat(product.price.replace('$', '')) * 100), // smallest currency unit (cents)
+      amount:   amountInCents,
       currency: 'USD',
       ref:      ref,
       metadata: { product_name: product.name, product_id: product.id },
       onSuccess: async function(response) {
+        console.log('✓ Paystack payment success:', response);
         showLoading('Verifying payment…');
         try {
           const result = await verifyPaystackPayment(response.reference);
+          console.log('✓ Verification result:', result);
           if (result.status === true && result.data && result.data.status === 'success') {
             addOrder(product.id, product.price, 'Card', response.reference);
             await sendOrderEmail(email, response.reference, 'Debit/Credit Card');
             window.location.href = '/orders.html?success=1&method=card';
           } else {
             hideLoading();
+            console.error('✗ Payment verification failed:', result);
             alert('Payment verification failed. Please contact support with ref: ' + response.reference);
           }
         } catch(err) {
           hideLoading();
-          console.error('Paystack verify error:', err);
+          console.error('✗ Paystack verify error:', err);
           // Payment went through even if verify call failed — still credit the order
           addOrder(product.id, product.price, 'Card', response.reference);
           await sendOrderEmail(email, response.reference, 'Debit/Credit Card');
           window.location.href = '/orders.html?success=1&method=card';
         }
       },
-      onCancel: function() { /* user closed popup — do nothing */ }
+      onCancel: function() {
+        console.log('User cancelled Paystack payment');
+      }
     });
 
     handler.openIframe();
   }
 
   async function verifyPaystackPayment(reference) {
-    const res = await fetch(`${WORKER_URL}/paystack-api/verify`, {
+    console.log('→ Verifying Paystack payment:', reference);
+    const url = `${WORKER_URL}/paystack-api/verify`;
+    console.log('→ Worker URL:', url);
+    
+    const res = await fetch(url, {
       method:  'POST',
       mode:    'cors',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({ reference })
     });
-    if (!res.ok) throw new Error('Verify failed: ' + res.status);
-    return res.json();
+    
+    console.log('→ Verification response status:', res.status);
+    
+    if (!res.ok) {
+      console.error('✗ Verification request failed:', res.status);
+      throw new Error('Verify failed: ' + res.status);
+    }
+    
+    const data = await res.json();
+    console.log('✓ Verification data received:', data);
+    return data;
   }
 
   // ── Paddle payment (active payment provider) ─────────────
