@@ -10,8 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <!-- Paystack inline SDK for card payments -->
 <script src="https://js.paystack.co/v1/inline.js"></script>
-<!-- PayPal Expanded Checkout -->
-<script src="https://www.paypal.com/sdk/js?client-id=Ad6A68c1Z85fPgH7ac693rp1HGA8Uu4H3SEEqkwfu8WywbBmSM3ZwcVKPYME593v8HnGpCjR00wNI7VQ&currency=USD&intent=capture&components=hosted-fields"></script>
+<!-- PayPal Expanded Checkout (SANDBOX FOR TESTING) -->
+<script src="https://www.paypal.com/sdk/js?client-id=AURFqW9BM7AQJBnTjmCKCcMuKKN-fxthcmfY7U5kuAHq1ttVmTwozQ3dtfcqnwg2Vu3yI8OydJAhJ9Z7&currency=USD&intent=capture&components=hosted-fields"></script>
 <!-- EmailJS for order email notifications -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script id="tailwind-config">
@@ -268,9 +268,9 @@ var PAGES = {
 // ============================================================
 //  CONFIGURATION
 // ============================================================
-const SANDBOX_MODE = false; // live
+const SANDBOX_MODE = true; // TESTING MODE - set to false for LIVE
 
-const PAYPAL_CLIENT_ID_SANDBOX = 'AQrCZ0APprE81CJX6qCTt0FEkhK3r30g6M5VXroyxL_Dr7I3_rFEte6DbEuYJC5HlaAtDMFSeuhUFyPV';
+const PAYPAL_CLIENT_ID_SANDBOX = 'AURFqW9BM7AQJBnTjmCKCcMuKKN-fxthcmfY7U5kuAHq1ttVmTwozQ3dtfcqnwg2Vu3yI8OydJAhJ9Z7';
 const PAYPAL_CLIENT_ID_LIVE    = 'Ad6A68c1Z85fPgH7ac693rp1HGA8Uu4H3SEEqkwfu8WywbBmSM3ZwcVKPYME593v8HnGpCjR00wNI7VQ';
 const PAYPAL_CLIENT_ID         = SANDBOX_MODE ? PAYPAL_CLIENT_ID_SANDBOX : PAYPAL_CLIENT_ID_LIVE;
 
