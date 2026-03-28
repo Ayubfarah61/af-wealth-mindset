@@ -189,6 +189,76 @@
 <script src="/js/app.js"></script>
 <script>
 // ============================================================
+//  PRODUCT DATA (copied from product.html for checkout access)
+// ============================================================
+var PAGES = {
+  1: {
+    name: 'Cashflow Secrets — The Course That Changes Everything',
+    badge: 'Featured',
+    image: '/images/product1.jpg',
+    originalPrice: '$400',
+    price: '$97',
+    description: 'Stop trading your time for money. Created by self-made millionaire Chris Miles (CNN Money, US News, Bankrate), Cashflow Secrets is the step-by-step system that takes you from financial stress to financial freedom — without a new job, side hustle, or extreme sacrifice.',
+    checkoutId: 1
+  },
+  2: {
+    name: 'Annual Budget Planner | Excel Template with Automatic Dashboard',
+    badge: 'Best Value',
+    image: '/images/product2.png',
+    originalPrice: '$14.99',
+    price: '$9.99',
+    description: 'Take Control of Your Money — All in One Beautiful Spreadsheet. Track every dollar, every month, all year long.',
+    checkoutId: 2
+  },
+  3: {
+    name: '12-Month Cash Flow Budget | Excel Template',
+    badge: 'New',
+    image: '/images/product3.png',
+    originalPrice: '$14.99',
+    price: '$9.99',
+    description: 'See your complete cash flow at a glance. Track income, expenses, and net cash flow with 6 automatic charts and KPI cards.',
+    checkoutId: 3
+  },
+  4: {
+    name: 'Debt Payoff Dashboard | Excel Template',
+    badge: 'New',
+    image: '/images/product4.png',
+    originalPrice: '$14.99',
+    price: '$9.99',
+    description: 'Visualize your entire debt payoff journey. Track principal paid, interest accrued, and see exactly when you\'ll be debt-free.',
+    checkoutId: 4
+  },
+  5: {
+    name: 'Financial Goals Dashboard | Excel Template',
+    badge: 'New',
+    image: '/images/product5.png',
+    originalPrice: '$14.99',
+    price: '$9.99',
+    description: 'Track all your financial goals in one place. See progress on 10+ goals, visualize savings by category, and stay motivated.',
+    checkoutId: 5
+  },
+  6: {
+    name: 'Net Worth Tracker | Excel Template',
+    badge: 'Premium',
+    image: '/images/product6.png',
+    originalPrice: '$19.99',
+    price: '$9.99',
+    description: 'Track your complete financial picture. Monitor assets, liabilities, and watch your net worth grow month by month.',
+    checkoutId: 6
+  },
+  7: {
+    name: 'Income Expense Tracker | Excel Template',
+    badge: 'Essential',
+    image: '/images/product7.png',
+    originalPrice: '$14.99',
+    price: '$9.99',
+    description: 'Track every dollar in and out. See exactly where your money goes with automatic categorization and monthly summaries.',
+    checkoutId: 7
+  }
+};
+</script>
+<script>
+// ============================================================
 //  CONFIGURATION
 // ============================================================
 const SANDBOX_MODE = false; // live
@@ -215,7 +285,17 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
   document.getElementById('bank-sort').textContent      = BANK_DETAILS.sortCode;
   document.getElementById('bank-swift').textContent     = BANK_DETAILS.swift;
 
-  const product = getProductFromURL();
+  // Get product from PAGES object by URL id parameter
+  function getProductFromPages() {
+    const id = parseInt(new URLSearchParams(window.location.search).get('id'));
+    if (typeof PAGES !== 'undefined' && PAGES[id]) {
+      return PAGES[id];
+    }
+    // Fallback: if PAGES not available, return dummy product
+    return { id: 1, name: 'Product', price: '$0.00', image: '', description: '' };
+  }
+
+  const product = getProductFromPages();
   const user    = getCurrentUser();
 
   document.getElementById('order-img').style.backgroundImage = `url('${product.image}')`;
