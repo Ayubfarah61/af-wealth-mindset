@@ -1,15 +1,3 @@
 name = "afwm-paypal-api"
 main = "worker.js"
 compatibility_date = "2025-03-28"
-
-[env.production]
-name = "afwm-paypal-api"
-route = "afwm-paypal-api.ayubfarah67.workers.dev/*"
-zone_id = ""
-
-[[env.production.triggers.crons]]
-cron = "0 0 * * *"
-
-[build]
-command = "npm install"
-cwd = "./"
