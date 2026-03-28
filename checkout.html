@@ -20,6 +20,34 @@
     theme: { extend: { colors: { "midnight": "#0B1220", "ivory": "#F6F1E7", "gold": "#D7B46A", "signature-teal": "#1FE6D1", "background-dark": "#0B1220" }, fontFamily: { "display": ["Manrope", "sans-serif"] }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" } } }
   }
 </script>
+<style>
+  /* PayPal Buttons - Brand Color Override */
+  #paypal-button-container iframe {
+    filter: brightness(0.95) !important;
+  }
+  
+  /* Custom button styling container */
+  .payment-button {
+    background: linear-gradient(135deg, #D7B46A 0%, #D7B46A 100%);
+    color: #0B1220;
+    font-weight: 700;
+    border-radius: 8px;
+    padding: 12px 24px;
+    transition: all 0.3s ease;
+    border: 2px solid #D7B46A;
+  }
+  
+  .payment-button:hover {
+    background: linear-gradient(135deg, #E5C58A 0%, #E5C58A 100%);
+    border-color: #E5C58A;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(215, 180, 106, 0.3);
+  }
+  
+  .payment-button:active {
+    transform: translateY(0);
+  }
+</style>
 </head>
 <body class="dark:bg-background-dark font-display text-ivory antialiased">
 
