@@ -10,8 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <!-- Paystack inline SDK for card payments -->
 <script src="https://js.paystack.co/v1/inline.js"></script>
-<!-- PayPal Expanded Checkout (SANDBOX FOR TESTING) -->
-<script src="https://www.paypal.com/sdk/js?client-id=AURFqW9BM7AQJBnTjmCKCcMuKKN-fxthcmfY7U5kuAHq1ttVmTwozQ3dtfcqnwg2Vu3yI8OydJAhJ9Z7&currency=USD&intent=capture&components=buttons,hosted-fields"></script>
+<!-- PayPal JavaScript SDK v6 (SANDBOX FOR TESTING) -->
+<script src="https://www.sandbox.paypal.com/web-sdk/v6/core"></script>
 <!-- EmailJS for order email notifications -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script id="tailwind-config">
@@ -124,20 +124,14 @@
 
       <!-- PAYPAL EXPANDED CHECKOUT: Main Option -->
       <div>
-        <h4 class="text-xs font-bold text-gold/70 uppercase mb-3">Secure Payment</h4>
+        <h4 class="text-xs font-bold text-gold/70 uppercase mb-3">Pay with PayPal</h4>
 
-        <!-- PayPal Buttons Container -->
-        <div id="paypal-buttons-container" class="mb-4"></div>
-
-        <!-- Hosted Fields (Card payment form) -->
-        <div id="card-container" class="hidden mb-4">
-          <div id="card-field"></div>
-        </div>
-
-        <!-- Email Address (PayPal) -->
-        <div id="email-container" class="hidden mb-4">
-          <label class="block text-xs font-bold text-gold/70 uppercase mb-2">PayPal Email</label>
-          <input id="paypal-email" type="email" placeholder="you@example.com" class="w-full bg-midnight border border-gold/20 rounded-lg px-4 py-3 text-ivory placeholder:text-ivory/20 focus:border-signature-teal outline-none transition-all"/>
+        <!-- PayPal v6 Web Components -->
+        <div class="space-y-3">
+          <paypal-button hidden></paypal-button>
+          <venmo-button hidden></venmo-button>
+          <googlepay-button hidden></googlepay-button>
+          <applepay-button hidden></applepay-button>
         </div>
 
         <!-- Error Messages -->
@@ -415,132 +409,211 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
   // PayPal Expanded Checkout (NEW - keeps customer on your site!)
   // ============================================================
 
-  function initializePayPalButtons() {
-    console.log('🔍 initializePayPalButtons called');
-    console.log('typeof paypal:', typeof paypal);
-    console.log('typeof product:', typeof product);
+  // ============================================================
+  // PayPal v6 SDK - Multiple Payment Methods
+  // ============================================================
+
+  async function initializePayPalSDK() {
+    console.log('🔍 initializePayPalSDK called');
     
-    // Only initialize if PayPal SDK loaded
-    if (typeof paypal === 'undefined') {
-      console.error('❌ PayPal SDK failed to load');
+    // Check if SDK is loaded
+    if (typeof window.paypal === 'undefined' || !window.paypal.createInstance) {
+      console.error('❌ PayPal SDK not loaded');
+      setTimeout(initializePayPalSDK, 500); // Retry
       return;
     }
 
     // Check if product is loaded
     if (typeof product === 'undefined' || !product) {
       console.error('❌ Product not loaded yet');
-      console.log('Available globals:', Object.keys(window).filter(k => k.includes('product') || k.includes('PAGES')));
+      setTimeout(initializePayPalSDK, 500); // Retry
       return;
     }
 
     console.log('✅ PayPal SDK loaded');
     console.log('✅ Product loaded:', product);
-    console.log('🔄 Creating PayPal buttons...');
 
     try {
-      // Initialize PayPal buttons
-      paypal.Buttons({
+      // Create PayPal SDK instance
+      console.log('🔄 Creating SDK instance with client ID:', PAYPAL_CLIENT_ID);
+      const sdkInstance = await window.paypal.createInstance({
+        clientId: PAYPAL_CLIENT_ID,
+        components: ['paypal-payments', 'venmo-payments', 'googlepay-payments', 'applepay-payments'],
+        pageType: 'checkout',
+      });
 
-        // Create PayPal order
-        createOrder: function(data, actions) {
-          console.log('📦 Creating PayPal order...');
-          const email = document.getElementById('checkout-email').value.trim();
+      console.log('✅ SDK instance created');
 
-          if (!email || !email.includes('@')) {
-            alert('Please enter a valid email address');
-            return;
-          }
+      // Check eligibility for payment methods
+      const paymentMethods = await sdkInstance.findEligibleMethods({
+        currencyCode: 'USD',
+      });
 
-          const amount = parseFloat(product.price.replace('$', ''));
-          console.log('💰 Order amount:', amount, 'Product:', product.name);
+      console.log('✅ Payment methods checked:', paymentMethods);
 
-          return actions.order.create({
-            purchase_units: [{
-              amount: {
-                currency_code: 'USD',
-                value: amount.toFixed(2)
-              },
-              description: product.name
-            }],
-            payer: {
-              email_address: email
-            },
-            // Enable address capture
-            application_context: {
-              shipping_preference: 'NO_SHIPPING'
-            }
-          });
-        },
-
-        // Capture payment
-        onApprove: function(data, actions) {
+      // Shared payment session options
+      const paymentSessionOptions = {
+        async onApprove(data) {
           console.log('✅ Payment approved:', data);
-          showLoading('Processing PayPal payment...');
+          showLoading('Completing your purchase...');
+          
+          try {
+            const orderData = await captureOrder(data.orderId);
+            console.log('✅ Order captured:', orderData);
 
-          return actions.order.capture().then(function(orderData) {
-            console.log('✅ Payment captured:', orderData);
+            const email = document.getElementById('checkout-email').value.trim();
+            addOrder(product.id, product.price, 'PayPal', orderData.id);
+            await sendOrderEmail(email, orderData.id, 'PayPal');
 
-            if (orderData.status === 'COMPLETED') {
-              const email = document.getElementById('checkout-email').value.trim();
-              const transactionId = orderData.id;
-
-              // Record order
-              addOrder(product.id, product.price, 'PayPal', transactionId);
-
-              // Send email
-              sendOrderEmail(email, transactionId, 'PayPal');
-
-              // Success redirect
-              setTimeout(function() {
-                window.location.href = '/orders.html?success=1&method=paypal';
-              }, 1500);
-            } else {
-              hideLoading();
-              showPaymentError('Payment status: ' + orderData.status);
-            }
-          });
+            setTimeout(() => {
+              window.location.href = '/orders.html?success=1&method=paypal';
+            }, 1000);
+          } catch(err) {
+            hideLoading();
+            console.error('❌ Capture failed:', err);
+            alert('Payment approved but processing failed. Please contact support.');
+          }
         },
-
-        // Handle errors
-        onError: function(err) {
-          hideLoading();
-          console.error('❌ PayPal error:', err);
-          showPaymentError('PayPal error: ' + (err.message || 'Please try again'));
-        },
-
-        // Handle cancellation
-        onCancel: function(data) {
-          hideLoading();
+        onCancel(data) {
+          console.log('⚠️ Payment cancelled');
           alert('Payment cancelled. You can try again anytime.');
         },
+        onError(error) {
+          hideLoading();
+          console.error('❌ Payment error:', error);
+          alert('Payment error: ' + (error.message || 'Please try again'));
+        }
+      };
 
-        // Styling
-        style: {
-          layout: 'vertical',
-          color: 'gold',
-          shape: 'rect',
-          height: 45,
-          label: 'pay'
+      // Create order function
+      async function createOrder() {
+        console.log('📦 Creating PayPal order...');
+        const email = document.getElementById('checkout-email').value.trim();
+        
+        if (!email || !email.includes('@')) {
+          alert('Please enter a valid email');
+          throw new Error('Invalid email');
         }
 
-      }).render('#paypal-buttons-container');
-      console.log('✅ PayPal buttons rendered successfully');
+        const amount = parseFloat(product.price.replace('$', ''));
+        console.log('💰 Order amount:', amount);
 
-    } catch(e) {
-      console.error('❌ Error creating PayPal buttons:', e);
+        // Call your Cloudflare Worker to create the order
+        const response = await fetch(WORKER_URL + '/paypal-api/checkout/orders/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            amount: amount.toFixed(2),
+            currency: 'USD',
+            description: product.name,
+            email: email
+          })
+        });
+
+        if (!response.ok) throw new Error('Order creation failed');
+        const data = await response.json();
+        console.log('✅ Order created:', data);
+        return { orderId: data.id };
+      }
+
+      // Set up PayPal button
+      if (paymentMethods.isEligible('paypal')) {
+        console.log('✅ PayPal is eligible');
+        const paypalSession = sdkInstance.createPayPalOneTimePaymentSession(paymentSessionOptions);
+        
+        const paypalButton = document.querySelector('paypal-button');
+        if (paypalButton) {
+          paypalButton.removeAttribute('hidden');
+          paypalButton.addEventListener('click', async () => {
+            try {
+              await paypalSession.start(
+                { presentationMode: 'auto' },
+                createOrder()
+              );
+            } catch(err) {
+              console.error('❌ PayPal start error:', err);
+            }
+          });
+        }
+      }
+
+      // Set up Venmo button
+      if (paymentMethods.isEligible('venmo')) {
+        console.log('✅ Venmo is eligible');
+        const venmoSession = sdkInstance.createVenmoOneTimePaymentSession(paymentSessionOptions);
+        
+        const venmoButton = document.querySelector('venmo-button');
+        if (venmoButton) {
+          venmoButton.removeAttribute('hidden');
+          venmoButton.addEventListener('click', async () => {
+            try {
+              await venmoSession.start(
+                { presentationMode: 'auto' },
+                createOrder()
+              );
+            } catch(err) {
+              console.error('❌ Venmo start error:', err);
+            }
+          });
+        }
+      }
+
+      // Set up Google Pay button
+      if (paymentMethods.isEligible('googlepay')) {
+        console.log('✅ Google Pay is eligible');
+        const googlePaySession = sdkInstance.createGooglePayOneTimePaymentSession(paymentSessionOptions);
+        
+        const googlePayButton = document.querySelector('googlepay-button');
+        if (googlePayButton) {
+          googlePayButton.removeAttribute('hidden');
+          googlePayButton.addEventListener('click', async () => {
+            try {
+              await googlePaySession.start(
+                { presentationMode: 'auto' },
+                createOrder()
+              );
+            } catch(err) {
+              console.error('❌ Google Pay start error:', err);
+            }
+          });
+        }
+      }
+
+      // Set up Apple Pay button
+      if (paymentMethods.isEligible('applepay')) {
+        console.log('✅ Apple Pay is eligible');
+        const applePaySession = sdkInstance.createApplePayOneTimePaymentSession(paymentSessionOptions);
+        
+        const applePayButton = document.querySelector('applepay-button');
+        if (applePayButton) {
+          applePayButton.removeAttribute('hidden');
+          applePayButton.addEventListener('click', async () => {
+            try {
+              await applePaySession.start(
+                { presentationMode: 'auto' },
+                createOrder()
+              );
+            } catch(err) {
+              console.error('❌ Apple Pay start error:', err);
+            }
+          });
+        }
+      }
+
+      console.log('✅ PayPal SDK initialization complete');
+
+    } catch(err) {
+      console.error('❌ SDK initialization failed:', err);
     }
-
   }
 
-  // Initialize PayPal after product loads
-  console.log('📍 Script loaded, waiting for page ready...');
-  document.addEventListener('DOMContentLoaded', function() {
-    console.log('📍 DOMContentLoaded fired, waiting 500ms for product...');
-    setTimeout(function() {
-      console.log('📍 Calling initializePayPalButtons...');
-      initializePayPalButtons();
-    }, 500);
+  // Start initialization when page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('📍 DOMContentLoaded, initializing PayPal SDK...');
+    setTimeout(initializePayPalSDK, 500);
   });
+
+
 
 
   // Helper function for payment errors
