@@ -10,8 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <!-- Paystack inline SDK for card payments -->
 <script src="https://js.paystack.co/v1/inline.js"></script>
-<!-- PayPal Smart Buttons -->
-<script src="https://www.paypal.com/sdk/js?client-id=Ad6A68c1Z85fPgH7ac693rp1HGA8Uu4H3SEEqkwfu8WywbBmSM3ZwcVKPYME593v8HnGpCjR00wNI7VQ&currency=USD&intent=capture"></script>
+<!-- PayPal Expanded Checkout -->
+<script src="https://www.paypal.com/sdk/js?client-id=Ad6A68c1Z85fPgH7ac693rp1HGA8Uu4H3SEEqkwfu8WywbBmSM3ZwcVKPYME593v8HnGpCjR00wNI7VQ&currency=USD&intent=capture&components=hosted-fields"></script>
 <!-- EmailJS for order email notifications -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script id="tailwind-config">
@@ -111,20 +111,38 @@
     </h3>
 
     <!-- ── Multiple Payment Methods ── -->
-    <div id="payment-methods-section" class="space-y-3 mb-6">
+    <div id="payment-methods-section">
 
-      <!-- PAYSTACK: Card Payment -->
-      <button id="btn-card" class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight hover:border-gold/40 text-ivory font-bold text-sm transition-all" onclick="paystackPay()">
-        <span class="material-symbols-outlined text-gold" style="font-size:20px">credit_card</span>
-        <span class="flex-1 text-left">Debit / Credit Card (Paystack)</span>
-      </button>
+      <!-- PAYSTACK: Card Payment (BACKUP) -->
+      <div class="mb-6 pb-6 border-b border-gold/10">
+        <h4 class="text-xs font-bold text-gold/70 uppercase mb-3">Option 1: Paystack (Backup)</h4>
+        <button id="btn-card" class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight hover:border-gold/40 text-ivory font-bold text-sm transition-all" onclick="paystackPay()">
+          <span class="material-symbols-outlined text-gold" style="font-size:20px">credit_card</span>
+          <span class="flex-1 text-left">Debit / Credit Card</span>
+        </button>
+      </div>
 
-      <!-- PAYPAL: Smart Buttons -->
-      <div id="paypal-button-container"></div>
+      <!-- PAYPAL EXPANDED CHECKOUT: Main Option -->
+      <div>
+        <h4 class="text-xs font-bold text-gold/70 uppercase mb-3">Option 2: PayPal (Recommended)</h4>
 
-      <!-- Error messages -->
-      <p id="payment-error" class="hidden text-center text-red-400 text-xs p-4"></p>
-      <p id="paypal-sdk-error" class="hidden text-center text-ivory/40 text-xs p-4"></p>
+        <!-- PayPal Buttons Container -->
+        <div id="paypal-buttons-container" class="mb-4"></div>
+
+        <!-- Hosted Fields (Card payment form) -->
+        <div id="card-container" class="hidden mb-4">
+          <div id="card-field"></div>
+        </div>
+
+        <!-- Email Address (PayPal) -->
+        <div id="email-container" class="hidden mb-4">
+          <label class="block text-xs font-bold text-gold/70 uppercase mb-2">PayPal Email</label>
+          <input id="paypal-email" type="email" placeholder="you@example.com" class="w-full bg-midnight border border-gold/20 rounded-lg px-4 py-3 text-ivory placeholder:text-ivory/20 focus:border-signature-teal outline-none transition-all"/>
+        </div>
+
+        <!-- Error Messages -->
+        <p id="payment-error" class="hidden text-center text-red-400 text-xs p-3 bg-red-900/10 rounded-lg border border-red-400/20 mt-3"></p>
+      </div>
 
     </div>
     <!-- Bank Transfer (hidden - not accepting) -->
@@ -394,22 +412,26 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
   }
 
   // ============================================================
-  // PayPal Smart Buttons (NEWLY ADDED)
+  // PayPal Expanded Checkout (NEW - keeps customer on your site!)
   // ============================================================
 
   document.addEventListener('DOMContentLoaded', function() {
+
+    // Only initialize if PayPal SDK loaded
     if (typeof paypal === 'undefined') {
-      console.error('PayPal SDK not loaded');
+      console.error('PayPal SDK failed to load');
       return;
     }
 
+    // Initialize PayPal buttons
     paypal.Buttons({
-      // Create PayPal Order
+
+      // Create PayPal order
       createOrder: function(data, actions) {
         const email = document.getElementById('checkout-email').value.trim();
+
         if (!email || !email.includes('@')) {
-          alert('Please enter a valid email address before proceeding.');
-          document.getElementById('checkout-email').focus();
+          alert('Please enter a valid email address');
           return;
         }
 
@@ -425,54 +447,73 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
           }],
           payer: {
             email_address: email
+          },
+          // Enable address capture
+          application_context: {
+            shipping_preference: 'NO_SHIPPING'
           }
         });
       },
 
-      // Capture Payment
+      // Capture payment
       onApprove: function(data, actions) {
-        showLoading('Completing your purchase...');
+        showLoading('Processing PayPal payment...');
 
         return actions.order.capture().then(function(orderData) {
-          const email = document.getElementById('checkout-email').value.trim();
-          const transactionId = orderData.id;
 
-          // Record the order
-          addOrder(product.id, product.price, 'PayPal', transactionId);
+          if (orderData.status === 'COMPLETED') {
+            const email = document.getElementById('checkout-email').value.trim();
+            const transactionId = orderData.id;
 
-          // Send confirmation email
-          sendOrderEmail(email, transactionId, 'PayPal');
+            // Record order
+            addOrder(product.id, product.price, 'PayPal', transactionId);
 
-          // Redirect to success page
-          setTimeout(function() {
-            window.location.href = '/orders.html?success=1&method=paypal';
-          }, 1000);
+            // Send email
+            sendOrderEmail(email, transactionId, 'PayPal');
+
+            // Success redirect
+            setTimeout(function() {
+              window.location.href = '/orders.html?success=1&method=paypal';
+            }, 1500);
+          } else {
+            hideLoading();
+            showPaymentError('Payment status: ' + orderData.status);
+          }
         });
       },
 
-      // Handle Errors
+      // Handle errors
       onError: function(err) {
         hideLoading();
-        console.error('PayPal Error:', err);
-        document.getElementById('payment-error').classList.remove('hidden');
-        document.getElementById('payment-error').textContent = 
-          'PayPal payment error. Please try the card payment below or try again.';
+        console.error('PayPal error:', err);
+        showPaymentError('PayPal error: ' + (err.message || 'Please try again'));
       },
 
-      // Handle Cancellation
+      // Handle cancellation
       onCancel: function(data) {
         hideLoading();
         alert('Payment cancelled. You can try again anytime.');
       },
 
+      // Styling
       style: {
         layout: 'vertical',
+        color: 'gold',
         shape: 'rect',
-        height: 45
+        height: 45,
+        label: 'pay'
       }
 
-    }).render('#paypal-button-container');
+    }).render('#paypal-buttons-container');
+
   });
+
+  // Helper function for payment errors
+  function showPaymentError(message) {
+    const errorEl = document.getElementById('payment-error');
+    errorEl.textContent = message;
+    errorEl.classList.remove('hidden');
+  }
 
 </script>
 </body>
