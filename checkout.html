@@ -10,6 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <!-- Paystack inline SDK for card payments -->
 <script src="https://js.paystack.co/v1/inline.js"></script>
+<!-- PayPal Smart Buttons -->
+<script src="https://www.paypal.com/sdk/js?client-id=Ad6A68c1Z85fPgH7ac693rp1HGA8Uu4H3SEEqkwfu8WywbBmSM3ZwcVKPYME593v8HnGpCjR00wNI7VQ&currency=USD&intent=capture"></script>
 <!-- EmailJS for order email notifications -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script id="tailwind-config">
@@ -108,17 +110,25 @@
       <span class="material-symbols-outlined text-gold">account_balance_wallet</span> Secure Payment
     </h3>
 
-    <!-- ── PayPal / Paystack (active) ── -->
-    <div id="legacy-payment-section" style="display:block" aria-hidden="false">
-      <div id="digital-payment-section" class="space-y-3 mb-6">
-        <button id="btn-card" class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm" onclick="paystackPay()">
-          <span class="material-symbols-outlined text-gold" style="font-size:20px">credit_card</span>
-          <span class="flex-1 text-left">Debit / Credit Card</span>
-        </button>
-        <p id="paypal-sdk-error" class="hidden text-center text-ivory/40 text-xs p-4"></p>
-      </div>
-      <!-- Bank Transfer (hidden - not accepting) -->
-      <div id="bank-section-wrapper" hidden>
+    <!-- ── Multiple Payment Methods ── -->
+    <div id="payment-methods-section" class="space-y-3 mb-6">
+
+      <!-- PAYSTACK: Card Payment -->
+      <button id="btn-card" class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight hover:border-gold/40 text-ivory font-bold text-sm transition-all" onclick="paystackPay()">
+        <span class="material-symbols-outlined text-gold" style="font-size:20px">credit_card</span>
+        <span class="flex-1 text-left">Debit / Credit Card (Paystack)</span>
+      </button>
+
+      <!-- PAYPAL: Smart Buttons -->
+      <div id="paypal-button-container"></div>
+
+      <!-- Error messages -->
+      <p id="payment-error" class="hidden text-center text-red-400 text-xs p-4"></p>
+      <p id="paypal-sdk-error" class="hidden text-center text-ivory/40 text-xs p-4"></p>
+
+    </div>
+    <!-- Bank Transfer (hidden - not accepting) -->
+    <div id="bank-section-wrapper" hidden>
         <div id="bank-section" class="hidden">
           <div class="space-y-3 text-sm">
             <div class="flex justify-between"><span class="text-ivory/50">Bank Name</span><span id="bank-name" class="text-ivory font-medium"></span></div>
@@ -382,6 +392,88 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
 
     handler.openIframe();
   }
+
+  // ============================================================
+  // PayPal Smart Buttons (NEWLY ADDED)
+  // ============================================================
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof paypal === 'undefined') {
+      console.error('PayPal SDK not loaded');
+      return;
+    }
+
+    paypal.Buttons({
+      // Create PayPal Order
+      createOrder: function(data, actions) {
+        const email = document.getElementById('checkout-email').value.trim();
+        if (!email || !email.includes('@')) {
+          alert('Please enter a valid email address before proceeding.');
+          document.getElementById('checkout-email').focus();
+          return;
+        }
+
+        const amount = parseFloat(product.price.replace('$', ''));
+
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              currency_code: 'USD',
+              value: amount.toFixed(2)
+            },
+            description: product.name
+          }],
+          payer: {
+            email_address: email
+          }
+        });
+      },
+
+      // Capture Payment
+      onApprove: function(data, actions) {
+        showLoading('Completing your purchase...');
+
+        return actions.order.capture().then(function(orderData) {
+          const email = document.getElementById('checkout-email').value.trim();
+          const transactionId = orderData.id;
+
+          // Record the order
+          addOrder(product.id, product.price, 'PayPal', transactionId);
+
+          // Send confirmation email
+          sendOrderEmail(email, transactionId, 'PayPal');
+
+          // Redirect to success page
+          setTimeout(function() {
+            window.location.href = '/orders.html?success=1&method=paypal';
+          }, 1000);
+        });
+      },
+
+      // Handle Errors
+      onError: function(err) {
+        hideLoading();
+        console.error('PayPal Error:', err);
+        document.getElementById('payment-error').classList.remove('hidden');
+        document.getElementById('payment-error').textContent = 
+          'PayPal payment error. Please try the card payment below or try again.';
+      },
+
+      // Handle Cancellation
+      onCancel: function(data) {
+        hideLoading();
+        alert('Payment cancelled. You can try again anytime.');
+      },
+
+      style: {
+        layout: 'vertical',
+        shape: 'rect',
+        height: 45
+      }
+
+    }).render('#paypal-button-container');
+  });
+
 </script>
 </body>
 </html>
