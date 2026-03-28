@@ -416,109 +416,132 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
   // ============================================================
 
   function initializePayPalButtons() {
+    console.log('🔍 initializePayPalButtons called');
+    console.log('typeof paypal:', typeof paypal);
+    console.log('typeof product:', typeof product);
+    
     // Only initialize if PayPal SDK loaded
     if (typeof paypal === 'undefined') {
-      console.error('PayPal SDK failed to load');
+      console.error('❌ PayPal SDK failed to load');
       return;
     }
 
     // Check if product is loaded
     if (typeof product === 'undefined' || !product) {
-      console.error('Product not loaded yet');
+      console.error('❌ Product not loaded yet');
+      console.log('Available globals:', Object.keys(window).filter(k => k.includes('product') || k.includes('PAGES')));
       return;
     }
 
-    // Initialize PayPal buttons
-    paypal.Buttons({
+    console.log('✅ PayPal SDK loaded');
+    console.log('✅ Product loaded:', product);
+    console.log('🔄 Creating PayPal buttons...');
 
-      // Create PayPal order
-      createOrder: function(data, actions) {
-        const email = document.getElementById('checkout-email').value.trim();
+    try {
+      // Initialize PayPal buttons
+      paypal.Buttons({
 
-        if (!email || !email.includes('@')) {
-          alert('Please enter a valid email address');
-          return;
+        // Create PayPal order
+        createOrder: function(data, actions) {
+          console.log('📦 Creating PayPal order...');
+          const email = document.getElementById('checkout-email').value.trim();
+
+          if (!email || !email.includes('@')) {
+            alert('Please enter a valid email address');
+            return;
+          }
+
+          const amount = parseFloat(product.price.replace('$', ''));
+          console.log('💰 Order amount:', amount, 'Product:', product.name);
+
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                currency_code: 'USD',
+                value: amount.toFixed(2)
+              },
+              description: product.name
+            }],
+            payer: {
+              email_address: email
+            },
+            // Enable address capture
+            application_context: {
+              shipping_preference: 'NO_SHIPPING'
+            }
+          });
+        },
+
+        // Capture payment
+        onApprove: function(data, actions) {
+          console.log('✅ Payment approved:', data);
+          showLoading('Processing PayPal payment...');
+
+          return actions.order.capture().then(function(orderData) {
+            console.log('✅ Payment captured:', orderData);
+
+            if (orderData.status === 'COMPLETED') {
+              const email = document.getElementById('checkout-email').value.trim();
+              const transactionId = orderData.id;
+
+              // Record order
+              addOrder(product.id, product.price, 'PayPal', transactionId);
+
+              // Send email
+              sendOrderEmail(email, transactionId, 'PayPal');
+
+              // Success redirect
+              setTimeout(function() {
+                window.location.href = '/orders.html?success=1&method=paypal';
+              }, 1500);
+            } else {
+              hideLoading();
+              showPaymentError('Payment status: ' + orderData.status);
+            }
+          });
+        },
+
+        // Handle errors
+        onError: function(err) {
+          hideLoading();
+          console.error('❌ PayPal error:', err);
+          showPaymentError('PayPal error: ' + (err.message || 'Please try again'));
+        },
+
+        // Handle cancellation
+        onCancel: function(data) {
+          hideLoading();
+          alert('Payment cancelled. You can try again anytime.');
+        },
+
+        // Styling
+        style: {
+          layout: 'vertical',
+          color: 'gold',
+          shape: 'rect',
+          height: 45,
+          label: 'pay'
         }
 
-        const amount = parseFloat(product.price.replace('$', ''));
+      }).render('#paypal-buttons-container');
+      console.log('✅ PayPal buttons rendered successfully');
 
-        return actions.order.create({
-          purchase_units: [{
-            amount: {
-              currency_code: 'USD',
-              value: amount.toFixed(2)
-            },
-            description: product.name
-          }],
-          payer: {
-            email_address: email
-          },
-          // Enable address capture
-          application_context: {
-            shipping_preference: 'NO_SHIPPING'
-          }
-        });
-      },
-
-      // Capture payment
-      onApprove: function(data, actions) {
-        showLoading('Processing PayPal payment...');
-
-        return actions.order.capture().then(function(orderData) {
-
-          if (orderData.status === 'COMPLETED') {
-            const email = document.getElementById('checkout-email').value.trim();
-            const transactionId = orderData.id;
-
-            // Record order
-            addOrder(product.id, product.price, 'PayPal', transactionId);
-
-            // Send email
-            sendOrderEmail(email, transactionId, 'PayPal');
-
-            // Success redirect
-            setTimeout(function() {
-              window.location.href = '/orders.html?success=1&method=paypal';
-            }, 1500);
-          } else {
-            hideLoading();
-            showPaymentError('Payment status: ' + orderData.status);
-          }
-        });
-      },
-
-      // Handle errors
-      onError: function(err) {
-        hideLoading();
-        console.error('PayPal error:', err);
-        showPaymentError('PayPal error: ' + (err.message || 'Please try again'));
-      },
-
-      // Handle cancellation
-      onCancel: function(data) {
-        hideLoading();
-        alert('Payment cancelled. You can try again anytime.');
-      },
-
-      // Styling
-      style: {
-        layout: 'vertical',
-        color: 'gold',
-        shape: 'rect',
-        height: 45,
-        label: 'pay'
-      }
-
-    }).render('#paypal-buttons-container');
+    } catch(e) {
+      console.error('❌ Error creating PayPal buttons:', e);
+    }
 
   }
 
   // Initialize PayPal after product loads
+  console.log('📍 Script loaded, waiting for page ready...');
   document.addEventListener('DOMContentLoaded', function() {
+    console.log('📍 DOMContentLoaded fired, waiting 500ms for product...');
     setTimeout(function() {
+      console.log('📍 Calling initializePayPalButtons...');
       initializePayPalButtons();
     }, 500);
   });
+
 
   // Helper function for payment errors
   function showPaymentError(message) {
