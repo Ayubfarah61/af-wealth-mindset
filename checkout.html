@@ -8,8 +8,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<!-- PayPal v6 SDK — live -->
-<script id="paypal-sdk-script" src="https://www.paypal.com/web-sdk/v6/core?clientId=Ad6A68c1Z85fPgH7ac693rp1HGA8Uu4H3SEEqkwfu8WywbBmSM3ZwcVKPYME593v8HnGpCjR00wNI7VQ"></script>
 <!-- Paystack inline SDK for card payments -->
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <!-- EmailJS for order email notifications -->
@@ -120,21 +118,6 @@
         <button id="btn-card" class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm" onclick="paystackPay()">
           <span class="material-symbols-outlined text-gold" style="font-size:20px">credit_card</span>
           <span class="flex-1 text-left">Debit / Credit Card</span>
-        </button>
-        <button id="btn-paypal" class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm">
-          <span class="flex-1 text-left">Pay with PayPal</span>
-        </button>
-        <button id="btn-paylater" class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm">
-          <span class="flex-1 text-left">Pay Later</span>
-        </button>
-        <button id="btn-venmo" class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm">
-          <span class="flex-1 text-left">Venmo</span>
-        </button>
-        <button id="btn-googlepay" class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm">
-          <span class="flex-1 text-left">Google Pay</span>
-        </button>
-        <button id="btn-applepay" class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight text-ivory font-bold text-sm">
-          <span class="flex-1 text-left">Apple Pay</span>
         </button>
         <p id="paypal-sdk-error" class="hidden text-center text-ivory/40 text-xs p-4"></p>
       </div>
@@ -369,107 +352,18 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
     }
   }
 
-  // ── Server calls (Cloudflare Worker) ─────────────────────
-
-  async function createOrder() {
-    const res = await fetch(`${WORKER_URL}/paypal-api/checkout/orders/create`, {
-      method:  'POST',
-      mode:    'cors',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({
-        amount:      parseFloat(product.price.replace('$', '')).toFixed(2),
-        description: product.name,
-        currency:    'USD'
-      })
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error('Order creation failed (' + res.status + '): ' + (err.error || res.statusText));
-    }
-    const data = await res.json();
-    return { orderId: data.id };
-  }
-
-  async function captureOrder(orderId) {
-    const res = await fetch(`${WORKER_URL}/paypal-api/checkout/orders/${orderId}/capture`, {
-      method:  'POST',
-      mode:    'cors',
-      headers: { 'Content-Type': 'application/json' }
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error('Capture failed (' + res.status + '): ' + (err.error || res.statusText));
-    }
-    return res.json();
-  }
-
-  // ── Shared payment session callbacks ─────────────────────
-
-  function buildSessionOptions() {
-    return {
-      async onApprove(data) {
-        const email = document.getElementById('checkout-email').value.trim();
-        showLoading('Processing payment…');
-        try {
-          const orderData = await captureOrder(data.orderId);
-          const txId = orderData?.purchase_units?.[0]?.payments?.captures?.[0]?.id || data.orderId;
-          addOrder(product.id, product.price, 'PayPal', txId);
-          await sendOrderEmail(email, txId, 'PayPal');
-          window.location.href = '/orders.html?success=1&method=paypal';
-        } catch(err) {
-          hideLoading();
-          console.error('Capture error:', err);
-          alert('Payment was approved but capture failed.\nPlease contact support with reference: ' + data.orderId);
-        }
-      },
-      onCancel() { hideLoading(); },
-      onError(err) {
-        hideLoading();
-        console.error('PayPal error:', err);
-        alert('Payment failed. Please try again or choose another method.');
-      }
-    };
-  }
-
-  // ── Bank Transfer ─────────────────────────────────────────
-
-  function confirmBankTransfer() {
-    const email = document.getElementById('checkout-email').value.trim();
-    if (!email) { alert('Please enter your email address.'); return; }
-    const ref = document.getElementById('bank-ref').textContent;
-    addOrder(product.id, product.price, 'Bank Transfer', 'BANK-' + Date.now());
-    sendOrderEmail(email, ref, 'Bank Transfer');
-    window.location.href = '/orders.html?success=1&method=bank';
-  }
-
   // ── Paystack card payment ─────────────────────────────────
 
   function paystackPay() {
-    if (!validateEmail()) {
-      console.error('Email validation failed');
-      return;
-    }
+    if (!validateEmail()) return;
     if (typeof PaystackPop === 'undefined') {
-      console.error('PaystackPop SDK not loaded');
       alert('Payment is loading. Please wait a moment and try again.');
       return;
     }
     
     const email = document.getElementById('checkout-email').value.trim();
     const ref   = 'AFWM-' + product.id + '-' + Date.now();
-    const priceNum = parseFloat(product.price.replace('$', ''));
-    const amountInCents = Math.round(priceNum * 100);
-
-    console.log('=== PAYSTACK PAYMENT DEBUG ===');
-    console.log('Product ID:', product.id);
-    console.log('Product Name:', product.name);
-    console.log('Product Price (string):', product.price);
-    console.log('Price Numeric:', priceNum);
-    console.log('Amount in cents:', amountInCents);
-    console.log('Email:', email);
-    console.log('Reference:', ref);
-    console.log('Public Key:', PAYSTACK_PUBLIC_KEY);
-    console.log('==============================');
+    const amountInCents = Math.round(parseFloat(product.price.replace('$', '')) * 100);
 
     const handler = PaystackPop.setup({
       key:      PAYSTACK_PUBLIC_KEY,
@@ -478,162 +372,19 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
       currency: 'USD',
       ref:      ref,
       metadata: { product_name: product.name, product_id: product.id },
-      onSuccess: async function(response) {
-        console.log('✓ Paystack payment success:', response);
-        showLoading('Verifying payment…');
-        try {
-          const result = await verifyPaystackPayment(response.reference);
-          console.log('✓ Verification result:', result);
-          if (result.status === true && result.data && result.data.status === 'success') {
-            addOrder(product.id, product.price, 'Card', response.reference);
-            await sendOrderEmail(email, response.reference, 'Debit/Credit Card');
-            window.location.href = '/orders.html?success=1&method=card';
-          } else {
-            hideLoading();
-            console.error('✗ Payment verification failed:', result);
-            alert('Payment verification failed. Please contact support with ref: ' + response.reference);
-          }
-        } catch(err) {
-          hideLoading();
-          console.error('✗ Paystack verify error:', err);
-          // Payment went through even if verify call failed — still credit the order
-          addOrder(product.id, product.price, 'Card', response.reference);
-          await sendOrderEmail(email, response.reference, 'Debit/Credit Card');
-          window.location.href = '/orders.html?success=1&method=card';
-        }
+      onSuccess: function(response) {
+        // Payment successful - record order and send email
+        addOrder(product.id, product.price, 'Card', response.reference);
+        sendOrderEmail(email, response.reference, 'Debit/Credit Card');
+        window.location.href = '/orders.html?success=1&method=card';
       },
-      onCancel: function() {
-        console.log('User cancelled Paystack payment');
+      onClose: function() {
+        // User closed payment popup
+        alert('Payment cancelled');
       }
     });
 
     handler.openIframe();
-  }
-
-  async function verifyPaystackPayment(reference) {
-    console.log('→ Verifying Paystack payment:', reference);
-    const url = `${WORKER_URL}/paystack-api/verify`;
-    console.log('→ Worker URL:', url);
-    
-    const res = await fetch(url, {
-      method:  'POST',
-      mode:    'cors',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ reference })
-    });
-    
-    console.log('→ Verification response status:', res.status);
-    
-    if (!res.ok) {
-      console.error('✗ Verification request failed:', res.status);
-      throw new Error('Verify failed: ' + res.status);
-    }
-    
-    const data = await res.json();
-    console.log('✓ Verification data received:', data);
-    return data;
-  }
-
-  // ── Paddle payment (active payment provider) ─────────────
-
-  function paddlePay() {
-    if (!validateEmail()) return;
-    // TODO: initialise Paddle.js and open checkout overlay
-    // Paddle.Checkout.open({ product: PADDLE_PRODUCT_ID, email: document.getElementById('checkout-email').value.trim() });
-    alert('Paddle checkout coming soon. For immediate assistance contact sales@afwealthmindset.com');
-  }
-
-  // ── PayPal v6 SDK — preserved, not shown to users ────────
-
-  function handlePaymentError(e, label) {
-    hideLoading();
-    console.error(label + ' error:', e);
-    const msg = (e?.message || String(e)).toLowerCase();
-    if (msg.includes('popup') || msg.includes('blocked')) {
-      alert('Pop-up was blocked. Please allow pop-ups for this site and try again.');
-    } else {
-      alert('Payment could not be started. Please try again or use Bank Transfer.\n\nDetails: ' + (e?.message || e));
-    }
-  }
-
-  // Attach a button: show it and wire click → fresh session every time
-  function wireBtn(id, makeSession) {
-    const btn = document.getElementById(id);
-    if (!btn) return;
-    btn.removeAttribute('hidden');
-    btn.addEventListener('click', async () => {
-      if (!validateEmail()) return;
-      try {
-        const session = makeSession();
-        await session.start({ presentationMode: 'auto' }, createOrder());
-      } catch(e) {
-        handlePaymentError(e, id);
-      }
-    });
-  }
-
-  async function setupPayPal() {
-    const loadingEl = document.getElementById('payment-loading');
-
-    try {
-      // Step 1 — initialise SDK (docs: createInstance)
-      const sdkInstance = await window.paypal.createInstance({
-        clientId:         PAYPAL_CLIENT_ID,
-        components:       ['paypal-payments', 'venmo-payments', 'googlepay-payments', 'applepay-payments'],
-        pageType:         'checkout',
-        clientMetadataId: crypto.randomUUID()
-      });
-
-      // Step 2 — check eligibility (docs: findEligibleMethods)
-      const methods = await sdkInstance.findEligibleMethods({ currencyCode: 'USD' });
-      loadingEl.classList.add('hidden');
-
-      // PayPal (docs: createPayPalOneTimePaymentSession)
-      if (methods.isEligible('paypal')) {
-        wireBtn('btn-paypal', () => sdkInstance.createPayPalOneTimePaymentSession(buildSessionOptions()));
-      }
-
-      // Pay Later
-      if (methods.isEligible('paylater') && typeof sdkInstance.createPayLaterOneTimePaymentSession === 'function') {
-        wireBtn('btn-paylater', () => sdkInstance.createPayLaterOneTimePaymentSession(buildSessionOptions()));
-      }
-
-      // Venmo — US only, only wire if SDK confirms it AND method exists
-      if (methods.isEligible('venmo') && typeof sdkInstance.createVenmoOneTimePaymentSession === 'function') {
-        wireBtn('btn-venmo', () => sdkInstance.createVenmoOneTimePaymentSession(buildSessionOptions()));
-      }
-
-      // Google Pay (docs: createGooglePayOneTimePaymentSession)
-      if (methods.isEligible('googlepay') && sdkInstance.createGooglePayOneTimePaymentSession) {
-        wireBtn('btn-googlepay', () => sdkInstance.createGooglePayOneTimePaymentSession(buildSessionOptions()));
-      }
-
-      // Apple Pay (docs: createApplePayOneTimePaymentSession)
-      if (methods.isEligible('applepay') && sdkInstance.createApplePayOneTimePaymentSession) {
-        wireBtn('btn-applepay', () => sdkInstance.createApplePayOneTimePaymentSession(buildSessionOptions()));
-      }
-
-    } catch(err) {
-      console.error('PayPal SDK init failed:', err);
-      document.getElementById('payment-loading').classList.add('hidden');
-      document.getElementById('paypal-sdk-error').classList.remove('hidden');
-    }
-  }
-
-  // Hide loading after 8s max — show card button regardless
-  setTimeout(() => {
-    const el = document.getElementById('payment-loading');
-    if (el && !el.classList.contains('hidden')) {
-      el.classList.add('hidden');
-      // PayPal failed to load — card (Paystack) is still fully functional
-    }
-  }, 8000);
-
-  // PayPal initialization — enable all payment methods
-  if (window.paypal && window.paypal.createInstance) {
-    setupPayPal();
-  } else {
-    document.getElementById('paypal-sdk-script').addEventListener('load', setupPayPal);
   }
 </script>
 </body>
