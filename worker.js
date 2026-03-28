@@ -135,6 +135,91 @@ async function capturePayPalOrder(accessToken, orderId) {
   }
 }
 
+async function createCardFieldsSession(accessToken) {
+  try {
+    const response = await fetch(`${CONFIG.PAYPAL_API_BASE}/v3/payment-experience/payment-tokens`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        customer_id: 'CARD_FIELDS_SESSION',
+        payment_source: {
+          card: {}
+        }
+      })
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      console.error('CardFields session error:', error);
+      throw new Error('Failed to create CardFields session');
+    }
+
+    const session = await response.json();
+    return session.id;
+  } catch (err) {
+    console.error('CardFields session error:', err);
+    throw err;
+  }
+}
+
+async function submitCardOrder(accessToken, orderData) {
+  try {
+    const payload = {
+      intent: 'CAPTURE',
+      purchase_units: [
+        {
+          amount: {
+            currency_code: 'USD',
+            value: orderData.amount
+          },
+          description: orderData.description,
+          custom_id: orderData.email
+        }
+      ],
+      payer: {
+        email_address: orderData.email,
+        name: {
+          given_name: orderData.name || 'Customer'
+        }
+      },
+      payment_source: {
+        card: {
+          number: orderData.cardNumber,
+          expiry: orderData.cardExpiry,
+          security_code: orderData.cardCvv,
+          name: {
+            given_name: orderData.cardholderName
+          }
+        }
+      }
+    };
+
+    const response = await fetch(`${CONFIG.PAYPAL_API_BASE}/v2/checkout/orders`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      console.error('Card order error:', error);
+      throw new Error('Failed to process card payment');
+    }
+
+    const order = await response.json();
+    return order;
+  } catch (err) {
+    console.error('Card order error:', err);
+    throw err;
+  }
+}
+
 // ============================================================
 // Route Handlers
 // ============================================================
@@ -209,6 +294,56 @@ async function handleCaptureOrder(request, orderId) {
   }
 }
 
+async function handleCardPayment(request) {
+  try {
+    const data = await request.json();
+    
+    // Validate input
+    if (!data.amount || !data.email || !data.cardNumber || !data.cardExpiry || !data.cardCvv) {
+      return new Response(JSON.stringify({ error: 'Missing card or order details' }), {
+        status: 400,
+        headers: { ...corsHeaders(), 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Get access token
+    const accessToken = await getPayPalAccessToken();
+
+    // Submit card order
+    const order = await submitCardOrder(accessToken, {
+      amount: parseFloat(data.amount).toFixed(2),
+      currency: data.currency || 'USD',
+      description: data.description || 'Digital Product',
+      email: data.email,
+      name: data.name || 'Customer',
+      cardNumber: data.cardNumber,
+      cardExpiry: data.cardExpiry,
+      cardCvv: data.cardCvv,
+      cardholderName: data.cardholderName || 'Customer'
+    });
+
+    // Extract payment details
+    const capture = order.purchase_units[0]?.payments?.captures[0];
+
+    return new Response(JSON.stringify({
+      id: order.id,
+      status: order.status,
+      capture_id: capture?.id,
+      amount: capture?.amount?.value || data.amount,
+      payer_email: order.payer?.email_address || data.email
+    }), {
+      status: 201,
+      headers: { ...corsHeaders(), 'Content-Type': 'application/json' }
+    });
+  } catch (err) {
+    console.error('Card payment error:', err);
+    return new Response(JSON.stringify({ error: err.message }), {
+      status: 500,
+      headers: { ...corsHeaders(), 'Content-Type': 'application/json' }
+    });
+  }
+}
+
 async function handleHealthCheck() {
   return new Response(JSON.stringify({
     status: 'ok',
@@ -243,6 +378,10 @@ export default {
 
     if (path === '/paypal-api/checkout/orders/create' && request.method === 'POST') {
       return handleCreateOrder(request);
+    }
+
+    if (path === '/paypal-api/checkout/card/submit' && request.method === 'POST') {
+      return handleCardPayment(request);
     }
 
     if (path.match(/^\/paypal-api\/checkout\/orders\/[a-zA-Z0-9-]+\/capture$/) && request.method === 'POST') {
