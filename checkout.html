@@ -128,10 +128,10 @@
 
         <!-- PayPal v6 Web Components -->
         <div class="space-y-3">
-          <paypal-button hidden></paypal-button>
-          <venmo-button hidden></venmo-button>
-          <googlepay-button hidden></googlepay-button>
-          <applepay-button hidden></applepay-button>
+          <paypal-button></paypal-button>
+          <venmo-button></venmo-button>
+          <googlepay-button></googlepay-button>
+          <applepay-button></applepay-button>
         </div>
 
         <!-- Error Messages -->
@@ -517,87 +517,75 @@ const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
       }
 
       // Set up PayPal button
-      if (paymentMethods.isEligible('paypal')) {
-        console.log('✅ PayPal is eligible');
-        const paypalSession = sdkInstance.createPayPalOneTimePaymentSession(paymentSessionOptions);
-        
-        const paypalButton = document.querySelector('paypal-button');
-        if (paypalButton) {
-          paypalButton.removeAttribute('hidden');
-          paypalButton.addEventListener('click', async () => {
-            try {
-              await paypalSession.start(
-                { presentationMode: 'auto' },
-                createOrder()
-              );
-            } catch(err) {
-              console.error('❌ PayPal start error:', err);
-            }
-          });
-        }
+      console.log('🔄 Setting up PayPal button...');
+      const paypalSession = sdkInstance.createPayPalOneTimePaymentSession(paymentSessionOptions);
+      const paypalButton = document.querySelector('paypal-button');
+      if (paypalButton) {
+        console.log('✅ PayPal button found');
+        paypalButton.addEventListener('click', async () => {
+          try {
+            await paypalSession.start(
+              { presentationMode: 'auto' },
+              createOrder()
+            );
+          } catch(err) {
+            console.error('❌ PayPal start error:', err);
+          }
+        });
       }
 
       // Set up Venmo button
-      if (paymentMethods.isEligible('venmo')) {
-        console.log('✅ Venmo is eligible');
-        const venmoSession = sdkInstance.createVenmoOneTimePaymentSession(paymentSessionOptions);
-        
-        const venmoButton = document.querySelector('venmo-button');
-        if (venmoButton) {
-          venmoButton.removeAttribute('hidden');
-          venmoButton.addEventListener('click', async () => {
-            try {
-              await venmoSession.start(
-                { presentationMode: 'auto' },
-                createOrder()
-              );
-            } catch(err) {
-              console.error('❌ Venmo start error:', err);
-            }
-          });
-        }
+      console.log('🔄 Setting up Venmo button...');
+      const venmoSession = sdkInstance.createVenmoOneTimePaymentSession(paymentSessionOptions);
+      const venmoButton = document.querySelector('venmo-button');
+      if (venmoButton) {
+        console.log('✅ Venmo button found');
+        venmoButton.addEventListener('click', async () => {
+          try {
+            await venmoSession.start(
+              { presentationMode: 'auto' },
+              createOrder()
+            );
+          } catch(err) {
+            console.error('❌ Venmo start error:', err);
+          }
+        });
       }
 
       // Set up Google Pay button
-      if (paymentMethods.isEligible('googlepay')) {
-        console.log('✅ Google Pay is eligible');
-        const googlePaySession = sdkInstance.createGooglePayOneTimePaymentSession(paymentSessionOptions);
-        
-        const googlePayButton = document.querySelector('googlepay-button');
-        if (googlePayButton) {
-          googlePayButton.removeAttribute('hidden');
-          googlePayButton.addEventListener('click', async () => {
-            try {
-              await googlePaySession.start(
-                { presentationMode: 'auto' },
-                createOrder()
-              );
-            } catch(err) {
-              console.error('❌ Google Pay start error:', err);
-            }
-          });
-        }
+      console.log('🔄 Setting up Google Pay button...');
+      const googlePaySession = sdkInstance.createGooglePayOneTimePaymentSession(paymentSessionOptions);
+      const googlePayButton = document.querySelector('googlepay-button');
+      if (googlePayButton) {
+        console.log('✅ Google Pay button found');
+        googlePayButton.addEventListener('click', async () => {
+          try {
+            await googlePaySession.start(
+              { presentationMode: 'auto' },
+              createOrder()
+            );
+          } catch(err) {
+            console.error('❌ Google Pay start error:', err);
+          }
+        });
       }
 
       // Set up Apple Pay button
-      if (paymentMethods.isEligible('applepay')) {
-        console.log('✅ Apple Pay is eligible');
-        const applePaySession = sdkInstance.createApplePayOneTimePaymentSession(paymentSessionOptions);
-        
-        const applePayButton = document.querySelector('applepay-button');
-        if (applePayButton) {
-          applePayButton.removeAttribute('hidden');
-          applePayButton.addEventListener('click', async () => {
-            try {
-              await applePaySession.start(
-                { presentationMode: 'auto' },
-                createOrder()
-              );
-            } catch(err) {
-              console.error('❌ Apple Pay start error:', err);
-            }
-          });
-        }
+      console.log('🔄 Setting up Apple Pay button...');
+      const applePaySession = sdkInstance.createApplePayOneTimePaymentSession(paymentSessionOptions);
+      const applePayButton = document.querySelector('applepay-button');
+      if (applePayButton) {
+        console.log('✅ Apple Pay button found');
+        applePayButton.addEventListener('click', async () => {
+          try {
+            await applePaySession.start(
+              { presentationMode: 'auto' },
+              createOrder()
+            );
+          } catch(err) {
+            console.error('❌ Apple Pay start error:', err);
+          }
+        });
       }
 
       console.log('✅ PayPal SDK initialization complete');
