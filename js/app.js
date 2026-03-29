@@ -109,15 +109,6 @@ var PRODUCTS = [
   }
 ];
 
-// ============= BANK DETAILS =============
-var BANK_DETAILS = {
-  bankName:      'Premier Bank Kenya',
-  accountName:   'Ayub Farah Jama',
-  accountNumber: '0019705302',
-  sortCode:      '74005',
-  swift:         'IFCBKENAXXX'
-};
-
 // ============= AUTH =============
 function getCurrentUser() {
   try { return JSON.parse(localStorage.getItem('afwm_user') || 'null'); } catch(e) { return null; }

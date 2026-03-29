@@ -5,26 +5,24 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Checkout | AF Wealth Mindset</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" rel="stylesheet"/>
-<!-- PayPal SDK v6 -->
-<script async src="https://www.sandbox.paypal.com/web-sdk/v6/core"></script>
-<!-- EmailJS -->
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
   tailwind.config = {
     darkMode: "class",
-    theme: { 
-      extend: { 
-        colors: { 
-          "midnight": "#0B1220", 
-          "ivory": "#F6F1E7", 
-          "gold": "#D7B46A", 
+    theme: {
+      extend: {
+        colors: {
+          "midnight": "#0B1220",
+          "ivory": "#F6F1E7",
+          "gold": "#D7B46A",
           "signature-teal": "#1FE6D1"
-        }, 
-        fontFamily: { 
-          "display": ["Manrope", "sans-serif"] 
-        } 
-      } 
+        },
+        fontFamily: {
+          "display": ["Manrope", "sans-serif"]
+        }
+      }
     }
   }
 </script>
@@ -35,14 +33,6 @@
 </style>
 </head>
 <body class="dark:bg-midnight font-display text-ivory">
-
-<!-- Loading -->
-<div id="loading" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-midnight/80">
-  <div class="text-center">
-    <div class="w-10 h-10 border-4 border-signature-teal/30 border-t-signature-teal rounded-full animate-spin mx-auto mb-4"></div>
-    <p class="text-ivory/60">Processing payment...</p>
-  </div>
-</div>
 
 <!-- Header -->
 <header class="border-b border-gold/10 p-6 sticky top-0 z-40 bg-midnight/80">
@@ -59,7 +49,7 @@
   <!-- Order Summary -->
   <section class="border border-gold/10 rounded-lg p-6 mb-8 bg-midnight">
     <h2 class="text-lg font-bold text-gold mb-6">Order Summary</h2>
-    
+
     <div id="product-info" class="space-y-3 border-b border-gold/10 pb-6 mb-6">
       <div class="flex justify-between">
         <div>
@@ -75,10 +65,6 @@
         <span>Subtotal</span>
         <span id="subtotal">$0.00</span>
       </div>
-      <div class="flex justify-between text-ivory/60">
-        <span>Tax (10%)</span>
-        <span id="tax">$0.00</span>
-      </div>
       <div class="flex justify-between text-lg font-bold text-gold pt-2 border-t border-gold/10">
         <span>Total</span>
         <span id="total">$0.00</span>
@@ -91,25 +77,35 @@
     </div>
   </section>
 
-  <!-- Email -->
-  <section class="border border-gold/10 rounded-lg p-6 mb-8 bg-midnight">
-    <label class="block text-gold font-bold mb-3">Email Address</label>
-    <input type="email" id="email" placeholder="your@email.com" required/>
-    <p class="text-ivory/50 text-xs mt-2">Your download link will be sent here</p>
-  </section>
-
-  <!-- Payment -->
+  <!-- Payment Section -->
   <section class="border border-gold/10 rounded-lg p-6 bg-midnight">
-    <h2 class="text-lg font-bold text-gold mb-6">Payment Method</h2>
-    
-    <div id="paypal-buttons-container">
-      <!-- PayPal buttons appear here -->
-    </div>
-
-    <p id="error-msg" class="hidden text-red-400 text-sm mt-4 p-3 bg-red-900/10 rounded border border-red-400/20"></p>
+    <h2 class="text-lg font-bold text-gold mb-6">Payment</h2>
+    <div id="payment-container"></div>
   </section>
 
 </main>
+
+<!-- Footer -->
+<footer class="w-full bg-midnight py-12 border-t border-gold/10">
+  <div class="max-w-[960px] mx-auto flex flex-col items-center gap-6">
+    <span style="color:#1FE6D1;font-size:0.75rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;">Follow Us</span>
+    <div style="display:flex;gap:28px;align-items:center;">
+      <a href="https://www.tiktok.com/@afwealthsystems" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-tiktok"></i></a>
+      <a href="https://www.youtube.com/@afwealthmindset" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-youtube"></i></a>
+      <a href="https://www.instagram.com/afwealthmindset/" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://www.facebook.com/AFWealthMidnset" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-facebook"></i></a>
+      <a href="https://x.com/AFWealth67" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-x-twitter"></i></a>
+    </div>
+    <div style="display:flex;gap:24px;">
+      <a href="/pricing.html" style="color:rgba(246,241,231,0.3);font-size:0.75rem;text-decoration:none;">Pricing</a>
+      <a href="/terms.html" style="color:rgba(246,241,231,0.3);font-size:0.75rem;text-decoration:none;">Terms</a>
+      <a href="/privacy.html" style="color:rgba(246,241,231,0.3);font-size:0.75rem;text-decoration:none;">Privacy</a>
+      <a href="/refund.html" style="color:rgba(246,241,231,0.3);font-size:0.75rem;text-decoration:none;">Refunds</a>
+      <a href="/contact.html" style="color:rgba(246,241,231,0.3);font-size:0.75rem;text-decoration:none;">Contact</a>
+    </div>
+    <p class="text-ivory/30 text-xs tracking-widest uppercase">&copy; 2025 AF Wealth Mindset. All Rights Reserved.</p>
+  </div>
+</footer>
 
 <script src="js/app.js"></script>
 <script>
@@ -127,9 +123,6 @@ const PRODUCTS = {
   7: { id: 7, name: "Wealth Building Guide", desc: "Complete wealth creation blueprint", price: 9.99 }
 };
 
-const PAYPAL_CLIENT_ID = 'AURFqW9BM7AQJBnTjmCKCcMuKKN-fxthcmfY7U5kuAHq1ttVmTwozQ3dtfcqnwg2Vu3yI8OydJAhJ9Z7';
-const WORKER_URL = 'https://afwm-paypal-api.ayubfarah67.workers.dev';
-
 let product = null;
 
 // ============================================================
@@ -137,156 +130,20 @@ let product = null;
 // ============================================================
 
 function init() {
-  // Get product from URL
   const id = parseInt(new URLSearchParams(window.location.search).get('id')) || 1;
   product = PRODUCTS[id];
-  
+
   if (!product) {
     window.location.href = '/pricing.html';
     return;
   }
 
-  // Display product info
   document.getElementById('product-name').textContent = product.name;
   document.getElementById('product-desc').textContent = product.desc;
   document.getElementById('product-price').textContent = '$' + product.price.toFixed(2);
   document.getElementById('subtotal').textContent = '$' + product.price.toFixed(2);
-  
-  const tax = product.price * 0.10;
-  const total = product.price + tax;
-  
-  document.getElementById('tax').textContent = '$' + tax.toFixed(2);
-  document.getElementById('total').textContent = '$' + total.toFixed(2);
-
-  // Initialize EmailJS
-  emailjs.init('ylGXXn8CD-YXxPyFm');
-
-  // Setup PayPal
-  setupPayPal();
+  document.getElementById('total').textContent = '$' + product.price.toFixed(2);
 }
-
-// ============================================================
-// PayPal Setup
-// ============================================================
-
-async function setupPayPal() {
-  try {
-    // Create SDK instance
-    const sdkInstance = await window.paypal.createInstance({
-      clientId: PAYPAL_CLIENT_ID,
-      components: ['buttons'],
-      pageType: 'checkout'
-    });
-
-    console.log('✓ PayPal SDK loaded');
-
-    // Create payment session
-    const session = sdkInstance.createPayPalOneTimePaymentSession({
-      async onApprove(data) {
-        showLoading();
-        try {
-          // Capture order
-          const res = await fetch(
-            `${WORKER_URL}/paypal-api/checkout/orders/${data.orderId}/capture`,
-            { method: 'POST' }
-          );
-
-          if (!res.ok) throw new Error('Capture failed');
-          const result = await res.json();
-
-          // Save order
-          addOrder(product.id, result.amount, 'paypal', result.capture_id);
-
-          // Send email
-          await emailjs.send('service_046t8c7', 'template_wpxuynk', {
-            to_email: document.getElementById('email').value,
-            product_name: product.name,
-            download_link: `https://afwealthmindset.com/downloads/${product.id}`
-          });
-
-          hideLoading();
-          window.location.href = '/orders.html?success=1';
-        } catch (err) {
-          hideLoading();
-          showError('Payment failed: ' + err.message);
-          console.error(err);
-        }
-      },
-
-      onCancel() {
-        showError('Payment cancelled');
-      },
-
-      onError(err) {
-        showError('Payment error: ' + err.message);
-        console.error(err);
-      }
-    });
-
-    // Render PayPal button
-    const paypalButton = sdkInstance.createPayPalPaymentButtons({
-      async createOrder() {
-        const email = document.getElementById('email').value;
-        if (!email) {
-          showError('Please enter your email');
-          return null;
-        }
-
-        showLoading();
-        try {
-          const res = await fetch(`${WORKER_URL}/paypal-api/checkout/orders/create`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              amount: product.price.toFixed(2),
-              email: email,
-              description: product.name
-            })
-          });
-
-          if (!res.ok) throw new Error('Order creation failed');
-          const data = await res.json();
-          hideLoading();
-          return data.id;
-        } catch (err) {
-          hideLoading();
-          showError('Failed to create order: ' + err.message);
-          console.error(err);
-          return null;
-        }
-      }
-    });
-
-    await paypalButton.render('#paypal-buttons-container');
-    console.log('✓ PayPal button rendered');
-
-  } catch (err) {
-    console.error('PayPal setup error:', err);
-    showError('Payment system error');
-  }
-}
-
-// ============================================================
-// Utilities
-// ============================================================
-
-function showLoading() {
-  document.getElementById('loading').classList.remove('hidden');
-}
-
-function hideLoading() {
-  document.getElementById('loading').classList.add('hidden');
-}
-
-function showError(msg) {
-  const el = document.getElementById('error-msg');
-  el.textContent = msg;
-  el.classList.remove('hidden');
-}
-
-// ============================================================
-// Run
-// ============================================================
 
 window.addEventListener('load', init);
 </script>
