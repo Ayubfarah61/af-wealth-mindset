@@ -5,640 +5,215 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Checkout | AF Wealth Mindset</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<!-- Paystack inline SDK for card payments -->
-<script src="https://js.paystack.co/v1/inline.js"></script>
-<!-- PayPal JavaScript SDK v6 (SANDBOX FOR TESTING) -->
-<script src="https://www.sandbox.paypal.com/web-sdk/v6/core"></script>
-<!-- EmailJS for order email notifications -->
+<!-- PayPal SDK -->
+<script async src="https://sandbox.paypal.com/web-sdk/v6/core"></script>
+<!-- EmailJS -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script id="tailwind-config">
   tailwind.config = {
     darkMode: "class",
-    theme: { extend: { colors: { "midnight": "#0B1220", "ivory": "#F6F1E7", "gold": "#D7B46A", "signature-teal": "#1FE6D1", "background-dark": "#0B1220" }, fontFamily: { "display": ["Manrope", "sans-serif"] }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" } } }
+    theme: { 
+      extend: { 
+        colors: { 
+          "midnight": "#0B1220", 
+          "ivory": "#F6F1E7", 
+          "gold": "#D7B46A", 
+          "signature-teal": "#1FE6D1"
+        }, 
+        fontFamily: { 
+          "display": ["Manrope", "sans-serif"] 
+        } 
+      } 
+    }
   }
 </script>
 <style>
-  /* PayPal Buttons - Brand Color Override */
-  #paypal-button-container iframe {
-    filter: brightness(0.95) !important;
-  }
-  
-  /* Custom button styling container */
-  .payment-button {
-    background: linear-gradient(135deg, #D7B46A 0%, #D7B46A 100%);
-    color: #0B1220;
-    font-weight: 700;
-    border-radius: 8px;
-    padding: 12px 24px;
-    transition: all 0.3s ease;
-    border: 2px solid #D7B46A;
-  }
-  
-  .payment-button:hover {
-    background: linear-gradient(135deg, #E5C58A 0%, #E5C58A 100%);
-    border-color: #E5C58A;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(215, 180, 106, 0.3);
-  }
-  
-  .payment-button:active {
-    transform: translateY(0);
-  }
+  body { background: #0B1220; }
+  input { background: #F6F1E7 !important; color: #0B1220 !important; }
+  input::placeholder { color: rgba(11, 18, 32, 0.5) !important; }
 </style>
 </head>
-<body class="dark:bg-background-dark font-display text-ivory antialiased">
+<body class="dark:bg-midnight font-display text-ivory">
 
-<!-- Loading Overlay -->
-<div id="loading-overlay" class="hidden fixed inset-0 z-[100] flex flex-col items-center justify-center bg-midnight/90 backdrop-blur-sm">
-  <div class="w-12 h-12 rounded-full border-4 border-signature-teal/30 border-t-signature-teal animate-spin mb-4"></div>
-  <p id="loading-msg" class="text-ivory/60 text-sm tracking-widest uppercase">Processing…</p>
+<!-- Loading -->
+<div id="loading" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-midnight/80">
+  <div class="text-center">
+    <div class="w-10 h-10 border-4 border-signature-teal/30 border-t-signature-teal rounded-full animate-spin mx-auto mb-4"></div>
+    <p class="text-ivory/60">Processing...</p>
+  </div>
 </div>
 
-<div class="relative flex flex-col items-center w-full min-h-screen">
-
 <!-- Header -->
-<header class="sticky top-0 z-50 flex items-center justify-between w-full px-6 py-4 bg-midnight/80 backdrop-blur-md border-b border-gold/10 lg:px-40">
-  <div class="flex-1">
-    <button onclick="history.back()" class="flex items-center gap-2 text-ivory/60 hover:text-gold transition-colors text-sm">
-      <span class="material-symbols-outlined text-sm">arrow_back_ios</span> Back
-    </button>
-  </div>
-  <nav class="flex items-center gap-10">
-    <a id="nav-auth-link" href="/signup.html" class="text-ivory hover:text-gold transition-colors text-sm font-medium tracking-wide">Sign Up</a>
-  </nav>
-  <div class="flex flex-1 justify-end gap-4">
-    <button class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gold/10 text-gold transition-all">
-      <span class="material-symbols-outlined">lock</span>
-    </button>
+<header class="border-b border-gold/10 p-6 sticky top-0 z-40 bg-midnight/80">
+  <div class="max-w-2xl mx-auto flex justify-between items-center">
+    <button onclick="history.back()" class="text-ivory/60 hover:text-gold">← Back</button>
+    <h1 class="text-2xl font-bold text-gold">Checkout</h1>
+    <div class="w-16"></div>
   </div>
 </header>
 
-<main class="w-full max-w-[580px] px-4 py-12 flex flex-col gap-8">
-
-  <!-- Brand -->
-  <div class="flex flex-col items-center text-center gap-4">
-    <div class="w-24 h-24 rounded-full border-4 border-midnight bg-center bg-cover shadow-2xl overflow-hidden"
-      style="background-image: url('/images/logo.png')"></div>
-    <div>
-      <h2 class="text-2xl font-bold tracking-[0.1em] text-gold uppercase">Complete Your Purchase</h2>
-      <p class="text-ivory/60 text-sm mt-1">Secure checkout for your curated selection</p>
-    </div>
-  </div>
+<!-- Main -->
+<main class="max-w-2xl mx-auto p-6 py-12">
 
   <!-- Order Summary -->
-  <section class="bg-midnight border border-gold/10 rounded-xl p-6">
-    <h3 class="text-sm font-bold tracking-[0.2em] text-gold uppercase mb-6 flex items-center gap-2">
-      <span class="material-symbols-outlined text-gold">receipt_long</span> Order Summary
-    </h3>
-    <div class="space-y-4">
-      <div class="flex items-center gap-4">
-        <div id="order-img" class="w-16 h-16 rounded-lg bg-cover bg-center flex-shrink-0 border border-gold/10"></div>
-        <div class="flex-1">
-          <p id="order-name" class="font-bold text-ivory"></p>
-          <p id="order-edition" class="text-xs text-ivory/50"></p>
-        </div>
-        <p id="order-price" class="font-bold text-ivory"></p>
-      </div>
-      <hr class="border-gold/10"/>
-      <div class="space-y-3 text-sm">
-        <div class="flex justify-between"><span class="text-ivory/50">Subtotal</span><span id="order-subtotal" class="text-ivory"></span></div>
-        <div class="flex justify-between"><span class="text-ivory/50">Delivery</span><span class="text-signature-teal font-bold">Digital Download</span></div>
-        <div class="flex justify-between text-lg font-bold pt-3 border-t border-gold/10">
-          <span class="text-ivory">Total</span><span id="order-total" class="text-gold"></span>
-        </div>
-      </div>
+  <section class="border border-gold/10 rounded-lg p-6 mb-8 bg-midnight">
+    <h2 class="text-lg font-bold text-gold mb-6">Order Summary</h2>
+    <div id="product-display" class="space-y-4 border-b border-gold/10 pb-6">
+      <!-- Filled by JS -->
+    </div>
+    <div class="mt-6 text-right">
+      <p class="text-ivory/60 text-sm">Total:</p>
+      <p id="total-price" class="text-3xl font-bold text-gold">$0.00</p>
     </div>
   </section>
 
-  <!-- Contact -->
-  <section class="bg-midnight border border-gold/10 rounded-xl p-6">
-    <h3 class="text-sm font-bold tracking-[0.2em] text-gold uppercase mb-6 flex items-center gap-2">
-      <span class="material-symbols-outlined text-gold">contact_mail</span> Contact Information
-    </h3>
-    <div>
-      <label class="block text-xs font-bold uppercase tracking-[0.1em] text-gold/60 mb-2">Email Address</label>
-      <input id="checkout-email" type="email" placeholder="your@email.com"
-        class="w-full bg-midnight border border-gold/20 rounded-lg px-4 py-3 text-ivory placeholder:text-ivory/20 focus:border-signature-teal outline-none transition-all"/>
-      <p class="text-xs text-ivory/30 mt-2">Your download link will be sent here after payment. No account required.</p>
-    </div>
+  <!-- Email -->
+  <section class="border border-gold/10 rounded-lg p-6 mb-8 bg-midnight">
+    <label class="block text-gold font-bold mb-2">Email Address</label>
+    <input type="email" id="email" placeholder="your@email.com" class="w-full p-3 rounded" required/>
+    <p class="text-ivory/50 text-xs mt-2">Download link will be sent here</p>
   </section>
 
-  <!-- Digital product notice -->
-  <div class="flex items-center gap-3 px-4 py-3 bg-signature-teal/5 border border-signature-teal/20 rounded-xl">
-    <span class="material-symbols-outlined text-signature-teal" style="font-size:18px">download</span>
-    <p class="text-signature-teal text-xs font-bold">This is a digital product. Access is provided instantly after purchase.</p>
-  </div>
-
-  <!-- Payment Method -->
-  <section class="bg-midnight border border-gold/10 rounded-xl p-6">
-    <h3 class="text-sm font-bold tracking-[0.2em] text-gold uppercase mb-4 flex items-center gap-2">
-      <span class="material-symbols-outlined text-gold">account_balance_wallet</span> Secure Payment
-    </h3>
-
-    <!-- ── Multiple Payment Methods ── -->
-    <div id="payment-methods-section">
-
-      <!-- PAYSTACK: Card Payment (HIDDEN FOR NOW) -->
-      <div class="mb-6 pb-6 border-b border-gold/10 hidden">
-        <h4 class="text-xs font-bold text-gold/70 uppercase mb-3">Option 1: Paystack (Backup)</h4>
-        <button id="btn-card" class="w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-gold/20 bg-midnight hover:border-gold/40 text-ivory font-bold text-sm transition-all" onclick="paystackPay()">
-          <span class="material-symbols-outlined text-gold" style="font-size:20px">credit_card</span>
-          <span class="flex-1 text-left">Debit / Credit Card</span>
-        </button>
-      </div>
-
-      <!-- PAYPAL EXPANDED CHECKOUT: Main Option -->
-      <div>
-        <h4 class="text-xs font-bold text-gold/70 uppercase mb-3">Pay with PayPal</h4>
-
-        <!-- PayPal v6 Web Components -->
-        <div class="space-y-3">
-          <paypal-button></paypal-button>
-          <venmo-button></venmo-button>
-          <googlepay-button></googlepay-button>
-          <applepay-button></applepay-button>
-        </div>
-
-        <!-- Error Messages -->
-        <p id="payment-error" class="hidden text-center text-red-400 text-xs p-3 bg-red-900/10 rounded-lg border border-red-400/20 mt-3"></p>
-      </div>
-
-    </div>
-    <!-- Bank Transfer (hidden - not accepting) -->
-    <div id="bank-section-wrapper" hidden>
-        <div id="bank-section" class="hidden">
-          <div class="space-y-3 text-sm">
-            <div class="flex justify-between"><span class="text-ivory/50">Bank Name</span><span id="bank-name" class="text-ivory font-medium"></span></div>
-            <div class="flex justify-between"><span class="text-ivory/50">Account Name</span><span id="bank-acct-name" class="text-ivory font-medium"></span></div>
-            <div class="flex justify-between"><span class="text-ivory/50">Account Number</span><span id="bank-acct-num" class="text-ivory font-medium font-mono"></span></div>
-            <div class="flex justify-between"><span class="text-ivory/50">Sort Code</span><span id="bank-sort" class="text-ivory font-medium font-mono"></span></div>
-            <div class="flex justify-between"><span class="text-ivory/50">SWIFT / BIC</span><span id="bank-swift" class="text-ivory font-medium font-mono"></span></div>
-            <hr class="border-gold/10"/>
-            <div class="flex justify-between"><span class="text-ivory/50">Reference</span><span id="bank-ref" class="text-signature-teal font-mono font-bold"></span></div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <!-- PayPal -->
+  <section class="border border-gold/10 rounded-lg p-6 bg-midnight">
+    <h2 class="text-lg font-bold text-gold mb-6">Payment</h2>
+    <div id="paypal-buttons"></div>
+    <p id="error" class="hidden text-red-400 text-sm mt-4 p-3 bg-red-900/10 rounded border border-red-400/20"></p>
   </section>
 
-  <!-- Trust badges -->
-  <div class="flex flex-wrap items-center justify-center gap-5 text-ivory/30">
-    <div class="flex items-center gap-1 text-[10px] uppercase font-bold tracking-widest">
-      <span class="material-symbols-outlined text-xs">verified_user</span> SSL Encrypted
-    </div>
-    <div class="flex items-center gap-1 text-[10px] uppercase font-bold tracking-widest">
-      <span class="material-symbols-outlined text-xs">lock</span> PayPal Secured
-    </div>
-    <div class="flex items-center gap-1 text-[10px] uppercase font-bold tracking-widest">
-      <span class="material-symbols-outlined text-xs">lock</span> Paystack Secured
-    </div>
-    <div class="flex items-center gap-1 text-[10px] uppercase font-bold tracking-widest">
-      <span class="material-symbols-outlined text-xs">replay</span> 14-Day Guarantee
-    </div>
-    <div class="flex items-center gap-1 text-[10px] uppercase font-bold tracking-widest">
-      <span class="material-symbols-outlined text-xs">bolt</span> Instant Access
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <footer class="w-full bg-midnight py-12 border-t border-gold/10 mt-4">
-    <div class="flex flex-col items-center gap-6">
-      <span class="text-signature-teal text-xs font-bold tracking-[0.2em] uppercase">Follow Us</span>
-      <div id="checkout-social-footer" class="flex justify-center gap-8"></div>
-      <p class="text-ivory/30 text-xs tracking-widest uppercase">© 2025 AF Wealth Mindset. All Rights Reserved.</p>
-      <p class="text-[10px] text-ivory/20">By completing your purchase, you agree to our <a class="underline hover:text-gold transition-colors" href="/terms.html">Terms</a> and <a class="underline hover:text-gold transition-colors" href="/privacy.html">Privacy Policy</a>.</p>
-    </div>
-  </footer>
 </main>
-</div>
 
-<script src="/js/app.js"></script>
+<script src="js/app.js"></script>
 <script>
-// ============================================================
-//  PRODUCT DATA (copied from product.html for checkout access)
-// ============================================================
-var PAGES = {
-  1: {
-    name: 'Cashflow Secrets — The Course That Changes Everything',
-    badge: 'Featured',
-    image: '/images/product1.jpg',
-    originalPrice: '$400',
-    price: '$97',
-    description: 'Stop trading your time for money. Created by self-made millionaire Chris Miles (CNN Money, US News, Bankrate), Cashflow Secrets is the step-by-step system that takes you from financial stress to financial freedom — without a new job, side hustle, or extreme sacrifice.',
-    checkoutId: 1
-  },
-  2: {
-    name: 'Annual Budget Planner | Excel Template with Automatic Dashboard',
-    badge: 'Best Value',
-    image: '/images/product2.png',
-    originalPrice: '$14.99',
-    price: '$9.99',
-    description: 'Take Control of Your Money — All in One Beautiful Spreadsheet. Track every dollar, every month, all year long.',
-    checkoutId: 2
-  },
-  3: {
-    name: '12-Month Cash Flow Budget | Excel Template',
-    badge: 'New',
-    image: '/images/product3.png',
-    originalPrice: '$14.99',
-    price: '$9.99',
-    description: 'See your complete cash flow at a glance. Track income, expenses, and net cash flow with 6 automatic charts and KPI cards.',
-    checkoutId: 3
-  },
-  4: {
-    name: 'Debt Payoff Dashboard | Excel Template',
-    badge: 'New',
-    image: '/images/product4.png',
-    originalPrice: '$14.99',
-    price: '$9.99',
-    description: 'Visualize your entire debt payoff journey. Track principal paid, interest accrued, and see exactly when you\'ll be debt-free.',
-    checkoutId: 4
-  },
-  5: {
-    name: 'Financial Goals Dashboard | Excel Template',
-    badge: 'New',
-    image: '/images/product5.png',
-    originalPrice: '$14.99',
-    price: '$9.99',
-    description: 'Track all your financial goals in one place. See progress on 10+ goals, visualize savings by category, and stay motivated.',
-    checkoutId: 5
-  },
-  6: {
-    name: 'Net Worth Tracker | Excel Template',
-    badge: 'Premium',
-    image: '/images/product6.png',
-    originalPrice: '$19.99',
-    price: '$9.99',
-    description: 'Track your complete financial picture. Monitor assets, liabilities, and watch your net worth grow month by month.',
-    checkoutId: 6
-  },
-  7: {
-    name: 'Income Expense Tracker | Excel Template',
-    badge: 'Essential',
-    image: '/images/product7.png',
-    originalPrice: '$14.99',
-    price: '$9.99',
-    description: 'Track every dollar in and out. See exactly where your money goes with automatic categorization and monthly summaries.',
-    checkoutId: 7
-  }
+// Products
+const PRODUCTS = {
+  1: { id: 1, name: "Money Control Masterclass", price: 97.00 },
+  2: { id: 2, name: "Budget Planner", price: 9.99 },
+  3: { id: 3, name: "Debt Payoff Strategy", price: 9.99 },
+  4: { id: 4, name: "Investment 101", price: 9.99 },
+  5: { id: 5, name: "Savings Blueprint", price: 9.99 },
+  6: { id: 6, name: "Financial Goals Tracker", price: 9.99 },
+  7: { id: 7, name: "Wealth Building Guide", price: 9.99 }
 };
-</script>
-<script>
-// ============================================================
-//  CONFIGURATION
-// ============================================================
-const SANDBOX_MODE = true; // TESTING MODE - set to false for LIVE
 
-const PAYPAL_CLIENT_ID_SANDBOX = 'AURFqW9BM7AQJBnTjmCKCcMuKKN-fxthcmfY7U5kuAHq1ttVmTwozQ3dtfcqnwg2Vu3yI8OydJAhJ9Z7';
-const PAYPAL_CLIENT_ID_LIVE    = 'Ad6A68c1Z85fPgH7ac693rp1HGA8Uu4H3SEEqkwfu8WywbBmSM3ZwcVKPYME593v8HnGpCjR00wNI7VQ';
-const PAYPAL_CLIENT_ID         = SANDBOX_MODE ? PAYPAL_CLIENT_ID_SANDBOX : PAYPAL_CLIENT_ID_LIVE;
+const PAYPAL_CLIENT_ID = 'AURFqW9BM7AQJBnTjmCKCcMuKKN-fxthcmfY7U5kuAHq1ttVmTwozQ3dtfcqnwg2Vu3yI8OydJAhJ9Z7';
+const WORKER_URL = 'https://afwm-paypal-api.ayubfarah67.workers.dev';
 
-const PAYSTACK_PUBLIC_KEY = 'pk_live_ec052b80eca5f2f86a6ed09d1f50a51d18285631';
+let product = null;
 
-const WORKER_URL         = 'https://afwm-paypal-api.ayubfarah67.workers.dev';
-const EMAILJS_USER_ID    = 'ylGXXn8CD-YXxPyFm';
-const EMAILJS_SERVICE_ID = 'service_046t8c7';
-const EMAILJS_TEMPLATE_ID= 'template_wpxuynk';
-const NOTIFY_EMAIL       = 'sales@afwealthmindset.com';
-// ============================================================
+// Init
+function init() {
+  const id = parseInt(new URLSearchParams(window.location.search).get('id')) || 1;
+  product = PRODUCTS[id];
+  if (!product) window.location.href = '/pricing.html';
 
-  initHeader();
-  renderSocialFooter('checkout-social-footer');
+  // Display product
+  document.getElementById('product-display').innerHTML = `
+    <div>
+      <h3 class="font-bold text-ivory">${product.name}</h3>
+      <p class="text-gold font-bold">$${product.price.toFixed(2)}</p>
+    </div>
+  `;
+  document.getElementById('total-price').textContent = '$' + product.price.toFixed(2);
 
-  document.getElementById('bank-name').textContent      = BANK_DETAILS.bankName;
-  document.getElementById('bank-acct-name').textContent = BANK_DETAILS.accountName;
-  document.getElementById('bank-acct-num').textContent  = BANK_DETAILS.accountNumber;
-  document.getElementById('bank-sort').textContent      = BANK_DETAILS.sortCode;
-  document.getElementById('bank-swift').textContent     = BANK_DETAILS.swift;
+  setupPayPal();
+  emailjs.init('ylGXXn8CD-YXxPyFm');
+}
 
-  // Get product from PAGES object by URL id parameter
-  function getProductFromPages() {
-    const id = parseInt(new URLSearchParams(window.location.search).get('id'));
-    if (typeof PAGES !== 'undefined' && PAGES[id]) {
-      return PAGES[id];
-    }
-    // Fallback: if PAGES not available, return dummy product
-    return { id: 1, name: 'Product', price: '$0.00', image: '', description: '' };
-  }
+// PayPal Setup
+async function setupPayPal() {
+  const instance = window.paypal.createInstance({
+    clientId: PAYPAL_CLIENT_ID,
+    components: ['buttons'],
+    intent: 'capture'
+  });
 
-  const product = getProductFromPages();
-  const user    = getCurrentUser();
-
-  document.getElementById('order-img').style.backgroundImage = `url('${product.image}')`;
-  document.getElementById('order-name').textContent     = product.name;
-  document.getElementById('order-edition').textContent  = `Qty: 1 • ${product.description || 'Digital Product'}`;
-  document.getElementById('order-price').textContent    = formatPrice(product.price);
-  document.getElementById('order-subtotal').textContent = formatPrice(product.price);
-  document.getElementById('order-total').textContent    = formatPrice(product.price);
-  document.getElementById('bank-ref').textContent       = 'AFWM-' + product.id + '-' + Date.now().toString().slice(-6);
-
-  if (user) document.getElementById('checkout-email').value = user.email;
-
-  // Show card button immediately — Paystack needs no SDK init
-  document.getElementById('btn-card').removeAttribute('hidden');
-
-  // Init EmailJS
-  if (EMAILJS_USER_ID !== 'YOUR_EMAILJS_USER_ID') {
-    emailjs.init({ publicKey: EMAILJS_USER_ID });
-  }
-
-  // ── Helpers ──────────────────────────────────────────────
-
-  function formatPrice(price) {
-    // If already formatted (string like "$9.99"), return as-is
-    if (typeof price === 'string' && price.startsWith('$')) return price;
-    // If number, format it
-    return '$' + parseFloat(price).toFixed(2);
-  }
-
-  function showLoading(msg) {
-    document.getElementById('loading-msg').textContent = msg || 'Processing…';
-    document.getElementById('loading-overlay').classList.remove('hidden');
-  }
-  function hideLoading() {
-    document.getElementById('loading-overlay').classList.add('hidden');
-  }
-
-  function validateEmail() {
-    const v = document.getElementById('checkout-email').value.trim();
-    if (!v || !v.includes('@')) {
-      alert('Please enter a valid email address before paying.');
-      document.getElementById('checkout-email').focus();
-      return false;
-    }
-    return true;
-  }
-
-  function toggleBankTransfer() {
-    const section = document.getElementById('bank-section');
-    const icon    = document.getElementById('bank-toggle-icon');
-    const opening = section.classList.contains('hidden');
-    section.classList.toggle('hidden', !opening);
-    icon.textContent = opening ? 'expand_less' : 'expand_more';
-  }
-
-  // ── Email notification ────────────────────────────────────
-
-  async function sendOrderEmail(customerEmail, transactionId, paymentMethod) {
-    if (EMAILJS_USER_ID === 'YOUR_EMAILJS_USER_ID') return;
-    try {
-      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-        customer_email: customerEmail,
-        product_name:   product.name,
-        amount:         formatPrice(product.price),
-        transaction_id: transactionId,
-        payment_method: paymentMethod,
-        to_email:       NOTIFY_EMAIL
-      });
-    } catch(e) {
-      console.warn('Email notification failed:', e);
-    }
-  }
-
-  // ── Paystack card payment ─────────────────────────────────
-
-  function paystackPay() {
-    if (!validateEmail()) return;
-    if (typeof PaystackPop === 'undefined') {
-      alert('Payment is loading. Please wait a moment and try again.');
-      return;
-    }
-    
-    const email = document.getElementById('checkout-email').value.trim();
-    const ref   = 'AFWM-' + product.id + '-' + Date.now();
-    const amountInCents = Math.round(parseFloat(product.price.replace('$', '')) * 100);
-
-    const handler = PaystackPop.setup({
-      key:      PAYSTACK_PUBLIC_KEY,
-      email:    email,
-      amount:   amountInCents,
-      currency: 'USD',
-      ref:      ref,
-      metadata: { product_name: product.name, product_id: product.id },
-      onSuccess: function(response) {
-        // Payment successful - record order and send email
-        addOrder(product.id, product.price, 'Card', response.reference);
-        sendOrderEmail(email, response.reference, 'Debit/Credit Card');
-        window.location.href = '/orders.html?success=1&method=card';
-      },
-      onClose: function() {
-        // User closed payment popup
-        alert('Payment cancelled');
+  instance.createPayPalPaymentButtons({
+    createOrder: async () => {
+      const email = document.getElementById('email').value;
+      if (!email) {
+        error('Enter email');
+        return null;
       }
-    });
 
-    handler.openIframe();
-  }
-
-  // ============================================================
-  // PayPal Expanded Checkout (NEW - keeps customer on your site!)
-  // ============================================================
-
-  // ============================================================
-  // PayPal v6 SDK - Multiple Payment Methods
-  // ============================================================
-
-  async function initializePayPalSDK() {
-    console.log('🔍 initializePayPalSDK called');
-    
-    // Check if SDK is loaded
-    if (typeof window.paypal === 'undefined' || !window.paypal.createInstance) {
-      console.error('❌ PayPal SDK not loaded');
-      setTimeout(initializePayPalSDK, 500); // Retry
-      return;
-    }
-
-    // Check if product is loaded
-    if (typeof product === 'undefined' || !product) {
-      console.error('❌ Product not loaded yet');
-      setTimeout(initializePayPalSDK, 500); // Retry
-      return;
-    }
-
-    console.log('✅ PayPal SDK loaded');
-    console.log('✅ Product loaded:', product);
-
-    try {
-      // Create PayPal SDK instance
-      console.log('🔄 Creating SDK instance with client ID:', PAYPAL_CLIENT_ID);
-      const sdkInstance = await window.paypal.createInstance({
-        clientId: PAYPAL_CLIENT_ID,
-        components: ['paypal-payments', 'venmo-payments', 'googlepay-payments', 'applepay-payments'],
-        pageType: 'checkout',
-      });
-
-      console.log('✅ SDK instance created');
-
-      // Check eligibility for payment methods
-      const paymentMethods = await sdkInstance.findEligibleMethods({
-        currencyCode: 'USD',
-      });
-
-      console.log('✅ Payment methods checked:', paymentMethods);
-
-      // Shared payment session options
-      const paymentSessionOptions = {
-        async onApprove(data) {
-          console.log('✅ Payment approved:', data);
-          showLoading('Completing your purchase...');
-          
-          try {
-            const orderData = await captureOrder(data.orderId);
-            console.log('✅ Order captured:', orderData);
-
-            const email = document.getElementById('checkout-email').value.trim();
-            addOrder(product.id, product.price, 'PayPal', orderData.id);
-            await sendOrderEmail(email, orderData.id, 'PayPal');
-
-            setTimeout(() => {
-              window.location.href = '/orders.html?success=1&method=paypal';
-            }, 1000);
-          } catch(err) {
-            hideLoading();
-            console.error('❌ Capture failed:', err);
-            alert('Payment approved but processing failed. Please contact support.');
-          }
-        },
-        onCancel(data) {
-          console.log('⚠️ Payment cancelled');
-          alert('Payment cancelled. You can try again anytime.');
-        },
-        onError(error) {
-          hideLoading();
-          console.error('❌ Payment error:', error);
-          alert('Payment error: ' + (error.message || 'Please try again'));
-        }
-      };
-
-      // Create order function
-      async function createOrder() {
-        console.log('📦 Creating PayPal order...');
-        const email = document.getElementById('checkout-email').value.trim();
-        
-        if (!email || !email.includes('@')) {
-          alert('Please enter a valid email');
-          throw new Error('Invalid email');
-        }
-
-        const amount = parseFloat(product.price.replace('$', ''));
-        console.log('💰 Order amount:', amount);
-
-        // Call your Cloudflare Worker to create the order
-        const response = await fetch(WORKER_URL + '/paypal-api/checkout/orders/create', {
+      show();
+      try {
+        const res = await fetch(`${WORKER_URL}/paypal-api/checkout/orders/create`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            amount: amount.toFixed(2),
-            currency: 'USD',
-            description: product.name,
-            email: email
+            amount: product.price.toFixed(2),
+            email: email,
+            description: product.name
           })
         });
 
-        if (!response.ok) throw new Error('Order creation failed');
-        const data = await response.json();
-        console.log('✅ Order created:', data);
-        return { orderId: data.id };
+        if (!res.ok) throw new Error('Order creation failed');
+        const data = await res.json();
+        hide();
+        return data.id;
+      } catch (err) {
+        hide();
+        error('Failed to create order');
+        console.error(err);
+        return null;
       }
+    },
 
-      // Set up PayPal button
-      console.log('🔄 Setting up PayPal button...');
-      const paypalSession = sdkInstance.createPayPalOneTimePaymentSession(paymentSessionOptions);
-      const paypalButton = document.querySelector('paypal-button');
-      if (paypalButton) {
-        console.log('✅ PayPal button found');
-        paypalButton.addEventListener('click', async () => {
-          try {
-            await paypalSession.start(
-              { presentationMode: 'auto' },
-              createOrder()
-            );
-          } catch(err) {
-            console.error('❌ PayPal start error:', err);
-          }
+    onApprove: async (data) => {
+      show();
+      try {
+        const res = await fetch(
+          `${WORKER_URL}/paypal-api/checkout/orders/${data.orderId}/capture`,
+          { method: 'POST' }
+        );
+
+        if (!res.ok) throw new Error('Capture failed');
+        const result = await res.json();
+
+        // Save order
+        addOrder(product.id, result.amount, 'paypal', result.capture_id);
+
+        // Send email
+        await emailjs.send('service_046t8c7', 'template_wpxuynk', {
+          to_email: document.getElementById('email').value,
+          product_name: product.name,
+          download_link: `https://afwealthmindset.com/downloads/${product.id}`
         });
+
+        hide();
+        window.location.href = `/orders.html?success=1`;
+      } catch (err) {
+        hide();
+        error('Payment processing failed');
+        console.error(err);
       }
+    },
 
-      // Set up Venmo button
-      console.log('🔄 Setting up Venmo button...');
-      const venmoSession = sdkInstance.createVenmoOneTimePaymentSession(paymentSessionOptions);
-      const venmoButton = document.querySelector('venmo-button');
-      if (venmoButton) {
-        console.log('✅ Venmo button found');
-        venmoButton.addEventListener('click', async () => {
-          try {
-            await venmoSession.start(
-              { presentationMode: 'auto' },
-              createOrder()
-            );
-          } catch(err) {
-            console.error('❌ Venmo start error:', err);
-          }
-        });
-      }
-
-      // Set up Google Pay button
-      console.log('🔄 Setting up Google Pay button...');
-      const googlePaySession = sdkInstance.createGooglePayOneTimePaymentSession(paymentSessionOptions);
-      const googlePayButton = document.querySelector('googlepay-button');
-      if (googlePayButton) {
-        console.log('✅ Google Pay button found');
-        googlePayButton.addEventListener('click', async () => {
-          try {
-            await googlePaySession.start(
-              { presentationMode: 'auto' },
-              createOrder()
-            );
-          } catch(err) {
-            console.error('❌ Google Pay start error:', err);
-          }
-        });
-      }
-
-      // Set up Apple Pay button
-      console.log('🔄 Setting up Apple Pay button...');
-      const applePaySession = sdkInstance.createApplePayOneTimePaymentSession(paymentSessionOptions);
-      const applePayButton = document.querySelector('applepay-button');
-      if (applePayButton) {
-        console.log('✅ Apple Pay button found');
-        applePayButton.addEventListener('click', async () => {
-          try {
-            await applePaySession.start(
-              { presentationMode: 'auto' },
-              createOrder()
-            );
-          } catch(err) {
-            console.error('❌ Apple Pay start error:', err);
-          }
-        });
-      }
-
-      console.log('✅ PayPal SDK initialization complete');
-
-    } catch(err) {
-      console.error('❌ SDK initialization failed:', err);
+    onError: () => {
+      hide();
+      error('Payment cancelled');
     }
-  }
+  }).render('#paypal-buttons');
+}
 
-  // Start initialization when page loads
-  document.addEventListener('DOMContentLoaded', () => {
-    console.log('📍 DOMContentLoaded, initializing PayPal SDK...');
-    setTimeout(initializePayPalSDK, 500);
-  });
+// Utils
+function show() { document.getElementById('loading').classList.remove('hidden'); }
+function hide() { document.getElementById('loading').classList.add('hidden'); }
+function error(msg) {
+  const el = document.getElementById('error');
+  el.textContent = msg;
+  el.classList.remove('hidden');
+}
 
-
-
-
-  // Helper function for payment errors
-  function showPaymentError(message) {
-    const errorEl = document.getElementById('payment-error');
-    errorEl.textContent = message;
-    errorEl.classList.remove('hidden');
-  }
-
+// Go
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
 </script>
 </body>
 </html>
