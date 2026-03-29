@@ -6,7 +6,6 @@
 <title>Checkout | AF Wealth Mindset</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <!-- PayPal SDK v6 -->
 <script async src="https://www.sandbox.paypal.com/web-sdk/v6/core"></script>
 <!-- EmailJS -->
@@ -31,6 +30,8 @@
 </script>
 <style>
   body { background: #0B1220; }
+  input { background: #F6F1E7 !important; color: #0B1220 !important; padding: 10px 12px !important; }
+  input::placeholder { color: rgba(11, 18, 32, 0.5) !important; }
 </style>
 </head>
 <body class="dark:bg-midnight font-display text-ivory">
@@ -39,67 +40,73 @@
 <div id="loading" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-midnight/80">
   <div class="text-center">
     <div class="w-10 h-10 border-4 border-signature-teal/30 border-t-signature-teal rounded-full animate-spin mx-auto mb-4"></div>
-    <p class="text-ivory/60">Processing...</p>
+    <p class="text-ivory/60">Processing payment...</p>
   </div>
 </div>
 
 <!-- Header -->
 <header class="border-b border-gold/10 p-6 sticky top-0 z-40 bg-midnight/80">
-  <div class="max-w-2xl mx-auto flex justify-between items-center">
-    <button onclick="history.back()" class="text-ivory/60 hover:text-gold">← Back</button>
-    <h1 class="text-2xl font-bold text-gold">Checkout</h1>
-    <div class="w-16"></div>
+  <div class="max-w-3xl mx-auto flex justify-between items-center">
+    <button onclick="history.back()" class="text-ivory/60 hover:text-gold text-sm">← Back</button>
+    <h1 class="text-2xl font-bold text-gold">Secure Checkout</h1>
+    <div class="w-20"></div>
   </div>
 </header>
 
 <!-- Main -->
-<main class="max-w-2xl mx-auto p-6 py-12">
+<main class="max-w-3xl mx-auto p-6 py-12">
 
   <!-- Order Summary -->
   <section class="border border-gold/10 rounded-lg p-6 mb-8 bg-midnight">
     <h2 class="text-lg font-bold text-gold mb-6">Order Summary</h2>
-    <div id="product-display" class="space-y-4 border-b border-gold/10 pb-6">
-      <!-- Filled by JS -->
+    
+    <div id="product-info" class="space-y-3 border-b border-gold/10 pb-6 mb-6">
+      <div class="flex justify-between">
+        <div>
+          <p id="product-name" class="font-bold text-ivory">Product</p>
+          <p id="product-desc" class="text-ivory/60 text-sm">Description</p>
+        </div>
+        <p id="product-price" class="font-bold text-gold">$0.00</p>
+      </div>
     </div>
-    <div class="mt-6 text-right">
-      <p class="text-ivory/60 text-sm">Total:</p>
-      <p id="total-price" class="text-3xl font-bold text-gold">$0.00</p>
+
+    <div class="space-y-2">
+      <div class="flex justify-between text-ivory/60">
+        <span>Subtotal</span>
+        <span id="subtotal">$0.00</span>
+      </div>
+      <div class="flex justify-between text-ivory/60">
+        <span>Tax (10%)</span>
+        <span id="tax">$0.00</span>
+      </div>
+      <div class="flex justify-between text-lg font-bold text-gold pt-2 border-t border-gold/10">
+        <span>Total</span>
+        <span id="total">$0.00</span>
+      </div>
+    </div>
+
+    <!-- Digital Product Notice -->
+    <div class="mt-6 p-4 bg-signature-teal/5 border border-signature-teal/20 rounded text-signature-teal text-sm">
+      ✓ Digital product - Instant delivery to your email
     </div>
   </section>
 
   <!-- Email -->
   <section class="border border-gold/10 rounded-lg p-6 mb-8 bg-midnight">
-    <label class="block text-gold font-bold mb-2">Email Address</label>
-    <input type="email" id="email" placeholder="your@email.com" class="w-full p-3 rounded bg-ivory text-midnight" required/>
-    <p class="text-ivory/50 text-xs mt-2">Download link sent here after payment</p>
+    <label class="block text-gold font-bold mb-3">Email Address</label>
+    <input type="email" id="email" placeholder="your@email.com" required/>
+    <p class="text-ivory/50 text-xs mt-2">Your download link will be sent here</p>
   </section>
 
-  <!-- Payment Methods -->
+  <!-- Payment -->
   <section class="border border-gold/10 rounded-lg p-6 bg-midnight">
-    <h2 class="text-lg font-bold text-gold mb-6">Payment Methods</h2>
+    <h2 class="text-lg font-bold text-gold mb-6">Payment Method</h2>
     
-    <!-- PayPal Button -->
-    <div id="paypal-button-container" class="mb-4">
-      <paypal-button hidden></paypal-button>
+    <div id="paypal-buttons-container">
+      <!-- PayPal buttons appear here -->
     </div>
 
-    <!-- Pay Later Button -->
-    <div id="paylater-button-container" class="mb-4">
-      <paypal-pay-later-button hidden></paypal-pay-later-button>
-    </div>
-
-    <!-- PayPal Credit Button -->
-    <div id="credit-button-container" class="mb-4">
-      <paypal-credit-button hidden></paypal-credit-button>
-    </div>
-
-    <!-- Venmo Button -->
-    <div id="venmo-button-container" class="mb-4">
-      <venmo-button hidden></venmo-button>
-    </div>
-
-    <!-- Error -->
-    <p id="error" class="hidden text-red-400 text-sm mt-4 p-3 bg-red-900/10 rounded border border-red-400/20"></p>
+    <p id="error-msg" class="hidden text-red-400 text-sm mt-4 p-3 bg-red-900/10 rounded border border-red-400/20"></p>
   </section>
 
 </main>
@@ -107,386 +114,181 @@
 <script src="js/app.js"></script>
 <script>
 // ============================================================
-// Config
+// Products
 // ============================================================
 
 const PRODUCTS = {
-  1: { id: 1, name: "Money Control Masterclass", price: 97.00 },
-  2: { id: 2, name: "Budget Planner", price: 9.99 },
-  3: { id: 3, name: "Debt Payoff Strategy", price: 9.99 },
-  4: { id: 4, name: "Investment 101", price: 9.99 },
-  5: { id: 5, name: "Savings Blueprint", price: 9.99 },
-  6: { id: 6, name: "Financial Goals Tracker", price: 9.99 },
-  7: { id: 7, name: "Wealth Building Guide", price: 9.99 }
+  1: { id: 1, name: "Money Control Masterclass", desc: "Complete financial planning course", price: 97.00 },
+  2: { id: 2, name: "Budget Planner", desc: "Digital budget planning tool", price: 9.99 },
+  3: { id: 3, name: "Debt Payoff Strategy", desc: "Personalized debt elimination plan", price: 9.99 },
+  4: { id: 4, name: "Investment 101", desc: "Beginner investment guide", price: 9.99 },
+  5: { id: 5, name: "Savings Blueprint", desc: "30-day savings challenge", price: 9.99 },
+  6: { id: 6, name: "Financial Goals Tracker", desc: "Monthly tracking spreadsheet", price: 9.99 },
+  7: { id: 7, name: "Wealth Building Guide", desc: "Complete wealth creation blueprint", price: 9.99 }
 };
 
 const PAYPAL_CLIENT_ID = 'AURFqW9BM7AQJBnTjmCKCcMuKKN-fxthcmfY7U5kuAHq1ttVmTwozQ3dtfcqnwg2Vu3yI8OydJAhJ9Z7';
 const WORKER_URL = 'https://afwm-paypal-api.ayubfarah67.workers.dev';
 
-let sdkInstance = null;
 let product = null;
 
 // ============================================================
-// Init
+// Initialize
 // ============================================================
 
-async function init() {
-  // Get product
+function init() {
+  // Get product from URL
   const id = parseInt(new URLSearchParams(window.location.search).get('id')) || 1;
   product = PRODUCTS[id];
-  if (!product) window.location.href = '/pricing.html';
+  
+  if (!product) {
+    window.location.href = '/pricing.html';
+    return;
+  }
 
-  // Display product
-  document.getElementById('product-display').innerHTML = `
-    <div>
-      <h3 class="font-bold text-ivory">${product.name}</h3>
-      <p class="text-gold font-bold">$${product.price.toFixed(2)}</p>
-    </div>
-  `;
-  document.getElementById('total-price').textContent = '$' + product.price.toFixed(2);
+  // Display product info
+  document.getElementById('product-name').textContent = product.name;
+  document.getElementById('product-desc').textContent = product.desc;
+  document.getElementById('product-price').textContent = '$' + product.price.toFixed(2);
+  document.getElementById('subtotal').textContent = '$' + product.price.toFixed(2);
+  
+  const tax = product.price * 0.10;
+  const total = product.price + tax;
+  
+  document.getElementById('tax').textContent = '$' + tax.toFixed(2);
+  document.getElementById('total').textContent = '$' + total.toFixed(2);
 
-  // Setup EmailJS
+  // Initialize EmailJS
   emailjs.init('ylGXXn8CD-YXxPyFm');
 
-  // Wait for PayPal SDK
-  if (window.paypal) {
-    setupPayPal();
-  } else {
-    document.addEventListener('DOMContentLoaded', setupPayPal);
-  }
+  // Setup PayPal
+  setupPayPal();
 }
 
 // ============================================================
-// PayPal SDK Setup
+// PayPal Setup
 // ============================================================
 
 async function setupPayPal() {
   try {
     // Create SDK instance
-    sdkInstance = await window.paypal.createInstance({
+    const sdkInstance = await window.paypal.createInstance({
       clientId: PAYPAL_CLIENT_ID,
-      components: ['paypal-payments', 'venmo-payments'],
-      pageType: 'checkout',
-      locale: 'en-US',
-      clientMetadataId: crypto.randomUUID(),
+      components: ['buttons'],
+      pageType: 'checkout'
     });
 
-    console.log('✓ PayPal SDK initialized');
+    console.log('✓ PayPal SDK loaded');
 
-    // Check payment method eligibility
-    const eligibleMethods = await sdkInstance.findEligibleMethods({
-      currencyCode: 'USD',
-    });
+    // Create payment session
+    const session = sdkInstance.createPayPalOneTimePaymentSession({
+      async onApprove(data) {
+        showLoading();
+        try {
+          // Capture order
+          const res = await fetch(
+            `${WORKER_URL}/paypal-api/checkout/orders/${data.orderId}/capture`,
+            { method: 'POST' }
+          );
 
-    // Setup PayPal button if eligible
-    if (eligibleMethods.isEligible('paypal')) {
-      setupPayPalButton(sdkInstance);
-    }
+          if (!res.ok) throw new Error('Capture failed');
+          const result = await res.json();
 
-    // Setup Pay Later button if eligible
-    if (eligibleMethods.isEligible('paylater')) {
-      const payLaterDetails = eligibleMethods.getDetails('paylater');
-      setupPayLaterButton(sdkInstance, payLaterDetails);
-    }
+          // Save order
+          addOrder(product.id, result.amount, 'paypal', result.capture_id);
 
-    // Setup PayPal Credit button if eligible
-    if (eligibleMethods.isEligible('credit')) {
-      const creditDetails = eligibleMethods.getDetails('credit');
-      setupPayPalCreditButton(sdkInstance, creditDetails);
-    }
+          // Send email
+          await emailjs.send('service_046t8c7', 'template_wpxuynk', {
+            to_email: document.getElementById('email').value,
+            product_name: product.name,
+            download_link: `https://afwealthmindset.com/downloads/${product.id}`
+          });
 
-    // Setup Venmo button if eligible
-    if (eligibleMethods.isEligible('venmo')) {
-      setupVenmoButton(sdkInstance);
-    }
+          hideLoading();
+          window.location.href = '/orders.html?success=1';
+        } catch (err) {
+          hideLoading();
+          showError('Payment failed: ' + err.message);
+          console.error(err);
+        }
+      },
 
-  } catch (error) {
-    console.error('PayPal setup error:', error);
-    error('Payment system initialization failed');
-  }
-}
+      onCancel() {
+        showError('Payment cancelled');
+      },
 
-// ============================================================
-// Payment Session Options (Shared)
-// ============================================================
-
-const paymentSessionOptions = {
-  async onApprove(data) {
-    show();
-    try {
-      const res = await fetch(`${WORKER_URL}/paypal-api/checkout/orders/${data.orderId}/capture`, {
-        method: 'POST'
-      });
-
-      if (!res.ok) throw new Error('Capture failed');
-      const result = await res.json();
-
-      // Save order
-      addOrder(product.id, result.amount, 'paypal', result.capture_id);
-
-      // Send email
-      await emailjs.send('service_046t8c7', 'template_wpxuynk', {
-        to_email: document.getElementById('email').value,
-        product_name: product.name,
-        download_link: `https://afwealthmindset.com/downloads/${product.id}`
-      });
-
-      hide();
-      window.location.href = '/orders.html?success=1';
-    } catch (err) {
-      hide();
-      error('Payment capture failed: ' + err.message);
-      console.error(err);
-    }
-  },
-
-  onCancel(data) {
-    error('Payment cancelled');
-  },
-
-  onError(err) {
-    error('Payment error: ' + err.message);
-    console.error(err);
-  }
-};
-
-// ============================================================
-// PayPal Button Setup
-// ============================================================
-
-async function setupPayPalButton(sdkInstance) {
-  try {
-    const paypalSession = sdkInstance.createPayPalOneTimePaymentSession(paymentSessionOptions);
-
-    const button = document.querySelector('paypal-button');
-    button.removeAttribute('hidden');
-
-    button.addEventListener('click', async () => {
-      const email = document.getElementById('email').value;
-      if (!email) {
-        error('Enter email address');
-        return;
-      }
-
-      show();
-      try {
-        const orderRes = await fetch(`${WORKER_URL}/paypal-api/checkout/orders/create`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            amount: product.price.toFixed(2),
-            email: email,
-            description: product.name
-          })
-        });
-
-        if (!orderRes.ok) throw new Error('Order creation failed');
-        const orderData = await orderRes.json();
-        hide();
-
-        await paypalSession.start(
-          { presentationMode: 'auto' },
-          { orderId: orderData.id }
-        );
-      } catch (err) {
-        hide();
-        error('Order creation failed: ' + err.message);
+      onError(err) {
+        showError('Payment error: ' + err.message);
         console.error(err);
       }
     });
 
-    console.log('✓ PayPal button setup');
-  } catch (err) {
-    console.error('PayPal button error:', err);
-  }
-}
+    // Render PayPal button
+    const paypalButton = sdkInstance.createPayPalPaymentButtons({
+      async createOrder() {
+        const email = document.getElementById('email').value;
+        if (!email) {
+          showError('Please enter your email');
+          return null;
+        }
 
-// ============================================================
-// Pay Later Button Setup
-// ============================================================
+        showLoading();
+        try {
+          const res = await fetch(`${WORKER_URL}/paypal-api/checkout/orders/create`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              amount: product.price.toFixed(2),
+              email: email,
+              description: product.name
+            })
+          });
 
-async function setupPayLaterButton(sdkInstance, payLaterDetails) {
-  try {
-    const payLaterSession = sdkInstance.createPayLaterOneTimePaymentSession(paymentSessionOptions);
-
-    const button = document.querySelector('paypal-pay-later-button');
-    button.productCode = payLaterDetails.productCode;
-    button.countryCode = payLaterDetails.countryCode;
-    button.removeAttribute('hidden');
-
-    button.addEventListener('click', async () => {
-      const email = document.getElementById('email').value;
-      if (!email) {
-        error('Enter email address');
-        return;
-      }
-
-      show();
-      try {
-        const orderRes = await fetch(`${WORKER_URL}/paypal-api/checkout/orders/create`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            amount: product.price.toFixed(2),
-            email: email,
-            description: product.name
-          })
-        });
-
-        if (!orderRes.ok) throw new Error('Order creation failed');
-        const orderData = await orderRes.json();
-        hide();
-
-        await payLaterSession.start(
-          { presentationMode: 'auto' },
-          { orderId: orderData.id }
-        );
-      } catch (err) {
-        hide();
-        error('Order creation failed: ' + err.message);
-        console.error(err);
+          if (!res.ok) throw new Error('Order creation failed');
+          const data = await res.json();
+          hideLoading();
+          return data.id;
+        } catch (err) {
+          hideLoading();
+          showError('Failed to create order: ' + err.message);
+          console.error(err);
+          return null;
+        }
       }
     });
 
-    console.log('✓ Pay Later button setup');
+    await paypalButton.render('#paypal-buttons-container');
+    console.log('✓ PayPal button rendered');
+
   } catch (err) {
-    console.error('Pay Later button error:', err);
+    console.error('PayPal setup error:', err);
+    showError('Payment system error');
   }
 }
 
 // ============================================================
-// PayPal Credit Button Setup
+// Utilities
 // ============================================================
 
-async function setupPayPalCreditButton(sdkInstance, creditDetails) {
-  try {
-    const creditSession = sdkInstance.createPayPalCreditOneTimePaymentSession(paymentSessionOptions);
-
-    const button = document.querySelector('paypal-credit-button');
-    button.countryCode = creditDetails.countryCode;
-    button.removeAttribute('hidden');
-
-    button.addEventListener('click', async () => {
-      const email = document.getElementById('email').value;
-      if (!email) {
-        error('Enter email address');
-        return;
-      }
-
-      show();
-      try {
-        const orderRes = await fetch(`${WORKER_URL}/paypal-api/checkout/orders/create`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            amount: product.price.toFixed(2),
-            email: email,
-            description: product.name
-          })
-        });
-
-        if (!orderRes.ok) throw new Error('Order creation failed');
-        const orderData = await orderRes.json();
-        hide();
-
-        await creditSession.start(
-          { presentationMode: 'auto' },
-          { orderId: orderData.id }
-        );
-      } catch (err) {
-        hide();
-        error('Order creation failed: ' + err.message);
-        console.error(err);
-      }
-    });
-
-    console.log('✓ PayPal Credit button setup');
-  } catch (err) {
-    console.error('PayPal Credit button error:', err);
-  }
-}
-
-// ============================================================
-// Venmo Button Setup
-// ============================================================
-
-async function setupVenmoButton(sdkInstance) {
-  try {
-    const venmoSession = sdkInstance.createVenmoOneTimePaymentSession(paymentSessionOptions);
-
-    const button = document.querySelector('venmo-button');
-    button.removeAttribute('hidden');
-
-    button.addEventListener('click', async () => {
-      const email = document.getElementById('email').value;
-      if (!email) {
-        error('Enter email address');
-        return;
-      }
-
-      show();
-      try {
-        const orderRes = await fetch(`${WORKER_URL}/paypal-api/checkout/orders/create`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            amount: product.price.toFixed(2),
-            email: email,
-            description: product.name
-          })
-        });
-
-        if (!orderRes.ok) throw new Error('Order creation failed');
-        const orderData = await orderRes.json();
-        hide();
-
-        await venmoSession.start(
-          { presentationMode: 'auto' },
-          { orderId: orderData.id }
-        );
-      } catch (err) {
-        hide();
-        error('Order creation failed: ' + err.message);
-        console.error(err);
-      }
-    });
-
-    console.log('✓ Venmo button setup');
-  } catch (err) {
-    console.error('Venmo button error:', err);
-  }
-}
-
-// ============================================================
-// Utils
-// ============================================================
-
-function show() {
+function showLoading() {
   document.getElementById('loading').classList.remove('hidden');
 }
 
-function hide() {
+function hideLoading() {
   document.getElementById('loading').classList.add('hidden');
 }
 
-function error(msg) {
-  const el = document.getElementById('error');
+function showError(msg) {
+  const el = document.getElementById('error-msg');
   el.textContent = msg;
   el.classList.remove('hidden');
-  setTimeout(() => el.classList.add('hidden'), 5000);
 }
 
-// Initialize
-console.log('Script loaded, readyState:', document.readyState);
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOMContentLoaded fired');
-    init();
-  });
-} else {
-  console.log('Calling init immediately');
-  init();
-}
+// ============================================================
+// Run
+// ============================================================
+
+window.addEventListener('load', init);
 </script>
 </body>
 </html>
