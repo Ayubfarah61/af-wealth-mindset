@@ -279,7 +279,7 @@ function init() {
 
 function loadPayPalSDK() {
   const script = document.createElement('script');
-  script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&components=buttons,card-fields&enable-funding=venmo,paylater,googlepay,applepay&currency=USD`;
+  script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&components=buttons,card-fields&enable-funding=venmo,paylater&currency=USD`;
   script.onload = setupPayPal;
   script.onerror = () => {
     document.getElementById('sdk-loading').textContent = 'Failed to load PayPal. Please refresh.';
@@ -336,11 +336,7 @@ async function setupPayPal() {
   // ---- Venmo (US only) ----
   renderButton(paypal.FUNDING.VENMO, 'venmo-btn-container');
 
-  // ---- Google Pay ----
-  renderButton(paypal.FUNDING.GOOGLEPAY, 'googlepay-btn-container');
-
-  // ---- Apple Pay ----
-  renderButton(paypal.FUNDING.APPLEPAY, 'applepay-btn-container');
+  // Google Pay + Apple Pay require domain verification — added when going live
 }
 
 function renderButton(fundingSource, containerId) {
