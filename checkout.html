@@ -153,6 +153,12 @@
       <p class="text-ivory/40 text-xs mt-1">Download link sent here after payment</p>
     </div>
 
+    <!-- Card via PayPal notice (shown when card fields not eligible) -->
+    <div id="card-via-paypal-notice" style="display:none;" class="mb-5 p-4 bg-gold/5 border border-gold/20 rounded-lg">
+      <p class="text-ivory/80 text-sm font-bold mb-1">💳 Paying by Card?</p>
+      <p class="text-ivory/50 text-sm">Click the PayPal button below — on the next screen select <strong class="text-ivory/80">"Pay by Debit or Credit Card"</strong> to pay as a guest without a PayPal account.</p>
+    </div>
+
     <!-- Card Fields -->
     <div id="card-fields-section">
       <p class="text-xs font-bold text-gold/70 uppercase mb-4">Pay with Card</p>
@@ -279,7 +285,7 @@ function init() {
 
 function loadPayPalSDK() {
   const script = document.createElement('script');
-  script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&components=buttons,card-fields&enable-funding=venmo,paylater&currency=USD`;
+  script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&components=buttons,card-fields&enable-funding=venmo&currency=USD`;
   script.onload = setupPayPal;
   script.onerror = () => {
     document.getElementById('sdk-loading').textContent = 'Failed to load PayPal. Please refresh.';
@@ -318,20 +324,18 @@ async function setupPayPal() {
       cardFields.ExpiryField().render('#card-expiry-field');
       cardFields.CVVField().render('#card-cvv-field');
       document.getElementById('card-fields-section').style.display = 'block';
+      document.getElementById('card-via-paypal-notice').style.display = 'none';
     } else {
-      // Card fields not eligible for this account — hide card section
       document.getElementById('card-fields-section').style.display = 'none';
-      document.querySelector('.divider').style.marginTop = '0';
+      document.getElementById('card-via-paypal-notice').style.display = 'block';
     }
   } else {
     document.getElementById('card-fields-section').style.display = 'none';
+    document.getElementById('card-via-paypal-notice').style.display = 'block';
   }
 
   // ---- PayPal Button ----
   renderButton(paypal.FUNDING.PAYPAL, 'paypal-btn-container');
-
-  // ---- Pay Later ----
-  renderButton(paypal.FUNDING.PAYLATER, 'paylater-btn-container');
 
   // ---- Venmo (US only) ----
   renderButton(paypal.FUNDING.VENMO, 'venmo-btn-container');
