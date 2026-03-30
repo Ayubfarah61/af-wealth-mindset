@@ -26,10 +26,7 @@
 </script>
 <style>
   body { background: #0B1220; }
-
-  /* Standard text inputs */
-  .field-wrap input[type="text"],
-  .field-wrap input[type="email"] {
+  #buyer-email {
     width: 100%;
     background: #F6F1E7;
     color: #0B1220;
@@ -39,51 +36,9 @@
     font-family: Manrope, sans-serif;
     font-size: 14px;
     outline: none;
-    transition: border-color 0.2s;
   }
-  .field-wrap input:focus {
-    border-color: #1FE6D1;
-    box-shadow: 0 0 0 3px rgba(31,230,209,0.1);
-  }
-  .field-wrap input::placeholder { color: rgba(11,18,32,0.4); }
-
-  /* PayPal card field iframes */
-  .card-field-container {
-    background: #F6F1E7;
-    border: 1.5px solid rgba(215,180,106,0.25);
-    border-radius: 8px;
-    height: 44px;
-    padding: 0 2px;
-    transition: border-color 0.2s;
-  }
-  .card-field-container.focused {
-    border-color: #1FE6D1;
-    box-shadow: 0 0 0 3px rgba(31,230,209,0.1);
-  }
-
-  /* Pay with card button */
-  .btn-pay {
-    width: 100%;
-    background: linear-gradient(135deg, #D7B46A, #c9a457);
-    color: #0B1220;
-    font-weight: 700;
-    font-family: Manrope, sans-serif;
-    font-size: 15px;
-    border: none;
-    border-radius: 8px;
-    padding: 13px 24px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-pay:hover { background: linear-gradient(135deg, #E5C58A, #D7B46A); transform: translateY(-1px); }
-  .btn-pay:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-  /* Divider */
-  .divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
-  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: rgba(215,180,106,0.15); }
-  .divider span { color: rgba(246,241,231,0.3); font-size: 12px; white-space: nowrap; }
-
-  /* Loading overlay */
+  #buyer-email:focus { border-color: #1FE6D1; box-shadow: 0 0 0 3px rgba(31,230,209,0.1); }
+  #buyer-email::placeholder { color: rgba(11,18,32,0.4); }
   #loading-overlay {
     display: none;
     position: fixed;
@@ -147,62 +102,21 @@
     </h2>
 
     <!-- Email -->
-    <div class="field-wrap mb-6">
+    <div class="mb-6">
       <label class="block text-xs font-bold text-gold/70 uppercase mb-2">Email Address</label>
       <input type="email" id="buyer-email" placeholder="your@email.com" autocomplete="email"/>
       <p class="text-ivory/40 text-xs mt-1">Download link sent here after payment</p>
     </div>
 
-    <!-- Card via PayPal notice (shown when card fields not eligible) -->
-    <div id="card-via-paypal-notice" style="display:none;" class="mb-5 p-4 bg-gold/5 border border-gold/20 rounded-lg">
-      <p class="text-ivory/80 text-sm font-bold mb-1">💳 Paying by Card?</p>
-      <p class="text-ivory/50 text-sm">Click the PayPal button below — on the next screen select <strong class="text-ivory/80">"Pay by Debit or Credit Card"</strong> to pay as a guest without a PayPal account.</p>
+    <!-- Card notice -->
+    <div class="mb-5 p-4 bg-gold/5 border border-gold/20 rounded-lg">
+      <p class="text-ivory/70 text-sm">
+        💳 <strong class="text-ivory/90">Paying by card?</strong> Click Pay with PayPal below — on the next screen select <strong class="text-ivory/90">"Pay by Debit or Credit Card"</strong> to pay without a PayPal account.
+      </p>
     </div>
 
-    <!-- Card Fields -->
-    <div id="card-fields-section">
-      <p class="text-xs font-bold text-gold/70 uppercase mb-4">Pay with Card</p>
-
-      <div class="field-wrap mb-3">
-        <label class="block text-xs text-ivory/50 mb-1.5">Name on Card</label>
-        <input type="text" id="card-name-input" placeholder="John Doe" autocomplete="cc-name"/>
-      </div>
-
-      <div class="mb-3">
-        <label class="block text-xs text-ivory/50 mb-1.5">Card Number</label>
-        <div id="card-number-field" class="card-field-container"></div>
-      </div>
-
-      <div class="grid grid-cols-2 gap-3 mb-5">
-        <div>
-          <label class="block text-xs text-ivory/50 mb-1.5">Expiry Date</label>
-          <div id="card-expiry-field" class="card-field-container"></div>
-        </div>
-        <div>
-          <label class="block text-xs text-ivory/50 mb-1.5">CVV</label>
-          <div id="card-cvv-field" class="card-field-container"></div>
-        </div>
-      </div>
-
-      <button id="card-pay-btn" class="btn-pay" onclick="submitCard()">
-        Pay <span id="card-pay-amount">$0.00</span>
-      </button>
-    </div>
-
-    <!-- Divider -->
-    <div class="divider"><span>or pay with</span></div>
-
-    <!-- PayPal + other buttons -->
-    <div class="space-y-3">
-      <div id="paypal-btn-container"></div>
-      <div id="paylater-btn-container"></div>
-      <div id="venmo-btn-container"></div>
-      <div id="googlepay-btn-container"></div>
-      <div id="applepay-btn-container"></div>
-    </div>
-
-    <!-- SDK loading state -->
-    <div id="sdk-loading" class="text-center py-4 text-ivory/40 text-sm">Loading payment methods…</div>
+    <!-- PayPal Button -->
+    <div id="paypal-btn-container"></div>
 
     <!-- Error -->
     <p id="error-msg" class="hidden mt-4 text-red-400 text-sm p-3 bg-red-900/10 rounded-lg border border-red-400/20"></p>
@@ -240,12 +154,8 @@
 </footer>
 
 <script src="js/app.js"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=AURFqW9BM7AQJBnTjmCKCcMuKKN-fxthcmfY7U5kuAHq1ttVmTwozQ3dtfcqnwg2Vu3yI8OydJAhJ9Z7&currency=USD"></script>
 <script>
-// ============================================================
-// Config
-// ============================================================
-
-const PAYPAL_CLIENT_ID = 'AURFqW9BM7AQJBnTjmCKCcMuKKN-fxthcmfY7U5kuAHq1ttVmTwozQ3dtfcqnwg2Vu3yI8OydJAhJ9Z7';
 const WORKER_URL = 'https://afwm-paypal-api.ayubfarah67.workers.dev';
 
 const CHECKOUT_PRODUCTS = {
@@ -259,11 +169,6 @@ const CHECKOUT_PRODUCTS = {
 };
 
 let product = null;
-let cardFieldsInstance = null;
-
-// ============================================================
-// Init
-// ============================================================
 
 function init() {
   const id = parseInt(new URLSearchParams(window.location.search).get('id')) || 1;
@@ -274,192 +179,65 @@ function init() {
   document.getElementById('product-desc').textContent = product.desc;
   document.getElementById('product-price').textContent = '$' + product.price.toFixed(2);
   document.getElementById('total').textContent = '$' + product.price.toFixed(2);
-  document.getElementById('card-pay-amount').textContent = '$' + product.price.toFixed(2);
 
-  loadPayPalSDK();
-}
-
-// ============================================================
-// Load PayPal SDK
-// ============================================================
-
-function loadPayPalSDK() {
-  const script = document.createElement('script');
-  script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&components=buttons,card-fields&enable-funding=venmo&currency=USD`;
-  script.onload = setupPayPal;
-  script.onerror = () => {
-    document.getElementById('sdk-loading').textContent = 'Failed to load PayPal. Please refresh.';
-  };
-  document.head.appendChild(script);
-}
-
-// ============================================================
-// Setup PayPal (runs after SDK loads)
-// ============================================================
-
-async function setupPayPal() {
-  document.getElementById('sdk-loading').style.display = 'none';
-
-  // ---- Card Fields ----
-  if (paypal.CardFields) {
-    const cardFields = paypal.CardFields({
-      style: {
-        input: {
-          color: '#0B1220',
-          'font-family': 'Manrope, sans-serif',
-          'font-size': '14px',
-          padding: '10px 14px'
-        },
-        '.valid': { color: '#0B1220' },
-        '.invalid': { color: '#c53030' }
-      },
-      createOrder: createOrder,
-      onApprove: onApprove,
-      onError: (err) => { showError('Card payment error. Please try again.'); console.error(err); }
-    });
-
-    if (cardFields.isEligible()) {
-      cardFieldsInstance = cardFields;
-      cardFields.NumberField().render('#card-number-field');
-      cardFields.ExpiryField().render('#card-expiry-field');
-      cardFields.CVVField().render('#card-cvv-field');
-      document.getElementById('card-fields-section').style.display = 'block';
-      document.getElementById('card-via-paypal-notice').style.display = 'none';
-    } else {
-      document.getElementById('card-fields-section').style.display = 'none';
-      document.getElementById('card-via-paypal-notice').style.display = 'block';
+  paypal.Buttons({
+    createOrder: async function() {
+      const email = document.getElementById('buyer-email').value.trim();
+      if (!email) { showError('Please enter your email address.'); return null; }
+      clearError();
+      showLoading('Creating order…');
+      try {
+        const res = await fetch(WORKER_URL + '/api/orders/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount: product.price.toFixed(2), email: email, description: product.name })
+        });
+        const data = await res.json();
+        hideLoading();
+        if (!res.ok) throw new Error(data.error || 'Order failed');
+        return data.id;
+      } catch (err) {
+        hideLoading();
+        showError('Could not start payment. Please try again.');
+        return null;
+      }
+    },
+    onApprove: async function(data) {
+      showLoading('Confirming payment…');
+      try {
+        const res = await fetch(WORKER_URL + '/api/orders/' + data.orderID + '/capture', {
+          method: 'POST'
+        });
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.error || 'Capture failed');
+        addOrder(product.id, result.amount, 'paypal', result.capture_id);
+        hideLoading();
+        window.location.href = '/orders.html?success=1';
+      } catch (err) {
+        hideLoading();
+        showError('Payment confirmation failed. Please contact support.');
+      }
+    },
+    onCancel: function() { hideLoading(); },
+    onError: function(err) {
+      hideLoading();
+      showError('Payment error. Please try again.');
+      console.error(err);
     }
-  } else {
-    document.getElementById('card-fields-section').style.display = 'none';
-    document.getElementById('card-via-paypal-notice').style.display = 'block';
-  }
-
-  // ---- PayPal Button ----
-  renderButton(paypal.FUNDING.PAYPAL, 'paypal-btn-container');
-
-  // ---- Venmo (US only) ----
-  renderButton(paypal.FUNDING.VENMO, 'venmo-btn-container');
-
-  // Google Pay + Apple Pay require domain verification — added when going live
+  }).render('#paypal-btn-container');
 }
-
-function renderButton(fundingSource, containerId) {
-  const btn = paypal.Buttons({
-    fundingSource,
-    createOrder,
-    onApprove,
-    onCancel: () => { hideLoading(); },
-    onError: (err) => { hideLoading(); showError('Payment failed. Please try again.'); console.error(err); }
-  });
-
-  if (btn.isEligible()) {
-    btn.render('#' + containerId);
-  }
-}
-
-// ============================================================
-// Card Submit
-// ============================================================
-
-async function submitCard() {
-  clearError();
-  const email = document.getElementById('buyer-email').value.trim();
-  const name = document.getElementById('card-name-input').value.trim();
-
-  if (!email) { showError('Please enter your email address.'); return; }
-  if (!name)  { showError('Please enter the name on your card.'); return; }
-  if (!cardFieldsInstance) { showError('Card fields not available. Please use another payment method.'); return; }
-
-  document.getElementById('card-pay-btn').disabled = true;
-  showLoading('Processing card payment…');
-
-  try {
-    await cardFieldsInstance.submit({ cardholderName: name });
-  } catch (err) {
-    hideLoading();
-    document.getElementById('card-pay-btn').disabled = false;
-    showError('Card payment failed: ' + (err.message || 'Please check your card details.'));
-    console.error(err);
-  }
-}
-
-// ============================================================
-// Shared: Create Order + Capture
-// ============================================================
-
-async function createOrder() {
-  const email = document.getElementById('buyer-email').value.trim();
-  if (!email) { showError('Please enter your email address.'); return null; }
-
-  showLoading('Creating order…');
-  try {
-    const res = await fetch(`${WORKER_URL}/api/orders/create`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        amount: product.price.toFixed(2),
-        email: email,
-        description: product.name
-      })
-    });
-    if (!res.ok) throw new Error('Order creation failed');
-    const data = await res.json();
-    hideLoading();
-    return data.id;
-  } catch (err) {
-    hideLoading();
-    showError('Could not start payment. Please try again.');
-    console.error(err);
-    return null;
-  }
-}
-
-async function onApprove(data) {
-  showLoading('Confirming payment…');
-  try {
-    const res = await fetch(`${WORKER_URL}/api/orders/${data.orderID}/capture`, {
-      method: 'POST'
-    });
-    if (!res.ok) throw new Error('Capture failed');
-    const result = await res.json();
-
-    addOrder(product.id, result.amount, 'paypal', result.capture_id);
-
-    hideLoading();
-    window.location.href = '/orders.html?success=1';
-  } catch (err) {
-    hideLoading();
-    showError('Payment confirmation failed. Please contact support.');
-    console.error(err);
-  }
-}
-
-// ============================================================
-// UI Helpers
-// ============================================================
 
 function showLoading(msg) {
   document.getElementById('loading-msg').textContent = msg || 'Processing…';
   document.getElementById('loading-overlay').classList.add('active');
 }
-
-function hideLoading() {
-  document.getElementById('loading-overlay').classList.remove('active');
-}
-
+function hideLoading() { document.getElementById('loading-overlay').classList.remove('active'); }
 function showError(msg) {
   const el = document.getElementById('error-msg');
   el.textContent = msg;
   el.classList.remove('hidden');
 }
-
-function clearError() {
-  document.getElementById('error-msg').classList.add('hidden');
-}
-
-// ============================================================
-// Run
-// ============================================================
+function clearError() { document.getElementById('error-msg').classList.add('hidden'); }
 
 window.addEventListener('load', init);
 </script>
