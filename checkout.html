@@ -242,7 +242,7 @@
 const PAYPAL_CLIENT_ID = 'AURFqW9BM7AQJBnTjmCKCcMuKKN-fxthcmfY7U5kuAHq1ttVmTwozQ3dtfcqnwg2Vu3yI8OydJAhJ9Z7';
 const WORKER_URL = 'https://afwm-paypal-api.ayubfarah67.workers.dev';
 
-const PRODUCTS = {
+const CHECKOUT_PRODUCTS = {
   1: { id: 1, name: "Money Control Masterclass", desc: "Complete financial planning course", price: 97.00 },
   2: { id: 2, name: "Budget Planner", desc: "Digital budget planning tool", price: 9.99 },
   3: { id: 3, name: "Debt Payoff Strategy", desc: "Personalized debt elimination plan", price: 9.99 },
@@ -261,7 +261,7 @@ let cardFieldsInstance = null;
 
 function init() {
   const id = parseInt(new URLSearchParams(window.location.search).get('id')) || 1;
-  product = PRODUCTS[id];
+  product = CHECKOUT_PRODUCTS[id];
   if (!product) { window.location.href = '/pricing.html'; return; }
 
   document.getElementById('product-name').textContent = product.name;
@@ -279,7 +279,7 @@ function init() {
 
 function loadPayPalSDK() {
   const script = document.createElement('script');
-  script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&components=buttons,card-fields&enable-funding=venmo,paylater&currency=USD`;
+  script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&components=buttons,card-fields&enable-funding=venmo,paylater,googlepay,applepay&currency=USD`;
   script.onload = setupPayPal;
   script.onerror = () => {
     document.getElementById('sdk-loading').textContent = 'Failed to load PayPal. Please refresh.';
