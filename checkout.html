@@ -108,15 +108,18 @@
       <p class="text-ivory/40 text-xs mt-1">Download link sent here after payment</p>
     </div>
 
-    <!-- Card notice -->
-    <div class="mb-5 p-4 bg-gold/5 border border-gold/20 rounded-lg">
-      <p class="text-ivory/70 text-sm">
-        💳 <strong class="text-ivory/90">Paying by card?</strong> Click Pay with PayPal below — on the next screen select <strong class="text-ivory/90">"Pay by Debit or Credit Card"</strong> to pay without a PayPal account.
-      </p>
+    <!-- Paddle Checkout Container -->
+    <div id="checkout-container" class="checkout-frame"></div>
+
+    <!-- Paddle MoR Notice -->
+    <div class="mt-4 p-4 bg-gold/5 border border-gold/20 rounded-lg">
+      <p class="text-ivory/60 text-xs leading-relaxed">Our order process is conducted by our online reseller <strong class="text-ivory/80">Paddle.com</strong>. Paddle.com is the Merchant of Record for all our orders. Paddle provides all customer service inquiries and handles returns.</p>
     </div>
 
-    <!-- PayPal Button -->
-    <div id="paypal-btn-container"></div>
+    <!-- 30-Day Refund Notice -->
+    <div class="mt-3 p-4 bg-signature-teal/5 border border-signature-teal/20 rounded-lg">
+      <p class="text-signature-teal text-xs leading-relaxed">By completing this purchase, you confirm you are aware you have <strong>30 days</strong> to cancel or request a full refund after order completion. See our <a href="/refund.html" class="underline">Refund Policy</a>.</p>
+    </div>
 
     <!-- Error -->
     <p id="error-msg" class="hidden mt-4 text-red-400 text-sm p-3 bg-red-900/10 rounded-lg border border-red-400/20"></p>
@@ -125,8 +128,8 @@
   <!-- Trust badges -->
   <div class="mt-6 flex justify-center gap-6 text-ivory/40 text-xs flex-wrap">
     <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-signature-teal">shield</span> SSL Encrypted</span>
-    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-signature-teal">verified</span> PayPal Secured</span>
-    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-signature-teal">gpp_good</span> 14-Day Guarantee</span>
+    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-signature-teal">verified</span> Paddle Secured</span>
+    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-signature-teal">gpp_good</span> 30-Day Guarantee</span>
   </div>
 
 </main>
@@ -154,77 +157,22 @@
 </footer>
 
 <script src="js/app.js"></script>
-<script src="https://www.paypal.com/sdk/js?client-id=AURFqW9BM7AQJBnTjmCKCcMuKKN-fxthcmfY7U5kuAHq1ttVmTwozQ3dtfcqnwg2Vu3yI8OydJAhJ9Z7&currency=USD"></script>
 <script>
-const WORKER_URL = 'https://afwm-paypal-api.ayubfarah67.workers.dev';
-
-const CHECKOUT_PRODUCTS = {
-  1: { id: 1, name: "Money Control Masterclass", desc: "Complete financial planning course", price: 97.00 },
-  2: { id: 2, name: "Budget Planner", desc: "Digital budget planning tool", price: 9.99 },
-  3: { id: 3, name: "Debt Payoff Strategy", desc: "Personalized debt elimination plan", price: 9.99 },
-  4: { id: 4, name: "Investment 101", desc: "Beginner investment guide", price: 9.99 },
-  5: { id: 5, name: "Savings Blueprint", desc: "30-day savings challenge", price: 9.99 },
-  6: { id: 6, name: "Financial Goals Tracker", desc: "Monthly tracking spreadsheet", price: 9.99 },
-  7: { id: 7, name: "Wealth Building Guide", desc: "Complete wealth creation blueprint", price: 9.99 }
-};
-
 let product = null;
 
 function init() {
-  const id = parseInt(new URLSearchParams(window.location.search).get('id')) || 1;
-  product = CHECKOUT_PRODUCTS[id];
+  // Use PRODUCTS from app.js
+  product = getProductFromURL();
   if (!product) { window.location.href = '/pricing.html'; return; }
 
   document.getElementById('product-name').textContent = product.name;
-  document.getElementById('product-desc').textContent = product.desc;
-  document.getElementById('product-price').textContent = '$' + product.price.toFixed(2);
-  document.getElementById('total').textContent = '$' + product.price.toFixed(2);
+  document.getElementById('product-desc').textContent = product.edition;
+  document.getElementById('product-price').textContent = formatPrice(product.price);
+  document.getElementById('total').textContent = formatPrice(product.price);
 
-  paypal.Buttons({
-    createOrder: async function() {
-      const email = document.getElementById('buyer-email').value.trim();
-      if (!email) { showError('Please enter your email address.'); return null; }
-      clearError();
-      showLoading('Creating order…');
-      try {
-        const res = await fetch(WORKER_URL + '/api/orders/create', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ amount: product.price.toFixed(2), email: email, description: product.name })
-        });
-        const data = await res.json();
-        hideLoading();
-        if (!res.ok) throw new Error(data.error || 'Order failed');
-        return data.id;
-      } catch (err) {
-        hideLoading();
-        showError('Could not start payment. Please try again.');
-        return null;
-      }
-    },
-    onApprove: async function(data) {
-      showLoading('Confirming payment…');
-      try {
-        const res = await fetch(WORKER_URL + '/api/orders/' + data.orderID + '/capture', {
-          method: 'POST'
-        });
-        const result = await res.json();
-        if (!res.ok) throw new Error(result.error || 'Capture failed');
-        addOrder(product.id, result.amount, 'paypal', result.capture_id);
-        hideLoading();
-        window.location.href = '/orders.html?success=1';
-      } catch (err) {
-        hideLoading();
-        showError('Payment confirmation failed. Please contact support.');
-      }
-    },
-    onCancel: function() { hideLoading(); },
-    onError: function(err) {
-      hideLoading();
-      showError('Payment error. Please try again.');
-      console.error(err);
-    }
-  }).render('#paypal-btn-container');
+  // Paddle checkout will be initialized here once credentials are provided
+  document.getElementById('checkout-container').innerHTML =
+    '<p class="text-ivory/50 text-sm text-center py-8">Payment processing will be available shortly.</p>';
 }
 
 function showLoading(msg) {

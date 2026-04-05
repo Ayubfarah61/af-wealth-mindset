@@ -53,59 +53,6 @@ var PRODUCTS = [
       'Using Mint to Track Spending',
       'Cashflow Optimization + Spreadsheet'
     ]
-  },
-  {
-    id: 2,
-    name: 'The Money Control Code',
-    originalPrice: 14.99,
-    price: 6.99,
-    edition: '6-Chapter Digital Guide',
-    badge: 'Best Value',
-    image: '/images/product2.png',
-    heroImage: '/images/product2.png',
-    description: 'Stop letting your money run your life. The Money Control Code reveals why willpower NEVER works with money — and replaces it with a structural 4-pillar system that runs on autopilot, giving you total authority over every dollar you earn.',
-    features: [
-      { icon: 'auto_stories',  title: '6 Power-Packed Chapters',      desc: 'From income illusion to total debt elimination' },
-      { icon: 'description',   title: 'Personal Financial Rule Sheet', desc: 'Your written financial constitution — print and use today' },
-      { icon: 'checklist',     title: 'Weekly Review Template',        desc: '15-min weekly ritual to keep your money on track' },
-      { icon: 'verified_user', title: '30-Day Money-Back Guarantee',   desc: 'Zero risk — every penny back, no questions asked' }
-    ]
-  },
-  {
-    id: 3,
-    name: 'Personal Finance Tracker',
-    originalPrice: null,
-    price: null,
-    edition: 'Digital Tool',
-    badge: 'Coming Soon',
-    comingSoon: true,
-    image: '/images/logo.png',
-    heroImage: '/images/logo.png',
-    description: 'A comprehensive personal finance tracking system to manage your income, expenses, savings goals and investments — all in one place. Coming soon.',
-    features: [
-      { icon: 'account_balance_wallet', title: 'Income and Expense Tracking', desc: 'Monitor every dollar in and out' },
-      { icon: 'savings',                title: 'Savings Goal Planner',        desc: 'Set and hit your financial milestones' },
-      { icon: 'trending_up',            title: 'Investment Dashboard',        desc: 'See your net worth grow over time' },
-      { icon: 'notifications',          title: 'Smart Alerts',                desc: 'Never miss a bill or overspend again' }
-    ]
-  },
-  {
-    id: 4,
-    name: 'Small Business Bookkeeping System',
-    originalPrice: null,
-    price: null,
-    edition: 'Business Tool',
-    badge: 'Coming Soon',
-    comingSoon: true,
-    image: '/images/logo.png',
-    heroImage: '/images/logo.png',
-    description: 'A complete bookkeeping system built for small business owners. Manage invoices, expenses, payroll, and tax-ready reports without an accountant. Coming soon.',
-    features: [
-      { icon: 'receipt_long',    title: 'Invoice Management', desc: 'Create and send professional invoices' },
-      { icon: 'account_balance', title: 'Expense Tracking',   desc: 'Categorize and monitor all business costs' },
-      { icon: 'groups',          title: 'Payroll Ready',      desc: 'Simplified payroll for small teams' },
-      { icon: 'description',     title: 'Tax-Ready Reports',  desc: 'Export clean reports for your accountant' }
-    ]
   }
 ];
 
