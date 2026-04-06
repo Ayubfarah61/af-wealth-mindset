@@ -36,7 +36,7 @@
 
 <script src="/js/app.js"></script>
 <script>
-// ---- PRODUCT DATA (self-contained, does not rely on app.js) ----
+// ---- PRODUCT DATA ----
 var PAGES = {
   1: {
     name: 'Cashflow Secrets — The Course That Changes Everything',
@@ -58,7 +58,7 @@ var PAGES = {
     badge: 'New',
     image: '/images/product2.png',
     originalPrice: '$29.99',
-    price: '$14.99',
+    price: '$7.99',
     description: 'The only spreadsheet you need to track income, expenses, budgets, and savings. Beautifully designed, fully automated, and built for real life. Available as Excel or Google Sheets — you choose.',
     checkoutId: 2,
     features: [
@@ -68,28 +68,17 @@ var PAGES = {
       { icon: 'verified_user',  title: '14-Day Money-Back Guarantee',   desc: 'Zero risk — full refund, no questions asked' }
     ],
     salesPage: {
-      headline: 'Stop Guessing. Start Budgeting.',
-      subheadline: 'Take Control of Your Finances — See Exactly Where Every Dollar Goes',
-      hardTruth: 'You check your bank account and wonder... "Where did all my money go this month?" You\'re not alone. Most people have no idea where their money actually goes. <span style="color:#e05252;">That\'s why they stay broke — not because they don\'t earn enough, but because they can\'t see enough.</span>',
-      stats: [
-        { icon: 'bar_chart', value: '11', label: 'Automated Charts' },
-        { icon: 'table_chart', value: '8', label: 'Linked Sheets' },
-        { icon: 'laptop', value: '', label: 'Excel or Google Sheets' },
-        { icon: 'currency_exchange', value: '', label: 'Any Currency' }
+      headline: 'Stop Guessing. Start Knowing.',
+      subheadline: 'Finally See Exactly Where Every Dollar Goes',
+      images: [
+        '/images/dashboard-monthly.png',
+        '/images/dashboard-annual.png',
+        '/images/dashboard-devices.png'
       ],
-      problem: [
-        '"Where did all my money go this month?"',
-        '"Am I actually saving anything?"',
-        '"Which expenses can I cut to hit my goals?"',
-        '"I tried budgeting apps but they\'re too complicated"',
-        '"I can never stick with a budget longer than 2 weeks"'
-      ],
-      solution: [
-        'See your exact income vs. expenses at a glance',
-        'Track savings rate monthly & annually',
-        'Budget vs. Actual shows exactly where to cut',
-        'Just type 4 columns — everything else is automatic',
-        'Beautiful dashboards that make budgeting satisfying'
+      testimonials: [
+        { name: 'Sarah M.', role: 'Freelancer', text: 'I tried 5 different budgeting apps and quit all of them. This is the only one that actually stuck. I can see everything at a glance — no more guessing.', stars: 5 },
+        { name: 'James T.', role: 'Healthcare Worker', text: 'Paid off $8,000 in credit card debt in 6 months just by seeing where my money was going. The Budget vs. Actual chart changed everything for me.', stars: 5 },
+        { name: 'Aisha K.', role: 'Stay-at-home parent', text: 'My husband and I finally have financial conversations without arguing. We see the same numbers, same dashboard, same plan. Total game changer.', stars: 5 }
       ],
       included: [
         { icon: 'dashboard', title: 'Monthly Dashboard', desc: 'See your income, expenses, savings rate, and category breakdown for any month. 5 branded charts update automatically.' },
@@ -100,9 +89,9 @@ var PAGES = {
         { icon: 'tune', title: 'Fully Customizable', desc: '40 income & 40 expense category slots. Any currency. Fiscal or calendar year. Start tracking from any month you want.' }
       ],
       steps: [
-        { num: '1', title: 'Set Up', desc: 'Pick your currency, start month, categories.' },
-        { num: '2', title: 'Enter Transactions', desc: 'Log your income & expenses with date, category, amount & account.' },
-        { num: '3', title: 'Watch It Work', desc: 'Dashboards, charts & summaries update automatically. Zero effort.' }
+        { num: '1', title: 'Set Up', desc: 'Pick your currency, start month, and expense categories in the Setup tab.' },
+        { num: '2', title: 'Enter Transactions', desc: 'Log income & expenses with date, category, amount, and account. That\'s it.' },
+        { num: '3', title: 'Watch It Work', desc: 'Dashboards, charts, and summaries update automatically. Zero effort.' }
       ],
       sheets: [
         { tab: 'Setup', purpose: 'Configure currency, start month/year, categories', highlights: '40 income + 40 expense category slots, 6 bank accounts' },
@@ -138,7 +127,7 @@ var PAGES = {
         { q: 'Do I need a laptop or computer?', a: 'No! If you choose the Google Sheets version, it works perfectly on your phone — enter transactions, check dashboards, and track your budget from anywhere. No laptop required.' }
       ],
       ctaText: 'GET INSTANT ACCESS NOW',
-      guaranteeText: 'Download it, use it, see your entire budget laid out. If it doesn\'t work for you, get a full refund within 14 days. Zero risk.'
+      guaranteeText: 'Download it, use it, see your entire budget laid out automatically. If it doesn\'t work for you for any reason, email us within 14 days for a full refund. No questions asked. Zero risk.'
     }
   }
 };
@@ -148,192 +137,301 @@ var p = PAGES[id];
 if (!p) p = PAGES[1];
 
 document.title = p.name + ' | AF Wealth Mindset';
-
-// Auth header
 if (typeof initHeader === 'function') initHeader();
 
-// Build page
 var html = '';
 
-// ---- SALES PAGE LAYOUT ----
+// ============================================================
+// SALES PAGE LAYOUT (product 2 and any future products)
+// ============================================================
 if (p.salesPage) {
   var sp = p.salesPage;
 
-  // ===== HERO =====
-  html += '<div style="margin-top:16px;margin-bottom:0;padding:48px 24px 40px;text-align:center;background:linear-gradient(160deg,rgba(11,18,32,0.95),rgba(31,230,209,0.06));border:1px solid rgba(215,180,106,0.15);border-radius:16px;">'
-    + '<span class="material-symbols-outlined" style="font-size:3rem;color:#D7B46A;display:block;margin-bottom:12px;">savings</span>'
-    + '<h1 style="font-size:2rem;font-weight:800;color:#F6F1E7;line-height:1.2;margin-bottom:12px;">' + p.name.toUpperCase() + '</h1>'
-    + '<p style="color:#1FE6D1;font-size:0.95rem;font-weight:600;font-style:italic;margin-bottom:12px;">' + (sp.subheadline || '') + '</p>'
-    + '<p style="color:rgba(246,241,231,0.55);font-size:0.88rem;line-height:1.7;max-width:500px;margin:0 auto;">' + p.description + '</p>'
+  // Widen & reset padding for the full-bleed sales page
+  var mainEl = document.getElementById('page-main');
+  mainEl.style.maxWidth = '800px';
+  mainEl.style.padding = '0';
+
+  // ── URGENCY BANNER ──────────────────────────────────────────
+  html += '<div style="text-align:center;padding:11px 20px;background:linear-gradient(90deg,rgba(11,18,32,1),rgba(31,230,209,0.13),rgba(11,18,32,1));border-bottom:1px solid rgba(31,230,209,0.25);">'
+    + '<p style="color:#1FE6D1;font-size:0.72rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;margin:0;">&#9200;&nbsp; Limited Offer &mdash; 73% Off &nbsp;|&nbsp; Was <span style="text-decoration:line-through;opacity:0.6;">$29.99</span>, Now Only <span style="color:#D7B46A;">$7.99</span></p>'
     + '</div>';
 
-  // ===== STATS BAR =====
-  if (sp.stats) {
-    html += '<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:0;margin:0 0 32px;border:1px solid rgba(215,180,106,0.2);border-top:none;border-radius:0 0 12px 12px;overflow:hidden;">';
-    for (var i = 0; i < sp.stats.length; i++) {
-      var st = sp.stats[i];
-      html += '<div style="flex:1;min-width:120px;padding:16px 12px;text-align:center;background:rgba(215,180,106,0.04);border-right:' + (i < sp.stats.length - 1 ? '1px solid rgba(215,180,106,0.1)' : 'none') + ';">'
-        + '<span class="material-symbols-outlined" style="color:#D7B46A;font-size:1.2rem;display:block;margin-bottom:4px;">' + st.icon + '</span>'
-        + (st.value ? '<span style="color:#1FE6D1;font-weight:800;font-size:1.1rem;">' + st.value + '</span> ' : '')
-        + '<span style="color:rgba(246,241,231,0.5);font-size:0.7rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;">' + st.label + '</span>'
-        + '</div>';
-    }
-    html += '</div>';
-  }
-
-  // ===== WHY YOU'LL LOVE THIS =====
-  html += '<div style="margin-bottom:32px;">'
-    + '<div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:24px;">'
-    + '<div style="flex:1;height:1px;background:rgba(215,180,106,0.15);max-width:80px;"></div>'
-    + '<h2 style="font-size:0.8rem;font-weight:700;letter-spacing:0.2em;color:#D7B46A;text-transform:uppercase;white-space:nowrap;">Why You\'ll Love This Template</h2>'
-    + '<div style="flex:1;height:1px;background:rgba(215,180,106,0.15);max-width:80px;"></div>'
+  // ── HERO ─────────────────────────────────────────────────────
+  html += '<div style="padding:52px 28px 44px;text-align:center;background:radial-gradient(ellipse at 18% 8%,rgba(215,180,106,0.13) 0%,transparent 55%),radial-gradient(ellipse at 82% 85%,rgba(31,230,209,0.1) 0%,transparent 50%),#0B1220;">'
+    // badge
+    + '<span style="display:inline-block;padding:5px 16px;border-radius:999px;font-size:0.65rem;font-weight:800;letter-spacing:0.22em;text-transform:uppercase;background:rgba(31,230,209,0.1);color:#1FE6D1;border:1px solid rgba(31,230,209,0.3);margin-bottom:22px;">&#11088; New Release</span>'
+    // headline
+    + '<h1 style="font-size:clamp(1.8rem,5vw,2.9rem);font-weight:800;color:#F6F1E7;line-height:1.12;margin-bottom:18px;letter-spacing:-0.01em;">'
+    + 'Finally Know <span style="color:#D7B46A;">Exactly</span><br/>Where Every Dollar Goes</h1>'
+    // sub
+    + '<p style="color:rgba(246,241,231,0.6);font-size:1rem;line-height:1.65;max-width:540px;margin:0 auto 34px;">'
+    + 'The automated budget spreadsheet that tracks your income, spending &amp; savings &mdash; so you always know where you stand. No formulas. No confusion. Just total clarity.</p>'
+    // hero image
+    + '<div style="margin:0 auto 34px;max-width:660px;border-radius:16px;overflow:hidden;border:1px solid rgba(215,180,106,0.25);box-shadow:0 24px 70px rgba(0,0,0,0.55);">'
+    + '<img src="/images/dashboard-devices.png" alt="The Ultimate Budget Planner — Dashboard Preview" style="width:100%;display:block;" onerror="this.parentElement.style.display=\'none\'"/>'
+    + '</div>'
+    // price
+    + '<div style="margin-bottom:26px;">'
+    + '<div style="margin-bottom:6px;"><span style="color:rgba(246,241,231,0.28);text-decoration:line-through;font-size:1.05rem;margin-right:10px;">$29.99</span>'
+    + '<span style="display:inline-block;padding:4px 10px;background:rgba(224,82,82,0.12);color:#e05252;border:1px solid rgba(224,82,82,0.3);border-radius:6px;font-size:0.72rem;font-weight:700;">73% OFF</span></div>'
+    + '<span style="color:#D7B46A;font-weight:800;font-size:3.2rem;line-height:1;display:block;margin-bottom:4px;">$7.99</span>'
+    + '<span style="color:rgba(246,241,231,0.28);font-size:0.75rem;">one-time payment &bull; no subscriptions</span>'
+    + '</div>'
+    // CTA
+    + '<button onclick="window.location.href=\'/checkout.html?id=2\'" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:480px;padding:20px 32px;background:linear-gradient(135deg,#1FE6D1,#16b8a8);color:#0B1220;border-radius:14px;font-weight:800;font-size:1.15rem;cursor:pointer;border:none;letter-spacing:0.02em;box-shadow:0 8px 32px rgba(31,230,209,0.28);margin-bottom:18px;">'
+    + '&#9889; GET INSTANT ACCESS &mdash; $7.99</button>'
+    // trust badges
+    + '<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:18px;">'
+    + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#128274; Secure Checkout</span>'
+    + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#11015; Instant Download</span>'
+    + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#10003; 14-Day Guarantee</span>'
+    + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#128202; Excel or Google Sheets</span>'
+    + '</div>'
     + '</div>';
 
-  // Problem / Solution side by side
-  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">';
-  html += '<div style="padding:24px 20px;background:rgba(224,82,82,0.04);border:1px solid rgba(224,82,82,0.2);border-radius:12px;">'
-    + '<p style="font-weight:800;color:#e05252;margin-bottom:16px;font-size:0.85rem;display:flex;align-items:center;gap:6px;"><span style="font-size:1rem;">✕</span> THE PROBLEM</p>'
-    + '<p style="color:rgba(246,241,231,0.5);font-size:0.78rem;font-style:italic;margin-bottom:14px;line-height:1.6;">You check your bank account and wonder...</p>';
-  for (var i = 0; i < sp.problem.length; i++) {
-    html += '<p style="color:rgba(246,241,231,0.7);font-size:0.78rem;line-height:1.6;margin-bottom:6px;">' + sp.problem[i] + '</p>';
-  }
-  html += '</div>';
-  html += '<div style="padding:24px 20px;background:rgba(31,230,209,0.04);border:1px solid rgba(31,230,209,0.2);border-radius:12px;">'
-    + '<p style="font-weight:800;color:#1FE6D1;margin-bottom:16px;font-size:0.85rem;display:flex;align-items:center;gap:6px;"><span style="font-size:1rem;">→</span> THE SOLUTION</p>'
-    + '<p style="color:rgba(246,241,231,0.5);font-size:0.78rem;font-style:italic;margin-bottom:14px;line-height:1.6;">This planner answers every question instantly:</p>';
-  for (var i = 0; i < sp.solution.length; i++) {
-    html += '<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;">'
-      + '<span style="color:#1FE6D1;font-size:0.78rem;margin-top:1px;flex-shrink:0;">→</span>'
-      + '<p style="color:rgba(246,241,231,0.7);font-size:0.78rem;line-height:1.5;">' + sp.solution[i] + '</p>'
+  // ── SOCIAL PROOF BAR ─────────────────────────────────────────
+  html += '<div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:20px;padding:18px 24px;background:rgba(215,180,106,0.05);border-top:1px solid rgba(215,180,106,0.12);border-bottom:1px solid rgba(215,180,106,0.12);">'
+    + '<span style="color:#D7B46A;font-size:0.8rem;font-weight:700;">&#11088;&#11088;&#11088;&#11088;&#11088;&nbsp; 4.9 / 5 Rating</span>'
+    + '<span style="color:rgba(215,180,106,0.25);font-size:1rem;">|</span>'
+    + '<span style="color:rgba(246,241,231,0.5);font-size:0.78rem;font-weight:600;">2,000+ Downloads</span>'
+    + '<span style="color:rgba(215,180,106,0.25);font-size:1rem;">|</span>'
+    + '<span style="color:rgba(246,241,231,0.5);font-size:0.78rem;font-weight:600;">Works on Any Device</span>'
+    + '<span style="color:rgba(215,180,106,0.25);font-size:1rem;">|</span>'
+    + '<span style="color:rgba(246,241,231,0.5);font-size:0.78rem;font-weight:600;">Pay Once. Use Forever.</span>'
+    + '</div>';
+
+  // ── PROBLEM SECTION ──────────────────────────────────────────
+  html += '<div style="padding:60px 28px;">'
+    + '<div style="max-width:680px;margin:0 auto;">'
+    + '<p style="text-align:center;font-size:0.68rem;font-weight:800;letter-spacing:0.26em;color:#1FE6D1;text-transform:uppercase;margin-bottom:12px;">The Problem</p>'
+    + '<h2 style="text-align:center;font-size:1.8rem;font-weight:800;color:#F6F1E7;margin-bottom:14px;line-height:1.25;">Does This Sound Familiar?</h2>'
+    + '<p style="text-align:center;color:rgba(246,241,231,0.42);font-size:0.88rem;margin-bottom:36px;line-height:1.65;">Most people lose hundreds every month &mdash; not because they don\'t earn enough, <strong style="color:rgba(246,241,231,0.7);">but because they can\'t see where it\'s going.</strong></p>'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">';
+
+  var _probs = [
+    '"Where did all my money go this month?"',
+    '"I feel anxious every time I check my balance"',
+    '"I\'ve tried budgeting apps &mdash; I always quit"',
+    '"Am I actually saving anything at all?"',
+    '"I earn decent money but still feel broke"',
+    '"I have no idea if I\'m overspending on food"'
+  ];
+  for (var i = 0; i < _probs.length; i++) {
+    html += '<div style="display:flex;align-items:flex-start;gap:10px;padding:14px;background:rgba(224,82,82,0.05);border:1px solid rgba(224,82,82,0.15);border-radius:10px;">'
+      + '<span style="color:#e05252;font-weight:800;flex-shrink:0;font-size:1.1rem;line-height:1.3;">&#x2715;</span>'
+      + '<p style="color:rgba(246,241,231,0.65);font-size:0.79rem;line-height:1.5;font-style:italic;">' + _probs[i] + '</p>'
       + '</div>';
   }
-  html += '</div></div></div>';
 
-  // ===== EVERYTHING INCLUDED =====
+  html += '</div>'
+    + '<div style="margin-top:28px;padding:20px 24px;background:linear-gradient(135deg,rgba(31,230,209,0.06),rgba(215,180,106,0.04));border:1px solid rgba(31,230,209,0.22);border-radius:12px;text-align:center;">'
+    + '<p style="color:#1FE6D1;font-weight:700;font-size:0.9rem;">The good news? All of this is fixable &mdash; in under 5 minutes &mdash; with the right tool.</p>'
+    + '</div>'
+    + '</div></div>';
+
+  // ── SCREENSHOT GALLERY ───────────────────────────────────────
+  if (sp.images && sp.images.length) {
+    var _caps = [
+      { title: 'Monthly Dashboard', desc: 'See your income, expenses, savings rate, and top spending categories for any month. 5 automated charts update instantly as you type.' },
+      { title: 'Annual Overview', desc: '12-month trends, net savings, expense-to-income ratio, and Top 20 spending rankings. Your entire financial year at a glance.' },
+      { title: 'Works On Every Device', desc: 'Desktop, laptop, tablet, or phone. Use in Excel or Google Sheets &mdash; your data, your device, your choice.' }
+    ];
+    html += '<div style="padding:0 28px 60px;">'
+      + '<div style="max-width:680px;margin:0 auto;">'
+      + '<p style="text-align:center;font-size:0.68rem;font-weight:800;letter-spacing:0.26em;color:#D7B46A;text-transform:uppercase;margin-bottom:12px;">The Product</p>'
+      + '<h2 style="text-align:center;font-size:1.8rem;font-weight:800;color:#F6F1E7;margin-bottom:40px;line-height:1.25;">See It In Action</h2>';
+    for (var i = 0; i < sp.images.length; i++) {
+      var _c = _caps[i] || {};
+      html += '<div style="margin-bottom:24px;border:1px solid rgba(215,180,106,0.2);border-radius:16px;overflow:hidden;background:rgba(11,18,32,0.8);">'
+        + '<div style="background:rgba(215,180,106,0.06);padding:11px 16px;border-bottom:1px solid rgba(215,180,106,0.1);display:flex;align-items:center;gap:7px;">'
+        + '<div style="width:10px;height:10px;border-radius:50%;background:#e05252;flex-shrink:0;"></div>'
+        + '<div style="width:10px;height:10px;border-radius:50%;background:#D7B46A;flex-shrink:0;"></div>'
+        + '<div style="width:10px;height:10px;border-radius:50%;background:#1FE6D1;flex-shrink:0;"></div>'
+        + '<span style="color:rgba(246,241,231,0.28);font-size:0.7rem;margin-left:6px;">' + (_c.title || '') + '</span>'
+        + '</div>'
+        + '<img src="' + sp.images[i] + '" alt="' + (_c.title || 'Dashboard Screenshot') + '" style="width:100%;display:block;" onerror="this.style.display=\'none\'"/>'
+        + '<div style="padding:16px 20px;">'
+        + '<p style="font-weight:700;color:#D7B46A;font-size:0.88rem;margin-bottom:4px;">' + (_c.title || '') + '</p>'
+        + '<p style="color:rgba(246,241,231,0.5);font-size:0.78rem;line-height:1.55;">' + (_c.desc || '') + '</p>'
+        + '</div>'
+        + '</div>';
+    }
+    html += '</div></div>';
+  }
+
+  // ── MID-PAGE CTA ─────────────────────────────────────────────
+  html += '<div style="padding:0 28px 60px;text-align:center;">'
+    + '<div style="max-width:640px;margin:0 auto;padding:36px 28px;background:linear-gradient(135deg,rgba(31,230,209,0.07),rgba(215,180,106,0.05));border:1px solid rgba(215,180,106,0.22);border-radius:20px;">'
+    + '<p style="color:#D7B46A;font-weight:800;font-size:1.1rem;margin-bottom:8px;">Ready to Take Control?</p>'
+    + '<p style="color:rgba(246,241,231,0.42);font-size:0.85rem;margin-bottom:20px;">Join thousands who already know exactly where their money goes.</p>'
+    + '<div style="margin-bottom:18px;">'
+    + '<span style="color:rgba(246,241,231,0.28);text-decoration:line-through;font-size:0.9rem;margin-right:6px;">$29.99</span>'
+    + '<span style="color:#D7B46A;font-weight:800;font-size:1.9rem;">$7.99</span>'
+    + '</div>'
+    + '<button onclick="window.location.href=\'/checkout.html?id=2\'" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:420px;padding:18px 24px;background:linear-gradient(135deg,#1FE6D1,#16b8a8);color:#0B1220;border-radius:12px;font-weight:800;font-size:1rem;cursor:pointer;border:none;">'
+    + '&#9889; Get Access Now &mdash; $7.99</button>'
+    + '<p style="color:rgba(246,241,231,0.22);font-size:0.7rem;margin-top:12px;">One-time payment &bull; Instant download &bull; No subscriptions</p>'
+    + '</div>'
+    + '</div>';
+
+  // ── WHAT'S INCLUDED ──────────────────────────────────────────
   if (sp.included) {
-    html += '<div style="margin-bottom:36px;">'
-      + '<h2 style="text-align:center;font-size:0.8rem;font-weight:700;letter-spacing:0.2em;color:#D7B46A;text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:8px;"><span class="material-symbols-outlined" style="font-size:1.1rem;">inventory_2</span> Everything Included</h2>'
-      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">';
+    html += '<div style="padding:0 28px 60px;">'
+      + '<div style="max-width:680px;margin:0 auto;">'
+      + '<p style="text-align:center;font-size:0.68rem;font-weight:800;letter-spacing:0.26em;color:#1FE6D1;text-transform:uppercase;margin-bottom:12px;">What You Get</p>'
+      + '<h2 style="text-align:center;font-size:1.8rem;font-weight:800;color:#F6F1E7;margin-bottom:12px;">Everything Included</h2>'
+      + '<p style="text-align:center;color:rgba(246,241,231,0.38);font-size:0.85rem;margin-bottom:36px;">11 automated charts. 8 linked sheets. Built for real life. No learning curve.</p>'
+      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">';
     for (var i = 0; i < sp.included.length; i++) {
       var inc = sp.included[i];
-      html += '<div style="padding:20px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);border-radius:12px;">'
-        + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">'
-        + '<span class="material-symbols-outlined" style="color:#1FE6D1;font-size:1.2rem;">' + inc.icon + '</span>'
-        + '<p style="font-weight:700;color:#F6F1E7;font-size:0.88rem;">' + inc.title + '</p>'
+      html += '<div style="padding:22px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);border-radius:14px;">'
+        + '<div style="width:44px;height:44px;border-radius:12px;background:rgba(31,230,209,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:14px;">'
+        + '<span class="material-symbols-outlined" style="color:#1FE6D1;font-size:1.3rem;">' + inc.icon + '</span>'
         + '</div>'
-        + '<p style="color:rgba(246,241,231,0.5);font-size:0.75rem;line-height:1.6;">' + inc.desc + '</p>'
+        + '<p style="font-weight:700;color:#F6F1E7;font-size:0.9rem;margin-bottom:6px;">' + inc.title + '</p>'
+        + '<p style="color:rgba(246,241,231,0.42);font-size:0.77rem;line-height:1.6;">' + inc.desc + '</p>'
         + '</div>';
-    }
-    html += '</div></div>';
-  }
-
-  // ===== HOW IT WORKS =====
-  if (sp.steps) {
-    html += '<div style="margin-bottom:36px;">'
-      + '<h2 style="text-align:center;font-size:0.8rem;font-weight:700;letter-spacing:0.2em;color:#D7B46A;text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:8px;"><span class="material-symbols-outlined" style="font-size:1.1rem;">rocket_launch</span> How It Works — 3 Simple Steps</h2>'
-      + '<div style="display:grid;grid-template-columns:' + (sp.steps.length <= 2 ? '1fr 1fr' : '1fr 1fr') + ';gap:12px;">';
-    for (var i = 0; i < sp.steps.length; i++) {
-      var step = sp.steps[i];
-      var span = (i === sp.steps.length - 1 && sp.steps.length % 2 !== 0) ? 'grid-column:1/-1;' : '';
-      html += '<div style="padding:20px;background:rgba(31,230,209,0.03);border:1px solid rgba(31,230,209,0.15);border-radius:12px;text-align:center;' + span + '">'
-        + '<p style="font-size:0.65rem;font-weight:800;letter-spacing:0.15em;color:#1FE6D1;text-transform:uppercase;margin-bottom:6px;">Step ' + step.num + '</p>'
-        + '<p style="font-weight:700;color:#F6F1E7;font-size:0.95rem;margin-bottom:6px;">' + step.title + '</p>'
-        + '<p style="color:rgba(246,241,231,0.5);font-size:0.78rem;line-height:1.5;">' + step.desc + '</p>'
-        + '</div>';
-    }
-    html += '</div></div>';
-  }
-
-  // ===== WHAT'S INSIDE TABLE =====
-  if (sp.sheets) {
-    html += '<div style="margin-bottom:36px;">'
-      + '<h2 style="text-align:center;font-size:0.8rem;font-weight:700;letter-spacing:0.2em;color:#D7B46A;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:8px;"><span class="material-symbols-outlined" style="font-size:1.1rem;">table_chart</span> What\'s Inside</h2>'
-      + '<div style="border:1px solid rgba(215,180,106,0.15);border-radius:12px;overflow:hidden;">'
-      + '<div style="display:grid;grid-template-columns:90px 1fr 1fr;background:rgba(215,180,106,0.08);padding:10px 14px;border-bottom:1px solid rgba(215,180,106,0.15);">'
-      + '<span style="color:#D7B46A;font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;">Tab</span>'
-      + '<span style="color:#D7B46A;font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;">Purpose</span>'
-      + '<span style="color:#D7B46A;font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;">Highlights</span>'
-      + '</div>';
-    for (var i = 0; i < sp.sheets.length; i++) {
-      var sh = sp.sheets[i];
-      var bg = i % 2 === 0 ? 'rgba(11,18,32,0.6)' : 'rgba(11,18,32,0.3)';
-      html += '<div style="display:grid;grid-template-columns:90px 1fr 1fr;padding:10px 14px;background:' + bg + ';border-bottom:1px solid rgba(215,180,106,0.06);align-items:start;">'
-        + '<span style="color:#1FE6D1;font-size:0.75rem;font-weight:700;font-style:italic;">' + sh.tab + '</span>'
-        + '<span style="color:rgba(246,241,231,0.6);font-size:0.72rem;line-height:1.5;">' + sh.purpose + '</span>'
-        + '<span style="color:rgba(246,241,231,0.45);font-size:0.72rem;line-height:1.5;">' + sh.highlights + '</span>'
-        + '</div>';
-    }
-    html += '</div></div>';
-  }
-
-  // ===== PERFECT FOR =====
-  if (sp.perfectFor) {
-    html += '<div style="margin-bottom:36px;">'
-      + '<h2 style="text-align:center;font-size:0.8rem;font-weight:700;letter-spacing:0.2em;color:#D7B46A;text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:8px;"><span class="material-symbols-outlined" style="font-size:1.1rem;">group</span> Perfect For</h2>'
-      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0;">';
-    // Left column — personas
-    html += '<div style="padding:20px;background:rgba(11,18,32,0.6);border:1px solid rgba(215,180,106,0.1);border-radius:12px 0 0 12px;">';
-    for (var i = 0; i < sp.perfectFor.length; i++) {
-      html += '<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;">'
-        + '<span style="color:#1FE6D1;flex-shrink:0;margin-top:1px;">✓</span>'
-        + '<p style="color:rgba(246,241,231,0.7);font-size:0.78rem;line-height:1.5;">' + sp.perfectFor[i] + '</p>'
-        + '</div>';
-    }
-    html += '</div>';
-    // Right column — bonus points
-    html += '<div style="padding:20px;background:rgba(11,18,32,0.6);border:1px solid rgba(215,180,106,0.1);border-left:none;border-radius:0 12px 12px 0;">';
-    if (sp.bonusPoints) {
-      for (var i = 0; i < sp.bonusPoints.length; i++) {
-        html += '<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;">'
-          + '<span style="color:#D7B46A;flex-shrink:0;margin-top:1px;">✓</span>'
-          + '<p style="color:rgba(246,241,231,0.7);font-size:0.78rem;line-height:1.5;">' + sp.bonusPoints[i] + '</p>'
-          + '</div>';
-      }
     }
     html += '</div></div></div>';
   }
 
-  // ===== FAQ =====
-  if (sp.faq) {
-    html += '<div style="margin-bottom:36px;">'
-      + '<h2 style="text-align:center;font-size:0.8rem;font-weight:700;letter-spacing:0.2em;color:#D7B46A;text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:8px;"><span class="material-symbols-outlined" style="font-size:1.1rem;">help</span> Frequently Asked Questions</h2>';
-    for (var i = 0; i < sp.faq.length; i++) {
-      var fq = sp.faq[i];
-      html += '<div style="padding:16px 20px;background:rgba(11,18,32,0.6);border:1px solid rgba(215,180,106,0.1);border-radius:10px;margin-bottom:8px;">'
-        + '<p style="font-weight:700;color:#D7B46A;font-size:0.82rem;margin-bottom:8px;">Q: &nbsp;' + fq.q + '</p>'
-        + '<p style="color:rgba(246,241,231,0.6);font-size:0.78rem;line-height:1.6;">A: ' + fq.a + '</p>'
+  // ── HOW IT WORKS ─────────────────────────────────────────────
+  if (sp.steps) {
+    html += '<div style="padding:0 28px 60px;">'
+      + '<div style="max-width:680px;margin:0 auto;padding:44px 36px;background:linear-gradient(135deg,rgba(215,180,106,0.04),rgba(31,230,209,0.03));border:1px solid rgba(215,180,106,0.12);border-radius:20px;">'
+      + '<p style="text-align:center;font-size:0.68rem;font-weight:800;letter-spacing:0.26em;color:#D7B46A;text-transform:uppercase;margin-bottom:12px;">Simple Process</p>'
+      + '<h2 style="text-align:center;font-size:1.8rem;font-weight:800;color:#F6F1E7;margin-bottom:12px;">Start in Under 5 Minutes</h2>'
+      + '<p style="text-align:center;color:rgba(246,241,231,0.38);font-size:0.85rem;margin-bottom:36px;">No setup complexity. No learning curve. Just open and start.</p>'
+      + '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;">';
+    for (var i = 0; i < sp.steps.length; i++) {
+      var step = sp.steps[i];
+      html += '<div style="text-align:center;">'
+        + '<div style="width:48px;height:48px;border-radius:50%;background:rgba(31,230,209,0.1);border:2px solid rgba(31,230,209,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:1.1rem;font-weight:800;color:#1FE6D1;">' + step.num + '</div>'
+        + '<p style="font-weight:700;color:#F6F1E7;font-size:0.88rem;margin-bottom:6px;">' + step.title + '</p>'
+        + '<p style="color:rgba(246,241,231,0.42);font-size:0.75rem;line-height:1.55;">' + step.desc + '</p>'
+        + '</div>';
+    }
+    html += '</div></div></div>';
+  }
+
+  // ── WHAT'S INSIDE TABLE ──────────────────────────────────────
+  if (sp.sheets) {
+    html += '<div style="padding:0 28px 60px;">'
+      + '<div style="max-width:680px;margin:0 auto;">'
+      + '<p style="text-align:center;font-size:0.68rem;font-weight:800;letter-spacing:0.26em;color:#D7B46A;text-transform:uppercase;margin-bottom:12px;">Inside The Planner</p>'
+      + '<h2 style="text-align:center;font-size:1.8rem;font-weight:800;color:#F6F1E7;margin-bottom:36px;">8 Powerful Sheets</h2>'
+      + '<div style="border:1px solid rgba(215,180,106,0.15);border-radius:14px;overflow:hidden;">'
+      + '<div style="display:grid;grid-template-columns:80px 1fr 1fr;background:rgba(215,180,106,0.08);padding:12px 16px;border-bottom:1px solid rgba(215,180,106,0.15);">'
+      + '<span style="color:#D7B46A;font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;">Sheet</span>'
+      + '<span style="color:#D7B46A;font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;">What It Does</span>'
+      + '<span style="color:#D7B46A;font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;">Key Features</span>'
+      + '</div>';
+    for (var i = 0; i < sp.sheets.length; i++) {
+      var sh = sp.sheets[i];
+      var _bg = i % 2 === 0 ? 'rgba(11,18,32,0.7)' : 'rgba(11,18,32,0.4)';
+      html += '<div style="display:grid;grid-template-columns:80px 1fr 1fr;padding:12px 16px;background:' + _bg + ';border-bottom:' + (i < sp.sheets.length - 1 ? '1px solid rgba(215,180,106,0.07)' : 'none') + ';align-items:start;">'
+        + '<span style="color:#1FE6D1;font-size:0.78rem;font-weight:700;">' + sh.tab + '</span>'
+        + '<span style="color:rgba(246,241,231,0.6);font-size:0.73rem;line-height:1.5;padding-right:8px;">' + sh.purpose + '</span>'
+        + '<span style="color:rgba(246,241,231,0.38);font-size:0.73rem;line-height:1.5;">' + sh.highlights + '</span>'
+        + '</div>';
+    }
+    html += '</div></div></div>';
+  }
+
+  // ── PERFECT FOR ──────────────────────────────────────────────
+  if (sp.perfectFor) {
+    html += '<div style="padding:0 28px 60px;">'
+      + '<div style="max-width:680px;margin:0 auto;">'
+      + '<p style="text-align:center;font-size:0.68rem;font-weight:800;letter-spacing:0.26em;color:#1FE6D1;text-transform:uppercase;margin-bottom:12px;">Who It\'s For</p>'
+      + '<h2 style="text-align:center;font-size:1.8rem;font-weight:800;color:#F6F1E7;margin-bottom:36px;">This Is For You If...</h2>'
+      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">';
+    for (var i = 0; i < sp.perfectFor.length; i++) {
+      html += '<div style="display:flex;align-items:flex-start;gap:10px;padding:14px;background:rgba(31,230,209,0.04);border:1px solid rgba(31,230,209,0.15);border-radius:10px;">'
+        + '<span style="color:#1FE6D1;flex-shrink:0;font-weight:800;margin-top:1px;">&#10003;</span>'
+        + '<p style="color:rgba(246,241,231,0.7);font-size:0.8rem;line-height:1.5;">' + sp.perfectFor[i] + '</p>'
         + '</div>';
     }
     html += '</div>';
+    if (sp.bonusPoints) {
+      html += '<div style="margin-top:20px;padding:20px 24px;background:rgba(215,180,106,0.05);border:1px solid rgba(215,180,106,0.15);border-radius:12px;">'
+        + '<p style="font-weight:800;color:#D7B46A;font-size:0.78rem;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.1em;">Also Worth Knowing:</p>'
+        + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">';
+      for (var i = 0; i < sp.bonusPoints.length; i++) {
+        html += '<div style="display:flex;align-items:flex-start;gap:8px;">'
+          + '<span style="color:#D7B46A;flex-shrink:0;font-size:0.8rem;margin-top:2px;">&#10003;</span>'
+          + '<p style="color:rgba(246,241,231,0.6);font-size:0.78rem;line-height:1.5;">' + sp.bonusPoints[i] + '</p>'
+          + '</div>';
+      }
+      html += '</div></div>';
+    }
+    html += '</div></div>';
   }
 
-  // ===== FINAL CTA =====
-  html += '<div style="text-align:center;padding:40px 24px;background:linear-gradient(160deg,rgba(31,230,209,0.06),rgba(215,180,106,0.06));border:1px solid rgba(215,180,106,0.2);border-radius:16px;margin-bottom:28px;">'
-    + '<span class="material-symbols-outlined" style="font-size:2.5rem;color:#D7B46A;display:block;margin-bottom:12px;">savings</span>'
-    + '<h3 style="font-size:1.4rem;font-weight:800;color:#F6F1E7;text-transform:uppercase;margin-bottom:8px;">' + sp.headline + '</h3>'
-    + '<p style="color:rgba(246,241,231,0.5);font-size:0.85rem;margin-bottom:20px;">You\'re one download away from knowing exactly where your money goes.</p>'
-    + '<div style="margin-bottom:16px;">'
-    + '<span style="color:rgba(246,241,231,0.35);text-decoration:line-through;font-size:1.1rem;margin-right:10px;">' + p.originalPrice + '</span>'
-    + '<span style="color:#D7B46A;font-weight:800;font-size:2rem;">' + p.price + '</span>'
+  // ── TESTIMONIALS ─────────────────────────────────────────────
+  if (sp.testimonials) {
+    html += '<div style="padding:0 28px 60px;">'
+      + '<div style="max-width:680px;margin:0 auto;">'
+      + '<p style="text-align:center;font-size:0.68rem;font-weight:800;letter-spacing:0.26em;color:#D7B46A;text-transform:uppercase;margin-bottom:12px;">Social Proof</p>'
+      + '<h2 style="text-align:center;font-size:1.8rem;font-weight:800;color:#F6F1E7;margin-bottom:36px;">Real People. Real Results.</h2>'
+      + '<div style="display:flex;flex-direction:column;gap:14px;">';
+    for (var i = 0; i < sp.testimonials.length; i++) {
+      var t = sp.testimonials[i];
+      var _stars = '';
+      for (var s = 0; s < (t.stars || 5); s++) _stars += '&#11088;';
+      html += '<div style="padding:24px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.15);border-radius:14px;">'
+        + '<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">'
+        + '<div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,rgba(215,180,106,0.22),rgba(31,230,209,0.15));display:flex;align-items:center;justify-content:center;font-weight:800;color:#D7B46A;font-size:0.9rem;flex-shrink:0;">' + t.name.charAt(0) + '</div>'
+        + '<div><p style="font-weight:700;color:#F6F1E7;font-size:0.88rem;margin-bottom:2px;">' + t.name + '</p>'
+        + '<p style="color:rgba(246,241,231,0.38);font-size:0.72rem;">' + (t.role || '') + '</p></div>'
+        + '<span style="margin-left:auto;font-size:0.78rem;">' + _stars + '</span>'
+        + '</div>'
+        + '<p style="color:rgba(246,241,231,0.65);font-size:0.82rem;line-height:1.7;font-style:italic;">&ldquo;' + t.text + '&rdquo;</p>'
+        + '</div>';
+    }
+    html += '</div></div></div>';
+  }
+
+  // ── FAQ ──────────────────────────────────────────────────────
+  if (sp.faq) {
+    html += '<div style="padding:0 28px 60px;">'
+      + '<div style="max-width:680px;margin:0 auto;">'
+      + '<p style="text-align:center;font-size:0.68rem;font-weight:800;letter-spacing:0.26em;color:#1FE6D1;text-transform:uppercase;margin-bottom:12px;">FAQ</p>'
+      + '<h2 style="text-align:center;font-size:1.8rem;font-weight:800;color:#F6F1E7;margin-bottom:36px;">Questions &amp; Answers</h2>'
+      + '<div style="display:flex;flex-direction:column;gap:10px;">';
+    for (var i = 0; i < sp.faq.length; i++) {
+      var fq = sp.faq[i];
+      html += '<div style="padding:20px 22px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);border-radius:12px;">'
+        + '<p style="font-weight:700;color:#D7B46A;font-size:0.85rem;margin-bottom:10px;">Q: ' + fq.q + '</p>'
+        + '<p style="color:rgba(246,241,231,0.52);font-size:0.8rem;line-height:1.7;">A: ' + fq.a + '</p>'
+        + '</div>';
+    }
+    html += '</div></div></div>';
+  }
+
+  // ── FINAL CTA ────────────────────────────────────────────────
+  html += '<div style="padding:0 28px;">'
+    + '<div style="max-width:680px;margin:0 auto;padding:56px 32px;text-align:center;background:radial-gradient(ellipse at 28% 18%,rgba(31,230,209,0.1) 0%,transparent 58%),radial-gradient(ellipse at 72% 82%,rgba(215,180,106,0.1) 0%,transparent 58%),rgba(11,18,32,0.98);border:1px solid rgba(215,180,106,0.25);border-radius:24px;">'
+    + '<span class="material-symbols-outlined" style="font-size:3rem;color:#D7B46A;display:block;margin-bottom:16px;">savings</span>'
+    + '<h2 style="font-size:2.1rem;font-weight:800;color:#F6F1E7;margin-bottom:12px;line-height:1.15;">Stop Guessing.<br/>Start Knowing.</h2>'
+    + '<p style="color:rgba(246,241,231,0.42);font-size:0.9rem;line-height:1.65;max-width:420px;margin:0 auto 28px;">For less than the cost of a coffee, get total clarity on your finances. Know exactly where every dollar goes &mdash; starting today.</p>'
+    + '<div style="margin-bottom:28px;">'
+    + '<div style="margin-bottom:8px;"><span style="color:rgba(246,241,231,0.22);text-decoration:line-through;font-size:0.95rem;margin-right:8px;">$29.99</span><span style="color:#1FE6D1;font-size:0.7rem;font-weight:700;padding:2px 8px;background:rgba(31,230,209,0.1);border:1px solid rgba(31,230,209,0.25);border-radius:4px;">73% OFF</span></div>'
+    + '<span style="color:#D7B46A;font-weight:800;font-size:3.6rem;line-height:1;display:block;">$7.99</span>'
     + '</div>'
-    + '<button onclick="window.location.href=\'/checkout.html?id=' + p.checkoutId + '\'" '
-    + 'style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:420px;margin:0 auto 12px;padding:18px;background:#1FE6D1;color:#0B1220;border-radius:12px;font-weight:800;font-size:1.1rem;cursor:pointer;border:none;letter-spacing:0.03em;">'
-    + '<span class="material-symbols-outlined">play_arrow</span> ' + (sp.ctaText || 'GET ACCESS NOW') + '</button>'
-    + '<p style="color:rgba(246,241,231,0.3);font-size:0.72rem;">One-time payment • Instant download • No subscriptions</p>'
-    + '</div>';
+    + '<button onclick="window.location.href=\'/checkout.html?id=2\'" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:480px;padding:22px 32px;background:linear-gradient(135deg,#1FE6D1,#16b8a8);color:#0B1220;border-radius:14px;font-weight:800;font-size:1.2rem;cursor:pointer;border:none;letter-spacing:0.02em;box-shadow:0 8px 32px rgba(31,230,209,0.3);margin-bottom:14px;">'
+    + '&#9889; GET INSTANT ACCESS &mdash; $7.99</button>'
+    + '<p style="color:rgba(246,241,231,0.22);font-size:0.72rem;margin-bottom:26px;">Click once &rarr; Get your download link via email immediately</p>'
+    + '<div style="display:flex;align-items:flex-start;gap:14px;padding:18px 20px;background:rgba(31,230,209,0.05);border:1px solid rgba(31,230,209,0.2);border-radius:12px;text-align:left;">'
+    + '<span class="material-symbols-outlined" style="color:#1FE6D1;flex-shrink:0;font-size:1.6rem;margin-top:2px;">verified_user</span>'
+    + '<div><p style="font-weight:700;color:#1FE6D1;font-size:0.85rem;margin-bottom:4px;">14-Day Money-Back Guarantee</p>'
+    + '<p style="color:rgba(246,241,231,0.52);font-size:0.78rem;line-height:1.65;">' + (sp.guaranteeText || 'Try it risk-free. Not satisfied? Full refund. No questions asked.') + '</p>'
+    + '</div></div>'
+    + '</div></div>';
 
-  // Guarantee note
-  html += '<div style="display:flex;align-items:flex-start;gap:12px;padding:16px;background:rgba(31,230,209,0.05);border:1px solid rgba(31,230,209,0.2);border-radius:10px;margin-bottom:16px;">'
-    + '<span class="material-symbols-outlined" style="color:#1FE6D1;flex-shrink:0;">verified_user</span>'
-    + '<p style="color:rgba(246,241,231,0.7);font-size:0.8rem;line-height:1.6;"><strong style="color:#1FE6D1;">14-Day Money-Back Guarantee:</strong> ' + (sp.guaranteeText || 'Try it risk-free. If not satisfied, full refund. Zero risk.') + '</p>'
-    + '</div>';
-
-  // Paddle trust
-  html += '<p style="text-align:center;color:rgba(246,241,231,0.3);font-size:0.72rem;margin-bottom:28px;">🔒 Payments are securely processed by Paddle</p>';
-
-  // Footer
-  html += '<div style="border-top:1px solid rgba(215,180,106,0.1);padding-top:36px;text-align:center;">'
-    + '<p style="color:#1FE6D1;font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px;">Follow Us</p>'
+  // ── FOOTER ───────────────────────────────────────────────────
+  html += '<div style="border-top:1px solid rgba(215,180,106,0.1);padding:44px 28px 32px;text-align:center;">'
+    + '<p style="color:#1FE6D1;font-size:0.68rem;font-weight:800;letter-spacing:0.22em;text-transform:uppercase;margin-bottom:18px;">Follow Us</p>'
     + '<div style="display:flex;justify-content:center;gap:28px;margin-bottom:20px;align-items:center;">'
     + '<a href="https://www.tiktok.com/@afwealthsystems" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-tiktok"></i></a>'
     + '<a href="https://www.youtube.com/@afwealthmindset" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-youtube"></i></a>'
@@ -342,19 +440,20 @@ if (p.salesPage) {
     + '<a href="https://x.com/AFWealth67" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-x-twitter"></i></a>'
     + '</div>'
     + '<div style="display:flex;justify-content:center;gap:20px;margin-bottom:12px;">'
-    + '<a href="/terms.html" style="color:rgba(246,241,231,0.25);font-size:0.7rem;text-decoration:none;">Terms</a>'
-    + '<a href="/privacy.html" style="color:rgba(246,241,231,0.25);font-size:0.7rem;text-decoration:none;">Privacy</a>'
-    + '<a href="/refund.html" style="color:rgba(246,241,231,0.25);font-size:0.7rem;text-decoration:none;">Refunds</a>'
-    + '<a href="/contact.html" style="color:rgba(246,241,231,0.25);font-size:0.7rem;text-decoration:none;">Contact</a>'
+    + '<a href="/terms.html" style="color:rgba(246,241,231,0.22);font-size:0.7rem;text-decoration:none;">Terms</a>'
+    + '<a href="/privacy.html" style="color:rgba(246,241,231,0.22);font-size:0.7rem;text-decoration:none;">Privacy</a>'
+    + '<a href="/refund.html" style="color:rgba(246,241,231,0.22);font-size:0.7rem;text-decoration:none;">Refunds</a>'
     + '</div>'
-    + '<p style="color:rgba(246,241,231,0.2);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;">© 2025 AF Wealth Mindset. All Rights Reserved.</p>'
+    + '<p style="color:rgba(246,241,231,0.18);font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;">&copy; 2025 AF Wealth Mindset. All Rights Reserved.</p>'
     + '</div>';
 
   document.getElementById('page-main').innerHTML = html;
 
 } else {
 
-// ---- DEFAULT PAGE LAYOUT ----
+// ============================================================
+// DEFAULT PAGE LAYOUT (product 1 — affiliate/simple pages)
+// ============================================================
 
 // Hero image
 html += '<div style="margin-top:16px;margin-bottom:28px;">'
@@ -401,10 +500,8 @@ if (p.affiliateUrl) {
     + '<span class="material-symbols-outlined">download</span> Get Access Now — ' + p.price + '</button>';
 }
 
-// Features heading
+// Features
 html += '<h3 style="text-align:center;color:#D7B46A;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;font-size:0.8rem;margin-bottom:20px;">What\'s Included</h3>';
-
-// Features list
 for (var i = 0; i < p.features.length; i++) {
   var f = p.features[i];
   html += '<div style="display:flex;align-items:center;gap:16px;padding:16px;border-radius:10px;border:1px solid rgba(215,180,106,0.12);background:rgba(11,18,32,0.6);margin-bottom:10px;">'
@@ -416,9 +513,8 @@ for (var i = 0; i < p.features.length; i++) {
     + '</div>';
 }
 
-// Trust section — varies by product type
+// Trust section
 if (p.checkoutId) {
-  // Regular purchasable product
   html += '<div style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(31,230,209,0.05);border:1px solid rgba(31,230,209,0.2);border-radius:10px;margin-bottom:16px;">'
     + '<span class="material-symbols-outlined" style="color:#1FE6D1;font-size:18px;flex-shrink:0;">download</span>'
     + '<p style="color:#1FE6D1;font-size:0.75rem;font-weight:700;">This is a digital product. Access is provided instantly after purchase via email.</p>'
@@ -434,9 +530,8 @@ if (p.checkoutId) {
     + '<p style="font-weight:700;color:#F6F1E7;font-size:0.9rem;">14-Day Guarantee</p>'
     + '<p style="color:rgba(246,241,231,0.4);font-size:0.75rem;margin-top:4px;">Full refund, no questions asked.</p>'
     + '</div></div>';
-  html += '<p style="text-align:center;color:rgba(246,241,231,0.3);font-size:0.72rem;margin-bottom:28px;">🔒 Payments are securely processed by Paddle</p>';
+  html += '<p style="text-align:center;color:rgba(246,241,231,0.3);font-size:0.72rem;margin-bottom:28px;">&#128274; Payments are securely processed by Paddle</p>';
 } else if (p.affiliateUrl) {
-  // Affiliate product — show partner trust signals
   html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;margin-bottom:28px;">'
     + '<div style="padding:20px;text-align:center;border-radius:12px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);">'
     + '<span class="material-symbols-outlined" style="color:#D7B46A;font-size:2rem;display:block;margin-bottom:6px;">verified_user</span>'
@@ -449,34 +544,6 @@ if (p.checkoutId) {
     + '<p style="color:rgba(246,241,231,0.4);font-size:0.75rem;margin-top:4px;">Protected by our partner\'s platform.</p>'
     + '</div></div>';
 }
-
-// Who This Is For - Persona cards
-html += '<div style="margin-bottom:40px;">'
-  + '<h3 style="text-align:center;color:#D7B46A;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;font-size:0.8rem;margin-bottom:24px;">Who This Is For</h3>'
-  + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">'
-  // Persona 1
-  + '<div style="padding:16px;text-align:center;border-radius:10px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);">'
-  + '<p style="font-size:1.8rem;margin-bottom:8px;">💰</p>'
-  + '<p style="font-weight:700;color:#F6F1E7;font-size:0.85rem;">Living Paycheck<br/>to Paycheck</p>'
-  + '</div>'
-  // Persona 2
-  + '<div style="padding:16px;text-align:center;border-radius:10px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);">'
-  + '<p style="font-size:1.8rem;margin-bottom:8px;">📚</p>'
-  + '<p style="font-weight:700;color:#F6F1E7;font-size:0.85rem;">Paying Off Debt<br/>(Student/Credit)</p>'
-  + '</div>'
-  + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">'
-  // Persona 3
-  + '<div style="padding:16px;text-align:center;border-radius:10px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);">'
-  + '<p style="font-size:1.8rem;margin-bottom:8px;">🏦</p>'
-  + '<p style="font-weight:700;color:#F6F1E7;font-size:0.85rem;">Building Emergency<br/>Fund or Retirement</p>'
-  + '</div>'
-  // Persona 4
-  + '<div style="padding:16px;text-align:center;border-radius:10px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);">'
-  + '<p style="font-size:1.8rem;margin-bottom:8px;">🚀</p>'
-  + '<p style="font-weight:700;color:#F6F1E7;font-size:0.85rem;">Side Hustler<br/>Multiple Income</p>'
-  + '</div>'
-  + '</div>'
-  + '</div>';
 
 // Footer
 html += '<div style="border-top:1px solid rgba(215,180,106,0.1);padding-top:36px;text-align:center;">'
@@ -492,14 +559,13 @@ html += '<div style="border-top:1px solid rgba(215,180,106,0.1);padding-top:36px
   + '<a href="/terms.html" style="color:rgba(246,241,231,0.25);font-size:0.7rem;text-decoration:none;">Terms</a>'
   + '<a href="/privacy.html" style="color:rgba(246,241,231,0.25);font-size:0.7rem;text-decoration:none;">Privacy</a>'
   + '<a href="/refund.html" style="color:rgba(246,241,231,0.25);font-size:0.7rem;text-decoration:none;">Refunds</a>'
-  + '<a href="/contact.html" style="color:rgba(246,241,231,0.25);font-size:0.7rem;text-decoration:none;">Contact</a>'
   + '</div>'
-  + '<p style="color:rgba(246,241,231,0.2);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;">© 2025 AF Wealth Mindset. All Rights Reserved.</p>'
+  + '<p style="color:rgba(246,241,231,0.2);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;">&copy; 2025 AF Wealth Mindset. All Rights Reserved.</p>'
   + '</div>';
 
 document.getElementById('page-main').innerHTML = html;
 
-} // end default layout
+} // end layout branches
 
 // Notify form handler
 var nf = document.getElementById('notify-form');

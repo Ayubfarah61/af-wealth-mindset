@@ -58,7 +58,7 @@ var PRODUCTS = [
     id: 2,
     name: 'The Ultimate Budget Planner',
     originalPrice: 29.99,
-    price: 14.99,
+    price: 7.99,
     edition: 'Excel & Google Sheets Template',
     badge: 'New',
     image: '/images/product2.png',
