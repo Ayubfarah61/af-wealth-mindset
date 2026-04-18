@@ -73,6 +73,9 @@ var PAGES = {
       heroImage: '/images/dashboard-devices.png',
       headline: 'Stop Guessing. Start Knowing.',
       subheadline: 'Finally See Exactly Where Every Dollar Goes',
+      includedSub: '11 automated charts. 8 linked sheets. Built for real life. No learning curve.',
+      finalHeadline: 'Stop Guessing.<br/>Start Knowing.',
+      finalSub: 'For less than the cost of a coffee, get total clarity on your finances. Know exactly where every dollar goes &mdash; starting today.',
       images: [
         '/images/dashboard-monthly.png',
         '/images/dashboard-annual.png',
@@ -139,41 +142,49 @@ var PAGES = {
     image: '/images/product3.png',
     originalPrice: '$49',
     price: '$7.99',
-    description: 'The only bookkeeping spreadsheet your business will ever need. Track income, expenses, profit & tax deductions — with monthly, annual & 5-year dashboards. One-time payment. Yours forever.',
+    description: 'The only bookkeeping spreadsheet your business will ever need. Track income, expenses & profit — with monthly, annual & 5-year dashboards. One-time payment. Yours forever.',
     checkoutId: 3,
     features: [
       { icon: 'attach_money',  title: 'Income & Expense Tracker',    desc: 'Every transaction auto-categorized and auto-totaled' },
       { icon: 'dashboard',     title: 'Monthly + Annual Dashboards', desc: 'Auto-updating visuals for instant profit clarity' },
-      { icon: 'receipt_long',  title: 'Tax Deduction Tracking',      desc: 'IRS-friendly categories — never miss a write-off' },
+      { icon: 'trending_up',   title: '5-Year Growth Dashboard',     desc: 'See your business trajectory — year over year' },
       { icon: 'verified_user', title: '14-Day Guarantee',            desc: 'Zero risk — full refund, no questions asked' }
     ],
     salesPage: {
       heroHtml: 'Stop Guessing <span style="color:#D7B46A;">Where Your</span><br/>Money Really Goes',
-      heroSub: 'The all-in-one bookkeeping spreadsheet for small business owners. Track income, expenses, profit &amp; tax deductions automatically &mdash; with monthly, annual &amp; 5-year dashboards. One-time payment. Yours forever.',
-      heroImage: '/images/product3.png',
+      heroSub: 'The all-in-one bookkeeping spreadsheet for small business owners. Track income, expenses &amp; profit automatically &mdash; with monthly, annual &amp; 5-year dashboards. One-time payment. Yours forever.',
+      heroImage: '/images/profit-devices.png',
       headline: 'Stop Guessing. Start Profiting.',
+      includedSub: 'Monthly, annual &amp; 5-year dashboards. Built for real businesses. No learning curve.',
+      finalHeadline: 'Stop Guessing.<br/>Start Profiting.',
+      finalSub: 'For less than the cost of a coffee, know exactly how your business is really performing. Income, expenses, profit, and 5-year growth &mdash; starting today.',
+      images: [
+        '/images/profit-monthly.png',
+        '/images/profit-annual.png',
+        '/images/profit-5year.png'
+      ],
       testimonials: [
         { name: 'Sarah M.', role: 'Boutique Owner', text: 'I\'ve wasted $400 on bookkeeping apps. This $8 spreadsheet does it all. I feel stupid for not buying sooner.', stars: 5 },
         { name: 'Marcus T.', role: 'Consultant', text: 'My accountant asked what software I was using. I said "a spreadsheet." He was SHOCKED at how clean it was.', stars: 5 },
-        { name: 'Jenna K.', role: 'Freelancer', text: 'Found $3,200 in missed tax deductions in my first week. This thing paid for itself 400x over.', stars: 5 }
+        { name: 'Jenna K.', role: 'Freelancer', text: 'Finally, I can see my actual profit in real time. I\'ve tripled my savings since I started using this.', stars: 5 }
       ],
       included: [
         { icon: 'attach_money', title: 'Smart Income Tracker', desc: 'Log every sale, invoice, and revenue stream. Auto-categorized. Auto-totaled. Nothing slips through.' },
-        { icon: 'receipt_long', title: 'Expense Tracker + Tax Logic', desc: 'Never miss a write-off again. Every expense automatically sorted into IRS-friendly categories.' },
+        { icon: 'receipt_long', title: 'Expense Tracker', desc: 'Every business expense automatically sorted, totaled, and visualized — so you always know where your money goes.' },
         { icon: 'dashboard', title: 'Monthly Dashboard', desc: 'See profit, expenses, and margins instantly with beautiful auto-updating charts.' },
         { icon: 'trending_up', title: 'Annual Dashboard', desc: 'Your full year at one glance. Know exactly how your business is performing vs. goals.' },
         { icon: 'rocket_launch', title: '5-Year Growth Dashboard', desc: 'Track long-term trends, set multi-year revenue goals, and watch your business grow.' },
         { icon: 'flag', title: 'Profit Goal System', desc: 'Set monthly profit targets. Visual progress bars show you how close you are to hitting them.' },
         { icon: 'currency_exchange', title: 'Multi-Currency Support', desc: 'USD, EUR, GBP, CAD, AUD and more — works for any country, any currency.' },
-        { icon: 'calendar_month', title: 'Fiscal OR Calendar Year', desc: 'Flexible year setup to match your business structure and tax filing period.' },
+        { icon: 'calendar_month', title: 'Fiscal OR Calendar Year', desc: 'Flexible year setup to match your business structure and reporting period.' },
         { icon: 'tune', title: 'Fully Customizable Categories', desc: 'Adapt income and expense categories to your exact business type in under 5 minutes.' },
-        { icon: 'laptop', title: 'Excel, Google Sheets & Mac', desc: 'Works on any device — desktop, laptop, tablet, or phone. No software required.' },
+        { icon: 'laptop', title: 'Excel or Google Sheets', desc: 'Choose your preferred format at checkout. Works on desktop, laptop, tablet, or phone.' },
         { icon: 'all_inclusive', title: 'Lifetime Access', desc: 'Buy once, use forever. No renewals, no subscriptions, no hidden fees. Ever.' }
       ],
       steps: [
         { num: '1', title: 'Set Up', desc: 'Enter your currency, fiscal year, and customize income/expense categories for your business.' },
         { num: '2', title: 'Log Transactions', desc: 'Enter income and expenses as they happen — date, category, amount. Takes seconds.' },
-        { num: '3', title: 'Know Your Numbers', desc: 'Dashboards auto-update instantly. See profit, deductions, trends, and your 5-year growth path.' }
+        { num: '3', title: 'Know Your Numbers', desc: 'Dashboards auto-update instantly. See profit, trends, and your 5-year growth path.' }
       ],
       comparison: [
         { item: 'QuickBooks', cost: '$360/year', yours: '$7.99 once' },
@@ -182,11 +193,11 @@ var PAGES = {
         { item: 'Custom accountant build', cost: '$500+', yours: '$7.99 once' }
       ],
       perfectFor: [
-        'Freelancers & consultants who need clean records at tax time',
+        'Freelancers & consultants who want clean, clear financial records',
         'Small business owners tired of paying $30+/month for accounting apps',
         'Service businesses tracking client invoices and project expenses',
         'Product sellers managing cost of goods and profit margins',
-        'Side hustlers who need to look professional at tax time',
+        'Side hustlers who want to look and feel professional about their numbers',
         'Anyone who wants to know: "Am I actually making money?"'
       ],
       bonusPoints: [
@@ -194,15 +205,15 @@ var PAGES = {
         'Fiscal or calendar year — you choose',
         'Works offline forever, on any device',
         'No macros, no plugins, no subscriptions',
-        'IRS-friendly expense categories built in',
+        'Excel or Google Sheets — pick your format at checkout',
         'Video tutorial included — set up in under 10 minutes'
       ],
       faq: [
-        { q: 'Do I need Excel?', a: 'Works perfectly in Excel, Google Sheets (100% free), and Mac Numbers. You\'re covered regardless of what device or software you use.' },
+        { q: 'Do I need Excel?', a: 'You choose! At checkout, select either the Excel (.xlsx) version or the Google Sheets version (100% free). Both have the exact same features and work on any device — desktop, laptop, tablet, or phone.' },
         { q: 'Is this really a one-time payment?', a: 'Yes. No subscription. No hidden fees. No renewals. Buy once, own it forever.' },
         { q: 'I\'m not tech-savvy — can I use this?', a: 'If you can type a number into a box, you can use this. A full video tutorial is included with your purchase. Setup takes under 10 minutes.' },
         { q: 'What if I don\'t like it?', a: '14-day full refund, no questions asked. You risk absolutely nothing.' },
-        { q: 'How is this different from free templates?', a: 'Free templates just track data. This tells you what to DO with it — with dashboards, profit goals, 5-year projections, and tax-ready categories. It\'s a complete business financial system, not just a spreadsheet.' }
+        { q: 'How is this different from free templates?', a: 'Free templates just track data. This tells you what to DO with it — with dashboards, profit goals, and 5-year projections. It\'s a complete business financial system, not just a spreadsheet.' }
       ],
       ctaText: 'GET INSTANT ACCESS — $7.99',
       guaranteeText: 'Try it for 14 full days. If it doesn\'t save you time, money, and stress, email us for a full refund. No questions. No guilt. You literally cannot lose.'
@@ -248,7 +259,7 @@ if (p.salesPage) {
     + '<span style="color:rgba(246,241,231,0.28);font-size:0.75rem;">one-time payment &bull; no subscriptions</span>'
     + '</div>'
     // CTA
-    + '<button onclick="window.location.href=\'/checkout.html?id=2\'" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:480px;padding:20px 32px;background:linear-gradient(135deg,#1FE6D1,#16b8a8);color:#0B1220;border-radius:14px;font-weight:800;font-size:1.15rem;cursor:pointer;border:none;letter-spacing:0.02em;box-shadow:0 8px 32px rgba(31,230,209,0.28);margin-bottom:18px;">'
+    + '<button onclick="window.location.href=\'/checkout.html?id=' + id + '\'" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:480px;padding:20px 32px;background:linear-gradient(135deg,#1FE6D1,#16b8a8);color:#0B1220;border-radius:14px;font-weight:800;font-size:1.15rem;cursor:pointer;border:none;letter-spacing:0.02em;box-shadow:0 8px 32px rgba(31,230,209,0.28);margin-bottom:18px;">'
     + '&#9889; GET INSTANT ACCESS &mdash; $7.99</button>'
     // trust badges
     + '<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:18px;">'
@@ -301,11 +312,19 @@ if (p.salesPage) {
 
   // ── SCREENSHOT GALLERY ───────────────────────────────────────
   if (sp.images && sp.images.length) {
-    var _caps = [
-      { title: 'Monthly Dashboard', desc: 'See your income, expenses, savings rate, and top spending categories for any month. 5 automated charts update instantly as you type.' },
-      { title: 'Annual Overview', desc: '12-month trends, net savings, expense-to-income ratio, and Top 20 spending rankings. Your entire financial year at a glance.' },
-      { title: 'Works On Every Device', desc: 'Desktop, laptop, tablet, or phone. Use in Excel or Google Sheets &mdash; your data, your device, your choice.' }
-    ];
+    var _capsById = {
+      2: [
+        { title: 'Monthly Dashboard', desc: 'See your income, expenses, savings rate, and top spending categories for any month. 5 automated charts update instantly as you type.' },
+        { title: 'Annual Overview', desc: '12-month trends, net savings, expense-to-income ratio, and Top 20 spending rankings. Your entire financial year at a glance.' },
+        { title: 'Works On Every Device', desc: 'Desktop, laptop, tablet, or phone. Use in Excel or Google Sheets &mdash; your data, your device, your choice.' }
+      ],
+      3: [
+        { title: 'Monthly Dashboard', desc: 'Every month, at a glance: income, expenses, profit, margin, and category breakdowns. Auto-updating visual progress bars show exactly where you stand vs. your profit goal.' },
+        { title: 'Annual Dashboard', desc: 'Your full year of business performance on one page. Total income, expenses, net profit, margin, and a live progress bar showing how close you are to your annual goal.' },
+        { title: '5-Year Growth Dashboard', desc: 'Watch your business grow year over year. Track long-term trends, set multi-year revenue goals, and see exactly where your business is headed.' }
+      ]
+    };
+    var _caps = _capsById[id] || _capsById[2];
     html += '<div style="padding:0 28px 60px;">'
       + '<div style="max-width:680px;margin:0 auto;">'
       + '<p style="text-align:center;font-size:0.68rem;font-weight:800;letter-spacing:0.26em;color:#D7B46A;text-transform:uppercase;margin-bottom:12px;">The Product</p>'
@@ -337,7 +356,7 @@ if (p.salesPage) {
     + '<div style="margin-bottom:18px;">'
     + '<span style="color:#D7B46A;font-weight:800;font-size:1.9rem;">$7.99</span>'
     + '</div>'
-    + '<button onclick="window.location.href=\'/checkout.html?id=2\'" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:420px;padding:18px 24px;background:linear-gradient(135deg,#1FE6D1,#16b8a8);color:#0B1220;border-radius:12px;font-weight:800;font-size:1rem;cursor:pointer;border:none;">'
+    + '<button onclick="window.location.href=\'/checkout.html?id=' + id + '\'" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:420px;padding:18px 24px;background:linear-gradient(135deg,#1FE6D1,#16b8a8);color:#0B1220;border-radius:12px;font-weight:800;font-size:1rem;cursor:pointer;border:none;">'
     + '&#9889; Get Access Now &mdash; $7.99</button>'
     + '<p style="color:rgba(246,241,231,0.22);font-size:0.7rem;margin-top:12px;">One-time payment &bull; Instant download &bull; No subscriptions</p>'
     + '</div>'
@@ -349,7 +368,7 @@ if (p.salesPage) {
       + '<div style="max-width:680px;margin:0 auto;">'
       + '<p style="text-align:center;font-size:0.68rem;font-weight:800;letter-spacing:0.26em;color:#1FE6D1;text-transform:uppercase;margin-bottom:12px;">What You Get</p>'
       + '<h2 style="text-align:center;font-size:1.8rem;font-weight:800;color:#F6F1E7;margin-bottom:12px;">Everything Included</h2>'
-      + '<p style="text-align:center;color:rgba(246,241,231,0.38);font-size:0.85rem;margin-bottom:36px;">11 automated charts. 8 linked sheets. Built for real life. No learning curve.</p>'
+      + '<p style="text-align:center;color:rgba(246,241,231,0.38);font-size:0.85rem;margin-bottom:36px;">' + (sp.includedSub || 'Automated dashboards. Built for real life. No learning curve.') + '</p>'
       + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">';
     for (var i = 0; i < sp.included.length; i++) {
       var inc = sp.included[i];
@@ -510,12 +529,12 @@ if (p.salesPage) {
   html += '<div style="padding:0 28px;">'
     + '<div style="max-width:680px;margin:0 auto;padding:56px 32px;text-align:center;background:radial-gradient(ellipse at 28% 18%,rgba(31,230,209,0.1) 0%,transparent 58%),radial-gradient(ellipse at 72% 82%,rgba(215,180,106,0.1) 0%,transparent 58%),rgba(11,18,32,0.98);border:1px solid rgba(215,180,106,0.25);border-radius:24px;">'
     + '<span class="material-symbols-outlined" style="font-size:3rem;color:#D7B46A;display:block;margin-bottom:16px;">savings</span>'
-    + '<h2 style="font-size:2.1rem;font-weight:800;color:#F6F1E7;margin-bottom:12px;line-height:1.15;">Stop Guessing.<br/>Start Knowing.</h2>'
-    + '<p style="color:rgba(246,241,231,0.42);font-size:0.9rem;line-height:1.65;max-width:420px;margin:0 auto 28px;">For less than the cost of a coffee, get total clarity on your finances. Know exactly where every dollar goes &mdash; starting today.</p>'
+    + '<h2 style="font-size:2.1rem;font-weight:800;color:#F6F1E7;margin-bottom:12px;line-height:1.15;">' + (sp.finalHeadline || 'Stop Guessing.<br/>Start Knowing.') + '</h2>'
+    + '<p style="color:rgba(246,241,231,0.42);font-size:0.9rem;line-height:1.65;max-width:420px;margin:0 auto 28px;">' + (sp.finalSub || 'For less than the cost of a coffee, get total clarity on your finances. Know exactly where every dollar goes &mdash; starting today.') + '</p>'
     + '<div style="margin-bottom:28px;">'
     + '<span style="color:#D7B46A;font-weight:800;font-size:3.6rem;line-height:1;display:block;">$7.99</span>'
     + '</div>'
-    + '<button onclick="window.location.href=\'/checkout.html?id=2\'" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:480px;padding:22px 32px;background:linear-gradient(135deg,#1FE6D1,#16b8a8);color:#0B1220;border-radius:14px;font-weight:800;font-size:1.2rem;cursor:pointer;border:none;letter-spacing:0.02em;box-shadow:0 8px 32px rgba(31,230,209,0.3);margin-bottom:14px;">'
+    + '<button onclick="window.location.href=\'/checkout.html?id=' + id + '\'" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:480px;padding:22px 32px;background:linear-gradient(135deg,#1FE6D1,#16b8a8);color:#0B1220;border-radius:14px;font-weight:800;font-size:1.2rem;cursor:pointer;border:none;letter-spacing:0.02em;box-shadow:0 8px 32px rgba(31,230,209,0.3);margin-bottom:14px;">'
     + '&#9889; GET INSTANT ACCESS &mdash; $7.99</button>'
     + '<p style="color:rgba(246,241,231,0.22);font-size:0.72rem;margin-bottom:26px;">Click once &rarr; Get your download link via email immediately</p>'
     + '<div style="display:flex;align-items:flex-start;gap:14px;padding:18px 20px;background:rgba(31,230,209,0.05);border:1px solid rgba(31,230,209,0.2);border-radius:12px;text-align:left;">'

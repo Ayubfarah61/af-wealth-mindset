@@ -80,11 +80,11 @@ var PRODUCTS = [
     badge: 'New',
     image: '/images/product3.png',
     heroImage: '/images/product3.png',
-    description: 'The only bookkeeping spreadsheet your small business will ever need. Track income, expenses, profit & tax deductions automatically — with monthly, annual & 5-year growth dashboards. One-time payment. Yours forever.',
+    description: 'The only bookkeeping spreadsheet your small business will ever need. Track income, expenses & profit automatically — with monthly, annual & 5-year growth dashboards. One-time payment. Yours forever.',
     features: [
       { icon: 'attach_money',  title: 'Income & Expense Tracker',      desc: 'Every transaction auto-categorized and auto-totaled' },
       { icon: 'dashboard',     title: 'Monthly + Annual Dashboards',   desc: 'Beautiful auto-updating visuals for instant profit clarity' },
-      { icon: 'receipt_long',  title: 'Tax Deduction Tracking',        desc: 'IRS-friendly categories built in — never miss a write-off' },
+      { icon: 'trending_up',   title: '5-Year Growth Dashboard',       desc: 'See your business trajectory — year over year, at a glance' },
       { icon: 'verified_user', title: '14-Day Money-Back Guarantee',   desc: 'Zero risk — full refund, no questions asked' }
     ]
   }
