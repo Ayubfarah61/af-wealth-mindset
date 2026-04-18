@@ -70,6 +70,23 @@ var PRODUCTS = [
       { icon: 'laptop',         title: 'Excel or Google Sheets',        desc: 'Choose your preferred format at checkout' },
       { icon: 'verified_user',  title: '14-Day Money-Back Guarantee',   desc: 'Zero risk — full refund, no questions asked' }
     ]
+  },
+  {
+    id: 3,
+    name: 'The Profit Tracker™',
+    originalPrice: 49,
+    price: 7.99,
+    edition: 'Excel & Google Sheets',
+    badge: 'New',
+    image: '/images/product3.png',
+    heroImage: '/images/product3.png',
+    description: 'The only bookkeeping spreadsheet your small business will ever need. Track income, expenses, profit & tax deductions automatically — with monthly, annual & 5-year growth dashboards. One-time payment. Yours forever.',
+    features: [
+      { icon: 'attach_money',  title: 'Income & Expense Tracker',      desc: 'Every transaction auto-categorized and auto-totaled' },
+      { icon: 'dashboard',     title: 'Monthly + Annual Dashboards',   desc: 'Beautiful auto-updating visuals for instant profit clarity' },
+      { icon: 'receipt_long',  title: 'Tax Deduction Tracking',        desc: 'IRS-friendly categories built in — never miss a write-off' },
+      { icon: 'verified_user', title: '14-Day Money-Back Guarantee',   desc: 'Zero risk — full refund, no questions asked' }
+    ]
   }
 ];
 
