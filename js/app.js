@@ -91,8 +91,8 @@ var PRODUCTS = [
   {
     id: 4,
     name: 'Debt Payoff Dashboard',
-    originalPrice: 34,
-    price: 17,
+    originalPrice: 29.99,
+    price: 7.99,
     edition: 'Excel & Google Sheets Template',
     badge: 'New',
     image: '/images/product4.png',
@@ -103,6 +103,23 @@ var PRODUCTS = [
       { icon: 'flag',          title: 'Smart Priority Alerts',        desc: 'Built-in logic flags your highest-interest debt automatically' },
       { icon: 'trending_down', title: 'Visual Progress Charts',       desc: 'Watch your total debt curve downward month by month' },
       { icon: 'verified_user', title: '14-Day Money-Back Guarantee',  desc: 'Zero risk — full refund, no questions asked' }
+    ]
+  },
+  {
+    id: 5,
+    name: '12-Month Cash Flow Budget',
+    originalPrice: 29.99,
+    price: 7.99,
+    edition: 'Excel & Google Sheets Template',
+    badge: 'New',
+    image: '/images/product5.png',
+    heroImage: '/images/product5.png',
+    description: 'Take full control of your money — track every dollar in, every dollar out, and always know where you stand. 12 months of inflows & outflows with an executive-level dashboard and a minimum balance safety alert.',
+    features: [
+      { icon: 'account_balance_wallet', title: '12-Month Cash Flow Sheet',  desc: 'Every inflow & outflow tracked side-by-side, auto-calculated' },
+      { icon: 'dashboard',              title: 'Executive Dashboard',        desc: '6 live KPI tiles — inflows, outflows, net, growth %, best month' },
+      { icon: 'warning',                title: 'Minimum Balance Alert',      desc: 'Custom threshold warns you before any month dips too low' },
+      { icon: 'verified_user',          title: '14-Day Money-Back Guarantee', desc: 'Zero risk — full refund, no questions asked' }
     ]
   }
 ];
