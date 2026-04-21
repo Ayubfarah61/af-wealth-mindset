@@ -178,6 +178,8 @@
   Paddle.Initialize({
     token: PADDLE_TOKEN,
     eventCallback: function (data) {
+      console.log('[Paddle event]', data.name, data);
+
       // Hide spinner once Paddle's form is visible
       if (data.name === 'checkout.loaded') {
         var loader = document.getElementById('checkout-loading');
@@ -186,6 +188,19 @@
       // Payment complete
       if (data.name === 'checkout.completed') {
         handleSuccess(data);
+      }
+      // Catch Paddle errors and show detail
+      if (data.name === 'checkout.error') {
+        console.error('[Paddle error detail]', data);
+        var loader = document.getElementById('checkout-loading');
+        if (loader) {
+          loader.innerHTML =
+            '<div style="text-align:center;padding:24px;color:#F6F1E7;">' +
+            '<p style="color:#D7B46A;font-weight:700;margin-bottom:8px;">Checkout unavailable</p>' +
+            '<p style="color:rgba(246,241,231,0.5);font-size:13px;margin-bottom:8px;">' + (data.error ? data.error.detail || data.error.code || JSON.stringify(data.error) : 'Unknown error') + '</p>' +
+            '<p style="color:rgba(246,241,231,0.4);font-size:12px;">Please email <a href="mailto:sales@afwealthmindset.com" style="color:#1FE6D1;">sales@afwealthmindset.com</a> to complete your purchase.</p>' +
+            '</div>';
+        }
       }
     }
   });
