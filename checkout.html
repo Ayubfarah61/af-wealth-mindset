@@ -15,10 +15,8 @@
     theme: {
       extend: {
         colors: {
-          "midnight":       "#0B1220",
-          "ivory":          "#F6F1E7",
-          "gold":           "#D7B46A",
-          "signature-teal": "#1FE6D1"
+          "midnight": "#0B1220", "ivory": "#F6F1E7",
+          "gold": "#D7B46A", "signature-teal": "#1FE6D1"
         },
         fontFamily: { "display": ["Manrope", "sans-serif"] }
       }
@@ -27,10 +25,6 @@
 </script>
 <style>
   body { background: #0B1220; }
-
-  /* Paddle injects an iframe into any element with this class */
-  .paddle-checkout { width: 100%; }
-
   @keyframes spin { to { transform: rotate(360deg); } }
   .spin { animation: spin 0.8s linear infinite; }
 </style>
@@ -39,107 +33,108 @@
 
 <!-- HEADER -->
 <header class="border-b border-gold/10 px-6 py-4 bg-midnight/90 backdrop-blur-md sticky top-0 z-40">
-  <div class="max-w-lg mx-auto flex justify-between items-center">
-    <button onclick="history.back()" class="text-ivory/50 hover:text-gold text-sm transition-colors">← Back</button>
+  <div class="max-w-md mx-auto flex justify-between items-center">
+    <button onclick="history.back()" class="text-ivory/40 hover:text-gold text-sm transition-colors">← Back</button>
     <span class="text-gold font-bold tracking-[0.15em] uppercase text-sm">AF Wealth Mindset</span>
     <span class="flex items-center gap-1 text-signature-teal text-xs font-bold">
-      <span class="material-symbols-outlined" style="font-size:15px">shield_verified</span> Secure
+      <span class="material-symbols-outlined" style="font-size:14px">lock</span> Secure
     </span>
   </div>
 </header>
 
-<main class="max-w-lg mx-auto px-4 py-8 flex flex-col gap-4">
+<main class="max-w-md mx-auto px-4 py-10 flex flex-col gap-5">
 
-  <!-- ORDER SUMMARY STRIP -->
-  <div id="order-card" class="flex items-center gap-4 border border-gold/15 rounded-2xl p-4 bg-midnight">
-    <img id="product-img" src="" alt="" class="w-12 h-12 rounded-xl object-cover bg-white/5 shrink-0"/>
+  <!-- PRODUCT CARD -->
+  <div id="order-card" class="rounded-2xl border border-gold/15 bg-midnight p-5 flex gap-4 items-center">
+    <img id="product-img" src="" alt="" class="w-16 h-16 rounded-xl object-cover bg-white/5 shrink-0"/>
     <div class="flex-1 min-w-0">
-      <p id="product-name" class="font-bold text-ivory text-sm leading-snug truncate">Loading…</p>
-      <p id="product-desc" class="text-ivory/40 text-xs mt-0.5 truncate">—</p>
-    </div>
-    <div class="text-right shrink-0 ml-2">
-      <p id="product-price" class="font-bold text-gold text-base">—</p>
-      <p class="text-ivory/30 text-xs">one-time</p>
+      <p id="product-name" class="font-bold text-ivory text-sm leading-snug">Loading…</p>
+      <p id="product-desc" class="text-ivory/40 text-xs mt-1">—</p>
+      <div class="flex items-center gap-2 mt-2">
+        <span class="text-xs text-ivory/30 line-through" id="original-price"></span>
+        <span class="text-gold font-bold" id="product-price">—</span>
+        <span class="text-xs text-signature-teal font-bold bg-signature-teal/10 px-2 py-0.5 rounded-full" id="savings-badge"></span>
+      </div>
     </div>
   </div>
 
-  <!-- PERKS -->
-  <div class="flex gap-3 flex-wrap px-1">
-    <span class="flex items-center gap-1 text-xs text-ivory/50">
-      <span class="material-symbols-outlined text-signature-teal" style="font-size:14px">download</span> Instant download
-    </span>
-    <span class="flex items-center gap-1 text-xs text-ivory/50">
-      <span class="material-symbols-outlined text-signature-teal" style="font-size:14px">replay</span> 14-day guarantee
-    </span>
-    <span class="flex items-center gap-1 text-xs text-ivory/50">
-      <span class="material-symbols-outlined text-signature-teal" style="font-size:14px">lock</span> Card · Apple Pay · Google Pay
-    </span>
+  <!-- WHAT YOU GET -->
+  <div class="grid grid-cols-1 gap-2 px-1">
+    <div class="flex items-center gap-3">
+      <span class="material-symbols-outlined text-signature-teal shrink-0" style="font-size:16px">download</span>
+      <span class="text-ivory/50 text-sm">Instant digital download — sent to your email immediately</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <span class="material-symbols-outlined text-signature-teal shrink-0" style="font-size:16px">replay</span>
+      <span class="text-ivory/50 text-sm">14-day money-back guarantee — zero risk</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <span class="material-symbols-outlined text-signature-teal shrink-0" style="font-size:16px">devices</span>
+      <span class="text-ivory/50 text-sm">Works on Excel & Google Sheets — you choose</span>
+    </div>
   </div>
 
-  <!-- EMAIL INPUT (we collect it, then pass to Paddle so the form skips that step) -->
-  <div id="email-section" class="flex flex-col gap-2">
-    <label class="text-xs font-bold text-gold/70 uppercase tracking-widest">Your email</label>
-    <input id="buyer-email" type="email" placeholder="you@email.com" autocomplete="email"
-      class="w-full bg-ivory text-midnight rounded-xl px-4 py-3 text-sm font-medium outline-none
-             border-2 border-transparent focus:border-signature-teal transition-all"
-      oninput="onEmailChange(this.value)"/>
-    <p class="text-ivory/30 text-xs">Download link sent here after payment</p>
-  </div>
+  <!-- DIVIDER -->
+  <div class="border-t border-gold/10"></div>
 
-  <!-- PADDLE INLINE PAYMENT FORM -->
-  <div id="paddle-wrapper" class="border border-gold/10 rounded-2xl overflow-hidden bg-midnight">
+  <!-- PAY BUTTON -->
+  <div id="pay-section" class="flex flex-col gap-3">
+    <button id="pay-btn" onclick="openCheckout()"
+      class="w-full py-5 rounded-2xl bg-gold hover:brightness-110 active:scale-[0.98]
+             text-midnight font-bold text-base tracking-wide transition-all
+             flex items-center justify-center gap-2 shadow-lg shadow-gold/10">
+      <span class="material-symbols-outlined" style="font-size:18px">lock</span>
+      <span id="pay-label">Pay Securely — $7.99</span>
+    </button>
 
-    <!-- Waiting for email -->
-    <div id="paddle-prompt" class="flex flex-col items-center justify-center gap-3 py-10 px-6 text-center">
-      <span class="material-symbols-outlined text-gold/40" style="font-size:36px">arrow_upward</span>
-      <p class="text-ivory/30 text-sm">Enter your email above to load the payment form</p>
+    <!-- Payment method icons -->
+    <div class="flex justify-center items-center gap-3 opacity-40">
+      <i class="fa-brands fa-cc-visa text-ivory text-xl"></i>
+      <i class="fa-brands fa-cc-mastercard text-ivory text-xl"></i>
+      <i class="fa-brands fa-cc-amex text-ivory text-xl"></i>
+      <i class="fa-brands fa-apple-pay text-ivory text-2xl"></i>
+      <i class="fa-brands fa-google-pay text-ivory text-2xl"></i>
     </div>
 
-    <!-- Loading spinner (shown while Paddle initialises) -->
-    <div id="paddle-loading" class="hidden flex-col items-center justify-center gap-3 py-10">
-      <div class="w-8 h-8 rounded-full border-4 border-signature-teal/20 border-t-signature-teal spin"></div>
-      <p class="text-ivory/40 text-xs tracking-widest uppercase">Loading payment form…</p>
-    </div>
-
-    <!-- Paddle mounts its iframe here — DO NOT hide or move this div -->
-    <div class="paddle-checkout"></div>
-
+    <p class="text-center text-ivory/25 text-xs">
+      Powered by <strong class="text-ivory/40">Paddle</strong> — your card details are never stored on our servers
+    </p>
   </div>
 
-  <!-- SUCCESS SCREEN (hidden until payment completes) -->
-  <div id="success-section" class="hidden flex-col items-center text-center gap-5 py-10 px-6
-       border border-signature-teal/20 rounded-2xl bg-midnight">
-    <span class="material-symbols-outlined text-signature-teal" style="font-size:60px">check_circle</span>
-    <h2 class="text-xl font-bold text-gold">Payment Successful!</h2>
+  <!-- SUCCESS SCREEN -->
+  <div id="success-section" class="hidden flex-col items-center text-center gap-5 py-10
+       border border-signature-teal/20 rounded-2xl bg-midnight px-6">
+    <span class="material-symbols-outlined text-signature-teal" style="font-size:64px">check_circle</span>
+    <h2 class="text-2xl font-bold text-gold">You're all set!</h2>
     <p class="text-ivory/60 text-sm leading-relaxed max-w-xs">
-      Your order is confirmed. Check your inbox — your download link is on its way.
+      Payment confirmed. Check your inbox — your download link will arrive within a few minutes.
     </p>
     <a href="/index.html"
-       class="mt-1 px-8 py-3 bg-gold hover:brightness-110 text-midnight font-bold rounded-xl text-sm transition-all">
+       class="mt-2 px-8 py-3 bg-gold hover:brightness-110 text-midnight font-bold rounded-xl text-sm transition-all">
       Back to Home
     </a>
   </div>
 
-  <!-- LEGAL FOOTER -->
-  <p class="text-ivory/25 text-xs text-center leading-relaxed px-2">
-    Payments processed by <strong class="text-ivory/40">Paddle.com</strong> — Merchant of Record.
-    Paddle handles tax, receipts &amp; customer service.
-    <a href="/refund.html" class="text-signature-teal/60 underline">14-day refund policy.</a>
+  <!-- LEGAL -->
+  <p class="text-ivory/20 text-xs text-center leading-relaxed">
+    Order processed by <strong class="text-ivory/30">Paddle.com</strong> — Merchant of Record.
+    Paddle handles payment, tax &amp; receipts.
+    <a href="/refund.html" class="text-signature-teal/50 underline">14-day refund policy.</a>
   </p>
 
 </main>
 
 <!-- FOOTER -->
 <footer class="w-full bg-midnight py-10 border-t border-gold/10 mt-4">
-  <div class="max-w-lg mx-auto flex flex-col items-center gap-5">
-    <div style="display:flex;gap:24px;align-items:center;">
-      <a href="https://www.tiktok.com/@afwealthsystems" target="_blank" rel="noopener" style="color:#D7B46A;font-size:18px;"><i class="fa-brands fa-tiktok"></i></a>
-      <a href="https://www.youtube.com/@afwealthmindset" target="_blank" rel="noopener" style="color:#D7B46A;font-size:18px;"><i class="fa-brands fa-youtube"></i></a>
-      <a href="https://www.instagram.com/afwealthmindset/" target="_blank" rel="noopener" style="color:#D7B46A;font-size:18px;"><i class="fa-brands fa-instagram"></i></a>
-      <a href="https://www.facebook.com/AFWealthMidnset" target="_blank" rel="noopener" style="color:#D7B46A;font-size:18px;"><i class="fa-brands fa-facebook"></i></a>
-      <a href="https://x.com/AFWealth67" target="_blank" rel="noopener" style="color:#D7B46A;font-size:18px;"><i class="fa-brands fa-x-twitter"></i></a>
+  <div class="max-w-md mx-auto flex flex-col items-center gap-5">
+    <div style="display:flex;gap:22px;align-items:center;">
+      <a href="https://www.tiktok.com/@afwealthsystems" target="_blank" rel="noopener" style="color:#D7B46A;font-size:17px;"><i class="fa-brands fa-tiktok"></i></a>
+      <a href="https://www.youtube.com/@afwealthmindset" target="_blank" rel="noopener" style="color:#D7B46A;font-size:17px;"><i class="fa-brands fa-youtube"></i></a>
+      <a href="https://www.instagram.com/afwealthmindset/" target="_blank" rel="noopener" style="color:#D7B46A;font-size:17px;"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://www.facebook.com/AFWealthMidnset" target="_blank" rel="noopener" style="color:#D7B46A;font-size:17px;"><i class="fa-brands fa-facebook"></i></a>
+      <a href="https://x.com/AFWealth67" target="_blank" rel="noopener" style="color:#D7B46A;font-size:17px;"><i class="fa-brands fa-x-twitter"></i></a>
     </div>
-    <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;">
+    <div style="display:flex;gap:18px;flex-wrap:wrap;justify-content:center;">
       <a href="/pricing.html" style="color:rgba(246,241,231,0.25);font-size:0.75rem;text-decoration:none;">Pricing</a>
       <a href="/terms.html"   style="color:rgba(246,241,231,0.25);font-size:0.75rem;text-decoration:none;">Terms</a>
       <a href="/privacy.html" style="color:rgba(246,241,231,0.25);font-size:0.75rem;text-decoration:none;">Privacy</a>
@@ -152,8 +147,7 @@
 
 <script src="js/app.js"></script>
 <script>
-  var PADDLE_TOKEN = 'live_0096b61dc9f98e29253a9991992';
-
+  var PADDLE_TOKEN    = 'live_0096b61dc9f98e29253a9991992';
   var PADDLE_PRICE_MAP = {
     2: 'pri_01kpqtwd3gxej4n3zmwj7q3jna',
     3: 'pri_01kpr10frj3w82ek1jjbzrd9wn',
@@ -161,101 +155,62 @@
     5: 'pri_01kpr142by79r7r16pg9xgv570'
   };
 
-  var product       = null;
-  var paddleReady   = false;
-  var checkoutOpen  = false;
-  var emailTimer    = null;
+  var product = null;
 
-  // ── Init Paddle ─────────────────────────────────────────────
   Paddle.Initialize({
     token: PADDLE_TOKEN,
     eventCallback: function (data) {
-      if (data.name === 'checkout.loaded') {
-        // Hide spinner, show form
-        document.getElementById('paddle-loading').style.display = 'none';
-        paddleReady = true;
-      }
-      if (data.name === 'checkout.completed') {
-        handleSuccess(data);
-      }
+      if (data.name === 'checkout.completed') handleSuccess(data);
     }
   });
 
-  // ── Page init ────────────────────────────────────────────────
   function init() {
     var urlId = new URLSearchParams(window.location.search).get('id');
     if (!urlId) { window.location.href = '/pricing.html'; return; }
-
     product = getProductFromURL();
-    if (!product || !PADDLE_PRICE_MAP[product.id]) {
-      window.location.href = '/pricing.html';
-      return;
-    }
+    if (!product || !PADDLE_PRICE_MAP[product.id]) { window.location.href = '/pricing.html'; return; }
 
-    document.getElementById('product-name').textContent  = product.name;
-    document.getElementById('product-desc').textContent  = product.edition;
+    document.getElementById('product-name').textContent = product.name;
+    document.getElementById('product-desc').textContent = product.edition;
     document.getElementById('product-price').textContent = formatPrice(product.price);
+    document.getElementById('pay-label').textContent = 'Pay Securely — ' + formatPrice(product.price);
+
+    if (product.originalPrice && product.originalPrice > product.price) {
+      document.getElementById('original-price').textContent = formatPrice(product.originalPrice);
+      var saved = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+      document.getElementById('savings-badge').textContent = saved + '% off';
+    }
     if (product.image) {
       var img = document.getElementById('product-img');
-      img.src = product.image;
-      img.alt = product.name;
+      img.src = product.image; img.alt = product.name;
     }
   }
 
-  // ── Watch email input — load checkout once valid email typed ──
-  function onEmailChange(val) {
-    if (checkoutOpen) return; // already loaded
-    clearTimeout(emailTimer);
-    var email = val.trim();
-    if (!email || !email.includes('@') || !email.includes('.')) return;
-
-    // Small debounce so we don't fire on every keystroke
-    emailTimer = setTimeout(function () {
-      loadPaddleCheckout(email);
-    }, 600);
-  }
-
-  function loadPaddleCheckout(email) {
-    if (checkoutOpen) return;
-    checkoutOpen = true;
-
-    // Show spinner, hide prompt
-    document.getElementById('paddle-prompt').style.display  = 'none';
-    var loader = document.getElementById('paddle-loading');
-    loader.classList.remove('hidden');
-    loader.style.display = 'flex';
+  function openCheckout() {
+    var btn = document.getElementById('pay-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<div class="w-5 h-5 rounded-full border-3 border-midnight/30 border-t-midnight spin"></div><span>Opening secure payment…</span>';
 
     Paddle.Checkout.open({
-      settings: {
-        displayMode:        'inline',
-        frameTarget:        'paddle-checkout',  // matches the class on the div
-        frameInitialHeight:  450,
-        theme:              'dark',
-        allowLogout:         false,
-        showAddDiscounts:    true
-      },
-      items: [{ priceId: PADDLE_PRICE_MAP[product.id], quantity: 1 }],
-      customer: { email: email }   // pre-fills email so user goes straight to card
+      settings: { displayMode: 'overlay', theme: 'dark', locale: 'en' },
+      items: [{ priceId: PADDLE_PRICE_MAP[product.id], quantity: 1 }]
     });
+
+    // Re-enable if user closes the overlay
+    setTimeout(function () {
+      btn.disabled = false;
+      btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px">lock</span><span id="pay-label">Pay Securely — ' + formatPrice(product.price) + '</span>';
+    }, 3000);
   }
 
-  // ── Payment complete ──────────────────────────────────────────
   function handleSuccess(data) {
-    var txId = (data.data && data.data.transaction_id)
-      ? data.data.transaction_id
-      : ('PAD-' + Date.now());
-
+    var txId = (data.data && data.data.transaction_id) ? data.data.transaction_id : ('PAD-' + Date.now());
     addOrder(product.id, product.price, 'Paddle', txId);
-
-    // Hide checkout, show success
-    document.getElementById('order-card').style.display    = 'none';
-    document.getElementById('email-section').style.display = 'none';
-    document.getElementById('paddle-wrapper').style.display = 'none';
-
+    document.getElementById('order-card').style.display  = 'none';
+    document.getElementById('pay-section').style.display = 'none';
     var s = document.getElementById('success-section');
     s.classList.remove('hidden');
     s.style.display = 'flex';
-
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
