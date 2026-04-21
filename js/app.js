@@ -87,6 +87,23 @@ var PRODUCTS = [
       { icon: 'trending_up',   title: '5-Year Growth Dashboard',       desc: 'See your business trajectory — year over year, at a glance' },
       { icon: 'verified_user', title: '14-Day Money-Back Guarantee',   desc: 'Zero risk — full refund, no questions asked' }
     ]
+  },
+  {
+    id: 4,
+    name: 'Debt Payoff Dashboard',
+    originalPrice: 34,
+    price: 17,
+    edition: 'Excel & Google Sheets Template',
+    badge: 'New',
+    image: '/images/product4.png',
+    heroImage: '/images/product4.png',
+    description: 'The only spreadsheet that tracks up to 6 debt accounts, visualizes your payoff progress, and tells you exactly where to focus — all in one beautiful dashboard. 100% private. No apps. No subscriptions.',
+    features: [
+      { icon: 'dashboard',     title: 'Real-Time Debt Dashboard',     desc: 'Every KPI auto-calculated — total debt, interest, net reduction' },
+      { icon: 'flag',          title: 'Smart Priority Alerts',        desc: 'Built-in logic flags your highest-interest debt automatically' },
+      { icon: 'trending_down', title: 'Visual Progress Charts',       desc: 'Watch your total debt curve downward month by month' },
+      { icon: 'verified_user', title: '14-Day Money-Back Guarantee',  desc: 'Zero risk — full refund, no questions asked' }
+    ]
   }
 ];
 
