@@ -236,10 +236,13 @@ var PAGES = {
     ],
     salesPage: {
       heroHtml: 'Crush Your Debt.<br/><span style="color:#D7B46A;">Finally.</span>',
-      heroSub: 'The only spreadsheet that tracks 6 debt accounts, visualizes your payoff progress, and tells you exactly where to focus &mdash; all in one beautiful dashboard.',
-      heroImage: '/images/product4.png',
+      heroSub: 'The only spreadsheet that tracks 6 debt accounts, visualizes your payoff progress, and tells you exactly where to focus &mdash; all in one beautiful dashboard. Works on every device &mdash; pick Excel or Google Sheets at checkout.',
+      heroImage: '/images/debt-dashboard.png',
       headline: 'Crush Your Debt. Finally.',
-      includedSub: '6 debt accounts. 2 power sheets. Zero subscriptions. Your data stays on your computer.',
+      images: [
+        '/images/debt-dashboard.png'
+      ],
+      includedSub: '6 debt accounts. 2 power sheets. Works in Excel or Google Sheets on any device. Zero subscriptions.',
       finalHeadline: 'Your Debt Payoff Journey<br/>Starts With One Spreadsheet.',
       finalSub: 'For less than the cost of a streaming subscription, get the clarity and control you need to eliminate debt &mdash; for good.',
       testimonials: [
@@ -256,7 +259,7 @@ var PAGES = {
         { icon: 'bolt', title: 'Works Immediately', desc: 'Pre-built formulas, linked sheets, and sample data included. Enter your real numbers and you\'re tracking in under 10 minutes.' },
         { icon: 'calculate', title: 'Auto Interest & Balance', desc: 'Running balance after every payment. Cumulative interest calculated automatically each month. Zero manual math.' },
         { icon: 'schedule', title: 'Payoff Timeline Estimate', desc: 'See exactly when each debt will be cleared at your current payment rate — and how extra payments change the date.' },
-        { icon: 'laptop', title: 'Excel or Google Sheets', desc: 'Works in both — open the .xlsx directly in Excel, or upload to Google Drive and open with Google Sheets.' },
+        { icon: 'devices', title: 'Excel OR Google Sheets — Any Device', desc: 'Pick your format at checkout. Open the .xlsx in Excel on Windows or Mac, or use the Google Sheets version on your phone, tablet, laptop, or desktop. 100% of features work in both.' },
         { icon: 'all_inclusive', title: 'Lifetime Access', desc: 'Buy once, use forever. Free updates. No renewals, no subscriptions, no hidden fees. Ever.' }
       ],
       steps: [
@@ -266,7 +269,7 @@ var PAGES = {
       ],
       sheets: [
         { tab: 'Payment Tracker', purpose: '12-month payment ledger for up to 6 debt accounts', highlights: 'Auto-calc interest, running balance, cumulative TOTAL PAID row with interest' },
-        { tab: 'Debt Dashboard', purpose: 'Command center — every KPI updated automatically', highlights: 'Total vs. current debt, % progress per debt, highest-interest alert, payoff timeline' }
+        { tab: 'Debt Dashboard', purpose: 'Command center — every KPI updated automatically', highlights: '5 live KPIs, % progress per debt, highest-interest alert, payoff timeline' }
       ],
       comparison: [
         { item: 'Undebt.it Pro', cost: '$144/year', yours: '$17 once' },
@@ -284,16 +287,16 @@ var PAGES = {
         'Anyone tired of juggling multiple lender websites and logins'
       ],
       bonusPoints: [
-        'Works in Microsoft Excel & Google Sheets',
+        'Excel or Google Sheets — you choose at checkout',
+        'Works on any device: phone, tablet, laptop, desktop',
         'No cloud sync, no bank logins — 100% private',
         'Sample data pre-loaded — replace with yours in minutes',
         'No macros, no plugins, no subscriptions',
-        'Free updates forever',
-        'Instant digital download (.xlsx)'
+        'Free updates forever'
       ],
       faq: [
         { q: 'Do I need to know Excel?', a: 'No. Every formula is pre-built. You only type in the editable cells — your starting balances, interest rates, and monthly payments. Everything else calculates automatically.' },
-        { q: 'Does it work with Google Sheets?', a: 'Yes. The template works in both Microsoft Excel and Google Sheets. Simply upload the .xlsx file to Google Drive and open it with Google Sheets.' },
+        { q: 'Does it work on my phone / tablet / Mac?', a: 'Yes — on every device. At checkout, you choose either the Excel (.xlsx) version or the Google Sheets version. Excel works on Windows, Mac, iPad, and mobile. Google Sheets works on every device with a browser — phone, tablet, laptop, desktop — with full feature parity. 100% of charts, formulas, and dashboards work in both formats.' },
         { q: 'What if I have more than 6 debts?', a: 'The template is set up for 6 accounts. If you have more, track your smaller balances together in one row (e.g., combine two small store cards) until you pay one off and free up a slot.' },
         { q: 'Can I reuse this each year?', a: 'Absolutely. Just save a new copy at the start of each year with updated starting balances. You own the file forever and can use it indefinitely.' },
         { q: 'Is my financial data safe?', a: '100%. This is a local file on your computer — nothing is sent to a server, cloud, or third party. Your data is as private as any file on your hard drive.' },
@@ -406,6 +409,9 @@ if (p.salesPage) {
         { title: 'Monthly Dashboard', desc: 'Every month, at a glance: income, expenses, profit, margin, and category breakdowns. Auto-updating visual progress bars show exactly where you stand vs. your profit goal.' },
         { title: 'Annual Dashboard', desc: 'Your full year of business performance on one page. Total income, expenses, net profit, margin, and a live progress bar showing how close you are to your annual goal.' },
         { title: '5-Year Growth Dashboard', desc: 'Watch your business grow year over year. Track long-term trends, set multi-year revenue goals, and see exactly where your business is headed.' }
+      ],
+      4: [
+        { title: 'Debt Payoff Dashboard', desc: 'Your complete financial command center. 5 live KPIs — total starting debt, current balance, paid YTD, interest accrued, and net reduction. A falling balance chart, debt composition breakdown, and per-account progress bars update the moment you log a payment.' }
       ]
     };
     var _caps = _capsById[id] || _capsById[2];
@@ -491,7 +497,7 @@ if (p.salesPage) {
     html += '<div style="padding:0 28px 60px;">'
       + '<div style="max-width:680px;margin:0 auto;">'
       + '<p style="text-align:center;font-size:0.68rem;font-weight:800;letter-spacing:0.26em;color:#D7B46A;text-transform:uppercase;margin-bottom:12px;">Inside The Planner</p>'
-      + '<h2 style="text-align:center;font-size:1.8rem;font-weight:800;color:#F6F1E7;margin-bottom:36px;">8 Powerful Sheets</h2>'
+      + '<h2 style="text-align:center;font-size:1.8rem;font-weight:800;color:#F6F1E7;margin-bottom:36px;">' + sp.sheets.length + ' Powerful ' + (sp.sheets.length === 1 ? 'Sheet' : 'Sheets') + '</h2>'
       + '<div style="border:1px solid rgba(215,180,106,0.15);border-radius:14px;overflow:hidden;">'
       + '<div style="display:grid;grid-template-columns:80px 1fr 1fr;background:rgba(215,180,106,0.08);padding:12px 16px;border-bottom:1px solid rgba(215,180,106,0.15);">'
       + '<span style="color:#D7B46A;font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;">Sheet</span>'
