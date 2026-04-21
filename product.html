@@ -237,9 +237,10 @@ var PAGES = {
     salesPage: {
       heroHtml: 'Crush Your Debt.<br/><span style="color:#D7B46A;">Finally.</span>',
       heroSub: 'The only spreadsheet that tracks 6 debt accounts, visualizes your payoff progress, and tells you exactly where to focus &mdash; all in one beautiful dashboard. Works on every device &mdash; pick Excel or Google Sheets at checkout.',
-      heroImage: '/images/debt-dashboard.png',
+      heroImage: '/images/debt-devices.png',
       headline: 'Crush Your Debt. Finally.',
       images: [
+        '/images/debt-devices.png',
         '/images/debt-dashboard.png'
       ],
       includedSub: '6 debt accounts. 2 power sheets. Works in Excel or Google Sheets on any device. Zero subscriptions.',
@@ -323,9 +324,10 @@ var PAGES = {
     salesPage: {
       heroHtml: 'Always Know <span style="color:#D7B46A;">Exactly</span><br/>Where Your Money Stands',
       heroSub: 'Track every dollar in, every dollar out — across 12 full months. Executive KPI dashboard, minimum balance safety alert, and zero formulas to build. Pick Excel or Google Sheets at checkout.',
-      heroImage: '/images/cashflow-dashboard.png',
+      heroImage: '/images/cashflow-devices.png',
       headline: 'Finally See Your Full Financial Picture.',
       images: [
+        '/images/cashflow-devices.png',
         '/images/cashflow-dashboard.png'
       ],
       includedSub: '12-month cash flow sheet + executive dashboard. Works in Excel or Google Sheets on any device.',
@@ -495,10 +497,12 @@ if (p.salesPage) {
         { title: '5-Year Growth Dashboard', desc: 'Watch your business grow year over year. Track long-term trends, set multi-year revenue goals, and see exactly where your business is headed.' }
       ],
       4: [
-        { title: 'Debt Payoff Dashboard', desc: 'Your complete financial command center. 5 live KPIs — total starting debt, current balance, paid YTD, interest accrued, and net reduction. A falling balance chart, debt composition breakdown, and per-account progress bars update the moment you log a payment.' }
+        { title: 'Works on Every Device', desc: 'Your Debt Payoff Dashboard looks and works perfectly on laptop, tablet, and phone. Choose Excel or Google Sheets at checkout — full functionality on every screen size, every platform.' },
+        { title: 'Debt Payoff Dashboard — Full View', desc: '5 live KPIs: total starting debt, current balance, paid YTD, interest accrued, and net reduction. Falling balance chart, debt composition donut, Starting vs Current bar chart, and Payments vs Interest bars — all auto-updating.' }
       ],
       5: [
-        { title: 'Executive Cash Flow Dashboard', desc: '6 live KPIs: Total Inflows, Outflows, Net Cash Flow, Avg Monthly Net, Cash Growth %, and Best Month. Plus 4 automated charts — Cash Balance Trajectory, Inflows vs Outflows by Month, Expense Breakdown donut, and Net Cash Flow & Cumulative Trend.' }
+        { title: 'Works on Every Device', desc: 'Your Cash Flow Dashboard looks and works perfectly on laptop, tablet, and phone. Choose Excel or Google Sheets at checkout — full functionality on every screen size, every platform.' },
+        { title: 'Executive Cash Flow Dashboard — Full View', desc: '6 live KPIs: Total Inflows, Outflows, Net Cash Flow, Avg Monthly Net, Cash Growth %, and Best Month. Cash Balance Trajectory, Inflows vs Outflows, Expense Breakdown donut, and Cumulative Trend — all auto-updating.' }
       ]
     };
     var _caps = _capsById[id] || _capsById[2];
