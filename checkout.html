@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
 <script id="tailwind-config">
   tailwind.config = {
     darkMode: "class",
@@ -39,6 +40,7 @@
   }
   #buyer-email:focus { border-color: #1FE6D1; box-shadow: 0 0 0 3px rgba(31,230,209,0.1); }
   #buyer-email::placeholder { color: rgba(11,18,32,0.4); }
+  .checkout-container { min-height: 0; }
   #loading-overlay {
     display: none;
     position: fixed;
@@ -101,15 +103,32 @@
       <span class="material-symbols-outlined text-base">lock</span> Payment
     </h2>
 
-    <!-- Email -->
-    <div class="mb-6">
-      <label class="block text-xs font-bold text-gold/70 uppercase mb-2">Email Address</label>
-      <input type="email" id="buyer-email" placeholder="your@email.com" autocomplete="email"/>
-      <p class="text-ivory/40 text-xs mt-1">Download link sent here after payment</p>
+    <!-- Success Message (hidden until payment completes) -->
+    <div id="success-section" class="hidden flex-col items-center gap-5 py-8 text-center">
+      <span class="material-symbols-outlined text-signature-teal" style="font-size:56px">check_circle</span>
+      <h3 class="text-xl font-bold text-gold">Payment Successful!</h3>
+      <p class="text-ivory/60 text-sm max-w-sm leading-relaxed">Your order is confirmed. Check your email for your download link — it will arrive within a few minutes.</p>
+      <a href="/index.html" class="mt-2 inline-block px-8 py-3 bg-gold hover:brightness-110 text-midnight font-bold rounded-xl transition-all text-sm">
+        Back to Home
+      </a>
     </div>
 
-    <!-- Paddle Checkout Container -->
-    <div id="checkout-container" class="checkout-frame"></div>
+    <!-- Email input -->
+    <div id="email-section" class="mb-5">
+      <label class="block text-xs font-bold text-gold/70 uppercase mb-2">Email Address</label>
+      <input type="email" id="buyer-email" placeholder="your@email.com" autocomplete="email"/>
+      <p class="text-ivory/40 text-xs mt-1">Your download link will be sent here after payment</p>
+    </div>
+
+    <!-- Pay button -->
+    <button id="pay-btn" onclick="openPaddleCheckout()"
+      class="w-full py-4 bg-gold hover:brightness-110 text-midnight font-bold rounded-xl transition-all flex items-center justify-center gap-2 text-sm tracking-wide mb-5">
+      <span class="material-symbols-outlined text-sm">lock</span>
+      Pay Securely — <span id="pay-btn-price">$7.99</span>
+    </button>
+
+    <!-- Paddle inline checkout renders here -->
+    <div id="checkout-container" class="checkout-container"></div>
 
     <!-- Paddle MoR Notice -->
     <div class="mt-4 p-4 bg-gold/5 border border-gold/20 rounded-lg">
@@ -121,7 +140,7 @@
       <p class="text-signature-teal text-xs leading-relaxed">By completing this purchase, you confirm you are aware you have <strong>14 days</strong> to cancel or request a full refund after order completion. See our <a href="/refund.html" class="underline">Refund Policy</a>.</p>
     </div>
 
-    <!-- Error -->
+    <!-- Error message -->
     <p id="error-msg" class="hidden mt-4 text-red-400 text-sm p-3 bg-red-900/10 rounded-lg border border-red-400/20"></p>
   </section>
 
@@ -158,36 +177,111 @@
 
 <script src="js/app.js"></script>
 <script>
-let product = null;
+  // ── Paddle config ──────────────────────────────────────────────
+  var PADDLE_TOKEN = 'live_0096b61dc9f98e29253a9991992';
 
-function init() {
-  // Use PRODUCTS from app.js
-  product = getProductFromURL();
-  if (!product) { window.location.href = '/pricing.html'; return; }
+  var PADDLE_PRICE_MAP = {
+    2: 'pri_01kpqtwd3gxej4n3zmwj7q3jna',  // The Ultimate Budget Planner
+    3: 'pri_01kpr10frj3w82ek1jjbzrd9wn',  // The Profit Tracker
+    4: 'pri_01kpr12ct1sz1aqvnyweskx44x',  // Debt Payoff Dashboard
+    5: 'pri_01kpr142by79r7r16pg9xgv570'   // 12-Month Cash Flow Budget
+  };
 
-  document.getElementById('product-name').textContent = product.name;
-  document.getElementById('product-desc').textContent = product.edition;
-  document.getElementById('product-price').textContent = formatPrice(product.price);
-  document.getElementById('total').textContent = formatPrice(product.price);
+  var product = null;
 
-  // Paddle checkout will be initialized here once credentials are provided
-  document.getElementById('checkout-container').innerHTML =
-    '<p class="text-ivory/50 text-sm text-center py-8">Payment processing will be available shortly.</p>';
-}
+  // ── Init Paddle ────────────────────────────────────────────────
+  Paddle.Initialize({
+    token: PADDLE_TOKEN,
+    eventCallback: function(data) {
+      if (data.name === 'checkout.completed') {
+        handleCheckoutComplete(data);
+      }
+    }
+  });
 
-function showLoading(msg) {
-  document.getElementById('loading-msg').textContent = msg || 'Processing…';
-  document.getElementById('loading-overlay').classList.add('active');
-}
-function hideLoading() { document.getElementById('loading-overlay').classList.remove('active'); }
-function showError(msg) {
-  const el = document.getElementById('error-msg');
-  el.textContent = msg;
-  el.classList.remove('hidden');
-}
-function clearError() { document.getElementById('error-msg').classList.add('hidden'); }
+  // ── Page init ──────────────────────────────────────────────────
+  function init() {
+    product = getProductFromURL();
+    if (!product) { window.location.href = '/pricing.html'; return; }
 
-window.addEventListener('load', init);
+    document.getElementById('product-name').textContent  = product.name;
+    document.getElementById('product-desc').textContent  = product.edition;
+    document.getElementById('product-price').textContent = formatPrice(product.price);
+    document.getElementById('total').textContent         = formatPrice(product.price);
+    document.getElementById('pay-btn-price').textContent = formatPrice(product.price);
+  }
+
+  // ── Open Paddle inline checkout ────────────────────────────────
+  function openPaddleCheckout() {
+    var email = document.getElementById('buyer-email').value.trim();
+
+    if (!email || !email.includes('@')) {
+      showError('Please enter a valid email address.');
+      return;
+    }
+
+    var priceId = PADDLE_PRICE_MAP[product.id];
+    if (!priceId) {
+      showError('This product is not currently available for purchase. Please contact us.');
+      return;
+    }
+
+    clearError();
+
+    // Hide email field and pay button — Paddle takes over
+    document.getElementById('email-section').style.display = 'none';
+    document.getElementById('pay-btn').style.display       = 'none';
+
+    Paddle.Checkout.open({
+      settings: {
+        displayMode:       'inline',
+        frameTarget:       'checkout-container',
+        frameInitialHeight: 450,
+        theme:             'dark',
+        allowLogout:       false,
+        showAddDiscounts:  true
+      },
+      items: [{ priceId: priceId, quantity: 1 }],
+      customer: { email: email }
+    });
+  }
+
+  // ── Handle completed payment ───────────────────────────────────
+  function handleCheckoutComplete(data) {
+    var txId = (data.data && data.data.transaction_id)
+      ? data.data.transaction_id
+      : ('PAD-' + Date.now());
+
+    // Record order in local storage
+    addOrder(product.id, product.price, 'Paddle', txId);
+
+    // Clear Paddle iframe and show success screen
+    document.getElementById('checkout-container').innerHTML = '';
+    var success = document.getElementById('success-section');
+    success.classList.remove('hidden');
+    success.style.display = 'flex';
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── Helpers ────────────────────────────────────────────────────
+  function showLoading(msg) {
+    document.getElementById('loading-msg').textContent = msg || 'Processing…';
+    document.getElementById('loading-overlay').classList.add('active');
+  }
+  function hideLoading() {
+    document.getElementById('loading-overlay').classList.remove('active');
+  }
+  function showError(msg) {
+    var el = document.getElementById('error-msg');
+    el.textContent = msg;
+    el.classList.remove('hidden');
+  }
+  function clearError() {
+    document.getElementById('error-msg').classList.add('hidden');
+  }
+
+  window.addEventListener('load', init);
 </script>
 </body>
 </html>
