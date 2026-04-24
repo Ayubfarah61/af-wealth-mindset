@@ -63,11 +63,11 @@ var PRODUCTS = [
     badge: 'New',
     image: '/images/product2.png',
     heroImage: '/images/product2.png',
-    description: 'The only spreadsheet you need to track income, expenses, budgets, and savings. Beautifully designed, fully automated, and built for real life. Available as Excel or Google Sheets — you choose.',
+    description: 'The only spreadsheet you need to track income, expenses, budgets, and savings. Beautifully designed, fully automated, and built for real life. Comes with both Excel AND Google Sheets — use whichever you prefer.',
     features: [
       { icon: 'bar_chart',      title: '11 Automated Charts',           desc: 'Beautiful dashboards that update as you type' },
       { icon: 'table_chart',    title: '8 Linked Sheets',               desc: 'Setup, Income, Expenses, Monthly, Annual & more' },
-      { icon: 'laptop',         title: 'Excel or Google Sheets',        desc: 'Choose your preferred format at checkout' },
+      { icon: 'laptop',         title: 'Excel & Google Sheets',         desc: 'Both formats included — use whichever you prefer' },
       { icon: 'verified_user',  title: '14-Day Money-Back Guarantee',   desc: 'Zero risk — full refund, no questions asked' }
     ]
   },
