@@ -76,11 +76,11 @@ var PRODUCTS = [
     name: 'The Profit Tracker™',
     originalPrice: 49,
     price: 7.99,
-    edition: 'Excel & Google Sheets',
+    edition: 'Excel Template (.xlsx)',
     badge: 'New',
     image: '/images/product3.png',
     heroImage: '/images/product3.png',
-    description: 'The only bookkeeping spreadsheet your small business will ever need. Track income, expenses & profit automatically — with monthly, annual & 5-year growth dashboards. One-time payment. Yours forever.',
+    description: 'The only bookkeeping spreadsheet your small business will ever need. Track income, expenses & profit automatically — with monthly, annual & 5-year growth dashboards. Delivered as Excel (.xlsx). One-time payment. Yours forever.',
     features: [
       { icon: 'attach_money',  title: 'Income & Expense Tracker',      desc: 'Every transaction auto-categorized and auto-totaled' },
       { icon: 'dashboard',     title: 'Monthly + Annual Dashboards',   desc: 'Beautiful auto-updating visuals for instant profit clarity' },
