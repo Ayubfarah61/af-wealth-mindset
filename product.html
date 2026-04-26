@@ -180,7 +180,7 @@ var PAGES = {
         { icon: 'currency_exchange', title: 'Multi-Currency Support', desc: 'USD, EUR, GBP, CAD, AUD and more — works for any country, any currency.' },
         { icon: 'calendar_month', title: 'Fiscal OR Calendar Year', desc: 'Flexible year setup to match your business structure and reporting period.' },
         { icon: 'tune', title: 'Fully Customizable Categories', desc: 'Adapt income and expense categories to your exact business type in under 5 minutes.' },
-        { icon: 'laptop', title: 'Excel (.xlsx) Only', desc: 'Delivered as an Excel file — no Google Sheets version. Works on Windows and Mac (Excel 2016 or later / Microsoft 365).' },
+        { icon: 'laptop', title: 'Excel Format', desc: 'Delivered as an Excel (.xlsx) file. Works on Windows and Mac (Excel 2016 or later / Microsoft 365).' },
         { icon: 'all_inclusive', title: 'Lifetime Access', desc: 'Buy once, use forever. No renewals, no subscriptions, no hidden fees. Ever.' }
       ],
       steps: [
@@ -208,11 +208,11 @@ var PAGES = {
         'Fiscal or calendar year — you choose',
         'Works offline forever, on any device',
         'No macros, no plugins, no subscriptions',
-        'Excel (.xlsx) format only — no Google Sheets version',
+        'Excel format (.xlsx) — works on Windows &amp; Mac',
         'Video tutorial included — set up in under 10 minutes'
       ],
       faq: [
-        { q: 'Do I need Excel?', a: 'Yes — this product is delivered as an Excel (.xlsx) file only. There is no Google Sheets version. It works on Excel for Windows, Mac, iPad, and the Excel mobile app. Microsoft 365 or Excel 2016+ recommended.' },
+        { q: 'Do I need Excel?', a: 'Yes — this product is delivered as an Excel (.xlsx) file. Microsoft 365 or Excel 2016+ recommended. Works on Windows and Mac.' },
         { q: 'Is this really a one-time payment?', a: 'Yes. No subscription. No hidden fees. No renewals. Buy once, own it forever.' },
         { q: 'I\'m not tech-savvy — can I use this?', a: 'If you can type a number into a box, you can use this. A full video tutorial is included with your purchase. Setup takes under 10 minutes.' },
         { q: 'What if I don\'t like it?', a: '14-day full refund, no questions asked. You risk absolutely nothing.' },
@@ -449,7 +449,7 @@ if (p.salesPage) {
     + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#128274; Secure Checkout</span>'
     + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#11015; Instant Download</span>'
     + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#10003; 14-Day Guarantee</span>'
-    + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#128202; ' + (id === 3 ? 'Excel (.xlsx) Only — No Google Sheets' : 'Excel &amp; Google Sheets Included') + '</span>'
+    + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#128202; ' + (id === 3 ? 'Excel Format' : 'Excel &amp; Google Sheets Included') + '</span>'
     + '</div>'
     + '<p style="color:rgba(246,241,231,0.22);font-size:0.7rem;margin-top:10px;line-height:1.5;">&#128274; Payments securely processed by <strong style="color:rgba(246,241,231,0.38);">Paddle</strong> &mdash; PCI-compliant Merchant of Record &bull; Your card details are never stored on our servers</p>'
     + '</div>';
