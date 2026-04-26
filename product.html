@@ -155,7 +155,7 @@ var PAGES = {
     salesPage: {
       heroHtml: 'Stop Guessing <span style="color:#D7B46A;">Where Your</span><br/>Money Really Goes',
       heroSub: 'The all-in-one bookkeeping spreadsheet for small business owners. Track income, expenses &amp; profit automatically &mdash; with monthly, annual &amp; 5-year dashboards. One-time payment. Yours forever.',
-      heroImage: '/images/profit-devices.png',
+      heroImage: '/images/profit-monthly.png',
       headline: 'Stop Guessing. Start Profiting.',
       includedSub: 'Monthly, annual &amp; 5-year dashboards. Built for real businesses. No learning curve.',
       finalHeadline: 'Stop Guessing.<br/>Start Profiting.',
@@ -180,7 +180,7 @@ var PAGES = {
         { icon: 'currency_exchange', title: 'Multi-Currency Support', desc: 'USD, EUR, GBP, CAD, AUD and more — works for any country, any currency.' },
         { icon: 'calendar_month', title: 'Fiscal OR Calendar Year', desc: 'Flexible year setup to match your business structure and reporting period.' },
         { icon: 'tune', title: 'Fully Customizable Categories', desc: 'Adapt income and expense categories to your exact business type in under 5 minutes.' },
-        { icon: 'laptop', title: 'Excel (.xlsx) Only', desc: 'Delivered as an Excel file — no Google Sheets version. Works on Windows, Mac, iPad & mobile Excel.' },
+        { icon: 'laptop', title: 'Excel (.xlsx) Only', desc: 'Delivered as an Excel file — no Google Sheets version. Works on Windows and Mac (Excel 2016 or later / Microsoft 365).' },
         { icon: 'all_inclusive', title: 'Lifetime Access', desc: 'Buy once, use forever. No renewals, no subscriptions, no hidden fees. Ever.' }
       ],
       steps: [
@@ -449,7 +449,7 @@ if (p.salesPage) {
     + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#128274; Secure Checkout</span>'
     + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#11015; Instant Download</span>'
     + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#10003; 14-Day Guarantee</span>'
-    + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#128202; Excel &amp; Google Sheets Included</span>'
+    + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#128202; ' + (id === 3 ? 'Excel (.xlsx) Only — No Google Sheets' : 'Excel &amp; Google Sheets Included') + '</span>'
     + '</div>'
     + '<p style="color:rgba(246,241,231,0.22);font-size:0.7rem;margin-top:10px;line-height:1.5;">&#128274; Payments securely processed by <strong style="color:rgba(246,241,231,0.38);">Paddle</strong> &mdash; PCI-compliant Merchant of Record &bull; Your card details are never stored on our servers</p>'
     + '</div>';
