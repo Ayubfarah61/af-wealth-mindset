@@ -6,3 +6,7 @@ routes = [
   { pattern = "afwealthmindset.com/api/*", zone_name = "afwealthmindset.com" },
   { pattern = "www.afwealthmindset.com/api/*", zone_name = "afwealthmindset.com" }
 ]
+
+[[r2_buckets]]
+binding = "PRODUCTS"
+bucket_name = "afwm-products"
