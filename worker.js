@@ -1,21 +1,44 @@
 /**
  * AF Wealth Mindset - Delivery Worker
  *
- * Handles Paddle webhook fulfillment after a successful payment.
- * The Worker verifies Paddle, identifies the purchased product, and emails
- * the customer the Excel and Google Sheets delivery links.
+ * Handles Paddle webhook fulfillment after a successful payment. The Worker
+ * verifies Paddle, identifies the purchased product, and emails the customer
+ * the Excel and Google Sheets delivery links.
  */
 
-const ALLOWED_ORIGINS = [
-  'https://afwealthmindset.com',
-  'https://www.afwealthmindset.com'
-];
+const BASE_URL = 'https://afwealthmindset.com';
+const ALLOWED_ORIGINS = ['https://afwealthmindset.com', 'https://www.afwealthmindset.com'];
 
 const PRODUCT_BY_PRICE_ID = {
   pri_01kpqtwd3gxej4n3zmwj7q3jna: { id: 2, name: 'The Ultimate Budget Planner' },
   pri_01kpr10frj3w82ek1jjbzrd9wn: { id: 3, name: 'The Profit Tracker' },
   pri_01kpr12ct1sz1aqvnyweskx44x: { id: 4, name: 'Debt Payoff Dashboard' },
   pri_01kpr142by79r7r16pg9xgv570: { id: 5, name: '12-Month Cash Flow Budget' }
+};
+
+const DEFAULT_PRODUCT_LINKS = {
+  pri_01kpqtwd3gxej4n3zmwj7q3jna: {
+    excelUrl: `${BASE_URL}/api/download/budget-planner.xlsx`,
+    googleSheetUrl: 'https://docs.google.com/spreadsheets/d/1hP7f4zWHZILUcW5G7xs1qCyqj1RmWed8/copy'
+  },
+  pri_01kpr10frj3w82ek1jjbzrd9wn: {
+    excelUrl: `${BASE_URL}/api/download/profit-tracker.xlsx`
+  },
+  pri_01kpr12ct1sz1aqvnyweskx44x: {
+    excelUrl: `${BASE_URL}/api/download/debt-payoff-dashboard.xlsx`,
+    googleSheetUrl: 'https://docs.google.com/spreadsheets/d/1xnBdyY61F-YCG5JbWnRbekjYAc0s8LzH/copy'
+  },
+  pri_01kpr142by79r7r16pg9xgv570: {
+    excelUrl: `${BASE_URL}/api/download/cash-flow-budget.xlsx`,
+    googleSheetUrl: 'https://docs.google.com/spreadsheets/d/1ZTNBP-eeR4L8q-2gggWt9GRSDCoAJ25m5TfdaKNtBk4/copy'
+  }
+};
+
+const R2_FILE_BY_DOWNLOAD_KEY = {
+  'budget-planner.xlsx': 'Monthly Budget Tracker Sample.xlsx',
+  'profit-tracker.xlsx': 'Business bookkeeping.xlsx',
+  'debt-payoff-dashboard.xlsx': 'Debt Payoff Dashboard  Excel Template Sample.xlsx',
+  'cash-flow-budget.xlsx': '12-Month Cash Flow Budget  Excel Template Sample.xlsx'
 };
 
 function corsHeaders(request) {
@@ -34,16 +57,6 @@ function json(request, data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
     headers: { ...corsHeaders(request), 'Content-Type': 'application/json' }
-  });
-}
-
-function handleHealth(request) {
-  return json(request, {
-    status: 'ok',
-    worker: 'afwm-delivery',
-    version: '5.1.0',
-    payment_provider: 'paddle',
-    delivery: 'email'
   });
 }
 
@@ -101,8 +114,19 @@ async function verifyPaddleWebhook(rawBody, signatureHeader, secret, toleranceSe
   return signatures.some((signature) => timingSafeEqual(signature, expected));
 }
 
+function removeEmpty(object) {
+  const cleaned = {};
+  Object.keys(object).forEach((key) => {
+    if (object[key]) cleaned[key] = object[key];
+  });
+  return cleaned;
+}
+
 function readProductLinks(env) {
-  const configured = env.PRODUCT_LINKS ? JSON.parse(env.PRODUCT_LINKS) : {};
+  const configured = {
+    ...DEFAULT_PRODUCT_LINKS,
+    ...(env.PRODUCT_LINKS ? JSON.parse(env.PRODUCT_LINKS) : {})
+  };
 
   Object.keys(PRODUCT_BY_PRICE_ID).forEach((priceId) => {
     const product = PRODUCT_BY_PRICE_ID[priceId];
@@ -117,14 +141,6 @@ function readProductLinks(env) {
   });
 
   return configured;
-}
-
-function removeEmpty(object) {
-  const cleaned = {};
-  Object.keys(object).forEach((key) => {
-    if (object[key]) cleaned[key] = object[key];
-  });
-  return cleaned;
 }
 
 function findPurchasedPriceIds(event) {
@@ -142,16 +158,8 @@ function findPurchasedPriceIds(event) {
 async function getCustomerDetails(event, env) {
   const directCustomer = event.data?.customer || {};
   const directBilling = event.data?.billing_details || {};
-  const directEmail =
-    directCustomer.email ||
-    event.data?.customer_email ||
-    event.data?.email ||
-    directBilling.email;
-  const directName =
-    directCustomer.name ||
-    event.data?.customer_name ||
-    directBilling.name ||
-    directBilling.full_name;
+  const directEmail = directCustomer.email || event.data?.customer_email || event.data?.email || directBilling.email;
+  const directName = directCustomer.name || event.data?.customer_name || directBilling.name || directBilling.full_name;
 
   if (directEmail && directName) return { email: directEmail, name: directName };
 
@@ -177,20 +185,31 @@ async function getCustomerDetails(event, env) {
   };
 }
 
+function firstName(name) {
+  return String(name || '').trim().split(/\s+/)[0] || 'there';
+}
+
+function escapeHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function buttonLink(url, label) {
+  return `<a href="${escapeHtml(url)}" style="display:inline-block;padding:12px 16px;background:#0B1220;color:#ffffff;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;">${escapeHtml(label)}</a>`;
+}
+
 function buildDeliveryEmail(products, transactionId, supportEmail, customerName) {
   const greetingName = customerName ? escapeHtml(firstName(customerName)) : 'there';
   const productBlocks = products.map((product) => {
     const links = [];
 
-    if (product.excelUrl) {
-      links.push(buttonLink(product.excelUrl, 'Download Excel file'));
-    }
-    if (product.googleSheetUrl) {
-      links.push(buttonLink(product.googleSheetUrl, 'Open Google Sheets copy'));
-    }
-    if (product.guideUrl) {
-      links.push(buttonLink(product.guideUrl, 'Open setup guide'));
-    }
+    if (product.excelUrl) links.push(buttonLink(product.excelUrl, 'Download Excel file'));
+    if (product.googleSheetUrl) links.push(buttonLink(product.googleSheetUrl, 'Open Google Sheets copy'));
+    if (product.guideUrl) links.push(buttonLink(product.guideUrl, 'Open setup guide'));
 
     return `
       <div style="padding:22px 0;border-top:1px solid #eadfbd;">
@@ -238,23 +257,6 @@ function buildDeliveryEmail(products, transactionId, supportEmail, customerName)
   return { html, text };
 }
 
-function buttonLink(url, label) {
-  return `<a href="${escapeHtml(url)}" style="display:inline-block;padding:12px 16px;background:#0B1220;color:#ffffff;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;">${escapeHtml(label)}</a>`;
-}
-
-function firstName(name) {
-  return String(name || '').trim().split(/\s+/)[0] || 'there';
-}
-
-function escapeHtml(value) {
-  return String(value || '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
 async function sendDeliveryEmail(env, to, products, transactionId, customerName) {
   if (!env.RESEND_API_KEY) throw new Error('Missing RESEND_API_KEY');
 
@@ -293,9 +295,7 @@ async function handlePaddleWebhook(request, env) {
   const toleranceSeconds = Number(env.PADDLE_WEBHOOK_TOLERANCE_SECONDS || 300);
   const verified = await verifyPaddleWebhook(rawBody, signature, env.PADDLE_WEBHOOK_SECRET, toleranceSeconds);
 
-  if (!verified) {
-    return json(request, { error: 'Invalid Paddle signature' }, 401);
-  }
+  if (!verified) return json(request, { error: 'Invalid Paddle signature' }, 401);
 
   const event = JSON.parse(rawBody);
   const eventType = event.event_type;
@@ -332,9 +332,7 @@ async function handlePaddleWebhook(request, env) {
 }
 
 async function handleTestDelivery(request, env) {
-  if (!env.DELIVERY_TEST_TOKEN) {
-    return json(request, { error: 'Missing DELIVERY_TEST_TOKEN' }, 403);
-  }
+  if (!env.DELIVERY_TEST_TOKEN) return json(request, { error: 'Missing DELIVERY_TEST_TOKEN' }, 403);
 
   const authorization = request.headers.get('Authorization') || '';
   if (authorization !== `Bearer ${env.DELIVERY_TEST_TOKEN}`) {
@@ -353,6 +351,23 @@ async function handleTestDelivery(request, env) {
   return json(request, { ok: true, delivered_to: body.email, product: deliveryProduct.name });
 }
 
+async function handleDownload(request, env, key) {
+  if (!key || key.includes('..') || key.includes('/')) {
+    return json(request, { error: 'Invalid key' }, 422);
+  }
+
+  const r2Key = R2_FILE_BY_DOWNLOAD_KEY[key] || key;
+  const object = await env.PRODUCTS.get(r2Key);
+  if (!object) return json(request, { error: 'File not found' }, 404);
+
+  const headers = new Headers();
+  object.writeHttpMetadata(headers);
+  headers.set('Content-Disposition', `attachment; filename="${key}"`);
+  headers.set('Cache-Control', 'private, no-store');
+
+  return new Response(object.body, { headers });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -364,7 +379,13 @@ export default {
 
     try {
       if (path === '/api/health' && request.method === 'GET') {
-        return handleHealth(request);
+        return json(request, {
+          status: 'ok',
+          worker: 'afwm-delivery',
+          version: '5.3.0',
+          payment_provider: 'paddle',
+          delivery: 'email+r2'
+        });
       }
 
       if (path === '/api/paddle-webhook' && request.method === 'POST') {
@@ -373,6 +394,10 @@ export default {
 
       if (path === '/api/test-delivery' && request.method === 'POST') {
         return handleTestDelivery(request, env);
+      }
+
+      if (path.startsWith('/api/download/') && request.method === 'GET') {
+        return handleDownload(request, env, decodeURIComponent(path.replace('/api/download/', '')));
       }
 
       return json(request, { error: 'Not Found' }, 404);
