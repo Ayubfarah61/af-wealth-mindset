@@ -12,22 +12,10 @@ const ALLOWED_ORIGINS = [
 ];
 
 const PRODUCT_BY_PRICE_ID = {
-  pri_01kpqtwd3gxej4n3zmwj7q3jna: {
-    id: 2,
-    name: 'The Ultimate Budget Planner'
-  },
-  pri_01kpr10frj3w82ek1jjbzrd9wn: {
-    id: 3,
-    name: 'The Profit Tracker'
-  },
-  pri_01kpr12ct1sz1aqvnyweskx44x: {
-    id: 4,
-    name: 'Debt Payoff Dashboard'
-  },
-  pri_01kpr142by79r7r16pg9xgv570: {
-    id: 5,
-    name: '12-Month Cash Flow Budget'
-  }
+  pri_01kpqtwd3gxej4n3zmwj7q3jna: { id: 2, name: 'The Ultimate Budget Planner' },
+  pri_01kpr10frj3w82ek1jjbzrd9wn: { id: 3, name: 'The Profit Tracker' },
+  pri_01kpr12ct1sz1aqvnyweskx44x: { id: 4, name: 'Debt Payoff Dashboard' },
+  pri_01kpr142by79r7r16pg9xgv570: { id: 5, name: '12-Month Cash Flow Budget' }
 };
 
 function corsHeaders(request) {
@@ -53,7 +41,7 @@ function handleHealth(request) {
   return json(request, {
     status: 'ok',
     worker: 'afwm-delivery',
-    version: '5.0.0',
+    version: '5.1.0',
     payment_provider: 'paddle',
     delivery: 'email'
   });
@@ -151,78 +139,111 @@ function findPurchasedPriceIds(event) {
   return priceIds.filter((priceId) => PRODUCT_BY_PRICE_ID[priceId]);
 }
 
-async function getCustomerEmail(event, env) {
+async function getCustomerDetails(event, env) {
+  const directCustomer = event.data?.customer || {};
+  const directBilling = event.data?.billing_details || {};
   const directEmail =
-    event.data?.customer?.email ||
+    directCustomer.email ||
     event.data?.customer_email ||
     event.data?.email ||
-    event.data?.billing_details?.email;
+    directBilling.email;
+  const directName =
+    directCustomer.name ||
+    event.data?.customer_name ||
+    directBilling.name ||
+    directBilling.full_name;
 
-  if (directEmail) return directEmail;
-  if (!event.data?.customer_id || !env.PADDLE_API_KEY) return null;
+  if (directEmail && directName) return { email: directEmail, name: directName };
 
-  const apiBase = env.PADDLE_API_BASE || 'https://api.paddle.com';
-  const response = await fetch(`${apiBase}/customers/${event.data.customer_id}`, {
-    headers: {
-      Authorization: `Bearer ${env.PADDLE_API_KEY}`,
-      Accept: 'application/json'
+  let apiCustomer = {};
+  if (event.data?.customer_id && env.PADDLE_API_KEY) {
+    const apiBase = env.PADDLE_API_BASE || 'https://api.paddle.com';
+    const response = await fetch(`${apiBase}/customers/${event.data.customer_id}`, {
+      headers: {
+        Authorization: `Bearer ${env.PADDLE_API_KEY}`,
+        Accept: 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      const payload = await response.json();
+      apiCustomer = payload?.data || {};
     }
-  });
+  }
 
-  if (!response.ok) return null;
-
-  const payload = await response.json();
-  return payload?.data?.email || null;
+  return {
+    email: directEmail || apiCustomer.email || null,
+    name: directName || apiCustomer.name || null
+  };
 }
 
-function buildDeliveryEmail(products, transactionId, supportEmail) {
+function buildDeliveryEmail(products, transactionId, supportEmail, customerName) {
+  const greetingName = customerName ? escapeHtml(firstName(customerName)) : 'there';
   const productBlocks = products.map((product) => {
     const links = [];
 
     if (product.excelUrl) {
-      links.push(`<li><a href="${escapeHtml(product.excelUrl)}">Download the Excel file</a></li>`);
+      links.push(buttonLink(product.excelUrl, 'Download Excel file'));
     }
     if (product.googleSheetUrl) {
-      links.push(`<li><a href="${escapeHtml(product.googleSheetUrl)}">Open the Google Sheets copy link</a></li>`);
+      links.push(buttonLink(product.googleSheetUrl, 'Open Google Sheets copy'));
     }
     if (product.guideUrl) {
-      links.push(`<li><a href="${escapeHtml(product.guideUrl)}">Open the setup guide</a></li>`);
+      links.push(buttonLink(product.guideUrl, 'Open setup guide'));
     }
 
     return `
-      <div style="padding:18px 0;border-top:1px solid #eadfbd;">
-        <h2 style="font-size:18px;margin:0 0 8px;color:#0B1220;">${escapeHtml(product.name)}</h2>
-        <ul style="margin:0;padding-left:20px;line-height:1.8;">${links.join('')}</ul>
+      <div style="padding:22px 0;border-top:1px solid #eadfbd;">
+        <h2 style="font-size:18px;margin:0 0 12px;color:#0B1220;">${escapeHtml(product.name)}</h2>
+        <div style="display:flex;flex-direction:column;gap:10px;">${links.join('')}</div>
       </div>`;
   }).join('');
 
   const html = `
-    <div style="font-family:Arial,sans-serif;max-width:620px;margin:0 auto;color:#0B1220;line-height:1.6;">
-      <h1 style="font-size:24px;margin-bottom:8px;">Your AF Wealth Mindset download is ready</h1>
-      <p>Thank you for your purchase. Your product access links are below.</p>
-      ${productBlocks}
-      <p style="font-size:13px;color:#586071;">Transaction: ${escapeHtml(transactionId || 'Paddle')}</p>
-      <p>If you need help, reply to this email or contact <a href="mailto:${escapeHtml(supportEmail)}">${escapeHtml(supportEmail)}</a>.</p>
+    <div style="font-family:Arial,sans-serif;max-width:640px;margin:0 auto;color:#0B1220;line-height:1.6;background:#ffffff;">
+      <div style="padding:28px 28px 8px;border-bottom:4px solid #D7B46A;">
+        <p style="margin:0 0 6px;color:#7c6a36;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">AF Wealth Mindset</p>
+        <h1 style="font-size:25px;line-height:1.25;margin:0;color:#0B1220;">Your purchase is ready</h1>
+      </div>
+      <div style="padding:26px 28px;">
+        <p style="font-size:16px;margin:0 0 12px;">Hi ${greetingName},</p>
+        <p style="margin:0 0 18px;">Thank you for your purchase. Your product access is ready below.</p>
+        ${productBlocks}
+        <div style="margin-top:22px;padding:16px;background:#f7f4ea;border:1px solid #eadfbd;border-radius:10px;">
+          <p style="margin:0;font-size:14px;color:#4f5562;">Save this email so you can return to your files later. If a Google Sheets link opens, choose <strong>Make a copy</strong> to save it to your own Google Drive.</p>
+        </div>
+        <p style="font-size:13px;color:#586071;margin:22px 0 0;">Transaction: ${escapeHtml(transactionId || 'Paddle')}</p>
+        <p style="font-size:14px;margin:14px 0 0;">Need help? Reply to this email or contact <a href="mailto:${escapeHtml(supportEmail)}">${escapeHtml(supportEmail)}</a>.</p>
+      </div>
     </div>`;
 
   const text = [
-    'Your AF Wealth Mindset download is ready',
+    `Hi ${customerName ? firstName(customerName) : 'there'},`,
     '',
-    'Thank you for your purchase. Your product access links are below.',
+    'Thank you for your purchase. Your product access is ready below.',
     '',
     ...products.flatMap((product) => {
       const lines = [product.name];
       if (product.excelUrl) lines.push(`Excel: ${product.excelUrl}`);
-      if (product.googleSheetUrl) lines.push(`Google Sheets: ${product.googleSheetUrl}`);
+      if (product.googleSheetUrl) lines.push(`Google Sheets copy: ${product.googleSheetUrl}`);
       if (product.guideUrl) lines.push(`Guide: ${product.guideUrl}`);
       lines.push('');
       return lines;
     }),
+    'Save this email so you can return to your files later.',
     `Transaction: ${transactionId || 'Paddle'}`,
     `Support: ${supportEmail}`
   ].join('\n');
 
   return { html, text };
+}
+
+function buttonLink(url, label) {
+  return `<a href="${escapeHtml(url)}" style="display:inline-block;padding:12px 16px;background:#0B1220;color:#ffffff;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;">${escapeHtml(label)}</a>`;
+}
+
+function firstName(name) {
+  return String(name || '').trim().split(/\s+/)[0] || 'there';
 }
 
 function escapeHtml(value) {
@@ -234,12 +255,12 @@ function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
-async function sendDeliveryEmail(env, to, products, transactionId) {
+async function sendDeliveryEmail(env, to, products, transactionId, customerName) {
   if (!env.RESEND_API_KEY) throw new Error('Missing RESEND_API_KEY');
 
   const supportEmail = env.SUPPORT_EMAIL || 'sales@afwealthmindset.com';
   const fromEmail = env.FROM_EMAIL || `AF Wealth Mindset <${supportEmail}>`;
-  const message = buildDeliveryEmail(products, transactionId, supportEmail);
+  const message = buildDeliveryEmail(products, transactionId, supportEmail, customerName);
 
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -251,8 +272,8 @@ async function sendDeliveryEmail(env, to, products, transactionId) {
       from: fromEmail,
       to,
       subject: products.length === 1
-        ? `Your ${products[0].name} download is ready`
-        : 'Your AF Wealth Mindset downloads are ready',
+        ? `Your ${products[0].name} is ready`
+        : 'Your AF Wealth Mindset products are ready',
       html: message.html,
       text: message.text
     })
@@ -299,15 +320,15 @@ async function handlePaddleWebhook(request, env) {
     return json(request, { error: 'Product delivery links are missing', products: missingLinks.map((p) => p.name) }, 500);
   }
 
-  const customerEmail = await getCustomerEmail(event, env);
-  if (!customerEmail) {
+  const customer = await getCustomerDetails(event, env);
+  if (!customer.email) {
     return json(request, { error: 'Customer email not found. Add PADDLE_API_KEY so the Worker can fetch customer details.' }, 500);
   }
 
   const transactionId = event.data?.id || event.notification_id || event.event_id;
-  await sendDeliveryEmail(env, customerEmail, products, transactionId);
+  await sendDeliveryEmail(env, customer.email, products, transactionId, customer.name);
 
-  return json(request, { ok: true, delivered_to: customerEmail, products: products.map((product) => product.name) });
+  return json(request, { ok: true, delivered_to: customer.email, products: products.map((product) => product.name) });
 }
 
 async function handleTestDelivery(request, env) {
@@ -327,7 +348,7 @@ async function handleTestDelivery(request, env) {
 
   const productLinks = readProductLinks(env);
   const deliveryProduct = { ...product, ...(productLinks[priceId] || {}) };
-  await sendDeliveryEmail(env, body.email, [deliveryProduct], 'TEST-DELIVERY');
+  await sendDeliveryEmail(env, body.email, [deliveryProduct], 'TEST-DELIVERY', body.name || 'Test Buyer');
 
   return json(request, { ok: true, delivered_to: body.email, product: deliveryProduct.name });
 }
