@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>My Orders | AF Wealth Mindset</title>
+<title>Order Downloads | AF Wealth Mindset</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -14,103 +14,124 @@
   }
 </script>
 </head>
-<body class="dark:bg-background-dark font-display text-ivory antialiased min-h-screen flex flex-col">
-
-<!-- Header -->
-<header class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 bg-midnight/80 backdrop-blur-md border-b border-gold/10">
-  <button onclick="window.location.href='/profile.html'" class="flex items-center gap-2 text-ivory/60 hover:text-gold transition-colors text-sm">
-    <span class="material-symbols-outlined text-sm">arrow_back_ios</span> Profile
+<body class="dark:bg-background-dark font-display text-ivory antialiased min-h-screen">
+<header class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 bg-midnight/80 backdrop-blur-md border-b border-gold/10 lg:px-40">
+  <button onclick="window.location.href='/'" class="flex items-center gap-2 text-ivory/60 hover:text-gold transition-colors text-sm">
+    <span class="material-symbols-outlined text-sm">arrow_back_ios</span> Home
   </button>
-  <span class="text-gold font-bold tracking-widest uppercase text-sm">My Orders</span>
+  <span class="text-gold font-bold tracking-widest uppercase text-sm">Order Downloads</span>
   <div class="w-20"></div>
 </header>
 
-<main class="flex-1 w-full max-w-[640px] mx-auto px-4 py-8">
-
-  <!-- Success Banner -->
-  <div id="success-banner" class="hidden mb-6 p-4 bg-signature-teal/10 border border-signature-teal/30 rounded-xl flex items-center gap-3">
-    <span class="material-symbols-outlined text-signature-teal">check_circle</span>
-    <div>
-      <p class="font-bold text-signature-teal" id="success-title">Payment Successful!</p>
-      <p id="success-msg" class="text-ivory/60 text-sm"></p>
+<main class="w-full max-w-[720px] mx-auto px-4 py-8">
+  <section class="border border-gold/15 bg-white/[0.04] rounded-xl p-5 sm:p-7">
+    <div class="flex items-start gap-4">
+      <div class="w-12 h-12 rounded-lg bg-gold/10 border border-gold/20 flex items-center justify-center flex-shrink-0">
+        <span class="material-symbols-outlined text-gold">shopping_bag</span>
+      </div>
+      <div>
+        <h1 class="text-2xl font-extrabold text-ivory">Find your purchased files</h1>
+        <p class="text-ivory/55 text-sm mt-2 leading-6">Enter the email used at checkout and the Paddle transaction ID from your receipt or delivery email. Your matching product files will appear below.</p>
+      </div>
     </div>
-  </div>
 
-  <h2 class="text-2xl font-bold text-gold uppercase tracking-[0.1em] mb-8">Order History</h2>
+    <form id="lookup-form" class="mt-6 grid gap-4">
+      <label class="grid gap-2">
+        <span class="text-xs uppercase tracking-[0.18em] text-gold font-bold">Checkout email</span>
+        <input id="email" type="email" required autocomplete="email" placeholder="you@example.com" class="w-full rounded-lg border border-gold/20 bg-midnight/80 text-ivory placeholder:text-ivory/25 focus:border-gold focus:ring-gold"/>
+      </label>
+      <label class="grid gap-2">
+        <span class="text-xs uppercase tracking-[0.18em] text-gold font-bold">Transaction ID</span>
+        <input id="transactionId" type="text" required placeholder="txn_..." class="w-full rounded-lg border border-gold/20 bg-midnight/80 text-ivory placeholder:text-ivory/25 focus:border-gold focus:ring-gold"/>
+      </label>
+      <button id="submit-button" type="submit" class="mt-2 inline-flex items-center justify-center gap-2 rounded-lg bg-gold px-5 py-3 font-extrabold text-midnight hover:bg-gold/85 transition-colors">
+        <span class="material-symbols-outlined text-base">search</span>
+        Find My Files
+      </button>
+    </form>
 
-  <!-- Orders list -->
-  <div id="orders-list"></div>
+    <div id="message" class="hidden mt-5 rounded-lg border px-4 py-3 text-sm"></div>
+  </section>
 
-  <!-- Empty state -->
-  <div id="empty-state" class="hidden text-center py-16">
-    <span class="material-symbols-outlined text-gold/20 text-7xl mb-4">shopping_bag</span>
-    <h3 class="text-ivory/40 font-bold text-lg mb-2">No orders yet</h3>
-    <p class="text-ivory/30 text-sm mb-6">Your purchases will appear here after checkout.</p>
-    <button onclick="window.location.href='/'" class="bg-gold hover:bg-gold/80 text-midnight font-bold px-8 py-3 rounded-xl transition-all">
-      Browse Products
-    </button>
-  </div>
+  <section id="results" class="hidden mt-6">
+    <div class="flex items-center justify-between gap-4 mb-3">
+      <h2 class="text-lg font-extrabold text-gold">Your files</h2>
+      <span id="order-id" class="text-xs text-ivory/35"></span>
+    </div>
+    <div id="products" class="grid gap-4"></div>
+  </section>
+
+  <section class="mt-6 border border-signature-teal/15 bg-signature-teal/[0.04] rounded-xl p-5">
+    <div class="flex gap-3">
+      <span class="material-symbols-outlined text-signature-teal">support_agent</span>
+      <p class="text-sm text-ivory/55 leading-6">If your order cannot be found, forward your Paddle receipt to <a href="mailto:contact@afwealthmindset.com" class="text-signature-teal font-bold hover:underline">contact@afwealthmindset.com</a> and we will help you.</p>
+    </div>
+  </section>
 </main>
 
-<script src="/js/app.js"></script>
 <script>
-  const user = getCurrentUser();
-  if (!user) window.location.href = '/signup.html';
+const form = document.getElementById('lookup-form');
+const button = document.getElementById('submit-button');
+const message = document.getElementById('message');
+const results = document.getElementById('results');
+const productsEl = document.getElementById('products');
+const orderIdEl = document.getElementById('order-id');
 
-  // Show success banner if redirected from checkout
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('success') === '1') {
-    const banner = document.getElementById('success-banner');
-    banner.classList.remove('hidden');
-    const method = params.get('method');
-    if (method === 'bank') {
-      document.getElementById('success-title').textContent = 'Transfer Instructions Noted!';
-      document.getElementById('success-msg').textContent = 'Your order will be activated within 1-2 business days after we confirm your payment.';
-    } else {
-      document.getElementById('success-msg').textContent = 'Thank you for your purchase! Your digital product is ready for download.';
+function setMessage(text, type) {
+  message.textContent = text;
+  message.className = 'mt-5 rounded-lg border px-4 py-3 text-sm ' + (type === 'error'
+    ? 'border-red-400/25 bg-red-400/10 text-red-100'
+    : 'border-signature-teal/25 bg-signature-teal/10 text-signature-teal');
+  message.classList.remove('hidden');
+}
+
+function renderProducts(order) {
+  productsEl.innerHTML = '';
+  orderIdEl.textContent = order.transactionId || '';
+  order.products.forEach((product) => {
+    const links = [];
+    if (product.excelUrl) {
+      links.push(`<a href="${product.excelUrl}" class="inline-flex items-center justify-center gap-2 rounded-lg bg-gold px-4 py-3 font-extrabold text-midnight hover:bg-gold/85 transition-colors"><span class="material-symbols-outlined text-base">download</span>Download Excel</a>`);
     }
-  }
+    if (product.googleSheetUrl) {
+      links.push(`<a href="${product.googleSheetUrl}" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 rounded-lg border border-signature-teal/35 bg-signature-teal/10 px-4 py-3 font-extrabold text-signature-teal hover:bg-signature-teal hover:text-midnight transition-colors"><span class="material-symbols-outlined text-base">table</span>Open Google Sheet</a>`);
+    }
+    productsEl.innerHTML += `
+      <article class="rounded-xl border border-gold/15 bg-white/[0.04] p-5">
+        <h3 class="font-extrabold text-ivory">${product.name}</h3>
+        <div class="mt-4 grid gap-3 sm:grid-cols-2">${links.join('')}</div>
+      </article>`;
+  });
+  results.classList.remove('hidden');
+}
 
-  const orders = getOrders();
-  const list = document.getElementById('orders-list');
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  message.classList.add('hidden');
+  results.classList.add('hidden');
+  button.disabled = true;
+  button.innerHTML = '<span class="material-symbols-outlined text-base animate-spin">progress_activity</span>Checking order...';
 
-  if (orders.length === 0) {
-    document.getElementById('empty-state').classList.remove('hidden');
-  } else {
-    orders.forEach(order => {
-      const date = new Date(order.date);
-      const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-      const statusColor = order.status === 'Completed' ? 'text-signature-teal bg-signature-teal/10' :
-                          order.status === 'Pending' ? 'text-gold bg-gold/10' : 'text-ivory/50 bg-white/5';
-      list.innerHTML += `
-      <div class="bg-midnight border border-gold/10 rounded-xl p-5 mb-4 hover:border-gold/30 transition-all">
-        <div class="flex items-center gap-4">
-          <div class="w-16 h-16 rounded-lg bg-cover bg-center flex-shrink-0 border border-gold/10 bg-gold/5"
-            style="background-image: url('${order.productImage}')"></div>
-          <div class="flex-1 min-w-0">
-            <h3 class="font-bold text-ivory truncate">${order.productName}</h3>
-            <p class="text-ivory/40 text-xs mt-1">${order.id}</p>
-            <p class="text-ivory/40 text-xs">${dateStr} · ${order.paymentMethod}</p>
-          </div>
-          <div class="text-right flex-shrink-0">
-            <p class="font-bold text-gold">${formatPrice(order.amount)}</p>
-            <span class="inline-block mt-1 px-2 py-0.5 rounded-full text-xs font-bold ${statusColor}">${order.status}</span>
-          </div>
-        </div>
-        <div class="mt-4 pt-4 border-t border-gold/10 flex gap-3">
-          ${order.productId == 2 ? `
-          <a href="/downloads/money-control-code.pdf" download="The-Money-Control-Code.pdf"
-            class="flex-1 py-2 bg-gold/10 text-gold rounded-lg font-bold text-sm hover:bg-gold hover:text-midnight transition-all flex items-center justify-center gap-1">
-            <span class="material-symbols-outlined text-sm">download</span> Download PDF
-          </a>` : `
-          <button onclick="window.location.href='/product.html?id=${order.productId}'"
-            class="flex-1 py-2 bg-signature-teal/10 text-signature-teal rounded-lg font-bold text-sm hover:bg-signature-teal hover:text-midnight transition-all flex items-center justify-center gap-1">
-            <span class="material-symbols-outlined text-sm">open_in_new</span> Access Product
-          </button>`}
-        </div>
-      </div>`;
+  try {
+    const response = await fetch('/api/order-downloads', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: document.getElementById('email').value,
+        transactionId: document.getElementById('transactionId').value
+      })
     });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'We could not find that order.');
+    setMessage('Order found. Your files are ready below.', 'success');
+    renderProducts(data);
+  } catch (error) {
+    setMessage(error.message || 'We could not find that order.', 'error');
+  } finally {
+    button.disabled = false;
+    button.innerHTML = '<span class="material-symbols-outlined text-base">search</span>Find My Files';
   }
+});
 </script>
 </body>
 </html>
