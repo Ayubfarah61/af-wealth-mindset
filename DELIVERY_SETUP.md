@@ -10,6 +10,32 @@ The delivery flow is:
 4. The Worker finds the product that was bought.
 5. The Worker emails the customer the Excel and Google Sheets links.
 
+## Product Files Found Locally
+
+The Excel files are currently in:
+
+`D:\My site`
+
+Current file mapping:
+
+| Product | Paddle price ID | Local Excel file | Google Sheets link |
+|---|---|---|---|
+| The Ultimate Budget Planner | `pri_01kpqtwd3gxej4n3zmwj7q3jna` | `D:\My site\Monthly Budget Tracker Sample.xlsx` | `https://docs.google.com/spreadsheets/d/1hP7f4zWHZILUcW5G7xs1qCyqj1RmWed8/copy` |
+| The Profit Tracker | `pri_01kpr10frj3w82ek1jjbzrd9wn` | `D:\My site\Business bookkeeping.xlsx` | Not provided yet |
+| Debt Payoff Dashboard | `pri_01kpr12ct1sz1aqvnyweskx44x` | `D:\My site\Debt Payoff Dashboard  Excel Template Sample.xlsx` | `https://docs.google.com/spreadsheets/d/1xnBdyY61F-YCG5JbWnRbekjYAc0s8LzH/copy` |
+| 12-Month Cash Flow Budget | `pri_01kpr142by79r7r16pg9xgv570` | `D:\My site\12-Month Cash Flow Budget  Excel Template Sample.xlsx` | `https://docs.google.com/spreadsheets/d/1ZTNBP-eeR4L8q-2gggWt9GRSDCoAJ25m5TfdaKNtBk4/copy` |
+
+Important: three Excel files include `Sample` in the filename. Confirm these are the final buyer files before uploading them to Cloudflare R2.
+
+## Where The Files Should Go
+
+Do not put paid Excel files in the public GitHub repo.
+
+Use:
+
+- Excel files: Cloudflare R2 bucket, recommended bucket name `afwm-products`
+- Google Sheets: Google Drive copy links
+
 ## What Still Needs To Be Connected
 
 These values must be added in Cloudflare Worker secrets or environment variables.
@@ -43,27 +69,27 @@ Subscribe the webhook to:
 
 ### Required Product Links
 
-Add `PRODUCT_LINKS` as JSON.
+Add `PRODUCT_LINKS` as JSON in the Cloudflare Worker after the Excel files are uploaded to R2.
 
-Replace the placeholder links with the real Excel download links and Google Sheets copy links.
+Replace the `PASTE_*_EXCEL_R2_LINK` placeholders with the real R2 links.
 
 ```json
 {
   "pri_01kpqtwd3gxej4n3zmwj7q3jna": {
-    "excelUrl": "PASTE_BUDGET_PLANNER_EXCEL_LINK",
-    "googleSheetUrl": "PASTE_BUDGET_PLANNER_GOOGLE_SHEETS_COPY_LINK"
+    "excelUrl": "PASTE_BUDGET_PLANNER_EXCEL_R2_LINK",
+    "googleSheetUrl": "https://docs.google.com/spreadsheets/d/1hP7f4zWHZILUcW5G7xs1qCyqj1RmWed8/copy"
   },
   "pri_01kpr10frj3w82ek1jjbzrd9wn": {
-    "excelUrl": "PASTE_PROFIT_TRACKER_EXCEL_LINK",
-    "googleSheetUrl": "PASTE_PROFIT_TRACKER_GOOGLE_SHEETS_COPY_LINK"
+    "excelUrl": "PASTE_PROFIT_TRACKER_EXCEL_R2_LINK",
+    "googleSheetUrl": "PASTE_PROFIT_TRACKER_GOOGLE_SHEETS_COPY_LINK_IF_AVAILABLE"
   },
   "pri_01kpr12ct1sz1aqvnyweskx44x": {
-    "excelUrl": "PASTE_DEBT_DASHBOARD_EXCEL_LINK",
-    "googleSheetUrl": "PASTE_DEBT_DASHBOARD_GOOGLE_SHEETS_COPY_LINK"
+    "excelUrl": "PASTE_DEBT_DASHBOARD_EXCEL_R2_LINK",
+    "googleSheetUrl": "https://docs.google.com/spreadsheets/d/1xnBdyY61F-YCG5JbWnRbekjYAc0s8LzH/copy"
   },
   "pri_01kpr142by79r7r16pg9xgv570": {
-    "excelUrl": "PASTE_CASH_FLOW_BUDGET_EXCEL_LINK",
-    "googleSheetUrl": "PASTE_CASH_FLOW_BUDGET_GOOGLE_SHEETS_COPY_LINK"
+    "excelUrl": "PASTE_CASH_FLOW_BUDGET_EXCEL_R2_LINK",
+    "googleSheetUrl": "https://docs.google.com/spreadsheets/d/1ZTNBP-eeR4L8q-2gggWt9GRSDCoAJ25m5TfdaKNtBk4/copy"
   }
 }
 ```
