@@ -8,7 +8,7 @@ The delivery flow is:
 2. Paddle sends a webhook to the Cloudflare Worker.
 3. The Worker verifies the payment is real.
 4. The Worker finds the product that was bought.
-5. The Worker emails the customer the Excel and Google Sheets links.
+5. The Worker emails the customer the correct product links.
 
 ## Product Files Found Locally
 
@@ -21,7 +21,7 @@ Current file mapping:
 | Product | Paddle price ID | Local Excel file | Google Sheets link |
 |---|---|---|---|
 | The Ultimate Budget Planner | `pri_01kpqtwd3gxej4n3zmwj7q3jna` | `D:\My site\Monthly Budget Tracker Sample.xlsx` | `https://docs.google.com/spreadsheets/d/1hP7f4zWHZILUcW5G7xs1qCyqj1RmWed8/copy` |
-| The Profit Tracker | `pri_01kpr10frj3w82ek1jjbzrd9wn` | `D:\My site\Business bookkeeping.xlsx` | Not provided yet |
+| The Profit Tracker | `pri_01kpr10frj3w82ek1jjbzrd9wn` | `D:\My site\Business bookkeeping.xlsx` | Excel only |
 | Debt Payoff Dashboard | `pri_01kpr12ct1sz1aqvnyweskx44x` | `D:\My site\Debt Payoff Dashboard  Excel Template Sample.xlsx` | `https://docs.google.com/spreadsheets/d/1xnBdyY61F-YCG5JbWnRbekjYAc0s8LzH/copy` |
 | 12-Month Cash Flow Budget | `pri_01kpr142by79r7r16pg9xgv570` | `D:\My site\12-Month Cash Flow Budget  Excel Template Sample.xlsx` | `https://docs.google.com/spreadsheets/d/1ZTNBP-eeR4L8q-2gggWt9GRSDCoAJ25m5TfdaKNtBk4/copy` |
 
@@ -35,6 +35,18 @@ Use:
 
 - Excel files: Cloudflare R2 bucket, recommended bucket name `afwm-products`
 - Google Sheets: Google Drive copy links
+
+## Cloudflare Deployment
+
+The GitHub workflow now deploys both:
+
+- Cloudflare Pages website: `af-wealth-mindset`
+- Cloudflare Worker delivery API: `afwm-delivery-api`
+
+The Worker is routed to:
+
+- `https://afwealthmindset.com/api/*`
+- `https://www.afwealthmindset.com/api/*`
 
 ## What Still Needs To Be Connected
 
@@ -80,8 +92,7 @@ Replace the `PASTE_*_EXCEL_R2_LINK` placeholders with the real R2 links.
     "googleSheetUrl": "https://docs.google.com/spreadsheets/d/1hP7f4zWHZILUcW5G7xs1qCyqj1RmWed8/copy"
   },
   "pri_01kpr10frj3w82ek1jjbzrd9wn": {
-    "excelUrl": "PASTE_PROFIT_TRACKER_EXCEL_R2_LINK",
-    "googleSheetUrl": "PASTE_PROFIT_TRACKER_GOOGLE_SHEETS_COPY_LINK_IF_AVAILABLE"
+    "excelUrl": "PASTE_PROFIT_TRACKER_EXCEL_R2_LINK"
   },
   "pri_01kpr12ct1sz1aqvnyweskx44x": {
     "excelUrl": "PASTE_DEBT_DASHBOARD_EXCEL_R2_LINK",
