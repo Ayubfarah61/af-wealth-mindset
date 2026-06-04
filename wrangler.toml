@@ -1,3 +1,8 @@
 name = "afwm-delivery-api"
 main = "worker.js"
 compatibility_date = "2025-03-28"
+
+routes = [
+  { pattern = "afwealthmindset.com/api/*", zone_name = "afwealthmindset.com" },
+  { pattern = "www.afwealthmindset.com/api/*", zone_name = "afwealthmindset.com" }
+]
