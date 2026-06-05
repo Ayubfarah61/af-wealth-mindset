@@ -1,4 +1,4 @@
-// AF Wealth Mindset — Shared App Logic
+// AF Wealth Mindset â€” Shared App Logic
 
 // ============= SOCIAL LINKS =============
 var SOCIAL_LINKS = [
@@ -15,7 +15,7 @@ function renderSocialFooter(containerId) {
   var html = '';
   for (var i = 0; i < SOCIAL_LINKS.length; i++) {
     var s = SOCIAL_LINKS[i];
-    html += '<a style="color:#D7B46A;font-size:22px;transition:color 0.2s;" href="' + s.url + '" target="_blank" rel="noopener" title="' + s.title + '" onmouseover="this.style.color=\'#1FE6D1\'" onmouseout="this.style.color=\'#D7B46A\'">';
+    html += '<a style="color:#B88935;font-size:22px;transition:color 0.2s;" href="' + s.url + '" target="_blank" rel="noopener" title="' + s.title + '" onmouseover="this.style.color=\'#0F766E\'" onmouseout="this.style.color=\'#B88935\'">';
     html += '<i class="fa-brands ' + s.fa + '"></i></a>';
   }
   el.innerHTML = html;
@@ -25,7 +25,7 @@ function renderSocialFooter(containerId) {
 var PRODUCTS = [
   {
     id: 1,
-    name: 'Cashflow Secrets — The Course That Changes Everything',
+    name: 'Cashflow Secrets â€” The Course That Changes Everything',
     originalPrice: 400,
     price: 97,
     edition: '11-Module Digital Course',
@@ -33,11 +33,11 @@ var PRODUCTS = [
     affiliateUrl: 'https://moneyripples.com/cashflow-secrets-affiliate/?aff=AyubFarah67',
     image: '/images/product1.jpg',
     heroImage: '/images/product1.jpg',
-    description: 'Stop trading your time for money. Created by self-made millionaire Chris Miles (CNN Money, US News, Bankrate), Cashflow Secrets is the step-by-step system that takes you from financial stress to financial freedom — without a new job, side hustle, or extreme sacrifice.',
+    description: 'Stop trading your time for money. Created by self-made millionaire Chris Miles (CNN Money, US News, Bankrate), Cashflow Secrets is the step-by-step system that takes you from financial stress to financial freedom â€” without a new job, side hustle, or extreme sacrifice.',
     features: [
       { icon: 'play_circle',   title: '11 In-Depth Modules',            desc: 'Mindset, tracking, debt, passive income and more' },
-      { icon: 'calculate',     title: 'Cashflow Optimizer Spreadsheet', desc: 'Your personal financial command centre — FREE inside' },
-      { icon: 'verified_user', title: '60-Day Money-Back Guarantee',    desc: 'Zero risk — full refund if not satisfied' },
+      { icon: 'calculate',     title: 'Cashflow Optimizer Spreadsheet', desc: 'Your personal financial command centre â€” FREE inside' },
+      { icon: 'verified_user', title: '60-Day Money-Back Guarantee',    desc: 'Zero risk â€” full refund if not satisfied' },
       { icon: 'person',        title: 'By Chris Miles',                 desc: 'Self-made millionaire featured on CNN Money and US News' }
     ],
     modules: [
@@ -63,29 +63,29 @@ var PRODUCTS = [
     badge: 'New',
     image: '/images/product2.png',
     heroImage: '/images/product2.png',
-    description: 'The only spreadsheet you need to track income, expenses, budgets, and savings. Beautifully designed, fully automated, and built for real life. Comes with both Excel AND Google Sheets — use whichever you prefer.',
+    description: 'The only spreadsheet you need to track income, expenses, budgets, and savings. Beautifully designed, fully automated, and built for real life. Comes with both Excel AND Google Sheets â€” use whichever you prefer.',
     features: [
       { icon: 'bar_chart',      title: '11 Automated Charts',           desc: 'Beautiful dashboards that update as you type' },
       { icon: 'table_chart',    title: '8 Linked Sheets',               desc: 'Setup, Income, Expenses, Monthly, Annual & more' },
-      { icon: 'laptop',         title: 'Excel & Google Sheets',         desc: 'Both formats included — use whichever you prefer' },
-      { icon: 'verified_user',  title: '14-Day Money-Back Guarantee',   desc: 'Zero risk — full refund, no questions asked' }
+      { icon: 'laptop',         title: 'Excel & Google Sheets',         desc: 'Both formats included â€” use whichever you prefer' },
+      { icon: 'verified_user',  title: '14-Day Money-Back Guarantee',   desc: 'Zero risk â€” full refund, no questions asked' }
     ]
   },
   {
     id: 3,
-    name: 'The Profit Tracker™',
+    name: 'The Profit Trackerâ„¢',
     originalPrice: 49,
     price: 7.99,
     edition: 'Excel Template (.xlsx)',
     badge: 'New',
     image: '/images/product3.png',
     heroImage: '/images/product3.png',
-    description: 'The only bookkeeping spreadsheet your small business will ever need. Track income, expenses & profit automatically — with monthly, annual & 5-year growth dashboards. Delivered as Excel (.xlsx). One-time payment. Yours forever.',
+    description: 'The only bookkeeping spreadsheet your small business will ever need. Track income, expenses & profit automatically â€” with monthly, annual & 5-year growth dashboards. Delivered as Excel (.xlsx). One-time payment. Yours forever.',
     features: [
       { icon: 'attach_money',  title: 'Income & Expense Tracker',      desc: 'Every transaction auto-categorized and auto-totaled' },
       { icon: 'dashboard',     title: 'Monthly + Annual Dashboards',   desc: 'Beautiful auto-updating visuals for instant profit clarity' },
-      { icon: 'trending_up',   title: '5-Year Growth Dashboard',       desc: 'See your business trajectory — year over year, at a glance' },
-      { icon: 'verified_user', title: '14-Day Money-Back Guarantee',   desc: 'Zero risk — full refund, no questions asked' }
+      { icon: 'trending_up',   title: '5-Year Growth Dashboard',       desc: 'See your business trajectory â€” year over year, at a glance' },
+      { icon: 'verified_user', title: '14-Day Money-Back Guarantee',   desc: 'Zero risk â€” full refund, no questions asked' }
     ]
   },
   {
@@ -97,12 +97,12 @@ var PRODUCTS = [
     badge: 'New',
     image: '/images/product4.png',
     heroImage: '/images/product4.png',
-    description: 'The only spreadsheet that tracks up to 6 debt accounts, visualizes your payoff progress, and tells you exactly where to focus — all in one beautiful dashboard. 100% private. No apps. No subscriptions.',
+    description: 'The only spreadsheet that tracks up to 6 debt accounts, visualizes your payoff progress, and tells you exactly where to focus â€” all in one beautiful dashboard. 100% private. No apps. No subscriptions.',
     features: [
-      { icon: 'dashboard',     title: 'Real-Time Debt Dashboard',     desc: 'Every KPI auto-calculated — total debt, interest, net reduction' },
+      { icon: 'dashboard',     title: 'Real-Time Debt Dashboard',     desc: 'Every KPI auto-calculated â€” total debt, interest, net reduction' },
       { icon: 'flag',          title: 'Smart Priority Alerts',        desc: 'Built-in logic flags your highest-interest debt automatically' },
       { icon: 'trending_down', title: 'Visual Progress Charts',       desc: 'Watch your total debt curve downward month by month' },
-      { icon: 'verified_user', title: '14-Day Money-Back Guarantee',  desc: 'Zero risk — full refund, no questions asked' }
+      { icon: 'verified_user', title: '14-Day Money-Back Guarantee',  desc: 'Zero risk â€” full refund, no questions asked' }
     ]
   },
   {
@@ -114,12 +114,12 @@ var PRODUCTS = [
     badge: 'New',
     image: '/images/product5.png',
     heroImage: '/images/product5.png',
-    description: 'Take full control of your money — track every dollar in, every dollar out, and always know where you stand. 12 months of inflows & outflows with an executive-level dashboard and a minimum balance safety alert.',
+    description: 'Take full control of your money â€” track every dollar in, every dollar out, and always know where you stand. 12 months of inflows & outflows with an executive-level dashboard and a minimum balance safety alert.',
     features: [
       { icon: 'account_balance_wallet', title: '12-Month Cash Flow Sheet',  desc: 'Every inflow & outflow tracked side-by-side, auto-calculated' },
-      { icon: 'dashboard',              title: 'Executive Dashboard',        desc: '6 live KPI tiles — inflows, outflows, net, growth %, best month' },
+      { icon: 'dashboard',              title: 'Executive Dashboard',        desc: '6 live KPI tiles â€” inflows, outflows, net, growth %, best month' },
       { icon: 'warning',                title: 'Minimum Balance Alert',      desc: 'Custom threshold warns you before any month dips too low' },
-      { icon: 'verified_user',          title: '14-Day Money-Back Guarantee', desc: 'Zero risk — full refund, no questions asked' }
+      { icon: 'verified_user',          title: '14-Day Money-Back Guarantee', desc: 'Zero risk â€” full refund, no questions asked' }
     ]
   }
 ];
