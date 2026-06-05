@@ -1,4 +1,98 @@
-// AF Wealth Mindset â€” Shared App Logic
+// AF Wealth Mindset - Shared App Logic
+
+// Unified rich finance palette used across the full website.
+var AFWM_THEME = {
+  background: '#F8F6F1',
+  surface: '#FFFFFF',
+  text: '#102033',
+  muted: '#667085',
+  navy: '#0B1F33',
+  teal: '#0E7C75',
+  gold: '#B88A2E',
+  border: '#E5DED2'
+};
+
+function applyUnifiedTheme() {
+  if (!document.getElementById('afwm-unified-theme')) {
+    var css = document.createElement('style');
+    css.id = 'afwm-unified-theme';
+    css.textContent = `
+      :root { color-scheme: light; }
+      html, body { background: ${AFWM_THEME.background} !important; color: ${AFWM_THEME.text} !important; }
+      body, p, span, div, li, summary, input, textarea { color: ${AFWM_THEME.text}; }
+      header { background: rgba(255,255,255,0.96) !important; border-bottom: 1px solid ${AFWM_THEME.border} !important; }
+      footer { background: ${AFWM_THEME.surface} !important; border-top: 1px solid ${AFWM_THEME.border} !important; }
+      main { background: transparent !important; }
+      .bg-midnight, .bg-midnight\/40, .bg-midnight\/80, .dark\:bg-background-dark { background-color: ${AFWM_THEME.background} !important; }
+      .text-ivory, .text-ivory\/30, .text-ivory\/40, .text-ivory\/50, .text-ivory\/60, .text-ivory\/70 { color: ${AFWM_THEME.text} !important; }
+      .text-gold, .hover\:text-gold:hover { color: ${AFWM_THEME.gold} !important; }
+      .text-signature-teal { color: ${AFWM_THEME.teal} !important; }
+      .bg-gold { background-color: ${AFWM_THEME.gold} !important; }
+      .bg-signature-teal, .bg-signature-teal\/10, .hover\:bg-signature-teal\/20:hover { background-color: rgba(14,124,117,0.10) !important; }
+      .border-gold\/10, .border-gold\/15, .border-gold\/20, .border-gold\/25, .border-gold\/30 { border-color: ${AFWM_THEME.border} !important; }
+      .border-signature-teal\/15, .border-signature-teal\/20, .border-signature-teal\/30 { border-color: rgba(14,124,117,0.24) !important; }
+      section, details, [class*="rounded"], [style*="border-radius"] { border-color: ${AFWM_THEME.border}; }
+      input { background: ${AFWM_THEME.surface} !important; color: ${AFWM_THEME.text} !important; border-color: ${AFWM_THEME.border} !important; }
+      button, a { text-decoration-thickness: 1px; }
+      button[onclick*="buyNow"], a[href*="moneyripples"], a[style*="Go to Partner"], button[style*="Get Access"], button[style*="GET INSTANT"] {
+        background: ${AFWM_THEME.teal} !important;
+        color: #FFFFFF !important;
+        border-color: ${AFWM_THEME.teal} !important;
+      }
+      [style*="#0B1220"], [style*="rgba(11,18,32"] { background: ${AFWM_THEME.surface} !important; }
+      [style*="#F6F1E7"] { color: ${AFWM_THEME.text} !important; }
+      [style*="rgba(246,241,231"] { color: ${AFWM_THEME.muted} !important; }
+      [style*="#D7B46A"] { color: ${AFWM_THEME.gold} !important; }
+      [style*="rgba(215,180,106"] { border-color: ${AFWM_THEME.border} !important; }
+      [style*="#1FE6D1"] { color: ${AFWM_THEME.teal} !important; }
+      [style*="rgba(31,230,209"] { border-color: rgba(14,124,117,0.24) !important; }
+      h1, h2, h3, h4, strong { color: ${AFWM_THEME.text} !important; }
+      h1 span, h2 span, .text-gold, [class*="text-gold"] { color: ${AFWM_THEME.gold} !important; }
+      p { line-height: 1.65; }
+    `;
+    document.head.appendChild(css);
+  }
+
+  var replacements = [
+    [/#0B1220/gi, '#FFFFFF'],
+    [/#F6F1E7/gi, AFWM_THEME.text],
+    [/#D7B46A/gi, AFWM_THEME.gold],
+    [/#1FE6D1/gi, AFWM_THEME.teal],
+    [/rgba\(11,18,32,([^)]+)\)/gi, 'rgba(255,255,255,$1)'],
+    [/rgba\(246,241,231,([^)]+)\)/gi, 'rgba(102,112,133,$1)'],
+    [/rgba\(215,180,106,([^)]+)\)/gi, 'rgba(184,138,46,$1)'],
+    [/rgba\(31,230,209,([^)]+)\)/gi, 'rgba(14,124,117,$1)']
+  ];
+
+  var all = document.querySelectorAll('[style]');
+  for (var i = 0; i < all.length; i++) {
+    var style = all[i].getAttribute('style');
+    var next = style;
+    for (var r = 0; r < replacements.length; r++) next = next.replace(replacements[r][0], replacements[r][1]);
+    if (next !== style) all[i].setAttribute('style', next);
+  }
+
+  var cards = document.querySelectorAll('section, details, [style*="border-radius"], .rounded-xl, .rounded-2xl');
+  for (var c = 0; c < cards.length; c++) {
+    var el = cards[c];
+    if (!el.closest('button') && !el.closest('a')) {
+      if (!el.style.background || el.style.background.indexOf('linear-gradient') === -1) el.style.backgroundColor = AFWM_THEME.surface;
+      el.style.borderColor = AFWM_THEME.border;
+    }
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', applyUnifiedTheme);
+} else {
+  applyUnifiedTheme();
+}
+window.addEventListener('load', function() {
+  applyUnifiedTheme();
+  setTimeout(applyUnifiedTheme, 250);
+  setTimeout(applyUnifiedTheme, 900);
+});
+setInterval(applyUnifiedTheme, 1500);
 
 // ============= SOCIAL LINKS =============
 var SOCIAL_LINKS = [
@@ -15,7 +109,7 @@ function renderSocialFooter(containerId) {
   var html = '';
   for (var i = 0; i < SOCIAL_LINKS.length; i++) {
     var s = SOCIAL_LINKS[i];
-    html += '<a style="color:#B88935;font-size:22px;transition:color 0.2s;" href="' + s.url + '" target="_blank" rel="noopener" title="' + s.title + '" onmouseover="this.style.color=\'#0F766E\'" onmouseout="this.style.color=\'#B88935\'">';
+    html += '<a style="color:' + AFWM_THEME.gold + ';font-size:22px;transition:color 0.2s;" href="' + s.url + '" target="_blank" rel="noopener" title="' + s.title + '" onmouseover="this.style.color=\'' + AFWM_THEME.teal + '\'" onmouseout="this.style.color=\'' + AFWM_THEME.gold + '\'">';
     html += '<i class="fa-brands ' + s.fa + '"></i></a>';
   }
   el.innerHTML = html;
@@ -25,7 +119,7 @@ function renderSocialFooter(containerId) {
 var PRODUCTS = [
   {
     id: 1,
-    name: 'Cashflow Secrets â€” The Course That Changes Everything',
+    name: 'Cashflow Secrets - The Course That Changes Everything',
     originalPrice: 400,
     price: 97,
     edition: '11-Module Digital Course',
@@ -33,25 +127,12 @@ var PRODUCTS = [
     affiliateUrl: 'https://moneyripples.com/cashflow-secrets-affiliate/?aff=AyubFarah67',
     image: '/images/product1.jpg',
     heroImage: '/images/product1.jpg',
-    description: 'Stop trading your time for money. Created by self-made millionaire Chris Miles (CNN Money, US News, Bankrate), Cashflow Secrets is the step-by-step system that takes you from financial stress to financial freedom â€” without a new job, side hustle, or extreme sacrifice.',
+    description: 'Stop trading your time for money. Cashflow Secrets is a step-by-step system that helps you understand cash flow, debt, and financial freedom without a new job or extreme sacrifice.',
     features: [
       { icon: 'play_circle',   title: '11 In-Depth Modules',            desc: 'Mindset, tracking, debt, passive income and more' },
-      { icon: 'calculate',     title: 'Cashflow Optimizer Spreadsheet', desc: 'Your personal financial command centre â€” FREE inside' },
-      { icon: 'verified_user', title: '60-Day Money-Back Guarantee',    desc: 'Zero risk â€” full refund if not satisfied' },
+      { icon: 'calculate',     title: 'Cashflow Optimizer Spreadsheet', desc: 'Your personal financial command centre included' },
+      { icon: 'verified_user', title: '60-Day Money-Back Guarantee',    desc: 'Full refund if not satisfied' },
       { icon: 'person',        title: 'By Chris Miles',                 desc: 'Self-made millionaire featured on CNN Money and US News' }
-    ],
-    modules: [
-      'What Needs to Change (Introduction)',
-      'The Scarcity Mindset Dilemma',
-      'Track and Plan Your Spending (Without Budgeting)',
-      'Sell Your Unused Assets',
-      'Insurance Savings Secrets',
-      'Hidden Tax Savings',
-      'Good Debt vs. Bad Debt',
-      'Passive vs. Active Income',
-      'Infinite Banking and Double Arbitrage',
-      'Using Mint to Track Spending',
-      'Cashflow Optimization + Spreadsheet'
     ]
   },
   {
@@ -63,29 +144,29 @@ var PRODUCTS = [
     badge: 'New',
     image: '/images/product2.png',
     heroImage: '/images/product2.png',
-    description: 'The only spreadsheet you need to track income, expenses, budgets, and savings. Beautifully designed, fully automated, and built for real life. Comes with both Excel AND Google Sheets â€” use whichever you prefer.',
+    description: 'Track income, expenses, budgets, and savings with a clean automated spreadsheet built for real life. Excel and Google Sheets are both included.',
     features: [
-      { icon: 'bar_chart',      title: '11 Automated Charts',           desc: 'Beautiful dashboards that update as you type' },
-      { icon: 'table_chart',    title: '8 Linked Sheets',               desc: 'Setup, Income, Expenses, Monthly, Annual & more' },
-      { icon: 'laptop',         title: 'Excel & Google Sheets',         desc: 'Both formats included â€” use whichever you prefer' },
-      { icon: 'verified_user',  title: '14-Day Money-Back Guarantee',   desc: 'Zero risk â€” full refund, no questions asked' }
+      { icon: 'bar_chart',      title: '11 Automated Charts',           desc: 'Dashboards that update as you type' },
+      { icon: 'table_chart',    title: '8 Linked Sheets',               desc: 'Setup, Income, Expenses, Monthly, Annual and more' },
+      { icon: 'laptop',         title: 'Excel & Google Sheets',         desc: 'Both formats included' },
+      { icon: 'verified_user',  title: '14-Day Money-Back Guarantee',   desc: 'Full refund, no questions asked' }
     ]
   },
   {
     id: 3,
-    name: 'The Profit Trackerâ„¢',
+    name: 'The Profit Tracker',
     originalPrice: 49,
     price: 7.99,
     edition: 'Excel Template (.xlsx)',
     badge: 'New',
     image: '/images/product3.png',
     heroImage: '/images/product3.png',
-    description: 'The only bookkeeping spreadsheet your small business will ever need. Track income, expenses & profit automatically â€” with monthly, annual & 5-year growth dashboards. Delivered as Excel (.xlsx). One-time payment. Yours forever.',
+    description: 'Track income, expenses, profit, and growth with monthly, annual, and 5-year dashboards. Delivered as an Excel file.',
     features: [
-      { icon: 'attach_money',  title: 'Income & Expense Tracker',      desc: 'Every transaction auto-categorized and auto-totaled' },
-      { icon: 'dashboard',     title: 'Monthly + Annual Dashboards',   desc: 'Beautiful auto-updating visuals for instant profit clarity' },
-      { icon: 'trending_up',   title: '5-Year Growth Dashboard',       desc: 'See your business trajectory â€” year over year, at a glance' },
-      { icon: 'verified_user', title: '14-Day Money-Back Guarantee',   desc: 'Zero risk â€” full refund, no questions asked' }
+      { icon: 'attach_money',  title: 'Income & Expense Tracker',      desc: 'Transactions auto-categorized and auto-totaled' },
+      { icon: 'dashboard',     title: 'Monthly + Annual Dashboards',   desc: 'Auto-updating visuals for profit clarity' },
+      { icon: 'trending_up',   title: '5-Year Growth Dashboard',       desc: 'See your business trend over time' },
+      { icon: 'verified_user', title: '14-Day Money-Back Guarantee',   desc: 'Full refund, no questions asked' }
     ]
   },
   {
@@ -97,12 +178,12 @@ var PRODUCTS = [
     badge: 'New',
     image: '/images/product4.png',
     heroImage: '/images/product4.png',
-    description: 'The only spreadsheet that tracks up to 6 debt accounts, visualizes your payoff progress, and tells you exactly where to focus â€” all in one beautiful dashboard. 100% private. No apps. No subscriptions.',
+    description: 'Track up to 6 debt accounts, visualize payoff progress, and see where to focus first. Private, simple, and subscription-free.',
     features: [
-      { icon: 'dashboard',     title: 'Real-Time Debt Dashboard',     desc: 'Every KPI auto-calculated â€” total debt, interest, net reduction' },
-      { icon: 'flag',          title: 'Smart Priority Alerts',        desc: 'Built-in logic flags your highest-interest debt automatically' },
-      { icon: 'trending_down', title: 'Visual Progress Charts',       desc: 'Watch your total debt curve downward month by month' },
-      { icon: 'verified_user', title: '14-Day Money-Back Guarantee',  desc: 'Zero risk â€” full refund, no questions asked' }
+      { icon: 'dashboard',     title: 'Real-Time Debt Dashboard',     desc: 'Total debt, interest, and net reduction' },
+      { icon: 'flag',          title: 'Smart Priority Alerts',        desc: 'Flags your highest-interest debt automatically' },
+      { icon: 'trending_down', title: 'Visual Progress Charts',       desc: 'Watch debt move downward month by month' },
+      { icon: 'verified_user', title: '14-Day Money-Back Guarantee',  desc: 'Full refund, no questions asked' }
     ]
   },
   {
@@ -114,12 +195,12 @@ var PRODUCTS = [
     badge: 'New',
     image: '/images/product5.png',
     heroImage: '/images/product5.png',
-    description: 'Take full control of your money â€” track every dollar in, every dollar out, and always know where you stand. 12 months of inflows & outflows with an executive-level dashboard and a minimum balance safety alert.',
+    description: 'Plan money coming in and money going out across a full year, with a dashboard and low-balance alert.',
     features: [
-      { icon: 'account_balance_wallet', title: '12-Month Cash Flow Sheet',  desc: 'Every inflow & outflow tracked side-by-side, auto-calculated' },
-      { icon: 'dashboard',              title: 'Executive Dashboard',        desc: '6 live KPI tiles â€” inflows, outflows, net, growth %, best month' },
-      { icon: 'warning',                title: 'Minimum Balance Alert',      desc: 'Custom threshold warns you before any month dips too low' },
-      { icon: 'verified_user',          title: '14-Day Money-Back Guarantee', desc: 'Zero risk â€” full refund, no questions asked' }
+      { icon: 'account_balance_wallet', title: '12-Month Cash Flow Sheet',  desc: 'Inflows and outflows tracked side-by-side' },
+      { icon: 'dashboard',              title: 'Executive Dashboard',        desc: 'Live KPI tiles and charts' },
+      { icon: 'warning',                title: 'Minimum Balance Alert',      desc: 'Warns before a month dips too low' },
+      { icon: 'verified_user',          title: '14-Day Money-Back Guarantee', desc: 'Full refund, no questions asked' }
     ]
   }
 ];
@@ -218,4 +299,5 @@ function initHeader() {
     link.textContent = 'Sign Up';
     link.href = '/signup.html';
   }
+  applyUnifiedTheme();
 }
