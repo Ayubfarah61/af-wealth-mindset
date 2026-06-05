@@ -1,6 +1,6 @@
 // AF Wealth Mindset - Shared App Logic
 
-// Unified rich finance palette used across the full website.
+// One readable finance palette for the full website.
 var AFWM_THEME = {
   background: '#F8F6F1',
   surface: '#FFFFFF',
@@ -9,8 +9,100 @@ var AFWM_THEME = {
   navy: '#0B1F33',
   teal: '#0E7C75',
   gold: '#B88A2E',
-  border: '#E5DED2'
+  border: '#E5DED2',
+  danger: '#C2413B'
 };
+
+function afwmIsHomePage() {
+  var path = window.location.pathname.replace(/\/+/g, '/');
+  return path === '/' || path === '/index.html' || path.endsWith('/index.html');
+}
+
+function afwmMoneyFormat(n) {
+  return '$' + parseFloat(n).toFixed(2).replace('.00', '');
+}
+
+function setReadableStyle(el) {
+  if (!el || !el.style) return;
+  var style = (el.getAttribute('style') || '').toLowerCase();
+  var text = (el.textContent || '').trim();
+  var isButton = el.matches('button, a, [role="button"]') || el.closest('button');
+  var isCta = isButton && (style.indexOf('1fe6d1') !== -1 || style.indexOf('buyNow') !== -1 || text.indexOf('GET') !== -1 || text.indexOf('Access') !== -1 || text.indexOf('Partner') !== -1);
+
+  if (style.indexOf('#0b1220') !== -1 || style.indexOf('rgba(11,18,32') !== -1 || style.indexOf('rgba(11, 18, 32') !== -1) {
+    if (!isCta) {
+      el.style.background = AFWM_THEME.surface;
+      el.style.backgroundColor = AFWM_THEME.surface;
+    }
+  }
+  if (style.indexOf('#f6f1e7') !== -1) el.style.color = AFWM_THEME.text;
+  if (style.indexOf('rgba(246,241,231') !== -1 || style.indexOf('rgba(246, 241, 231') !== -1) el.style.color = AFWM_THEME.muted;
+  if (style.indexOf('#d7b46a') !== -1) el.style.color = AFWM_THEME.gold;
+  if (style.indexOf('#1fe6d1') !== -1) el.style.color = AFWM_THEME.teal;
+
+  if (style.indexOf('rgba(215,180,106') !== -1 || style.indexOf('rgba(215, 180, 106') !== -1) el.style.borderColor = AFWM_THEME.border;
+  if (style.indexOf('rgba(31,230,209') !== -1 || style.indexOf('rgba(31, 230, 209') !== -1) el.style.borderColor = 'rgba(14,124,117,0.24)';
+
+  if (isCta) {
+    el.style.background = AFWM_THEME.teal;
+    el.style.backgroundColor = AFWM_THEME.teal;
+    el.style.color = '#FFFFFF';
+    el.style.borderColor = AFWM_THEME.teal;
+    el.style.boxShadow = '0 10px 24px rgba(14,124,117,0.18)';
+  }
+}
+
+function simplifyHomePage() {
+  if (!afwmIsHomePage()) return;
+
+  var hero = document.querySelector('main > div[style*="radial-gradient"]');
+  if (hero) {
+    hero.style.padding = '22px 18px 18px';
+    hero.style.marginBottom = '8px';
+    hero.style.background = 'linear-gradient(135deg,#FFFFFF 0%,#F8F6F1 68%,rgba(14,124,117,0.08) 100%)';
+    hero.style.border = '1px solid ' + AFWM_THEME.border;
+    hero.style.borderRadius = '14px';
+    var logo = hero.querySelector('img');
+    if (logo) {
+      logo.style.width = '112px';
+      logo.style.height = '112px';
+    }
+    var title = hero.querySelector('h1');
+    if (title) {
+      title.style.marginTop = '8px';
+      title.style.color = AFWM_THEME.gold;
+      title.style.fontSize = '1rem';
+    }
+    var sub = hero.querySelector('p');
+    if (sub) {
+      sub.style.color = AFWM_THEME.muted;
+      sub.style.textAlign = 'center';
+      sub.style.maxWidth = '680px';
+    }
+  }
+
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section, main > div'));
+  for (var i = 0; i < sections.length; i++) {
+    var txt = (sections[i].textContent || '').replace(/\s+/g, ' ').trim();
+    if (txt.indexOf('Pick the template that matches') !== -1 || txt.indexOf('Spreadsheet Systems That Make Money Clear') !== -1) {
+      sections[i].style.display = 'none';
+    }
+  }
+
+  var productList = null;
+  var divs = document.querySelectorAll('main > div');
+  for (var j = 0; j < divs.length; j++) {
+    if ((divs[j].textContent || '').indexOf('Cashflow Secrets') !== -1 && (divs[j].textContent || '').indexOf('Ultimate Budget Planner') !== -1) {
+      productList = divs[j];
+      break;
+    }
+  }
+  if (productList) {
+    productList.style.marginTop = '14px';
+    productList.style.marginBottom = '42px';
+    productList.style.gap = '12px';
+  }
+}
 
 function applyUnifiedTheme() {
   if (!document.getElementById('afwm-unified-theme')) {
@@ -20,86 +112,84 @@ function applyUnifiedTheme() {
       :root { color-scheme: light; }
       html, body { background: ${AFWM_THEME.background} !important; color: ${AFWM_THEME.text} !important; }
       body, p, span, div, li, summary, input, textarea { color: ${AFWM_THEME.text}; }
-      header { background: rgba(255,255,255,0.96) !important; border-bottom: 1px solid ${AFWM_THEME.border} !important; }
+      header { background: rgba(255,255,255,0.97) !important; border-bottom: 1px solid ${AFWM_THEME.border} !important; }
       footer { background: ${AFWM_THEME.surface} !important; border-top: 1px solid ${AFWM_THEME.border} !important; }
       main { background: transparent !important; }
       .bg-midnight, .bg-midnight\/40, .bg-midnight\/80, .dark\:bg-background-dark { background-color: ${AFWM_THEME.background} !important; }
+      .bg-white { background-color: ${AFWM_THEME.surface} !important; }
       .text-ivory, .text-ivory\/30, .text-ivory\/40, .text-ivory\/50, .text-ivory\/60, .text-ivory\/70 { color: ${AFWM_THEME.text} !important; }
-      .text-gold, .hover\:text-gold:hover { color: ${AFWM_THEME.gold} !important; }
-      .text-signature-teal { color: ${AFWM_THEME.teal} !important; }
-      .bg-gold { background-color: ${AFWM_THEME.gold} !important; }
+      .text-gold, .hover\:text-gold:hover, [class*="text-gold"] { color: ${AFWM_THEME.gold} !important; }
+      .text-signature-teal, [class*="text-signature-teal"] { color: ${AFWM_THEME.teal} !important; }
+      .bg-gold { background-color: ${AFWM_THEME.gold} !important; color: ${AFWM_THEME.navy} !important; }
       .bg-signature-teal, .bg-signature-teal\/10, .hover\:bg-signature-teal\/20:hover { background-color: rgba(14,124,117,0.10) !important; }
       .border-gold\/10, .border-gold\/15, .border-gold\/20, .border-gold\/25, .border-gold\/30 { border-color: ${AFWM_THEME.border} !important; }
       .border-signature-teal\/15, .border-signature-teal\/20, .border-signature-teal\/30 { border-color: rgba(14,124,117,0.24) !important; }
       section, details, [class*="rounded"], [style*="border-radius"] { border-color: ${AFWM_THEME.border}; }
       input { background: ${AFWM_THEME.surface} !important; color: ${AFWM_THEME.text} !important; border-color: ${AFWM_THEME.border} !important; }
-      button, a { text-decoration-thickness: 1px; }
-      button[onclick*="buyNow"], a[href*="moneyripples"], a[style*="Go to Partner"], button[style*="Get Access"], button[style*="GET INSTANT"] {
+      h1, h2, h3, h4, strong { color: ${AFWM_THEME.text} !important; }
+      h1 span, h2 span, .price, [class*="text-gold"] { color: ${AFWM_THEME.gold} !important; }
+      p { line-height: 1.65; }
+      a { text-decoration-thickness: 1px; }
+      button[onclick*="buyNow"], a[href*="moneyripples"], button[style*="GET"], button[style*="Access"], a[style*="Partner"] {
         background: ${AFWM_THEME.teal} !important;
         color: #FFFFFF !important;
         border-color: ${AFWM_THEME.teal} !important;
       }
-      [style*="#0B1220"], [style*="rgba(11,18,32"] { background: ${AFWM_THEME.surface} !important; }
-      [style*="#F6F1E7"] { color: ${AFWM_THEME.text} !important; }
-      [style*="rgba(246,241,231"] { color: ${AFWM_THEME.muted} !important; }
-      [style*="#D7B46A"] { color: ${AFWM_THEME.gold} !important; }
-      [style*="rgba(215,180,106"] { border-color: ${AFWM_THEME.border} !important; }
-      [style*="#1FE6D1"] { color: ${AFWM_THEME.teal} !important; }
-      [style*="rgba(31,230,209"] { border-color: rgba(14,124,117,0.24) !important; }
-      h1, h2, h3, h4, strong { color: ${AFWM_THEME.text} !important; }
-      h1 span, h2 span, .text-gold, [class*="text-gold"] { color: ${AFWM_THEME.gold} !important; }
-      p { line-height: 1.65; }
+      @media (max-width: 640px) {
+        main { padding-left: 14px !important; padding-right: 14px !important; }
+        h1 { font-size: clamp(1.75rem, 9vw, 2.7rem) !important; line-height: 1.08 !important; }
+        h2 { line-height: 1.16 !important; }
+        button, a { max-width: 100%; }
+      }
     `;
     document.head.appendChild(css);
   }
 
-  var replacements = [
-    [/#0B1220/gi, '#FFFFFF'],
-    [/#F6F1E7/gi, AFWM_THEME.text],
-    [/#D7B46A/gi, AFWM_THEME.gold],
-    [/#1FE6D1/gi, AFWM_THEME.teal],
-    [/rgba\(11,18,32,([^)]+)\)/gi, 'rgba(255,255,255,$1)'],
-    [/rgba\(246,241,231,([^)]+)\)/gi, 'rgba(102,112,133,$1)'],
-    [/rgba\(215,180,106,([^)]+)\)/gi, 'rgba(184,138,46,$1)'],
-    [/rgba\(31,230,209,([^)]+)\)/gi, 'rgba(14,124,117,$1)']
-  ];
+  document.documentElement.classList.remove('dark');
+  document.body.style.background = AFWM_THEME.background;
+  document.body.style.color = AFWM_THEME.text;
 
-  var all = document.querySelectorAll('[style]');
-  for (var i = 0; i < all.length; i++) {
-    var style = all[i].getAttribute('style');
-    var next = style;
-    for (var r = 0; r < replacements.length; r++) next = next.replace(replacements[r][0], replacements[r][1]);
-    if (next !== style) all[i].setAttribute('style', next);
-  }
+  var styled = document.querySelectorAll('[style]');
+  for (var i = 0; i < styled.length; i++) setReadableStyle(styled[i]);
 
   var cards = document.querySelectorAll('section, details, [style*="border-radius"], .rounded-xl, .rounded-2xl');
   for (var c = 0; c < cards.length; c++) {
     var el = cards[c];
     if (!el.closest('button') && !el.closest('a')) {
-      if (!el.style.background || el.style.background.indexOf('linear-gradient') === -1) el.style.backgroundColor = AFWM_THEME.surface;
+      var bg = (el.style.background || '').toLowerCase();
+      if (bg.indexOf('linear-gradient') === -1 && bg.indexOf('radial-gradient') === -1) el.style.backgroundColor = AFWM_THEME.surface;
       el.style.borderColor = AFWM_THEME.border;
     }
   }
+
+  simplifyHomePage();
+}
+
+function scheduleTheme() {
+  applyUnifiedTheme();
+  setTimeout(applyUnifiedTheme, 150);
+  setTimeout(applyUnifiedTheme, 500);
+  setTimeout(applyUnifiedTheme, 1200);
 }
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', applyUnifiedTheme);
+  document.addEventListener('DOMContentLoaded', scheduleTheme);
 } else {
-  applyUnifiedTheme();
+  scheduleTheme();
 }
-window.addEventListener('load', function() {
-  applyUnifiedTheme();
-  setTimeout(applyUnifiedTheme, 250);
-  setTimeout(applyUnifiedTheme, 900);
-});
-setInterval(applyUnifiedTheme, 1500);
+window.addEventListener('load', scheduleTheme);
+var afwmThemeInterval = setInterval(applyUnifiedTheme, 1200);
+if (window.MutationObserver) {
+  var afwmObserver = new MutationObserver(function() { scheduleTheme(); });
+  afwmObserver.observe(document.documentElement, { childList: true, subtree: true });
+}
 
 // ============= SOCIAL LINKS =============
 var SOCIAL_LINKS = [
   { fa: 'fa-tiktok',     url: 'https://www.tiktok.com/@afwealthsystems',    title: 'TikTok' },
   { fa: 'fa-youtube',    url: 'https://www.youtube.com/@afwealthmindset',   title: 'YouTube' },
   { fa: 'fa-instagram',  url: 'https://www.instagram.com/afwealthmindset/', title: 'Instagram' },
-  { fa: 'fa-facebook',   url: 'https://www.facebook.com/AFWealthMidnset',   title: 'Facebook' },
+  { fa: 'fa-facebook',   url: 'https://www.facebook.com/AFWealthMindset',   title: 'Facebook' },
   { fa: 'fa-x-twitter',  url: 'https://x.com/AFWealth67',                   title: 'X / Twitter' }
 ];
 
@@ -285,19 +375,20 @@ function getProductFromURL() {
   return PRODUCTS[0];
 }
 
-function formatPrice(n) { return '$' + parseFloat(n).toFixed(2); }
+function formatPrice(n) { return afwmMoneyFormat(n); }
 
 function initHeader() {
   var user = getCurrentUser();
   var link = document.getElementById('nav-auth-link');
-  if (!link) return;
-  if (user) {
-    link.textContent = user.name.split(' ')[0];
-    link.href = '/profile.html';
-    link.classList.add('text-gold');
-  } else {
-    link.textContent = 'Sign Up';
-    link.href = '/signup.html';
+  if (link) {
+    if (user) {
+      link.textContent = user.name.split(' ')[0];
+      link.href = '/profile.html';
+      link.classList.add('text-gold');
+    } else {
+      link.textContent = 'Sign Up';
+      link.href = '/signup.html';
+    }
   }
-  applyUnifiedTheme();
+  scheduleTheme();
 }
