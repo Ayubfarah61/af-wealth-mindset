@@ -11,167 +11,905 @@
 <script id="tailwind-config">
   tailwind.config = {
     darkMode: "class",
-    theme: { extend: { colors: { "midnight": "#10243E", "ivory": "#172033", "gold": "#B88935", "signature-teal": "#0F766E", "background-dark": "#F7F8F5" }, fontFamily: { "display": ["Manrope", "sans-serif"] }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" } } }
+    theme: { extend: { colors: { "midnight": "#0B1220", "ivory": "#F6F1E7", "gold": "#D7B46A", "signature-teal": "#1FE6D1", "background-dark": "#0B1220" }, fontFamily: { "display": ["Manrope", "sans-serif"] }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" } } }
   }
 </script>
 </head>
 <body class="dark:bg-background-dark font-display text-ivory antialiased">
 <div class="relative flex min-h-screen flex-col overflow-x-hidden">
-<header class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 bg-white/95 backdrop-blur-md border-b border-gold/10 lg:px-40">
+
+<header class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 bg-midnight/80 backdrop-blur-md border-b border-gold/10 lg:px-40">
   <div class="flex-1">
     <button onclick="window.location.href='/'" class="flex items-center gap-2 text-ivory/60 hover:text-gold transition-colors text-sm">
       <span class="material-symbols-outlined text-sm">arrow_back_ios</span> Back
     </button>
   </div>
-  <a href="/index.html" class="text-gold font-bold tracking-[0.15em] uppercase text-sm">AF Wealth Mindset</a>
-  <nav class="flex flex-1 justify-end">
-    <a id="nav-auth-link" href="/signup.html" class="text-ivory/70 hover:text-gold transition-colors text-sm font-medium tracking-wide">Sign Up</a>
+  <nav class="flex items-center gap-10">
+    <a id="nav-auth-link" href="/signup.html" class="text-ivory hover:text-gold transition-colors text-sm font-medium tracking-wide">Sign Up</a>
   </nav>
+  <div class="flex flex-1 justify-end gap-4"></div>
 </header>
-<main class="flex-1 w-full max-w-[980px] mx-auto px-4 py-8" id="page-main"></main>
-<footer class="w-full bg-white py-10 border-t border-gold/10 mt-8">
-  <div class="max-w-[980px] mx-auto flex flex-col items-center gap-5 px-4">
-    <span style="color:#0F766E;font-size:0.72rem;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;">Follow Us</span>
-    <div style="display:flex;gap:26px;align-items:center;">
-      <a href="https://www.tiktok.com/@afwealthsystems" target="_blank" rel="noopener" style="color:#B88935;font-size:22px;"><i class="fa-brands fa-tiktok"></i></a>
-      <a href="https://www.youtube.com/@afwealthmindset" target="_blank" rel="noopener" style="color:#B88935;font-size:22px;"><i class="fa-brands fa-youtube"></i></a>
-      <a href="https://www.instagram.com/afwealthmindset/" target="_blank" rel="noopener" style="color:#B88935;font-size:22px;"><i class="fa-brands fa-instagram"></i></a>
-      <a href="https://www.facebook.com/AFWealthMindset" target="_blank" rel="noopener" style="color:#B88935;font-size:22px;"><i class="fa-brands fa-facebook"></i></a>
-      <a href="https://x.com/AFWealth67" target="_blank" rel="noopener" style="color:#B88935;font-size:22px;"><i class="fa-brands fa-x-twitter"></i></a>
-    </div>
-    <div class="flex gap-5 text-xs text-ivory/40">
-      <a href="/pricing.html" class="hover:text-gold transition-colors">Pricing</a>
-      <a href="/terms.html" class="hover:text-gold transition-colors">Terms</a>
-      <a href="/privacy.html" class="hover:text-gold transition-colors">Privacy</a>
-      <a href="/refund.html" class="hover:text-gold transition-colors">Refunds</a>
-    </div>
-    <p class="text-ivory/30 text-xs tracking-widest uppercase">© 2025 AF Wealth Mindset. All Rights Reserved.</p>
-  </div>
-</footer>
+
+<main class="flex-1 w-full max-w-[640px] mx-auto px-6 py-8" id="page-main"></main>
+
 </div>
+
 <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
 <script src="/js/app.js"></script>
 <script src="/js/paddle-buy.js"></script>
 <script>
-var PRODUCTS = {
+// ---- PRODUCT DATA ----
+var PAGES = {
   1: {
-    name: 'Cashflow Secrets',
-    subtitle: 'The Course That Changes Everything',
+    name: 'Cashflow Secrets — The Course That Changes Everything',
     badge: 'Featured',
     image: '/images/product1.jpg',
     originalPrice: '$400',
     price: '$97',
+    description: 'Stop trading your time for money. Created by self-made millionaire Chris Miles (CNN Money, US News, Bankrate), Cashflow Secrets is the step-by-step system that takes you from financial stress to financial freedom — without a new job, side hustle, or extreme sacrifice.',
     affiliateUrl: 'https://moneyripples.com/cashflow-secrets-affiliate/?aff=AyubFarah67',
-    description: 'A training system for people who want to understand cash flow, debt, and financial freedom without adding another confusing app or spreadsheet.',
-    bullets: ['11 in-depth video modules', 'Cashflow Optimizer spreadsheet included', '60-day money-back guarantee', 'Created by Chris Miles']
+    features: [
+      { icon: 'play_circle',   title: '11 In-Depth Modules',            desc: 'Mindset, tracking, debt, passive income and more' },
+      { icon: 'calculate',     title: 'Cashflow Optimizer Spreadsheet', desc: 'Your personal financial command centre — FREE inside' },
+      { icon: 'verified_user', title: '60-Day Money-Back Guarantee',    desc: 'Zero risk — full refund if not satisfied' },
+      { icon: 'person',        title: 'By Chris Miles',                 desc: 'Self-made millionaire featured on CNN Money and US News' }
+    ]
   },
   2: {
     name: 'The Ultimate Budget Planner',
-    subtitle: 'Excel and Google Sheets Template',
     badge: 'New',
     image: '/images/product2.png',
     originalPrice: '$29.99',
     price: '$7.99',
+    description: 'The only spreadsheet you need to track income, expenses, budgets, and savings. Beautifully designed, fully automated, and built for real life. Comes with both Excel AND Google Sheets — use whichever you prefer.',
     checkoutId: 2,
-    description: 'A clean personal budgeting system for tracking income, expenses, savings, accounts, and budget vs actual in one place.',
-    bullets: ['Excel file included', 'Google Sheets copy included', 'Automated charts and dashboards', '14-day money-back guarantee']
+    features: [
+      { icon: 'bar_chart',      title: '11 Automated Charts',           desc: 'Beautiful dashboards that update as you type' },
+      { icon: 'table_chart',    title: '8 Linked Sheets',               desc: 'Setup, Income, Expenses, Monthly, Annual & more' },
+      { icon: 'laptop',         title: 'Excel & Google Sheets',         desc: 'Both formats included — use whichever you prefer' },
+      { icon: 'verified_user',  title: '14-Day Money-Back Guarantee',   desc: 'Zero risk — full refund, no questions asked' }
+    ],
+    salesPage: {
+      heroHtml: 'Finally Know <span style="color:#D7B46A;">Exactly</span><br/>Where Every Dollar Goes',
+      heroSub: 'The automated budget spreadsheet that tracks your income, spending &amp; savings &mdash; so you always know where you stand. No formulas. No confusion. Just total clarity.',
+      heroImage: '/images/dashboard-devices.png',
+      headline: 'Stop Guessing. Start Knowing.',
+      subheadline: 'Finally See Exactly Where Every Dollar Goes',
+      includedSub: '11 automated charts. 8 linked sheets. Built for real life. No learning curve.',
+      finalHeadline: 'Stop Guessing.<br/>Start Knowing.',
+      finalSub: 'For less than the cost of a coffee, get total clarity on your finances. Know exactly where every dollar goes &mdash; starting today.',
+      images: [
+        '/images/dashboard-monthly.png',
+        '/images/dashboard-annual.png',
+        '/images/dashboard-devices.png'
+      ],
+      testimonials: [
+        { name: 'Sarah M.', role: 'Freelancer', text: 'I tried 5 different budgeting apps and quit all of them. This is the only one that actually stuck. I can see everything at a glance — no more guessing.', stars: 5 },
+        { name: 'James T.', role: 'Healthcare Worker', text: 'Paid off $8,000 in credit card debt in 6 months just by seeing where my money was going. The Budget vs. Actual chart changed everything for me.', stars: 5 },
+        { name: 'Aisha K.', role: 'Stay-at-home parent', text: 'My husband and I finally have financial conversations without arguing. We see the same numbers, same dashboard, same plan. Total game changer.', stars: 5 }
+      ],
+      included: [
+        { icon: 'dashboard', title: 'Monthly Dashboard', desc: 'See your income, expenses, savings rate, and category breakdown for any month. 5 branded charts update automatically.' },
+        { icon: 'trending_up', title: 'Annual Dashboard', desc: '12-month trends, savings rate, expense-to-income ratio, net savings, and Top 20 rankings. 6 automated charts.' },
+        { icon: 'compare', title: 'Budget vs. Actual', desc: 'Set monthly budget targets per category. See exactly where you\'re over or under. Visual charts compare budget to actual spending.' },
+        { icon: 'account_balance', title: 'Multi-Account Tracking', desc: 'Track checking, savings, brokerage, and credit card balances in one place. Auto-updating as you enter data.' },
+        { icon: 'tune', title: 'Fully Customizable', desc: '40 income & 40 expense category slots. Any currency. Fiscal or calendar year. Start tracking from any month you want.' },
+        { icon: 'play_circle', title: 'Video Tutorial Included', desc: 'Step-by-step video walkthrough included with every purchase — covers setup, entering transactions, and reading your dashboards.' }
+      ],
+      steps: [
+        { num: '1', title: 'Set Up', desc: 'Pick your currency, start month, and expense categories in the Setup tab.' },
+        { num: '2', title: 'Enter Transactions', desc: 'Log income & expenses with date, category, amount, and account. That\'s it.' },
+        { num: '3', title: 'Watch It Work', desc: 'Dashboards, charts, and summaries update automatically. Zero effort.' }
+      ],
+      sheets: [
+        { tab: 'Setup', purpose: 'Configure currency, start month/year, categories', highlights: '40 income + 40 expense category slots, 6 bank accounts' },
+        { tab: 'Income', purpose: 'Log all income transactions with date, category', highlights: 'Drop-downs, auto-populating Excel Table, accounting flow' },
+        { tab: 'Expenses', purpose: 'Log all expense transactions — same structure', highlights: 'Category & account drop-downs, One-time / Recurring tagging' },
+        { tab: 'Adjustments', purpose: 'Balance transfers, corrections & credit card', highlights: 'Keeps account balance accurate without affecting income/expense totals' },
+        { tab: 'Accounts', purpose: 'See live balance for all bank accounts, savings', highlights: 'Beginning balance + Transaction history — current balance, auto-updated' },
+        { tab: 'Monthly', purpose: 'Full monthly overview — KPIs, categories', highlights: '5 charts, savings rate, expense breakdown per category, rolling comparison' },
+        { tab: 'Annual', purpose: 'Year-long view — monthly trends, Top 20', highlights: '6 charts, expense-to-income ratio, net savings trend, fiscal year support' },
+        { tab: 'Video Guide', purpose: 'Full video tutorial included with purchase', highlights: 'Covers setup, entering data, and reading every dashboard' }
+      ],
+      perfectFor: [
+        'First-time budgeters who want a simple, guided system',
+        'Freelancers & side hustlers with multiple income streams',
+        'Couples managing shared household finances',
+        'Anyone who tried budgeting apps and quit within a month',
+        'People who love spreadsheets but hate building them from scratch',
+        'Small business owners tracking personal & business spending'
+      ],
+      bonusPoints: [
+        'Works for Excel for Windows, Mac & Web',
+        'No macros, no plugins, no subscriptions',
+        'One-time purchase — use year after year',
+        'Your data stays on your computer — 100% private',
+        'Instant download — start tracking in under 5 minutes',
+        'Detailed step-by-step instructions included'
+      ],
+      faq: [
+        { q: 'Do I need to know spreadsheet formulas?', a: 'Absolutely not. Just type your transactions — date, category, amount, account. Everything else calculates automatically. All formula cells are protected so you can\'t accidentally break anything. A full video tutorial is included with your purchase to walk you through everything.' },
+        { q: 'Can I add my own income/expense categories?', a: 'Yes! The Setup tab has 40 slots for income categories and 40 for expenses. Add, rename, or remove any category — the dashboard updates instantly.' },
+        { q: 'Do I get an Excel file or Google Sheets?', a: 'You get both! Your purchase includes the Excel (.xlsx) file you can download AND the Google Sheets version you can copy to your Drive. Both have the exact same features — use whichever suits you.' },
+        { q: 'Can I use this for multiple years?', a: 'Yes! Just keep entering transactions. Switch the year selector on any dashboard to view past or current years. No need to buy again.' },
+        { q: 'Do I need a laptop or computer?', a: 'No! The Google Sheets version works perfectly on your phone — enter transactions, check dashboards, and track your budget from anywhere. No laptop required.' }
+      ],
+      ctaText: 'GET INSTANT ACCESS NOW',
+      guaranteeText: 'Download it, use it, see your entire budget laid out automatically. If it doesn\'t work for you for any reason, email us within 14 days for a full refund. No questions asked. Zero risk.'
+    }
   },
   3: {
-    name: 'The Profit Tracker',
-    subtitle: 'Small Business Bookkeeping - Excel Format',
+    name: 'The Profit Tracker™',
     badge: 'New',
     image: '/images/product3.png',
     originalPrice: '$49',
     price: '$7.99',
+    description: 'The only bookkeeping spreadsheet your business will ever need. Track income, expenses & profit — with monthly, annual & 5-year dashboards. Delivered as Excel (.xlsx). One-time payment. Yours forever.',
     checkoutId: 3,
-    description: 'A simple bookkeeping spreadsheet for business owners who want to see income, expenses, profit, and growth without monthly software fees.',
-    bullets: ['Excel file included', 'Income and expense tracker', 'Monthly, annual, and 5-year dashboards', '14-day money-back guarantee']
+    features: [
+      { icon: 'attach_money',  title: 'Income & Expense Tracker',    desc: 'Every transaction auto-categorized and auto-totaled' },
+      { icon: 'dashboard',     title: 'Monthly + Annual Dashboards', desc: 'Auto-updating visuals for instant profit clarity' },
+      { icon: 'trending_up',   title: '5-Year Growth Dashboard',     desc: 'See your business trajectory — year over year' },
+      { icon: 'verified_user', title: '14-Day Guarantee',            desc: 'Zero risk — full refund, no questions asked' }
+    ],
+    salesPage: {
+      heroHtml: 'Stop Guessing <span style="color:#D7B46A;">Where Your</span><br/>Money Really Goes',
+      heroSub: 'The all-in-one bookkeeping spreadsheet for small business owners. Track income, expenses &amp; profit automatically &mdash; with monthly, annual &amp; 5-year dashboards. One-time payment. Yours forever.',
+      heroImage: '/images/profit-monthly.png',
+      headline: 'Stop Guessing. Start Profiting.',
+      includedSub: 'Monthly, annual &amp; 5-year dashboards. Built for real businesses. No learning curve.',
+      finalHeadline: 'Stop Guessing.<br/>Start Profiting.',
+      finalSub: 'For less than the cost of a coffee, know exactly how your business is really performing. Income, expenses, profit, and 5-year growth &mdash; starting today.',
+      images: [
+        '/images/profit-monthly.png',
+        '/images/profit-annual.png',
+        '/images/profit-5year.png'
+      ],
+      testimonials: [
+        { name: 'Sarah M.', role: 'Boutique Owner', text: 'I\'ve wasted $400 on bookkeeping apps. This $8 spreadsheet does it all. I feel stupid for not buying sooner.', stars: 5 },
+        { name: 'Marcus T.', role: 'Consultant', text: 'My accountant asked what software I was using. I said "a spreadsheet." He was SHOCKED at how clean it was.', stars: 5 },
+        { name: 'Jenna K.', role: 'Freelancer', text: 'Finally, I can see my actual profit in real time. I\'ve tripled my savings since I started using this.', stars: 5 }
+      ],
+      included: [
+        { icon: 'attach_money', title: 'Smart Income Tracker', desc: 'Log every sale, invoice, and revenue stream. Auto-categorized. Auto-totaled. Nothing slips through.' },
+        { icon: 'receipt_long', title: 'Expense Tracker', desc: 'Every business expense automatically sorted, totaled, and visualized — so you always know where your money goes.' },
+        { icon: 'dashboard', title: 'Monthly Dashboard', desc: 'See profit, expenses, and margins instantly with beautiful auto-updating charts.' },
+        { icon: 'trending_up', title: 'Annual Dashboard', desc: 'Your full year at one glance. Know exactly how your business is performing vs. goals.' },
+        { icon: 'rocket_launch', title: '5-Year Growth Dashboard', desc: 'Track long-term trends, set multi-year revenue goals, and watch your business grow.' },
+        { icon: 'flag', title: 'Profit Goal System', desc: 'Set monthly profit targets. Visual progress bars show you how close you are to hitting them.' },
+        { icon: 'currency_exchange', title: 'Multi-Currency Support', desc: 'USD, EUR, GBP, CAD, AUD and more — works for any country, any currency.' },
+        { icon: 'calendar_month', title: 'Fiscal OR Calendar Year', desc: 'Flexible year setup to match your business structure and reporting period.' },
+        { icon: 'tune', title: 'Fully Customizable Categories', desc: 'Adapt income and expense categories to your exact business type in under 5 minutes.' },
+        { icon: 'laptop', title: 'Excel Format', desc: 'Delivered as an Excel (.xlsx) file. Works on Windows and Mac (Excel 2016 or later / Microsoft 365).' },
+        { icon: 'all_inclusive', title: 'Lifetime Access', desc: 'Buy once, use forever. No renewals, no subscriptions, no hidden fees. Ever.' }
+      ],
+      steps: [
+        { num: '1', title: 'Set Up', desc: 'Enter your currency, fiscal year, and customize income/expense categories for your business.' },
+        { num: '2', title: 'Log Transactions', desc: 'Enter income and expenses as they happen — date, category, amount. Takes seconds.' },
+        { num: '3', title: 'Know Your Numbers', desc: 'Dashboards auto-update instantly. See profit, trends, and your 5-year growth path.' }
+      ],
+      comparison: [
+        { item: 'QuickBooks', cost: '$360/year', yours: '$7.99 once' },
+        { item: 'Bookkeeper', cost: '$6,000/year', yours: '$7.99 once' },
+        { item: 'FreshBooks', cost: '$228/year', yours: '$7.99 once' },
+        { item: 'Custom accountant build', cost: '$500+', yours: '$7.99 once' }
+      ],
+      comparisonCaption: 'You\'re saving $360–$6,000 per year. For the price of a cup of coffee.',
+      perfectFor: [
+        'Freelancers & consultants who want clean, clear financial records',
+        'Small business owners tired of paying $30+/month for accounting apps',
+        'Service businesses tracking client invoices and project expenses',
+        'Product sellers managing cost of goods and profit margins',
+        'Side hustlers who want to look and feel professional about their numbers',
+        'Anyone who wants to know: "Am I actually making money?"'
+      ],
+      bonusPoints: [
+        'Multi-currency: USD, EUR, GBP, CAD, AUD & more',
+        'Fiscal or calendar year — you choose',
+        'Works offline forever, on any device',
+        'No macros, no plugins, no subscriptions',
+        'Excel format (.xlsx) — works on Windows &amp; Mac',
+        'Video tutorial included — set up in under 10 minutes'
+      ],
+      faq: [
+        { q: 'Do I need Excel?', a: 'Yes — this product is delivered as an Excel (.xlsx) file. Microsoft 365 or Excel 2016+ recommended. Works on Windows and Mac.' },
+        { q: 'Is this really a one-time payment?', a: 'Yes. No subscription. No hidden fees. No renewals. Buy once, own it forever.' },
+        { q: 'I\'m not tech-savvy — can I use this?', a: 'If you can type a number into a box, you can use this. A full video tutorial is included with your purchase. Setup takes under 10 minutes.' },
+        { q: 'What if I don\'t like it?', a: '14-day full refund, no questions asked. You risk absolutely nothing.' },
+        { q: 'How is this different from free templates?', a: 'Free templates just track data. This tells you what to DO with it — with dashboards, profit goals, and 5-year projections. It\'s a complete business financial system, not just a spreadsheet.' }
+      ],
+      ctaText: 'GET INSTANT ACCESS — $7.99',
+      guaranteeText: 'Try it for 14 full days. If it doesn\'t save you time, money, and stress, email us for a full refund. No questions. No guilt. You literally cannot lose.'
+    }
   },
   4: {
     name: 'Debt Payoff Dashboard',
-    subtitle: 'Excel and Google Sheets Template',
     badge: 'New',
     image: '/images/product4.png',
     originalPrice: '$29.99',
     price: '$7.99',
+    description: 'The only spreadsheet that tracks up to 6 debt accounts, visualizes your payoff progress, and tells you exactly where to focus — all in one beautiful dashboard. 100% private. No apps. No subscriptions.',
     checkoutId: 4,
-    description: 'Track up to 6 debt accounts, see payoff progress, and understand where to focus first using a clean debt dashboard.',
-    bullets: ['Excel file included', 'Google Sheets copy included', 'Tracks payments, interest, and balances', '14-day money-back guarantee']
+    features: [
+      { icon: 'dashboard',     title: 'Real-Time Debt Dashboard',    desc: 'Every KPI auto-calculated — total debt, interest, net reduction' },
+      { icon: 'flag',          title: 'Smart Priority Alerts',       desc: 'Built-in logic flags your highest-interest debt automatically' },
+      { icon: 'trending_down', title: 'Visual Progress Charts',      desc: 'Watch your total debt curve downward month by month' },
+      { icon: 'verified_user', title: '14-Day Guarantee',            desc: 'Zero risk — full refund, no questions asked' }
+    ],
+    salesPage: {
+      heroHtml: 'Crush Your Debt.<br/><span style="color:#D7B46A;">Finally.</span>',
+      heroSub: 'The only spreadsheet that tracks 6 debt accounts, visualizes your payoff progress, and tells you exactly where to focus &mdash; all in one beautiful dashboard. Works on every device &mdash; both Excel and Google Sheets included.',
+      heroImage: '/images/debt-devices.png',
+      headline: 'Crush Your Debt. Finally.',
+      images: [
+        '/images/debt-devices.png',
+        '/images/debt-dashboard.png'
+      ],
+      includedSub: '6 debt accounts. 2 power sheets. Works in both Excel and Google Sheets on any device. Zero subscriptions.',
+      finalHeadline: 'Your Debt Payoff Journey<br/>Starts With One Spreadsheet.',
+      finalSub: 'For less than the cost of a streaming subscription, get the clarity and control you need to eliminate debt &mdash; for good.',
+      testimonials: [
+        { name: 'Sarah M.', role: 'Nurse, Ohio', text: 'I\'ve been putting off tackling my debt for two years. This template made it feel manageable for the first time. I could actually see my auto loan disappear — that was huge for my motivation.', stars: 5 },
+        { name: 'James T.', role: 'Teacher, Texas', text: 'The highest-interest alert alone is worth the price. I was throwing extra money at the wrong debt for a year. Switched focus and saved hundreds in interest over six months.', stars: 5 },
+        { name: 'Rosa K.', role: 'Freelancer, NYC', text: 'Clean, simple, and it just works. I\'ve tried five different debt apps and none of them stuck. I\'ve been using this every month for the past year without missing once.', stars: 5 }
+      ],
+      included: [
+        { icon: 'dashboard', title: 'Real-Time Dashboard', desc: 'Automatically calculates total debt, interest accrued, net reduction, and payoff percentage the moment you enter a payment.' },
+        { icon: 'flag', title: 'Smart Priority Alerts', desc: 'Built-in logic identifies your highest-interest debt and flags exactly where to direct extra payments for maximum impact.' },
+        { icon: 'trending_down', title: 'Visual Progress Charts', desc: 'Watch your total debt curve downward month by month. Seeing the trend keeps you motivated when numbers feel overwhelming.' },
+        { icon: 'credit_card', title: '6 Debt Accounts', desc: 'Track student loans, auto loans, credit cards, personal loans, medical debt — all in one unified view with individual interest tracking.' },
+        { icon: 'lock', title: '100% Private', desc: 'Your financial data never leaves your computer. No cloud sync, no account required, no data harvesting. Your numbers stay yours.' },
+        { icon: 'bolt', title: 'Works Immediately', desc: 'Pre-built formulas, linked sheets, and sample data included. Enter your real numbers and you\'re tracking in under 10 minutes.' },
+        { icon: 'calculate', title: 'Auto Interest & Balance', desc: 'Running balance after every payment. Cumulative interest calculated automatically each month. Zero manual math.' },
+        { icon: 'schedule', title: 'Payoff Timeline Estimate', desc: 'See exactly when each debt will be cleared at your current payment rate — and how extra payments change the date.' },
+        { icon: 'devices', title: 'Excel & Google Sheets — Any Device', desc: 'Both formats included. Open the .xlsx in Excel on Windows or Mac, or use the Google Sheets version on your phone, tablet, laptop, or desktop. 100% of features work in both.' },
+        { icon: 'all_inclusive', title: 'Lifetime Access', desc: 'Buy once, use forever. Free updates. No renewals, no subscriptions, no hidden fees. Ever.' }
+      ],
+      steps: [
+        { num: '1', title: 'Enter Your Debts', desc: 'Type your starting balances, interest rates, and monthly payments into the 6 account slots.' },
+        { num: '2', title: 'Log Payments Monthly', desc: 'Each month, enter what you paid. Interest, balance, and progress bars update automatically.' },
+        { num: '3', title: 'Watch It Disappear', desc: 'Dashboard shows % paid, highest-interest alert, and your total debt curving down month by month.' }
+      ],
+      sheets: [
+        { tab: 'Payment Tracker', purpose: '12-month payment ledger for up to 6 debt accounts', highlights: 'Auto-calc interest, running balance, cumulative TOTAL PAID row with interest' },
+        { tab: 'Debt Dashboard', purpose: 'Command center — every KPI updated automatically', highlights: '5 live KPIs, % progress per debt, highest-interest alert, payoff timeline' }
+      ],
+      comparison: [
+        { item: 'Undebt.it Pro', cost: '$144/year', yours: '$7.99 once' },
+        { item: 'YNAB', cost: '$109/year', yours: '$7.99 once' },
+        { item: 'Debt Payoff Planner Pro', cost: '$60/year', yours: '$7.99 once' },
+        { item: 'Financial coach session', cost: '$300+', yours: '$7.99 once' }
+      ],
+      comparisonCaption: 'You\'re saving $60–$300+ every single year. For the price of two lunches.',
+      perfectFor: [
+        'People who have no idea how much they actually owe in total',
+        'Payers frustrated that their balance barely moves each month',
+        'Anyone who doesn\'t trust financial apps with their bank data',
+        'People who need something visual to stay motivated',
+        'Debt-snowball or debt-avalanche fans who want one tool for both',
+        'Anyone tired of juggling multiple lender websites and logins'
+      ],
+      bonusPoints: [
+        'Excel & Google Sheets — both formats included',
+        'Works on any device: phone, tablet, laptop, desktop',
+        'No cloud sync, no bank logins — 100% private',
+        'Sample data pre-loaded — replace with yours in minutes',
+        'No macros, no plugins, no subscriptions',
+        'Free updates forever'
+      ],
+      faq: [
+        { q: 'Do I need to know Excel?', a: 'No. Every formula is pre-built. You only type in the editable cells — your starting balances, interest rates, and monthly payments. Everything else calculates automatically.' },
+        { q: 'Does it work on my phone / tablet / Mac?', a: 'Yes — on every device. You receive both the Excel (.xlsx) file and the Google Sheets version with your purchase. Excel works on Windows, Mac, iPad, and mobile. Google Sheets works on every device with a browser — phone, tablet, laptop, desktop — with full feature parity. 100% of charts, formulas, and dashboards work in both formats.' },
+        { q: 'What if I have more than 6 debts?', a: 'The template is set up for 6 accounts. If you have more, track your smaller balances together in one row (e.g., combine two small store cards) until you pay one off and free up a slot.' },
+        { q: 'Can I reuse this each year?', a: 'Absolutely. Just save a new copy at the start of each year with updated starting balances. You own the file forever and can use it indefinitely.' },
+        { q: 'Is my financial data safe?', a: '100%. This is a local file on your computer — nothing is sent to a server, cloud, or third party. Your data is as private as any file on your hard drive.' },
+        { q: 'What if I don\'t like it?', a: '14-day full refund, no questions asked. If the template doesn\'t work for your needs, just email us and we\'ll refund every cent.' }
+      ],
+      ctaText: 'DOWNLOAD INSTANTLY — $7.99',
+      guaranteeText: 'Try it for 14 full days. If this template doesn\'t open correctly, doesn\'t work with your version of Excel/Sheets, or simply isn\'t what you expected, email us for a full refund. No questions asked.'
+    }
   },
   5: {
     name: '12-Month Cash Flow Budget',
-    subtitle: 'Excel and Google Sheets Template',
     badge: 'New',
     image: '/images/product5.png',
     originalPrice: '$29.99',
     price: '$7.99',
+    description: 'Take full control of your money — track every dollar in, every dollar out, and always know where you stand. 12 months of inflows & outflows with an executive-level dashboard and a minimum balance safety alert.',
     checkoutId: 5,
-    description: 'Plan money coming in and money going out across a full year so you can spot low-balance months before they become stressful.',
-    bullets: ['Excel file included', 'Google Sheets copy included', '12-month cash flow view', 'Minimum balance alert']
+    features: [
+      { icon: 'account_balance_wallet', title: '12-Month Cash Flow Sheet',   desc: 'Every inflow & outflow tracked side-by-side, auto-calculated' },
+      { icon: 'dashboard',              title: 'Executive Dashboard',         desc: '6 live KPI tiles — inflows, outflows, net, growth %, best month' },
+      { icon: 'warning',                title: 'Minimum Balance Alert',       desc: 'Custom threshold warns you before any month dips too low' },
+      { icon: 'verified_user',          title: '14-Day Guarantee',            desc: 'Zero risk — full refund, no questions asked' }
+    ],
+    salesPage: {
+      heroHtml: 'Always Know <span style="color:#D7B46A;">Exactly</span><br/>Where Your Money Stands',
+      heroSub: 'Track every dollar in, every dollar out — across 12 full months. Executive KPI dashboard, minimum balance safety alert, and zero formulas to build. Both Excel and Google Sheets included.',
+      heroImage: '/images/cashflow-devices.png',
+      headline: 'Finally See Your Full Financial Picture.',
+      images: [
+        '/images/cashflow-devices.png',
+        '/images/cashflow-dashboard.png'
+      ],
+      includedSub: '12-month cash flow sheet + executive dashboard. Works in both Excel and Google Sheets on any device.',
+      finalHeadline: 'Always Know Where<br/>Your Money Stands.',
+      finalSub: 'For less than the cost of a coffee, see your full financial picture across 12 months — inflows, outflows, net cash flow, and whether any month is at risk.',
+      testimonials: [
+        { name: 'Marcus T.', role: 'Freelancer, Dallas TX', text: 'I finally stopped guessing whether I could afford things. The minimum balance alert caught two months I would have run short — before they happened.', stars: 5 },
+        { name: 'Priya M.', role: 'Small Business Owner', text: 'I track my business revenue and expenses in this and use the dashboard in client meetings. It looks incredibly professional for an $8 spreadsheet.', stars: 5 },
+        { name: 'James K.', role: 'Household Budgeter', text: 'My partner and I have been fighting about money for years. One weekend with this template and we both finally saw the same numbers. Game changer.', stars: 5 }
+      ],
+      included: [
+        { icon: 'account_balance_wallet', title: 'Cash Flow Sheet — 12 Months', desc: 'Jan through Dec with an Annual Total column. Every inflow and outflow tracked side-by-side with auto-calculated net cash flow and closing balances.' },
+        { icon: 'trending_up', title: 'Pre-Built Income Rows', desc: 'Salary & wages, business/freelance, rental income, dividends, tax refunds — all ready to fill in. Add your own categories in minutes.' },
+        { icon: 'receipt_long', title: 'Pre-Built Expense Rows', desc: 'Rent/mortgage, loan payments, credit cards, food & living, utilities, savings, insurance, and more. Fully editable to match your life.' },
+        { icon: 'dashboard', title: 'Executive Dashboard', desc: '6 live KPI tiles: Total Inflows, Total Outflows, Net Cash Flow, Avg Monthly Net, Cash Growth %, and Best Month — all auto-updated.' },
+        { icon: 'area_chart', title: '4 Automated Charts', desc: 'Cash Balance Trajectory, Inflows vs Outflows by Month, Expense Breakdown donut, and Net Cash Flow & Cumulative Trend — update as you type.' },
+        { icon: 'warning', title: 'Minimum Balance Alert', desc: 'Set your own cash reserve threshold. The template instantly flags any month where your closing balance dips below — no surprises.' },
+        { icon: 'devices', title: 'Excel & Google Sheets — Any Device', desc: 'Both formats included. Works on Windows, Mac, iPad, Android, or any device with a browser. Full feature parity on both.' },
+        { icon: 'all_inclusive', title: 'Lifetime Access', desc: 'Buy once, use every year. No subscriptions, no renewals, no hidden fees. Save a new copy each January and you\'re set.' }
+      ],
+      steps: [
+        { num: '1', title: 'Enter Your Opening Balance', desc: 'Type your starting cash balance for January. The template carries it forward automatically.' },
+        { num: '2', title: 'Log Monthly Inflows & Outflows', desc: 'Fill in each month\'s income and expenses by category. All totals, net cash flow, and closing balances calculate instantly.' },
+        { num: '3', title: 'Read Your Dashboard', desc: 'Check the executive KPI tiles and charts for instant clarity. The minimum balance alert tells you if any month needs attention.' }
+      ],
+      sheets: [
+        { tab: 'Cash Flow Sheet', purpose: '12-month income & expense ledger with closing balances', highlights: 'Pre-built income + expense rows, net cash flow per month, annual total column, minimum balance alert' },
+        { tab: 'Dashboard', purpose: 'Executive KPI view — auto-updating visuals', highlights: '6 KPI tiles, Cash Balance Trajectory, Inflows vs Outflows, Expense Breakdown donut, Net Cash Flow & Cumulative Trend' }
+      ],
+      comparison: [
+        { item: 'YNAB', cost: '$109/year', yours: '$7.99 once' },
+        { item: 'Quicken', cost: '$72/year', yours: '$7.99 once' },
+        { item: 'Personal Capital Pro', cost: '$300+/year', yours: '$7.99 once' },
+        { item: 'Accountant hourly', cost: '$150+/hr', yours: '$7.99 once' }
+      ],
+      comparisonCaption: 'You\'re getting executive-level cash flow clarity for the price of a coffee.',
+      perfectFor: [
+        'Freelancers & side hustlers tracking irregular income month-to-month',
+        'Households managing mortgage, bills, savings goals, and family spending',
+        'Small business owners monitoring revenue vs. expenses and cash reserves',
+        'Anyone who\'s ever been surprised by a low bank balance at month end',
+        'People who want a professional financial overview — without paying for software',
+        'Anyone tired of spreadsheets that take hours to build and break instantly'
+      ],
+      bonusPoints: [
+        'Excel & Google Sheets — both formats included',
+        'Works on any device: phone, tablet, laptop, desktop',
+        'All formulas pre-built — just fill in your numbers',
+        'Minimum balance safety alert built in',
+        'No macros, no plugins, no subscriptions',
+        'Free updates forever'
+      ],
+      faq: [
+        { q: 'Do I need to know Excel?', a: 'No. Every formula is already built. You only enter your numbers — opening balance, income amounts, and expense amounts. Everything else calculates and updates automatically.' },
+        { q: 'Does it work on my phone or Mac?', a: 'Yes — on every device. You receive both the Excel (.xlsx) and Google Sheets version with your purchase. Excel works on Windows, Mac, and iPad. The Google Sheets version works in any browser on any device — phone, tablet, laptop, or desktop. All charts, formulas, and the dashboard work in both.' },
+        { q: 'Can I add my own income or expense categories?', a: 'Absolutely. All income and expense rows are labelled and editable. Just rename any row to match your situation — the formulas stay intact.' },
+        { q: 'Can I reuse it each year?', a: 'Yes. Just save a new copy at the start of each year, reset your opening balance, and you\'re set. You own the file forever.' },
+        { q: 'What exactly is the minimum balance alert?', a: 'You set a cash reserve number — say $500 or $1,000. If any month\'s closing balance drops below that number, the template flags it immediately with a visual indicator. You\'ll never be caught off guard by a low-balance month again.' },
+        { q: 'What if I don\'t like it?', a: '14-day full refund, no questions asked. If it doesn\'t work for your needs, just email us and we\'ll refund every cent.' }
+      ],
+      ctaText: 'GET INSTANT ACCESS — $7.99',
+      guaranteeText: 'Try it for 14 full days. If the template doesn\'t work for your needs, email us for a full refund. No questions. You risk absolutely nothing.'
+    }
   }
 };
 
-function getProductId() {
-  var params = new URLSearchParams(window.location.search);
-  return params.get('id') || '1';
-}
+var id = parseInt(new URLSearchParams(window.location.search).get('id')) || 1;
+var p = PAGES[id];
+if (!p) p = PAGES[1];
 
-function productButton(product, id) {
-  if (product.affiliateUrl) {
-    return '<a href="' + product.affiliateUrl + '" target="_blank" rel="noopener" class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-signature-teal px-6 py-4 text-sm font-extrabold text-white shadow-sm transition hover:brightness-110"><span class="material-symbols-outlined text-base">open_in_new</span> Go to Partner Site - ' + product.price + '</a>';
-  }
-  return '<button onclick="buyNow(' + product.checkoutId + ')" class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-signature-teal px-6 py-4 text-sm font-extrabold text-white shadow-sm transition hover:brightness-110"><span class="material-symbols-outlined text-base">download</span> Get Instant Access - ' + product.price + '</button>';
-}
-
-function renderProduct() {
-  var id = getProductId();
-  var product = PRODUCTS[id] || PRODUCTS[1];
-  var bullets = product.bullets.map(function(item) {
-    return '<li class="flex items-start gap-3 rounded-lg border border-signature-teal/10 bg-white/80 p-3"><span class="material-symbols-outlined mt-0.5 text-base text-signature-teal">check_circle</span><span class="text-sm leading-6 text-ivory/70">' + item + '</span></li>';
-  }).join('');
-
-  var trustNote = product.affiliateUrl
-    ? 'This is an affiliate product. You will be sent to our trusted partner site. We may earn a commission at no extra cost to you.'
-    : 'This is a digital product. After purchase, access is sent by email and can also be recovered from the order section.';
-
-  document.getElementById('page-main').innerHTML = ''
-    + '<section class="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">'
-    + '<div class="overflow-hidden rounded-2xl border border-gold/15 bg-white shadow-sm">'
-    + '<img src="' + product.image + '" alt="' + product.name + '" class="h-[320px] w-full object-cover" onerror="this.style.background=\'#F3E8D1\';this.style.objectFit=\'contain\';"/>'
-    + '</div>'
-    + '<div class="rounded-2xl border border-gold/15 bg-white p-6 shadow-sm lg:p-8">'
-    + '<span class="inline-flex rounded-full border border-gold/20 bg-gold/10 px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.18em] text-gold">' + product.badge + '</span>'
-    + '<h1 class="mt-5 text-3xl font-extrabold tracking-tight text-ivory sm:text-4xl">' + product.name + '</h1>'
-    + '<p class="mt-2 text-sm font-semibold text-signature-teal">' + product.subtitle + '</p>'
-    + '<p class="mt-5 text-base leading-7 text-ivory/65">' + product.description + '</p>'
-    + '<div class="mt-6 flex items-end gap-3">'
-    + '<span class="text-sm text-ivory/35 line-through">' + product.originalPrice + '</span>'
-    + '<span class="text-4xl font-extrabold text-gold">' + product.price + '</span>'
-    + '<span class="pb-1 text-xs font-semibold text-ivory/40">one-time payment</span>'
-    + '</div>'
-    + '<div class="mt-6">' + productButton(product, id) + '</div>'
-    + '<p class="mt-3 text-center text-xs leading-5 text-ivory/45">Payments are securely processed by Paddle where applicable.</p>'
-    + '</div>'
-    + '</section>'
-    + '<section class="mt-8 grid gap-6 lg:grid-cols-[1fr_0.8fr]">'
-    + '<div class="rounded-2xl border border-gold/10 bg-white p-6 shadow-sm">'
-    + '<p class="text-xs font-extrabold uppercase tracking-[0.22em] text-gold">What is included</p>'
-    + '<ul class="mt-5 grid gap-3">' + bullets + '</ul>'
-    + '</div>'
-    + '<div class="rounded-2xl border border-signature-teal/15 bg-white p-6 shadow-sm">'
-    + '<p class="text-xs font-extrabold uppercase tracking-[0.22em] text-signature-teal">Delivery and support</p>'
-    + '<p class="mt-4 text-sm leading-7 text-ivory/65">' + trustNote + '</p>'
-    + '<div class="mt-5 rounded-xl bg-[#F7F8F5] p-4 text-sm leading-6 text-ivory/60">Need help after purchase? Email <a href="mailto:contact@afwealthmindset.com" class="font-bold text-signature-teal">contact@afwealthmindset.com</a>.</div>'
-    + '</div>'
-    + '</section>'
-    + '<section class="mt-8 rounded-2xl border border-gold/10 bg-white p-6 text-center shadow-sm">'
-    + '<p class="text-xs font-extrabold uppercase tracking-[0.22em] text-gold">Simple. Private. Yours forever.</p>'
-    + '<h2 class="mx-auto mt-3 max-w-xl text-2xl font-extrabold text-ivory">Use the system, keep your own files, and come back to your order if you need access again.</h2>'
-    + '</section>';
-}
-
+document.title = p.name + ' | AF Wealth Mindset';
 if (typeof initHeader === 'function') initHeader();
-renderProduct();
+
+var html = '';
+
+// ============================================================
+// SALES PAGE LAYOUT (product 2 and any future products)
+// ============================================================
+if (p.salesPage) {
+  var sp = p.salesPage;
+
+  // Widen & reset padding for the full-bleed sales page
+  var mainEl = document.getElementById('page-main');
+  mainEl.style.maxWidth = '800px';
+  mainEl.style.padding = '0';
+
+  // ── HERO ─────────────────────────────────────────────────────
+  html += '<div style="padding:52px 28px 44px;text-align:center;background:radial-gradient(ellipse at 18% 8%,rgba(215,180,106,0.13) 0%,transparent 55%),radial-gradient(ellipse at 82% 85%,rgba(31,230,209,0.1) 0%,transparent 50%),#0B1220;">'
+    // headline
+    + '<h1 style="font-size:clamp(1.8rem,5vw,2.9rem);font-weight:800;color:#F6F1E7;line-height:1.12;margin-bottom:18px;letter-spacing:-0.01em;">'
+    + (sp.heroHtml || p.name) + '</h1>'
+    // sub
+    + '<p style="color:rgba(246,241,231,0.6);font-size:1rem;line-height:1.65;max-width:540px;margin:0 auto 34px;">'
+    + (sp.heroSub || p.description) + '</p>'
+    // hero image
+    + '<div style="margin:0 auto 34px;max-width:660px;border-radius:16px;overflow:hidden;border:1px solid rgba(215,180,106,0.25);box-shadow:0 24px 70px rgba(0,0,0,0.55);">'
+    + '<img src="' + (sp.heroImage || p.image) + '" alt="' + p.name + '" style="width:100%;display:block;"/>'
+    + '</div>'
+    // price
+    + '<div style="margin-bottom:26px;">'
+    + '<span style="color:#D7B46A;font-weight:800;font-size:3.2rem;line-height:1;display:block;margin-bottom:4px;">' + p.price + '</span>'
+    + '<span style="color:rgba(246,241,231,0.28);font-size:0.75rem;">one-time payment &bull; no subscriptions</span>'
+    + '</div>'
+    // CTA
+    + '<button onclick="buyNow(' + id + ')" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:480px;padding:20px 32px;background:linear-gradient(135deg,#1FE6D1,#16b8a8);color:#0B1220;border-radius:14px;font-weight:800;font-size:1.15rem;cursor:pointer;border:none;letter-spacing:0.02em;box-shadow:0 8px 32px rgba(31,230,209,0.28);margin-bottom:18px;">'
+    + '&#9889; GET INSTANT ACCESS &mdash; ' + p.price + '</button>'
+    + '<div style="display:flex;justify-content:center;align-items:center;gap:16px;margin-top:14px;margin-bottom:4px;align-items:center;">'
+    + '<i class="fa-brands fa-cc-visa"        style="font-size:38px;"></i>'
+    + '<i class="fa-brands fa-cc-mastercard"  style="font-size:38px;"></i>'
+    + '<i class="fa-brands fa-cc-amex"        style="font-size:38px;"></i>'
+    + '<i class="fa-brands fa-cc-paypal"      style="font-size:38px;"></i>'
+    + '<i class="fa-brands fa-apple-pay"      style="font-size:34px;color:#F6F1E7;"></i>'
+    + '<i class="fa-brands fa-google-pay"     style="font-size:34px;color:#F6F1E7;"></i>'
+    + '</div>'
+    // trust badges
+    + '<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:18px;">'
+    + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#128274; Secure Checkout</span>'
+    + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#11015; Instant Download</span>'
+    + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#10003; 14-Day Guarantee</span>'
+    + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#128202; ' + (id === 3 ? 'Excel Format' : 'Excel &amp; Google Sheets Included') + '</span>'
+    + '</div>'
+    + '<p style="color:rgba(246,241,231,0.22);font-size:0.7rem;margin-top:10px;line-height:1.5;">&#128274; Payments securely processed by <strong style="color:rgba(246,241,231,0.38);">Paddle</strong> &mdash; PCI-compliant Merchant of Record &bull; Your card details are never stored on our servers</p>'
+    + '</div>';
+
+  // ── SOCIAL PROOF BAR ─────────────────────────────────────────
+  html += '<div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:20px;padding:18px 24px;background:rgba(215,180,106,0.05);border-top:1px solid rgba(215,180,106,0.12);border-bottom:1px solid rgba(215,180,106,0.12);">'
+    + '<span style="color:#D7B46A;font-size:0.8rem;font-weight:700;">&#11088;&#11088;&#11088;&#11088;&#11088;&nbsp; 4.9 / 5 Rating</span>'
+    + '<span style="color:rgba(215,180,106,0.25);font-size:1rem;">|</span>'
+    + '<span style="color:rgba(246,241,231,0.5);font-size:0.78rem;font-weight:600;">2,000+ Downloads</span>'
+    + '<span style="color:rgba(215,180,106,0.25);font-size:1rem;">|</span>'
+    + '<span style="color:rgba(246,241,231,0.5);font-size:0.78rem;font-weight:600;">Works on Any Device</span>'
+    + '<span style="color:rgba(215,180,106,0.25);font-size:1rem;">|</span>'
+    + '<span style="color:rgba(246,241,231,0.5);font-size:0.78rem;font-weight:600;">Pay Once. Use Forever.</span>'
+    + '</div>';
+
+  // ── PROBLEM SECTION ──────────────────────────────────────────
+  html += '<div style="padding:60px 28px;">'
+    + '<div style="max-width:680px;margin:0 auto;">'
+    + '<p style="text-align:center;font-size:0.68rem;font-weight:800;letter-spacing:0.26em;color:#1FE6D1;text-transform:uppercase;margin-bottom:12px;">The Problem</p>'
+    + '<h2 style="text-align:center;font-size:1.8rem;font-weight:800;color:#F6F1E7;margin-bottom:14px;line-height:1.25;">Does This Sound Familiar?</h2>'
+    + '<p style="text-align:center;color:rgba(246,241,231,0.42);font-size:0.88rem;margin-bottom:36px;line-height:1.65;">Most people lose hundreds every month &mdash; not because they don\'t earn enough, <strong style="color:rgba(246,241,231,0.7);">but because they can\'t see where it\'s going.</strong></p>'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">';
+
+  var _probs = [
+    '"Where did all my money go this month?"',
+    '"I feel anxious every time I check my balance"',
+    '"I\'ve tried budgeting apps &mdash; I always quit"',
+    '"Am I actually saving anything at all?"',
+    '"I earn decent money but still feel broke"',
+    '"I have no idea if I\'m overspending on food"'
+  ];
+  for (var i = 0; i < _probs.length; i++) {
+    html += '<div style="display:flex;align-items:flex-start;gap:10px;padding:14px;background:rgba(224,82,82,0.05);border:1px solid rgba(224,82,82,0.15);border-radius:10px;">'
+      + '<span style="color:#e05252;font-weight:800;flex-shrink:0;font-size:1.1rem;line-height:1.3;">&#x2715;</span>'
+      + '<p style="color:rgba(246,241,231,0.65);font-size:0.79rem;line-height:1.5;font-style:italic;">' + _probs[i] + '</p>'
+      + '</div>';
+  }
+
+  html += '</div>'
+    + '<div style="margin-top:28px;padding:20px 24px;background:linear-gradient(135deg,rgba(31,230,209,0.06),rgba(215,180,106,0.04));border:1px solid rgba(31,230,209,0.22);border-radius:12px;text-align:center;">'
+    + '<p style="color:#1FE6D1;font-weight:700;font-size:0.9rem;">The good news? All of this is fixable &mdash; in under 5 minutes &mdash; with the right tool.</p>'
+    + '</div>'
+    + '</div></div>';
+
+  // ── SCREENSHOT GALLERY ───────────────────────────────────────
+  if (sp.images && sp.images.length) {
+    var _capsById = {
+      2: [
+        { title: 'Monthly Dashboard', desc: 'See your income, expenses, savings rate, and top spending categories for any month. 5 automated charts update instantly as you type.' },
+        { title: 'Annual Overview', desc: '12-month trends, net savings, expense-to-income ratio, and Top 20 spending rankings. Your entire financial year at a glance.' },
+        { title: 'Works On Every Device', desc: 'Desktop, laptop, tablet, or phone. Both Excel and Google Sheets included &mdash; your data, your device, your choice.' }
+      ],
+      3: [
+        { title: 'Monthly Dashboard', desc: 'Every month, at a glance: income, expenses, profit, margin, and category breakdowns. Auto-updating visual progress bars show exactly where you stand vs. your profit goal.' },
+        { title: 'Annual Dashboard', desc: 'Your full year of business performance on one page. Total income, expenses, net profit, margin, and a live progress bar showing how close you are to your annual goal.' },
+        { title: '5-Year Growth Dashboard', desc: 'Watch your business grow year over year. Track long-term trends, set multi-year revenue goals, and see exactly where your business is headed.' }
+      ],
+      4: [
+        { title: 'Works on Every Device', desc: 'Your Debt Payoff Dashboard looks and works perfectly on laptop, tablet, and phone. Both Excel and Google Sheets included — full functionality on every screen size, every platform.' },
+        { title: 'Debt Payoff Dashboard — Full View', desc: '5 live KPIs: total starting debt, current balance, paid YTD, interest accrued, and net reduction. Falling balance chart, debt composition donut, Starting vs Current bar chart, and Payments vs Interest bars — all auto-updating.' }
+      ],
+      5: [
+        { title: 'Works on Every Device', desc: 'Your Cash Flow Dashboard looks and works perfectly on laptop, tablet, and phone. Both Excel and Google Sheets included — full functionality on every screen size, every platform.' },
+        { title: 'Executive Cash Flow Dashboard — Full View', desc: '6 live KPIs: Total Inflows, Outflows, Net Cash Flow, Avg Monthly Net, Cash Growth %, and Best Month. Cash Balance Trajectory, Inflows vs Outflows, Expense Breakdown donut, and Cumulative Trend — all auto-updating.' }
+      ]
+    };
+    var _caps = _capsById[id] || _capsById[2];
+    html += '<div style="padding:0 28px 60px;">'
+      + '<div style="max-width:680px;margin:0 auto;">'
+      + '<p style="text-align:center;font-size:0.68rem;font-weight:800;letter-spacing:0.26em;color:#D7B46A;text-transform:uppercase;margin-bottom:12px;">The Product</p>'
+      + '<h2 style="text-align:center;font-size:1.8rem;font-weight:800;color:#F6F1E7;margin-bottom:40px;line-height:1.25;">See It In Action</h2>';
+    for (var i = 0; i < sp.images.length; i++) {
+      var _c = _caps[i] || {};
+      html += '<div style="margin-bottom:24px;border:1px solid rgba(215,180,106,0.2);border-radius:16px;overflow:hidden;background:rgba(11,18,32,0.8);">'
+        + '<div style="background:rgba(215,180,106,0.06);padding:11px 16px;border-bottom:1px solid rgba(215,180,106,0.1);display:flex;align-items:center;gap:7px;">'
+        + '<div style="width:10px;height:10px;border-radius:50%;background:#e05252;flex-shrink:0;"></div>'
+        + '<div style="width:10px;height:10px;border-radius:50%;background:#D7B46A;flex-shrink:0;"></div>'
+        + '<div style="width:10px;height:10px;border-radius:50%;background:#1FE6D1;flex-shrink:0;"></div>'
+        + '<span style="color:rgba(246,241,231,0.28);font-size:0.7rem;margin-left:6px;">' + (_c.title || '') + '</span>'
+        + '</div>'
+        + '<img src="' + sp.images[i] + '" alt="' + (_c.title || 'Dashboard Screenshot') + '" style="width:100%;display:block;" onerror="this.style.display=\'none\'"/>'
+        + '<div style="padding:16px 20px;">'
+        + '<p style="font-weight:700;color:#D7B46A;font-size:0.88rem;margin-bottom:4px;">' + (_c.title || '') + '</p>'
+        + '<p style="color:rgba(246,241,231,0.5);font-size:0.78rem;line-height:1.55;">' + (_c.desc || '') + '</p>'
+        + '</div>'
+        + '</div>';
+    }
+    html += '</div></div>';
+  }
+
+  // ── MID-PAGE CTA ─────────────────────────────────────────────
+  html += '<div style="padding:0 28px 60px;text-align:center;">'
+    + '<div style="max-width:640px;margin:0 auto;padding:36px 28px;background:linear-gradient(135deg,rgba(31,230,209,0.07),rgba(215,180,106,0.05));border:1px solid rgba(215,180,106,0.22);border-radius:20px;">'
+    + '<p style="color:#D7B46A;font-weight:800;font-size:1.1rem;margin-bottom:8px;">Ready to Take Control?</p>'
+    + '<p style="color:rgba(246,241,231,0.42);font-size:0.85rem;margin-bottom:20px;">Join thousands who already know exactly where their money goes.</p>'
+    + '<div style="margin-bottom:18px;">'
+    + '<span style="color:#D7B46A;font-weight:800;font-size:1.9rem;">' + p.price + '</span>'
+    + '</div>'
+    + '<button onclick="buyNow(' + id + ')" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:420px;padding:18px 24px;background:linear-gradient(135deg,#1FE6D1,#16b8a8);color:#0B1220;border-radius:12px;font-weight:800;font-size:1rem;cursor:pointer;border:none;">'
+    + '&#9889; Get Access Now &mdash; ' + p.price + '</button>'
+    + '<div style="display:flex;justify-content:center;align-items:center;gap:16px;margin-top:14px;align-items:center;">'
+    + '<i class="fa-brands fa-cc-visa"        style="font-size:38px;"></i>'
+    + '<i class="fa-brands fa-cc-mastercard"  style="font-size:38px;"></i>'
+    + '<i class="fa-brands fa-cc-amex"        style="font-size:38px;"></i>'
+    + '<i class="fa-brands fa-cc-paypal"      style="font-size:38px;"></i>'
+    + '<i class="fa-brands fa-apple-pay"      style="font-size:34px;color:#F6F1E7;"></i>'
+    + '<i class="fa-brands fa-google-pay"     style="font-size:34px;color:#F6F1E7;"></i>'
+    + '</div>'
+    + '<p style="color:rgba(246,241,231,0.22);font-size:0.7rem;margin-top:12px;">One-time payment &bull; Instant download &bull; No subscriptions</p>'
+    + '<p style="color:rgba(246,241,231,0.22);font-size:0.7rem;margin-top:6px;line-height:1.5;">&#128274; Payments securely processed by <strong style="color:rgba(246,241,231,0.38);">Paddle</strong> &mdash; PCI-compliant Merchant of Record &bull; Your card details are never stored on our servers</p>'
+    + '</div>'
+    + '</div>';
+
+  // ── WHAT'S INCLUDED ──────────────────────────────────────────
+  if (sp.included) {
+    html += '<div style="padding:0 28px 60px;">'
+      + '<div style="max-width:680px;margin:0 auto;">'
+      + '<p style="text-align:center;font-size:0.68rem;font-weight:800;letter-spacing:0.26em;color:#1FE6D1;text-transform:uppercase;margin-bottom:12px;">What You Get</p>'
+      + '<h2 style="text-align:center;font-size:1.8rem;font-weight:800;color:#F6F1E7;margin-bottom:12px;">Everything Included</h2>'
+      + '<p style="text-align:center;color:rgba(246,241,231,0.38);font-size:0.85rem;margin-bottom:36px;">' + (sp.includedSub || 'Automated dashboards. Built for real life. No learning curve.') + '</p>'
+      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">';
+    for (var i = 0; i < sp.included.length; i++) {
+      var inc = sp.included[i];
+      html += '<div style="padding:22px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);border-radius:14px;">'
+        + '<div style="width:44px;height:44px;border-radius:12px;background:rgba(31,230,209,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:14px;">'
+        + '<span class="material-symbols-outlined" style="color:#1FE6D1;font-size:1.3rem;">' + inc.icon + '</span>'
+        + '</div>'
+        + '<p style="font-weight:700;color:#F6F1E7;font-size:0.9rem;margin-bottom:6px;">' + inc.title + '</p>'
+        + '<p style="color:rgba(246,241,231,0.42);font-size:0.77rem;line-height:1.6;">' + inc.desc + '</p>'
+        + '</div>';
+    }
+    html += '</div></div></div>';
+  }
+
+  // ── HOW IT WORKS ─────────────────────────────────────────────
+  if (sp.steps) {
+    html += '<div style="padding:0 28px 60px;">'
+      + '<div style="max-width:680px;margin:0 auto;padding:44px 36px;background:linear-gradient(135deg,rgba(215,180,106,0.04),rgba(31,230,209,0.03));border:1px solid rgba(215,180,106,0.12);border-radius:20px;">'
+      + '<p style="text-align:center;font-size:0.68rem;font-weight:800;letter-spacing:0.26em;color:#D7B46A;text-transform:uppercase;margin-bottom:12px;">Simple Process</p>'
+      + '<h2 style="text-align:center;font-size:1.8rem;font-weight:800;color:#F6F1E7;margin-bottom:12px;">Start in Under 5 Minutes</h2>'
+      + '<p style="text-align:center;color:rgba(246,241,231,0.38);font-size:0.85rem;margin-bottom:36px;">No setup complexity. No learning curve. Just open and start.</p>'
+      + '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;">';
+    for (var i = 0; i < sp.steps.length; i++) {
+      var step = sp.steps[i];
+      html += '<div style="text-align:center;">'
+        + '<div style="width:48px;height:48px;border-radius:50%;background:rgba(31,230,209,0.1);border:2px solid rgba(31,230,209,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:1.1rem;font-weight:800;color:#1FE6D1;">' + step.num + '</div>'
+        + '<p style="font-weight:700;color:#F6F1E7;font-size:0.88rem;margin-bottom:6px;">' + step.title + '</p>'
+        + '<p style="color:rgba(246,241,231,0.42);font-size:0.75rem;line-height:1.55;">' + step.desc + '</p>'
+        + '</div>';
+    }
+    html += '</div></div></div>';
+  }
+
+  // ── WHAT'S INSIDE TABLE ──────────────────────────────────────
+  if (sp.sheets) {
+    html += '<div style="padding:0 28px 60px;">'
+      + '<div style="max-width:680px;margin:0 auto;">'
+      + '<p style="text-align:center;font-size:0.68rem;font-weight:800;letter-spacing:0.26em;color:#D7B46A;text-transform:uppercase;margin-bottom:12px;">Inside The Planner</p>'
+      + '<h2 style="text-align:center;font-size:1.8rem;font-weight:800;color:#F6F1E7;margin-bottom:36px;">' + sp.sheets.length + ' Powerful ' + (sp.sheets.length === 1 ? 'Sheet' : 'Sheets') + '</h2>'
+      + '<div style="border:1px solid rgba(215,180,106,0.15);border-radius:14px;overflow:hidden;">'
+      + '<div style="display:grid;grid-template-columns:80px 1fr 1fr;background:rgba(215,180,106,0.08);padding:12px 16px;border-bottom:1px solid rgba(215,180,106,0.15);">'
+      + '<span style="color:#D7B46A;font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;">Sheet</span>'
+      + '<span style="color:#D7B46A;font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;">What It Does</span>'
+      + '<span style="color:#D7B46A;font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;">Key Features</span>'
+      + '</div>';
+    for (var i = 0; i < sp.sheets.length; i++) {
+      var sh = sp.sheets[i];
+      var _bg = i % 2 === 0 ? 'rgba(11,18,32,0.7)' : 'rgba(11,18,32,0.4)';
+      html += '<div style="display:grid;grid-template-columns:80px 1fr 1fr;padding:12px 16px;background:' + _bg + ';border-bottom:' + (i < sp.sheets.length - 1 ? '1px solid rgba(215,180,106,0.07)' : 'none') + ';align-items:start;">'
+        + '<span style="color:#1FE6D1;font-size:0.78rem;font-weight:700;">' + sh.tab + '</span>'
+        + '<span style="color:rgba(246,241,231,0.6);font-size:0.73rem;line-height:1.5;padding-right:8px;">' + sh.purpose + '</span>'
+        + '<span style="color:rgba(246,241,231,0.38);font-size:0.73rem;line-height:1.5;">' + sh.highlights + '</span>'
+        + '</div>';
+    }
+    html += '</div></div></div>';
+  }
+
+  // ── PERFECT FOR ──────────────────────────────────────────────
+  if (sp.perfectFor) {
+    html += '<div style="padding:0 28px 60px;">'
+      + '<div style="max-width:680px;margin:0 auto;">'
+      + '<p style="text-align:center;font-size:0.68rem;font-weight:800;letter-spacing:0.26em;color:#1FE6D1;text-transform:uppercase;margin-bottom:12px;">Who It\'s For</p>'
+      + '<h2 style="text-align:center;font-size:1.8rem;font-weight:800;color:#F6F1E7;margin-bottom:36px;">This Is For You If...</h2>'
+      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">';
+    for (var i = 0; i < sp.perfectFor.length; i++) {
+      html += '<div style="display:flex;align-items:flex-start;gap:10px;padding:14px;background:rgba(31,230,209,0.04);border:1px solid rgba(31,230,209,0.15);border-radius:10px;">'
+        + '<span style="color:#1FE6D1;flex-shrink:0;font-weight:800;margin-top:1px;">&#10003;</span>'
+        + '<p style="color:rgba(246,241,231,0.7);font-size:0.8rem;line-height:1.5;">' + sp.perfectFor[i] + '</p>'
+        + '</div>';
+    }
+    html += '</div>';
+    if (sp.bonusPoints) {
+      html += '<div style="margin-top:20px;padding:20px 24px;background:rgba(215,180,106,0.05);border:1px solid rgba(215,180,106,0.15);border-radius:12px;">'
+        + '<p style="font-weight:800;color:#D7B46A;font-size:0.78rem;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.1em;">Also Worth Knowing:</p>'
+        + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">';
+      for (var i = 0; i < sp.bonusPoints.length; i++) {
+        html += '<div style="display:flex;align-items:flex-start;gap:8px;">'
+          + '<span style="color:#D7B46A;flex-shrink:0;font-size:0.8rem;margin-top:2px;">&#10003;</span>'
+          + '<p style="color:rgba(246,241,231,0.6);font-size:0.78rem;line-height:1.5;">' + sp.bonusPoints[i] + '</p>'
+          + '</div>';
+      }
+      html += '</div></div>';
+    }
+    html += '</div></div>';
+  }
+
+  // ── TESTIMONIALS ─────────────────────────────────────────────
+  if (sp.testimonials) {
+    html += '<div style="padding:0 28px 60px;">'
+      + '<div style="max-width:680px;margin:0 auto;">'
+      + '<p style="text-align:center;font-size:0.68rem;font-weight:800;letter-spacing:0.26em;color:#D7B46A;text-transform:uppercase;margin-bottom:12px;">Social Proof</p>'
+      + '<h2 style="text-align:center;font-size:1.8rem;font-weight:800;color:#F6F1E7;margin-bottom:36px;">Real People. Real Results.</h2>'
+      + '<div style="display:flex;flex-direction:column;gap:14px;">';
+    for (var i = 0; i < sp.testimonials.length; i++) {
+      var t = sp.testimonials[i];
+      var _stars = '';
+      for (var s = 0; s < (t.stars || 5); s++) _stars += '&#11088;';
+      html += '<div style="padding:24px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.15);border-radius:14px;">'
+        + '<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">'
+        + '<div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,rgba(215,180,106,0.22),rgba(31,230,209,0.15));display:flex;align-items:center;justify-content:center;font-weight:800;color:#D7B46A;font-size:0.9rem;flex-shrink:0;">' + t.name.charAt(0) + '</div>'
+        + '<div><p style="font-weight:700;color:#F6F1E7;font-size:0.88rem;margin-bottom:2px;">' + t.name + '</p>'
+        + '<p style="color:rgba(246,241,231,0.38);font-size:0.72rem;">' + (t.role || '') + '</p></div>'
+        + '<span style="margin-left:auto;font-size:0.78rem;">' + _stars + '</span>'
+        + '</div>'
+        + '<p style="color:rgba(246,241,231,0.65);font-size:0.82rem;line-height:1.7;font-style:italic;">&ldquo;' + t.text + '&rdquo;</p>'
+        + '</div>';
+    }
+    html += '</div></div></div>';
+  }
+
+  // ── COMPARISON TABLE ─────────────────────────────────────────
+  if (sp.comparison) {
+    html += '<div style="padding:0 28px 60px;">'
+      + '<div style="max-width:680px;margin:0 auto;">'
+      + '<p style="text-align:center;font-size:0.68rem;font-weight:800;letter-spacing:0.26em;color:#e05252;text-transform:uppercase;margin-bottom:12px;">Do The Math</p>'
+      + '<h2 style="text-align:center;font-size:1.8rem;font-weight:800;color:#F6F1E7;margin-bottom:12px;">' + p.price + ' vs. The Alternatives</h2>'
+      + '<p style="text-align:center;color:rgba(246,241,231,0.38);font-size:0.85rem;margin-bottom:28px;">You\'re saving thousands. For the price of a sandwich.</p>'
+      + '<div style="border:1px solid rgba(215,180,106,0.15);border-radius:14px;overflow:hidden;">'
+      + '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;background:rgba(215,180,106,0.08);padding:12px 16px;border-bottom:1px solid rgba(215,180,106,0.15);">'
+      + '<span style="color:#D7B46A;font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;">Alternative</span>'
+      + '<span style="color:#e05252;font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;text-align:center;">Their Price</span>'
+      + '<span style="color:#1FE6D1;font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;text-align:center;">Your Price</span>'
+      + '</div>';
+    for (var i = 0; i < sp.comparison.length; i++) {
+      var _cmp = sp.comparison[i];
+      var _bg2 = i % 2 === 0 ? 'rgba(11,18,32,0.7)' : 'rgba(11,18,32,0.4)';
+      html += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;padding:14px 16px;background:' + _bg2 + ';border-bottom:' + (i < sp.comparison.length - 1 ? '1px solid rgba(215,180,106,0.07)' : 'none') + ';align-items:center;">'
+        + '<span style="color:rgba(246,241,231,0.7);font-size:0.8rem;font-weight:600;">' + _cmp.item + '</span>'
+        + '<span style="color:#e05252;font-size:0.8rem;font-weight:700;text-align:center;text-decoration:line-through;opacity:0.75;">' + _cmp.cost + '</span>'
+        + '<span style="color:#1FE6D1;font-size:0.8rem;font-weight:800;text-align:center;">' + _cmp.yours + '</span>'
+        + '</div>';
+    }
+    html += '</div>'
+      + '<div style="margin-top:16px;padding:16px 20px;background:rgba(31,230,209,0.05);border:1px solid rgba(31,230,209,0.2);border-radius:10px;text-align:center;">'
+      + '<p style="color:#1FE6D1;font-weight:700;font-size:0.85rem;">' + (sp.comparisonCaption || 'You\'re saving thousands per year. For the price of a cup of coffee.') + '</p>'
+      + '</div>'
+      + '</div></div>';
+  }
+
+  // ── FAQ ──────────────────────────────────────────────────────
+  if (sp.faq) {
+    html += '<div style="padding:0 28px 60px;">'
+      + '<div style="max-width:680px;margin:0 auto;">'
+      + '<p style="text-align:center;font-size:0.68rem;font-weight:800;letter-spacing:0.26em;color:#1FE6D1;text-transform:uppercase;margin-bottom:12px;">FAQ</p>'
+      + '<h2 style="text-align:center;font-size:1.8rem;font-weight:800;color:#F6F1E7;margin-bottom:36px;">Questions &amp; Answers</h2>'
+      + '<div style="display:flex;flex-direction:column;gap:10px;">';
+    for (var i = 0; i < sp.faq.length; i++) {
+      var fq = sp.faq[i];
+      html += '<div style="padding:20px 22px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);border-radius:12px;">'
+        + '<p style="font-weight:700;color:#D7B46A;font-size:0.85rem;margin-bottom:10px;">Q: ' + fq.q + '</p>'
+        + '<p style="color:rgba(246,241,231,0.52);font-size:0.8rem;line-height:1.7;">A: ' + fq.a + '</p>'
+        + '</div>';
+    }
+    html += '</div></div></div>';
+  }
+
+  // ── FINAL CTA ────────────────────────────────────────────────
+  html += '<div style="padding:0 28px;">'
+    + '<div style="max-width:680px;margin:0 auto;padding:56px 32px;text-align:center;background:radial-gradient(ellipse at 28% 18%,rgba(31,230,209,0.1) 0%,transparent 58%),radial-gradient(ellipse at 72% 82%,rgba(215,180,106,0.1) 0%,transparent 58%),rgba(11,18,32,0.98);border:1px solid rgba(215,180,106,0.25);border-radius:24px;">'
+    + '<span class="material-symbols-outlined" style="font-size:3rem;color:#D7B46A;display:block;margin-bottom:16px;">savings</span>'
+    + '<h2 style="font-size:2.1rem;font-weight:800;color:#F6F1E7;margin-bottom:12px;line-height:1.15;">' + (sp.finalHeadline || 'Stop Guessing.<br/>Start Knowing.') + '</h2>'
+    + '<p style="color:rgba(246,241,231,0.42);font-size:0.9rem;line-height:1.65;max-width:420px;margin:0 auto 28px;">' + (sp.finalSub || 'For less than the cost of a coffee, get total clarity on your finances. Know exactly where every dollar goes &mdash; starting today.') + '</p>'
+    + '<div style="margin-bottom:28px;">'
+    + '<span style="color:#D7B46A;font-weight:800;font-size:3.6rem;line-height:1;display:block;">' + p.price + '</span>'
+    + '</div>'
+    + '<button onclick="buyNow(' + id + ')" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:480px;padding:22px 32px;background:linear-gradient(135deg,#1FE6D1,#16b8a8);color:#0B1220;border-radius:14px;font-weight:800;font-size:1.2rem;cursor:pointer;border:none;letter-spacing:0.02em;box-shadow:0 8px 32px rgba(31,230,209,0.3);margin-bottom:14px;">'
+    + '&#9889; GET INSTANT ACCESS &mdash; ' + p.price + '</button>'
+    + '<div style="display:flex;justify-content:center;align-items:center;gap:16px;margin-top:14px;align-items:center;margin-bottom:6px;">'
+    + '<i class="fa-brands fa-cc-visa"        style="font-size:38px;"></i>'
+    + '<i class="fa-brands fa-cc-mastercard"  style="font-size:38px;"></i>'
+    + '<i class="fa-brands fa-cc-amex"        style="font-size:38px;"></i>'
+    + '<i class="fa-brands fa-cc-paypal"      style="font-size:38px;"></i>'
+    + '<i class="fa-brands fa-apple-pay"      style="font-size:34px;color:#F6F1E7;"></i>'
+    + '<i class="fa-brands fa-google-pay"     style="font-size:34px;color:#F6F1E7;"></i>'
+    + '</div>'
+    + '<p style="color:rgba(246,241,231,0.22);font-size:0.7rem;margin-top:10px;margin-bottom:6px;line-height:1.5;">&#128274; Payments securely processed by <strong style="color:rgba(246,241,231,0.38);">Paddle</strong> &mdash; PCI-compliant Merchant of Record &bull; Your card details are never stored on our servers</p>'
+    + '<p style="color:rgba(246,241,231,0.22);font-size:0.72rem;margin-bottom:26px;">Click once &rarr; Get your download link via email immediately</p>'
+    + '<div style="display:flex;align-items:flex-start;gap:14px;padding:18px 20px;background:rgba(31,230,209,0.05);border:1px solid rgba(31,230,209,0.2);border-radius:12px;text-align:left;">'
+    + '<span class="material-symbols-outlined" style="color:#1FE6D1;flex-shrink:0;font-size:1.6rem;margin-top:2px;">verified_user</span>'
+    + '<div><p style="font-weight:700;color:#1FE6D1;font-size:0.85rem;margin-bottom:4px;">14-Day Money-Back Guarantee</p>'
+    + '<p style="color:rgba(246,241,231,0.52);font-size:0.78rem;line-height:1.65;">' + (sp.guaranteeText || 'Try it risk-free. Not satisfied? Full refund. No questions asked.') + '</p>'
+    + '</div></div>'
+    + '</div></div>';
+
+  // ── FOOTER ───────────────────────────────────────────────────
+  html += '<div style="border-top:1px solid rgba(215,180,106,0.1);padding:44px 28px 32px;text-align:center;">'
+    + '<p style="color:#1FE6D1;font-size:0.68rem;font-weight:800;letter-spacing:0.22em;text-transform:uppercase;margin-bottom:18px;">Follow Us</p>'
+    + '<div style="display:flex;justify-content:center;gap:28px;margin-bottom:20px;align-items:center;">'
+    + '<a href="https://www.tiktok.com/@afwealthsystems" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-tiktok"></i></a>'
+    + '<a href="https://www.youtube.com/@afwealthmindset" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-youtube"></i></a>'
+    + '<a href="https://www.instagram.com/afwealthmindset/" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-instagram"></i></a>'
+    + '<a href="https://www.facebook.com/AFWealthMidnset" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-facebook"></i></a>'
+    + '<a href="https://x.com/AFWealth67" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-x-twitter"></i></a>'
+    + '</div>'
+    + '<div style="display:flex;justify-content:center;gap:20px;margin-bottom:12px;">'
+    + '<a href="/terms.html" style="color:rgba(246,241,231,0.22);font-size:0.7rem;text-decoration:none;">Terms</a>'
+    + '<a href="/privacy.html" style="color:rgba(246,241,231,0.22);font-size:0.7rem;text-decoration:none;">Privacy</a>'
+    + '<a href="/refund.html" style="color:rgba(246,241,231,0.22);font-size:0.7rem;text-decoration:none;">Refunds</a>'
+    + '</div>'
+    + '<p style="color:rgba(246,241,231,0.18);font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;">&copy; 2025 AF Wealth Mindset. All Rights Reserved.</p>'
+    + '</div>';
+
+  document.getElementById('page-main').innerHTML = html;
+
+} else {
+
+// ============================================================
+// DEFAULT PAGE LAYOUT (product 1 — affiliate/simple pages)
+// ============================================================
+
+// Hero image
+html += '<div style="margin-top:16px;margin-bottom:28px;">'
+  + '<img src="' + p.image + '" alt="' + p.name + '" style="width:100%;height:220px;object-fit:cover;border-radius:12px;border:1px solid rgba(215,180,106,0.15);"/>'
+  + '</div>';
+
+// Badge
+if (p.badge) {
+  html += '<div style="text-align:center;margin-bottom:12px;">'
+    + '<span style="display:inline-block;padding:4px 14px;border-radius:999px;font-size:0.75rem;font-weight:700;background:rgba(215,180,106,0.1);color:#D7B46A;border:1px solid rgba(215,180,106,0.25);">'
+    + p.badge + '</span></div>';
+}
+
+// Title
+html += '<h1 style="text-align:center;font-size:1.6rem;font-weight:800;color:#D7B46A;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:16px;line-height:1.3;">'
+  + p.name + '</h1>';
+
+// Description
+html += '<p style="text-align:center;color:rgba(246,241,231,0.7);font-size:1rem;line-height:1.7;margin-bottom:24px;">'
+  + p.description + '</p>';
+
+// Price + CTA
+if (p.affiliateUrl) {
+  html += '<div style="text-align:center;margin-bottom:20px;">'
+    + '<span style="color:rgba(246,241,231,0.35);text-decoration:line-through;font-size:1.1rem;margin-right:10px;">' + p.originalPrice + '</span>'
+    + '<span style="color:#D7B46A;font-weight:800;font-size:1.8rem;">' + p.price + '</span>'
+    + '</div>';
+  html += '<a href="' + p.affiliateUrl + '" target="_blank" rel="noopener" '
+    + 'style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:18px;background:#1FE6D1;color:#0B1220;border-radius:12px;font-weight:800;font-size:1.1rem;text-decoration:none;margin-bottom:8px;">'
+    + '<span class="material-symbols-outlined">open_in_new</span> Go to Partner Site — ' + p.price + '</a>';
+  html += '<p style="text-align:center;color:rgba(246,241,231,0.25);font-size:0.75rem;margin-bottom:28px;">You will be redirected to our partner\'s secure checkout</p>';
+  html += '<div style="display:flex;gap:12px;padding:14px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.15);border-radius:10px;margin-bottom:28px;">'
+    + '<span class="material-symbols-outlined" style="color:#D7B46A;flex-shrink:0;margin-top:2px;">info</span>'
+    + '<p style="color:rgba(246,241,231,0.45);font-size:0.75rem;line-height:1.6;">This is an affiliate product. Clicking Go to Partner Site will take you to our trusted partner\'s secure website. We may earn a commission at no extra cost to you.</p>'
+    + '</div>';
+
+} else if (p.checkoutId) {
+  html += '<div style="text-align:center;margin-bottom:20px;">'
+    + '<span style="color:rgba(246,241,231,0.35);text-decoration:line-through;font-size:1.1rem;margin-right:10px;">' + p.originalPrice + '</span>'
+    + '<span style="color:#D7B46A;font-weight:800;font-size:1.8rem;">' + p.price + '</span>'
+    + '</div>';
+  html += '<button onclick="buyNow(' + p.checkoutId + ')" '
+    + 'style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:18px;background:#1FE6D1;color:#0B1220;border-radius:12px;font-weight:800;font-size:1.1rem;margin-bottom:12px;cursor:pointer;border:none;">'
+    + '<span class="material-symbols-outlined">download</span> Get Access Now — ' + p.price + '</button>'
+    + '<div style="display:flex;justify-content:center;align-items:center;gap:16px;margin-bottom:20px;align-items:center;">'
+    + '<i class="fa-brands fa-cc-visa"        style="font-size:38px;"></i>'
+    + '<i class="fa-brands fa-cc-mastercard"  style="font-size:38px;"></i>'
+    + '<i class="fa-brands fa-cc-amex"        style="font-size:38px;"></i>'
+    + '<i class="fa-brands fa-cc-paypal"      style="font-size:38px;"></i>'
+    + '<i class="fa-brands fa-apple-pay"      style="font-size:34px;color:#F6F1E7;"></i>'
+    + '<i class="fa-brands fa-google-pay"     style="font-size:34px;color:#F6F1E7;"></i>'
+    + '</div>'
+    + '<p style="color:rgba(246,241,231,0.22);font-size:0.7rem;margin-top:10px;margin-bottom:20px;line-height:1.5;">&#128274; Payments securely processed by <strong style="color:rgba(246,241,231,0.38);">Paddle</strong> &mdash; PCI-compliant Merchant of Record &bull; Your card details are never stored on our servers</p>';
+}
+
+// Features
+html += '<h3 style="text-align:center;color:#D7B46A;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;font-size:0.8rem;margin-bottom:20px;">What\'s Included</h3>';
+for (var i = 0; i < p.features.length; i++) {
+  var f = p.features[i];
+  html += '<div style="display:flex;align-items:center;gap:16px;padding:16px;border-radius:10px;border:1px solid rgba(215,180,106,0.12);background:rgba(11,18,32,0.6);margin-bottom:10px;">'
+    + '<div style="width:40px;height:40px;border-radius:50%;background:rgba(215,180,106,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">'
+    + '<span class="material-symbols-outlined" style="color:#D7B46A;">' + f.icon + '</span>'
+    + '</div>'
+    + '<div><p style="font-weight:700;color:#F6F1E7;margin-bottom:2px;">' + f.title + '</p>'
+    + '<p style="color:rgba(246,241,231,0.45);font-size:0.85rem;">' + f.desc + '</p></div>'
+    + '</div>';
+}
+
+// Trust section
+if (p.checkoutId) {
+  html += '<div style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(31,230,209,0.05);border:1px solid rgba(31,230,209,0.2);border-radius:10px;margin-bottom:16px;">'
+    + '<span class="material-symbols-outlined" style="color:#1FE6D1;font-size:18px;flex-shrink:0;">download</span>'
+    + '<p style="color:#1FE6D1;font-size:0.75rem;font-weight:700;">This is a digital product. Access is provided instantly after purchase via email.</p>'
+    + '</div>';
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;margin-bottom:16px;">'
+    + '<div style="padding:20px;text-align:center;border-radius:12px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);">'
+    + '<span class="material-symbols-outlined" style="color:#D7B46A;font-size:2rem;display:block;margin-bottom:6px;">bolt</span>'
+    + '<p style="font-weight:700;color:#F6F1E7;font-size:0.9rem;">Instant Access</p>'
+    + '<p style="color:rgba(246,241,231,0.4);font-size:0.75rem;margin-top:4px;">Immediate access after purchase.</p>'
+    + '</div>'
+    + '<div style="padding:20px;text-align:center;border-radius:12px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);">'
+    + '<span class="material-symbols-outlined" style="color:#D7B46A;font-size:2rem;display:block;margin-bottom:6px;">verified_user</span>'
+    + '<p style="font-weight:700;color:#F6F1E7;font-size:0.9rem;">14-Day Guarantee</p>'
+    + '<p style="color:rgba(246,241,231,0.4);font-size:0.75rem;margin-top:4px;">Full refund, no questions asked.</p>'
+    + '</div></div>';
+  html += '<p style="text-align:center;color:rgba(246,241,231,0.3);font-size:0.72rem;margin-bottom:28px;">&#128274; Payments are securely processed by Paddle</p>';
+} else if (p.affiliateUrl) {
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;margin-bottom:28px;">'
+    + '<div style="padding:20px;text-align:center;border-radius:12px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);">'
+    + '<span class="material-symbols-outlined" style="color:#D7B46A;font-size:2rem;display:block;margin-bottom:6px;">verified_user</span>'
+    + '<p style="font-weight:700;color:#F6F1E7;font-size:0.9rem;">60-Day Guarantee</p>'
+    + '<p style="color:rgba(246,241,231,0.4);font-size:0.75rem;margin-top:4px;">Full refund, no questions asked.</p>'
+    + '</div>'
+    + '<div style="padding:20px;text-align:center;border-radius:12px;background:rgba(11,18,32,0.8);border:1px solid rgba(215,180,106,0.12);">'
+    + '<span class="material-symbols-outlined" style="color:#D7B46A;font-size:2rem;display:block;margin-bottom:6px;">lock</span>'
+    + '<p style="font-weight:700;color:#F6F1E7;font-size:0.9rem;">Secure Checkout</p>'
+    + '<p style="color:rgba(246,241,231,0.4);font-size:0.75rem;margin-top:4px;">Protected by our partner\'s platform.</p>'
+    + '</div></div>';
+}
+
+// Footer
+html += '<div style="border-top:1px solid rgba(215,180,106,0.1);padding-top:36px;text-align:center;">'
+  + '<p style="color:#1FE6D1;font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px;">Follow Us</p>'
+  + '<div style="display:flex;justify-content:center;gap:28px;margin-bottom:20px;align-items:center;">'
+  + '<a href="https://www.tiktok.com/@afwealthsystems" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-tiktok"></i></a>'
+  + '<a href="https://www.youtube.com/@afwealthmindset" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-youtube"></i></a>'
+  + '<a href="https://www.instagram.com/afwealthmindset/" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-instagram"></i></a>'
+  + '<a href="https://www.facebook.com/AFWealthMidnset" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-facebook"></i></a>'
+  + '<a href="https://x.com/AFWealth67" target="_blank" rel="noopener" style="color:#D7B46A;font-size:22px;"><i class="fa-brands fa-x-twitter"></i></a>'
+  + '</div>'
+  + '<div style="display:flex;justify-content:center;gap:20px;margin-bottom:12px;">'
+  + '<a href="/terms.html" style="color:rgba(246,241,231,0.25);font-size:0.7rem;text-decoration:none;">Terms</a>'
+  + '<a href="/privacy.html" style="color:rgba(246,241,231,0.25);font-size:0.7rem;text-decoration:none;">Privacy</a>'
+  + '<a href="/refund.html" style="color:rgba(246,241,231,0.25);font-size:0.7rem;text-decoration:none;">Refunds</a>'
+  + '</div>'
+  + '<p style="color:rgba(246,241,231,0.2);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;">&copy; 2025 AF Wealth Mindset. All Rights Reserved.</p>'
+  + '</div>';
+
+document.getElementById('page-main').innerHTML = html;
+
+} // end layout branches
+
+// Notify form handler
+var nf = document.getElementById('notify-form');
+if (nf) {
+  nf.addEventListener('submit', function(e) {
+    e.preventDefault();
+    document.getElementById('notify-msg').style.display = 'block';
+    document.getElementById('notify-email').value = '';
+  });
+}
 </script>
 </body>
 </html>
