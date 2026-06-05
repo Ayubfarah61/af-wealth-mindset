@@ -266,7 +266,7 @@ async function handlePaddleWebhook(request, env) {
   if (!verified) return json(request, { error: 'Invalid Paddle signature' }, 401);
 
   const event = JSON.parse(rawBody);
-  if (!['transaction.completed', 'transaction.paid'].includes(event.event_type)) {
+  if (!['transaction.completed', 'transaction.paid', 'transaction.billed'].includes(event.event_type)) {
     return json(request, { ok: true, ignored: event.event_type });
   }
 
@@ -348,7 +348,7 @@ export default {
 
     try {
       if (path === '/api/health' && request.method === 'GET') {
-        return json(request, { status: 'ok', worker: 'afwm-delivery', version: '5.4.0', payment_provider: 'paddle', delivery: 'email+r2+order-lookup' });
+        return json(request, { status: 'ok', worker: 'afwm-delivery', version: '5.5.0', payment_provider: 'paddle', delivery: 'email+r2+order-lookup' });
       }
       if (path === '/api/paddle-webhook' && request.method === 'POST') return handlePaddleWebhook(request, env);
       if (path === '/api/order-downloads' && request.method === 'POST') return handleOrderDownloads(request, env);
