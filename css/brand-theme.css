@@ -37,8 +37,8 @@ p, li, label, summary,
 .text-signature-teal, [class*="text-signature-teal"] { color: var(--af-teal) !important; }
 .text-red-400, [class*="text-red"] { color: var(--af-danger) !important; }
 
-.bg-midnight, .bg-midnight\/50, .bg-midnight\/80,
-.dark\:bg-background-dark, .bg-white\/5, .bg-white\/\[0\.04\] {
+.bg-midnight, .bg-midnight\/40, .bg-midnight\/50, .bg-midnight\/80,
+.dark\:bg-background-dark, .bg-white\/5, .bg-white\/10, .bg-white\/\[0\.04\] {
   background: var(--af-surface) !important;
 }
 .bg-white { background: var(--af-surface) !important; }
@@ -65,16 +65,6 @@ input:focus, textarea:focus, select:focus {
 button, a { text-decoration-thickness: 1px; }
 a { color: var(--af-teal); }
 a:hover { color: #004F4A; }
-button.bg-gold, .bg-gold.text-midnight {
-  background: var(--af-teal) !important;
-  color: #FFFFFF !important;
-}
-button.bg-signature-teal, a.bg-signature-teal,
-button[onclick*="buyNow"], a[href*="moneyripples"] {
-  background: var(--af-teal) !important;
-  color: #FFFFFF !important;
-  border-color: var(--af-teal) !important;
-}
 
 /* Correct legacy inline dark-theme styles on generated product pages. */
 [style*="#0B1220"], [style*="#0b1220"],
@@ -94,6 +84,21 @@ button[onclick*="buyNow"], a[href*="moneyripples"] {
 [style*="color:rgba(246,241,231"], [style*="color: rgba(246, 241, 231"] {
   color: var(--af-text) !important;
 }
+
+/* Action controls always remain high contrast after legacy corrections. */
+button.bg-gold, .bg-gold.text-midnight,
+button.bg-signature-teal, a.bg-signature-teal,
+button[onclick*="buyNow"], a[href*="moneyripples"],
+button[style*="GET INSTANT"], button[style*="Get Access"],
+a[style*="Partner Site"] {
+  background: var(--af-teal) !important;
+  background-color: var(--af-teal) !important;
+  color: #FFFFFF !important;
+  border-color: var(--af-teal) !important;
+  box-shadow: 0 8px 20px rgba(0,107,100,.16) !important;
+}
+button.bg-gold *, button.bg-signature-teal *, button[onclick*="buyNow"] *,
+a[href*="moneyripples"] * { color: #FFFFFF !important; }
 
 @media (max-width: 640px) {
   body { font-size: 16px; }
