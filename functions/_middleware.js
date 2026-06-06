@@ -10,5 +10,10 @@ export async function onRequest(context) {
         element.append('<link rel="stylesheet" href="/css/brand-theme.css" data-afwm-brand-theme="true">', { html: true });
       }
     })
+    .on('body', {
+      element(element) {
+        element.append('<script src="/js/catalog-overrides.js" data-afwm-catalog="true"></script>', { html: true });
+      }
+    })
     .transform(response);
 }
