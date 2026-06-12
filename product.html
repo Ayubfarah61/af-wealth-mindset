@@ -40,21 +40,6 @@
 <script>
 // ---- PRODUCT DATA ----
 var PAGES = {
-  1: {
-    name: 'Cashflow Secrets — The Course That Changes Everything',
-    badge: 'Featured',
-    image: '/images/product1.jpg',
-    originalPrice: '$400',
-    price: '$97',
-    description: 'Stop trading your time for money. Created by self-made millionaire Chris Miles (CNN Money, US News, Bankrate), Cashflow Secrets is the step-by-step system that takes you from financial stress to financial freedom — without a new job, side hustle, or extreme sacrifice.',
-    affiliateUrl: 'https://moneyripples.com/cashflow-secrets-affiliate/?aff=AyubFarah67',
-    features: [
-      { icon: 'play_circle',   title: '11 In-Depth Modules',            desc: 'Mindset, tracking, debt, passive income and more' },
-      { icon: 'calculate',     title: 'Cashflow Optimizer Spreadsheet', desc: 'Your personal financial command centre — FREE inside' },
-      { icon: 'verified_user', title: '60-Day Money-Back Guarantee',    desc: 'Zero risk — full refund if not satisfied' },
-      { icon: 'person',        title: 'By Chris Miles',                 desc: 'Self-made millionaire featured on CNN Money and US News' }
-    ]
-  },
   2: {
     name: 'The Ultimate Budget Planner',
     badge: 'New',
@@ -396,9 +381,9 @@ var PAGES = {
   }
 };
 
-var id = parseInt(new URLSearchParams(window.location.search).get('id')) || 1;
+var id = parseInt(new URLSearchParams(window.location.search).get('id')) || 2;
 var p = PAGES[id];
-if (!p) p = PAGES[1];
+if (!p) p = PAGES[2];
 
 document.title = p.name + ' | AF Wealth Mindset';
 if (typeof initHeader === 'function') initHeader();

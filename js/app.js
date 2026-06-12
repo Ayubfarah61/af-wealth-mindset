@@ -92,7 +92,7 @@ function simplifyHomePage() {
   var productList = null;
   var divs = document.querySelectorAll('main > div');
   for (var j = 0; j < divs.length; j++) {
-    if ((divs[j].textContent || '').indexOf('Cashflow Secrets') !== -1 && (divs[j].textContent || '').indexOf('Ultimate Budget Planner') !== -1) {
+    if ((divs[j].textContent || '').indexOf('Ultimate Budget Planner') !== -1) {
       productList = divs[j];
       break;
     }
@@ -207,24 +207,6 @@ function renderSocialFooter(containerId) {
 
 // ============= PRODUCTS =============
 var PRODUCTS = [
-  {
-    id: 1,
-    name: 'Cashflow Secrets - The Course That Changes Everything',
-    originalPrice: 400,
-    price: 97,
-    edition: '11-Module Digital Course',
-    badge: 'Featured',
-    affiliateUrl: 'https://moneyripples.com/cashflow-secrets-affiliate/?aff=AyubFarah67',
-    image: '/images/product1.jpg',
-    heroImage: '/images/product1.jpg',
-    description: 'Stop trading your time for money. Cashflow Secrets is a step-by-step system that helps you understand cash flow, debt, and financial freedom without a new job or extreme sacrifice.',
-    features: [
-      { icon: 'play_circle',   title: '11 In-Depth Modules',            desc: 'Mindset, tracking, debt, passive income and more' },
-      { icon: 'calculate',     title: 'Cashflow Optimizer Spreadsheet', desc: 'Your personal financial command centre included' },
-      { icon: 'verified_user', title: '60-Day Money-Back Guarantee',    desc: 'Full refund if not satisfied' },
-      { icon: 'person',        title: 'By Chris Miles',                 desc: 'Self-made millionaire featured on CNN Money and US News' }
-    ]
-  },
   {
     id: 2,
     name: 'The Ultimate Budget Planner',
