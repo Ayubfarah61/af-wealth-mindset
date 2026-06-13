@@ -85,6 +85,15 @@ CREATE TABLE IF NOT EXISTS ideas (
   score INTEGER                    -- back-filled from metrics after use
 );
 
+-- Daily spend tracker — hard cap to protect Anthropic balance for other projects
+CREATE TABLE IF NOT EXISTS spend (
+  day TEXT PRIMARY KEY,             -- YYYY-MM-DD UTC
+  input_tokens INTEGER NOT NULL DEFAULT 0,
+  output_tokens INTEGER NOT NULL DEFAULT 0,
+  usd REAL NOT NULL DEFAULT 0,      -- running cost estimate
+  calls INTEGER NOT NULL DEFAULT 0
+);
+
 -- Daily director log so we can see what the brain decided each tick
 CREATE TABLE IF NOT EXISTS director_log (
   id INTEGER PRIMARY KEY AUTOINCREMENT,

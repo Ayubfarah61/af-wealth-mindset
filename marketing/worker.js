@@ -136,7 +136,13 @@ async function loadState(env) {
   const { results: log } = await env.DB.prepare(
     'SELECT * FROM director_log ORDER BY at DESC LIMIT 30'
   ).all();
-  return { products, videos, upcoming, recent, log };
+  const { results: spend } = await env.DB.prepare(
+    'SELECT * FROM spend ORDER BY day DESC LIMIT 14'
+  ).all();
+  return {
+    products, videos, upcoming, recent, log, spend,
+    budget: { daily_cap_usd: Number(env.DAILY_USD_CAP || '0.10') }
+  };
 }
 
 function json(data) {
@@ -195,6 +201,10 @@ function dashboardHtml() {
 <h2>Recent posts</h2>
 <table id="recent"><thead><tr><th>When</th><th>Platform</th><th>Status</th><th>Caption</th><th>Link</th></tr></thead><tbody></tbody></table>
 
+<h2>Spend (last 14 days)</h2>
+<div id="budgetline" style="margin-top:4px"></div>
+<table id="spend"><thead><tr><th>Day</th><th>USD</th><th>Calls</th><th>In tokens</th><th>Out tokens</th></tr></thead><tbody></tbody></table>
+
 <h2>Director log</h2>
 <table id="log"><thead><tr><th>When</th><th>Decision</th></tr></thead><tbody></tbody></table>
 
@@ -227,6 +237,11 @@ async function load(){
   tb('upcoming').innerHTML = d.upcoming.map(u => '<tr><td>'+u.scheduled_at+'</td><td><span class="pill">'+u.type+'</span></td><td>'+(u.product_id||'-')+' / '+(u.video_id||'-')+'</td><td>'+u.cycle+'</td><td><button class="ghost" onclick="skip('+u.id+')">skip</button></td></tr>').join('');
   tb('recent').innerHTML = d.recent.map(p => '<tr><td>'+p.posted_at+'</td><td>'+p.platform+'</td><td><span class="pill '+(p.status==='live'?'ok':'bad')+'">'+p.status+'</span></td><td>'+(p.caption||'').slice(0,90)+'</td><td>'+(p.url?'<a target=_blank href='+p.url+'>open</a>':'')+'</td></tr>').join('');
   tb('log').innerHTML = d.log.map(l => '<tr><td>'+l.at+'</td><td>'+l.decision+'</td></tr>').join('');
+  const today = (d.spend||[])[0] || { usd: 0, day: 'today' };
+  const cap = d.budget?.daily_cap_usd || 0.10;
+  const pct = Math.min(100, (today.usd / cap) * 100);
+  document.getElementById('budgetline').innerHTML = '<span class="pill '+(pct>80?'bad':pct>50?'warn':'ok')+'">Today: $'+today.usd.toFixed(4)+' / $'+cap.toFixed(2)+' cap ('+pct.toFixed(0)+'%)</span>';
+  tb('spend').innerHTML = (d.spend||[]).map(s => '<tr><td>'+s.day+'</td><td>$'+s.usd.toFixed(4)+'</td><td>'+s.calls+'</td><td>'+s.input_tokens+'</td><td>'+s.output_tokens+'</td></tr>').join('');
 }
 async function skip(id){ await fetch('/api/calendar/'+id+'/skip',{method:'POST',headers:H()}); load(); }
 load();
