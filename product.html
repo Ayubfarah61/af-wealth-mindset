@@ -46,12 +46,12 @@ var PAGES = {
     image: '/images/product2.png',
     originalPrice: '$29.99',
     price: '$7.99',
-    description: 'The only spreadsheet you need to track income, expenses, budgets, and savings. Beautifully designed, fully automated, and built for real life. Comes with both Excel AND Google Sheets — use whichever you prefer.',
+    description: 'The only spreadsheet you need to track income, expenses, budgets, and savings. Beautifully designed, fully automated, and built for real life. Delivered as Excel (.xlsx).',
     checkoutId: 2,
     features: [
       { icon: 'bar_chart',      title: '11 Automated Charts',           desc: 'Beautiful dashboards that update as you type' },
       { icon: 'table_chart',    title: '8 Linked Sheets',               desc: 'Setup, Income, Expenses, Monthly, Annual & more' },
-      { icon: 'laptop',         title: 'Excel & Google Sheets',         desc: 'Both formats included — use whichever you prefer' },
+      { icon: 'laptop',         title: 'Excel (.xlsx) Format',          desc: 'Works on Windows, Mac, and iPad with Excel or Microsoft 365' },
       { icon: 'verified_user',  title: '14-Day Money-Back Guarantee',   desc: 'Zero risk — full refund, no questions asked' }
     ],
     salesPage: {
@@ -115,9 +115,9 @@ var PAGES = {
       faq: [
         { q: 'Do I need to know spreadsheet formulas?', a: 'Absolutely not. Just type your transactions — date, category, amount, account. Everything else calculates automatically. All formula cells are protected so you can\'t accidentally break anything. A full video tutorial is included with your purchase to walk you through everything.' },
         { q: 'Can I add my own income/expense categories?', a: 'Yes! The Setup tab has 40 slots for income categories and 40 for expenses. Add, rename, or remove any category — the dashboard updates instantly.' },
-        { q: 'Do I get an Excel file or Google Sheets?', a: 'You get both! Your purchase includes the Excel (.xlsx) file you can download AND the Google Sheets version you can copy to your Drive. Both have the exact same features — use whichever suits you.' },
+        { q: 'What format is this delivered in?', a: 'It\'s delivered as an Excel (.xlsx) file. Works on Excel for Windows, Mac, iPad, and the Excel mobile/web app with a Microsoft 365 account. Instant download after purchase.' },
         { q: 'Can I use this for multiple years?', a: 'Yes! Just keep entering transactions. Switch the year selector on any dashboard to view past or current years. No need to buy again.' },
-        { q: 'Do I need a laptop or computer?', a: 'No! The Google Sheets version works perfectly on your phone — enter transactions, check dashboards, and track your budget from anywhere. No laptop required.' }
+        { q: 'Do I need a laptop or computer?', a: 'Excel works on Windows, Mac, and iPad — and the free Excel mobile and web apps let you view and edit the file from your phone or any browser. Microsoft 365 gives you full features on every device.' }
       ],
       ctaText: 'GET INSTANT ACCESS NOW',
       guaranteeText: 'Download it, use it, see your entire budget laid out automatically. If it doesn\'t work for you for any reason, email us within 14 days for a full refund. No questions asked. Zero risk.'
@@ -434,7 +434,7 @@ if (p.salesPage) {
     + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#128274; Secure Checkout</span>'
     + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#11015; Instant Download</span>'
     + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#10003; 14-Day Guarantee</span>'
-    + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#128202; ' + (id === 3 ? 'Excel Format' : 'Excel &amp; Google Sheets Included') + '</span>'
+    + '<span style="color:rgba(246,241,231,0.38);font-size:0.72rem;">&#128202; ' + ((id === 2 || id === 3) ? 'Excel Format' : 'Excel &amp; Google Sheets Included') + '</span>'
     + '</div>'
     + '<p style="color:rgba(246,241,231,0.22);font-size:0.7rem;margin-top:10px;line-height:1.5;">&#128274; Payments securely processed by <strong style="color:rgba(246,241,231,0.38);">Paddle</strong> &mdash; PCI-compliant Merchant of Record &bull; Your card details are never stored on our servers</p>'
     + '</div>';

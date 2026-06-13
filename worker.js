@@ -14,10 +14,10 @@ const PRODUCT_BY_NAME_HINT = [
 ];
 
 const DEFAULT_PRODUCT_LINKS = {
-  'pri_01kpqtwd3gxej4n3zmwj7q3jna': { excelUrl: BASE_URL + '/api/download/budget-planner.xlsx', googleSheetUrl: 'https://docs.google.com/spreadsheets/d/1hP7f4zWHZILUcW5G7xs1qCyqj1RmWed8/copy', videoUrl: '' },
+  'pri_01kpqtwd3gxej4n3zmwj7q3jna': { excelUrl: BASE_URL + '/api/download/budget-planner.xlsx', videoUrl: '' },
   'pri_01kpr10frj3w82ek1jjbzrd9wn': { excelUrl: BASE_URL + '/api/download/profit-tracker.xlsx', videoUrl: '' },
-  'pri_01kpr12ct1sz1aqvnyweskx44x': { excelUrl: BASE_URL + '/api/download/debt-payoff-dashboard.xlsx', googleSheetUrl: 'https://docs.google.com/spreadsheets/d/1xnBdyY61F-YCG5JbWnRbekjYAc0s8LzH/copy', videoUrl: '' },
-  'pri_01kpr142by79r7r16pg9xgv570': { excelUrl: BASE_URL + '/api/download/cash-flow-budget.xlsx', googleSheetUrl: 'https://docs.google.com/spreadsheets/d/1ZTNBP-eeR4L8q-2gggWt9GRSDCoAJ25m5TfdaKNtBk4/copy', videoUrl: '' }
+  'pri_01kpr12ct1sz1aqvnyweskx44x': { excelUrl: BASE_URL + '/api/download/debt-payoff-dashboard.xlsx', googleSheetUrl: 'https://docs.google.com/spreadsheets/d/1h2nIW5JYBZy8A5J9MQspJosbg7JdxtvpJnhLkIjdgtg/copy', videoUrl: '' },
+  'pri_01kpr142by79r7r16pg9xgv570': { excelUrl: BASE_URL + '/api/download/cash-flow-budget.xlsx', googleSheetUrl: 'https://docs.google.com/spreadsheets/d/1sUcqPBMOUN_KjfZZJORFYyviHWMJ8ahHpnu5tEFTkz4/copy', videoUrl: '' }
 };
 function corsHeaders(request) { const origin = request.headers.get('Origin'); const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0]; return { 'Access-Control-Allow-Origin': allowedOrigin, 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type, Authorization', 'Access-Control-Max-Age': '86400' }; }
 function json(request, data, status = 200) { return new Response(JSON.stringify(data), { status, headers: { ...corsHeaders(request), 'Content-Type': 'application/json' } }); }

@@ -212,15 +212,15 @@ var PRODUCTS = [
     name: 'The Ultimate Budget Planner',
     originalPrice: 29.99,
     price: 7.99,
-    edition: 'Excel & Google Sheets Template',
+    edition: 'Excel Template (.xlsx)',
     badge: 'New',
     image: '/images/product2.png',
     heroImage: '/images/product2.png',
-    description: 'Track income, expenses, budgets, and savings with a clean automated spreadsheet built for real life. Excel and Google Sheets are both included.',
+    description: 'Track income, expenses, budgets, and savings with a clean automated spreadsheet built for real life. Delivered as an Excel (.xlsx) file.',
     features: [
       { icon: 'bar_chart',      title: '11 Automated Charts',           desc: 'Dashboards that update as you type' },
       { icon: 'table_chart',    title: '8 Linked Sheets',               desc: 'Setup, Income, Expenses, Monthly, Annual and more' },
-      { icon: 'laptop',         title: 'Excel & Google Sheets',         desc: 'Both formats included' },
+      { icon: 'laptop',         title: 'Excel (.xlsx) Format',          desc: 'Works on Windows, Mac, and iPad' },
       { icon: 'verified_user',  title: '14-Day Money-Back Guarantee',   desc: 'Full refund, no questions asked' }
     ]
   },

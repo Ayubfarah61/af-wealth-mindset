@@ -12,28 +12,24 @@ The delivery flow is:
 
 ## Product Files Found Locally
 
-The Excel files are currently in:
+The final Excel files are in:
 
-`D:\My site`
+`D:\My site\Files`
 
 Current file mapping:
 
-| Product | Paddle price ID | Local Excel file | Google Sheets link |
+| Product | Paddle price ID | Excel file (D:\My site\Files) | Google Sheets link |
 |---|---|---|---|
-| The Ultimate Budget Planner | `pri_01kpqtwd3gxej4n3zmwj7q3jna` | `D:\My site\Monthly Budget Tracker Sample.xlsx` | `https://docs.google.com/spreadsheets/d/1hP7f4zWHZILUcW5G7xs1qCyqj1RmWed8/copy` |
-| The Profit Tracker | `pri_01kpr10frj3w82ek1jjbzrd9wn` | `D:\My site\Business bookkeeping.xlsx` | Excel only |
-| Debt Payoff Dashboard | `pri_01kpr12ct1sz1aqvnyweskx44x` | `D:\My site\Debt Payoff Dashboard  Excel Template Sample.xlsx` | `https://docs.google.com/spreadsheets/d/1xnBdyY61F-YCG5JbWnRbekjYAc0s8LzH/copy` |
-| 12-Month Cash Flow Budget | `pri_01kpr142by79r7r16pg9xgv570` | `D:\My site\12-Month Cash Flow Budget  Excel Template Sample.xlsx` | `https://docs.google.com/spreadsheets/d/1ZTNBP-eeR4L8q-2gggWt9GRSDCoAJ25m5TfdaKNtBk4/copy` |
+| The Ultimate Budget Planner | `pri_01kpqtwd3gxej4n3zmwj7q3jna` | yes | **Excel only** — no Google Sheets version |
+| The Profit Tracker | `pri_01kpr10frj3w82ek1jjbzrd9wn` | yes | **Excel only** — no Google Sheets version |
+| Debt Payoff Dashboard | `pri_01kpr12ct1sz1aqvnyweskx44x` | yes | `https://docs.google.com/spreadsheets/d/1h2nIW5JYBZy8A5J9MQspJosbg7JdxtvpJnhLkIjdgtg/copy` |
+| 12-Month Cash Flow Budget | `pri_01kpr142by79r7r16pg9xgv570` | yes | `https://docs.google.com/spreadsheets/d/1sUcqPBMOUN_KjfZZJORFYyviHWMJ8ahHpnu5tEFTkz4/copy` |
 
-Important: three Excel files include `Sample` in the filename. Confirm these are the final buyer files before uploading them to Cloudflare R2.
+Only the Debt Payoff Dashboard and the 12-Month Cash Flow Budget have Google Sheets versions. The Ultimate Budget Planner and The Profit Tracker are delivered as Excel files only — their delivery emails will not show a "Open Google Sheets copy" button.
 
-### Status: Sample / Placeholder Links
+### Next Step: Upload Excel Files To Cloudflare R2
 
-The Excel files and Google Sheets links above are **samples**, not final buyer files. Before launching marketing:
-
-- Replace each sample Excel file with the final, polished version for that product.
-- Replace each Google Sheets link with a real "make a copy" link to the final sheet (the Profit Tracker currently has no Google Sheet — add one if needed).
-- Re-upload the final Excel files to Cloudflare R2 and update `PRODUCT_LINKS` (see below) with the new R2 URLs.
+Upload the four final Excel files from `D:\My site\Files` to the `afwm-products` R2 bucket, then update `PRODUCT_LINKS` (see below) with the public R2 URLs.
 
 ### How-To Video Links (Placeholder)
 
@@ -108,22 +104,20 @@ Replace the `PASTE_*_EXCEL_R2_LINK` placeholders with the real R2 links.
 {
   "pri_01kpqtwd3gxej4n3zmwj7q3jna": {
     "excelUrl": "PASTE_BUDGET_PLANNER_EXCEL_R2_LINK",
-    "googleSheetUrl": "https://docs.google.com/spreadsheets/d/1hP7f4zWHZILUcW5G7xs1qCyqj1RmWed8/copy",
     "videoUrl": "PASTE_BUDGET_PLANNER_HOWTO_VIDEO_LINK"
   },
   "pri_01kpr10frj3w82ek1jjbzrd9wn": {
     "excelUrl": "PASTE_PROFIT_TRACKER_EXCEL_R2_LINK",
-    "googleSheetUrl": "PASTE_PROFIT_TRACKER_GOOGLE_SHEET_LINK",
     "videoUrl": "PASTE_PROFIT_TRACKER_HOWTO_VIDEO_LINK"
   },
   "pri_01kpr12ct1sz1aqvnyweskx44x": {
     "excelUrl": "PASTE_DEBT_DASHBOARD_EXCEL_R2_LINK",
-    "googleSheetUrl": "https://docs.google.com/spreadsheets/d/1xnBdyY61F-YCG5JbWnRbekjYAc0s8LzH/copy",
+    "googleSheetUrl": "https://docs.google.com/spreadsheets/d/1h2nIW5JYBZy8A5J9MQspJosbg7JdxtvpJnhLkIjdgtg/copy",
     "videoUrl": "PASTE_DEBT_DASHBOARD_HOWTO_VIDEO_LINK"
   },
   "pri_01kpr142by79r7r16pg9xgv570": {
     "excelUrl": "PASTE_CASH_FLOW_BUDGET_EXCEL_R2_LINK",
-    "googleSheetUrl": "https://docs.google.com/spreadsheets/d/1ZTNBP-eeR4L8q-2gggWt9GRSDCoAJ25m5TfdaKNtBk4/copy",
+    "googleSheetUrl": "https://docs.google.com/spreadsheets/d/1sUcqPBMOUN_KjfZZJORFYyviHWMJ8ahHpnu5tEFTkz4/copy",
     "videoUrl": "PASTE_CASH_FLOW_BUDGET_HOWTO_VIDEO_LINK"
   }
 }
