@@ -1,39 +1,43 @@
-// Content Writer Agent — EDUCATOR-FIRST MODE
-// Locked to the @dearson_ig "Dear ___" wisdom-list format.
-// Every post DELIVERS the lesson. Product mention is soft, end-only, optional.
+// Content Writer Agent — PSYCHOLOGY-FIRST, NO SELLING IN BODY
+//
+// Rules:
+//  - The post body / video text / image text is the "Dear ___" psychological letter.
+//    It NEVER mentions the product noun and NEVER contains a CTA.
+//  - The CTA lives ONLY in the caption/description, as a single soft closing line.
+//  - "link in bio" goes only on platforms where bio links are how it works (TikTok, IG).
+//  - Facebook/YouTube descriptions include the actual product URL.
+//  - Pinterest's description still teaches, and the destination link is the product URL.
 
 import { callClaude } from '../lib/claude.js';
 import { recentCaptions } from '../lib/db.js';
 
 const VOICE = `OUR VOICE (locked):
-- We are EDUCATORS, not sellers. Teach first. Sell never directly.
-- Wise-elder talking to younger self. Direct. Warm. Calm. Slightly stern when needed.
-- Short sentences. Plain words. Second-person address.
-- Never use: "unlock", "transform", "game-changer", "10x", "secret", "trick", "you won't believe", "revolutionary".
-- Yes use: "track", "see", "know", "stop", "decide", "watch out for".
-- A real human reading this should feel TAUGHT, not pitched.`;
+- We are EDUCATORS, never sellers. The post body is the lesson. Nothing else.
+- Wise-elder talking to younger self. Direct. Warm. Calm.
+- Short sentences. Plain words. Second person.
+- Banned words EVERYWHERE (body and captions): "unlock", "transform", "game-changer", "10x", "secret", "trick", "you won't believe", "revolutionary", "hack".
+- Banned product nouns IN THE BODY (only): "budget", "budgeting", "cash flow", "debt payoff", "bookkeeping", "profit tracker", "spreadsheet", "template", "tool", "app", "planner", "tracker".
+  These may appear in captions/descriptions, but NEVER inside the "Dear ___" letter body.`;
 
-const FORMAT = `THE FORMAT WE COPY (@dearson_ig — millions of views per post):
-  Line 1: "Dear ___" — direct-address letter opener
-  Lines 2-N: a numbered list OR 2-4 short sentences of advice
+const FORMAT = `THE BODY FORMAT — copy @dearson_ig:
+  Line 1: "Dear ___" — names a feeling/cycle/moment, never a task
+  Body: numbered list (3-7 items, each ≤ 14 words) OR 2-4 short sentences
   Total body: 30-90 words. Punchy. Each line stands alone.
-  No emojis except at MOST one in the very last line.
+  No emojis in the body.
 
-PRODUCT CTA RULES:
-  - The post body NEVER mentions the product.
-  - Only AFTER the lesson is fully delivered, the caption may end with ONE soft line like:
-      "If you want a sheet that tracks this for you — link in bio."
-      "There's a template that does this on autopilot if you want it."
-  - On Facebook the URL goes in the caption (not "link in bio").
-  - On Pinterest the destination link is the product URL; the description still teaches first.
-  - If the post is not tied to a product, no CTA at all — just the lesson + one closing line.`;
+THE CTA — single soft line in the CAPTION, not the body:
+  - TikTok, Instagram: "Link in bio if you want clarity on this."  or  "There's a tool in our bio that does this for you if you want it."
+  - Facebook: end the post with: "If you want the full picture: <product_url>"
+  - YouTube description: 1 line summary of the lesson + "<product_url>" on its own line + 3 hashtags.
+  - Pinterest description: leads with the lesson, ends with one soft line. Destination link is the product URL automatically.
+  - If product_id is null (general brand), NO product CTA — only "Follow for more letters like this." or similar.`;
 
 const PLATFORM_RULES = `
-TikTok: caption 80-140 chars. The post itself (video text) delivers the lesson. Caption is one extra hook line + 3-5 hashtags. End with "link in bio" only if product-tied.
-Instagram Reels: caption 120-220 chars. Hook line + 1-2 lines of context + 4-6 hashtags blended. "link in bio" only if product-tied.
-Facebook: 2-4 short sentences in the caption. 0-1 hashtags. Direct URL at end if product-tied.
-YouTube Shorts: title 50-70 chars curiosity-gap. Description: 1 hook line + URL (if product-tied) + #Shorts + 2 niche hashtags.
-Pinterest: title 80-100 chars SEO-loaded ("Dear paycheck-to-paycheck me — 4 rules to escape" type). Description: 200-350 chars, keyword-rich, still leads with the lesson, ends with a soft CTA to the linked product.`;
+TikTok caption: 80-140 chars. One extra hook line + 3-5 hashtags. End with CTA only if product-tied.
+Instagram Reels caption: 120-220 chars. Hook line + 4-6 hashtags blended. CTA only if product-tied.
+Facebook: 2-4 short sentences. URL at the very end if product-tied.
+YouTube Shorts: title 50-70 chars curiosity gap (can be the "Dear ___" header). Description: 1 line + URL + #Shorts + 2 hashtags.
+Pinterest: title 80-100 chars SEO-loaded. Description: 200-350 chars, still teaches, one soft closing line.`;
 
 export async function writeProductVideoCopy(env, { video, product, cycle, priorCaptions }) {
   const system = `You are AF Wealth Mindset's CONTENT WRITER.
@@ -45,28 +49,27 @@ ${FORMAT}
 Platform rules:
 ${PLATFORM_RULES}`;
 
-  const user = `You are writing platform captions for a PRODUCT VIDEO that will go out on all platforms.
+  const user = `Write platform captions for a PRODUCT VIDEO going out across all platforms.
 
 The video shows: ${video.scenario || '(spreadsheet walkthrough)'}
-Character/persona in video: ${video.persona || 'generic budgeter'}
+Character/persona in video: ${video.persona || 'generic person'}
 Raw hook of the video: ${video.hook || '(none)'}
 
-This video promotes — but does NOT sell — this product:
+This video belongs to this product (mention only in CAPTION CTA, never inside the post body if you write any):
   Product: ${product.name}
   Pitch: ${product.pitch}
   URL: ${product.url}
-  Price: $${product.price_usd}
 
-Cycle: ${cycle} — ${cycle > 1 ? 'This video has been posted before. Open with a DIFFERENT angle than the prior captions.' : 'First posting.'}
+Cycle: ${cycle} — ${cycle > 1 ? 'Open with a DIFFERENT psychological angle than prior captions below.' : 'First posting.'}
 
-Prior captions for THIS video (do not repeat tone or hook):
+Prior captions for this video (do not repeat):
 ${priorCaptions.length ? priorCaptions.map(c => '- [' + c.platform + '] ' + c.caption).join('\n') : '(none yet)'}
 
-Write each caption so it TEACHES first. The lesson should connect to what the video shows. End with the soft CTA only on platforms where it fits.
+For platforms where the caption is shown over a feeling-first hook, lead with the FEELING (e.g. "The Sunday night dread before opening your bank app —"), not the topic.
 
 Return ONLY this JSON object:
 {
-  "variant": "<short label for this angle, e.g. 'dear-broke-22-cycle-${cycle}'>",
+  "variant": "<short label for this angle>",
   "tiktok":   { "caption": "...", "hashtags": ["#tag1", "#tag2"] },
   "instagram":{ "caption": "...", "hashtags": ["#tag1", "#tag2"] },
   "facebook": { "caption": "..." },
@@ -78,6 +81,8 @@ Return ONLY this JSON object:
 }
 
 export async function writeEngagementCopy(env, { idea, products }) {
+  const focusProduct = idea.product_id ? products.find(p => p.id === idea.product_id) : null;
+
   const system = `You are AF Wealth Mindset's CONTENT WRITER.
 
 ${VOICE}
@@ -87,24 +92,28 @@ ${FORMAT}
 Platform rules:
 ${PLATFORM_RULES}
 
-THIS is a NO-VIDEO post (text-card or image). The "Dear ___" letter IS the post — the body of the letter must be visible/readable on-screen in the image. Make it punchy enough to screenshot.`;
+This is an IMAGE/TEXT-CARD post. The "Dear ___" letter from the research agent is the image content (rendered on screen). Your job is to write CAPTIONS for each platform — not change the body.`;
 
-  const user = `Write platform captions for an engagement post built on this raw idea:
+  const user = `The research agent gave us this letter to post (do NOT rewrite or summarize the body; treat it as the on-image content):
 
   Category: ${idea.category}
-  Idea (already in our voice): ${idea.body}
+  Body (this goes ON the image, exactly as is):
+  ${idea.body}
 
-Product context — if the idea naturally maps to one, soft-CTA toward it at the end of platforms that allow it. If not, NO CTA:
-${products.map(p => '- id=' + p.id + ': ' + p.name + ' ($' + p.price_usd + '): ' + p.pitch + ' — ' + p.url).join('\n')}
+${focusProduct ? `This letter is tied to product:
+  ${focusProduct.name} — ${focusProduct.pitch}
+  URL: ${focusProduct.url}
 
-For platforms that use an image (Instagram, Pinterest, Facebook): the post is the "Dear ___" letter text itself, plus the caption sells the click/save.
-For YouTube Shorts: title pulls the hook from the letter, description includes the full letter + soft CTA.
-For TikTok: this is text-on-screen content — caption is one extra hook + hashtags.
+Soft-CTA at end of caption only. Never mention the product noun. Use phrasings like:
+  - "Link in bio if you want clarity on this."
+  - "There's a tool in our bio if you want this on autopilot."
+  - "Get the full picture — link in bio."
+` : `This letter is NOT tied to any product. Do NOT add a product CTA. End with "Follow for more letters like this." or similar.`}
 
 Return ONLY this JSON object:
 {
   "variant": "<short label>",
-  "focus_product_id": <product id you steered toward, or null>,
+  "focus_product_id": ${idea.product_id || 'null'},
   "tiktok":   { "caption": "...", "hashtags": ["#tag1"] },
   "instagram":{ "caption": "...", "hashtags": ["#tag1"] },
   "facebook": { "caption": "..." },
@@ -115,7 +124,6 @@ Return ONLY this JSON object:
   return callClaude(env, { system, user, response_format: 'json', max_tokens: 1500 });
 }
 
-// Wrapper used by the director
 export async function writeCopy(env, calendarEntry) {
   if (calendarEntry.type === 'product_video') {
     const priorCaptions = await recentCaptions(env, calendarEntry.video_id, 8);

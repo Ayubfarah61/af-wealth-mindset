@@ -1,73 +1,122 @@
-// Trend Scout Agent — EDUCATOR-FIRST MODE
-// Studies @dearson_ig viral format: screenshot-style numbered wisdom lists with
-// direct-address ("Dear ___") header, no selling. We adapt it to money/budget wisdom.
+// Trend Scout / Research Agent — PSYCHOLOGY-FIRST MODE
 //
-// Generates a fresh batch of post angles each day. All ideas must be TEACH-FIRST:
-// the post itself delivers value (a lesson, a list, a hard truth). Product is only
-// hinted at the very end, never pushed.
+// Job: every day, research and surface PSYCHOLOGICAL pain-angles tied to each product.
+// The angle must NAME the feeling, the moment, the shame, the cycle — never the task.
+//
+// Examples of correct vs wrong framing:
+//   ❌ "5 ways to budget better"        ← names the task (budgeting)
+//   ✅ "The Sunday-night dread before opening your bank app"   ← names the feeling
+//
+//   ❌ "How to manage cash flow"        ← names the task
+//   ✅ "The 3-week cycle of feeling rich then broke"           ← names the cycle
+//
+//   ❌ "Pay off debt faster"            ← names the task
+//   ✅ "Why minimum payments feel like running on a treadmill" ← names the feeling
+//
+//   ❌ "Track your business profit"     ← names the task
+//   ✅ "Why busy business owners still can't pay themselves"   ← names the contradiction
+//
+// The reader recognizes themselves first. The product is mentioned LATER, in the caption,
+// never in the body of the lesson.
 
 import { callClaude } from '../lib/claude.js';
 import { getProducts, saveIdeas, log } from '../lib/db.js';
 
-const CATEGORIES = ['wisdom-list', 'hard-truth', 'tiny-lesson', 'myth-bust', 'before-after', 'rule-of-thumb', 'story', 'comparison'];
+// Per-product psychological territory the scout researches in.
+const PRODUCT_PSYCH_MAP = {
+  2: { // Ultimate Budget Planner
+    name: 'awareness / visibility',
+    feelings: ['avoidance of bank app', 'sunday-night money dread', 'shame after impulse buys', 'why raises never feel like raises', 'fighting about money when income is fine', 'the small lie when partner asks "how much did you spend"', 'numbness scrolling spending', 'the calendar of regret'],
+    never_say: ['budget', 'budgeting', 'budget planner', 'track your spending', 'expense tracker']
+  },
+  3: { // Profit Tracker
+    name: 'business honesty / margin reality',
+    feelings: ['busy but broke business owner', 'revenue illusion', 'cant take a vacation from your own work', 'feeling guilty paying yourself', 'why year 2 is harder than year 1', 'comparing yourself to your gross', 'the lie of "growing"', 'shame of not knowing your margin'],
+    never_say: ['bookkeeping', 'profit tracker', 'track profit', 'business spreadsheet']
+  },
+  4: { // Debt Payoff Dashboard
+    name: 'powerlessness / progress invisibility',
+    feelings: ['treadmill feeling of minimums', 'debt feels permanent', 'why people quit at month 4', 'the mental weight of 6 different bills', 'shame at the loan totals', 'the silence when you check the balance', 'paying everything and feeling no closer', 'avoiding the apps because the numbers hurt'],
+    never_say: ['debt payoff', 'pay off debt', 'debt dashboard', 'debt tracker']
+  },
+  5: { // 12-Month Cash Flow Budget
+    name: 'forward sight / future blindness',
+    feelings: ['the 3-week cycle of rich-then-broke', 'december sneaks up empty', 'saying yes to costs you cant cover next quarter', 'living one bad month from disaster', 'the dread before a big annual bill', 'why bonuses disappear', 'the surprise tax-time pit', 'no idea where you will be in 90 days'],
+    never_say: ['cash flow', 'cash flow planner', 'cash flow budget', '12-month plan']
+  }
+};
 
 export async function generateDailyIdeas(env, count = 12) {
   const products = await getProducts(env);
 
-  const system = `You are AF Wealth Mindset's TREND SCOUT.
+  const system = `You are AF Wealth Mindset's RESEARCH AGENT.
 
-OUR VOICE (locked, do not deviate):
-- We are EDUCATORS, not sellers. Every post must teach something before it ever mentions a product.
-- The reader should learn one specific, immediately-useful thing per post.
-- Tone: wise elder talking to a younger self — direct, warm, no hype, no "transform your life", no "secrets".
-- Never use: "unlock", "transform", "game-changer", "revolutionary", "10x", "this one trick", "you won't believe".
-- Yes use: "track", "see", "know", "stop", "decide", "watch out for", "this is why...".
-- Address the reader directly. Short sentences. Plain words.
+YOUR JOB: surface real PSYCHOLOGICAL PAIN ANGLES that real people feel about money — the kind of angles that get screenshotted and saved because they make someone go "this is me."
 
-VIRAL FORMAT WE STUDY (@dearson_ig — 1M+ views per post):
-  Header line: "Dear Son" or similar direct-address opener
-  Body: numbered list of 3-7 sharp wisdom statements, one per line, each ≤ 12 words
-  Style: screenshot on white background, voice-over reads it, no flashy graphics
-  Tone: paternal, certain, calm, slightly stern when needed
+OUR VOICE:
+- We are EDUCATORS. We never sell in the post body.
+- Wise-elder talking to younger self. Direct. Warm. Slightly stern when needed.
+- Short sentences. Plain words. Second-person address.
+- Banned words (never use): "unlock", "transform", "game-changer", "10x", "secret", "trick", "you won't believe", "revolutionary", "hack".
 
-OUR ADAPTATION (rotate these "Dear ___" framings):
-- "Dear broke me at 22"
-- "Dear future millionaire"
-- "Dear small business owner"
-- "Dear paycheck-to-paycheck me"
-- "Dear single mom"
-- "Dear new grad"
-- "Dear husband who hides receipts"
-- "Dear me before I knew this"
+THE FORMAT — copy @dearson_ig (millions of views per post):
+  Line 1: "Dear ___" — direct-address letter opener that NAMES THE FEELING/CYCLE, not the task
+  Body: 30-90 words. EITHER a numbered list (3-7 short items) OR 2-4 short sentences.
+  Each line stands alone. Punchy. Each item ≤ 14 words.
 
-Categories you can use: ${CATEGORIES.join(', ')}.
+STRICT RULES YOU MUST FOLLOW:
+1. The body NEVER mentions the product noun. NEVER use the words: "budget", "budgeting", "budget planner", "cash flow", "cash flow planner", "debt payoff", "debt tracker", "bookkeeping", "profit tracker", "spreadsheet", "template", "tool", "app".
+2. The body NEVER tells someone to use a thing. It only names the FEELING, the CYCLE, the SHAME, the CONTRADICTION, the MOMENT.
+3. The body does NOT contain a CTA. The CTA happens later in the caption, not here.
+4. Each idea is tied to ONE product (we route the CTA later). But the BODY only talks psychology.
 
-EXAMPLES of GOOD ideas (use as STYLE reference, do NOT copy verbatim):
-  wisdom-list: { header: "Dear broke me at 22", body: "4 money rules I wish someone told me: 1) Track every dollar for one month. 2) Pay yourself first. 3) Sleep on every purchase over $100. 4) Boring beats exciting." }
-  hard-truth: { header: "Dear paycheck-to-paycheck me", body: "Your budget app is not the problem. You stopped opening it after week two. Use one sheet you'll actually open." }
-  tiny-lesson: { header: "Dear small business owner", body: "If you can't say your profit margin off the top of your head, you don't own a business — you own a job." }
-  myth-bust: { header: "Dear future millionaire", body: "Wealthy people aren't budgeters. They're trackers. There is a difference." }
-  rule-of-thumb: { header: "Dear new grad", body: "50% needs. 30% wants. 20% future-you. Memorize the ratio before you memorize a single stock tick." }`;
+EXAMPLES OF CORRECT IDEAS:
 
-  const user = `Generate ${count} fresh post angles for today.
+  product_id 2 (awareness):
+    "Dear me before I knew where the money went: You will check your bank app on a Sunday night and feel a small dread. That dread is not about the numbers. It is about not knowing. You can fix the not knowing in one weekend. You cannot fix it by hoping."
 
-Each idea is a TEACH-FIRST post. The post DELIVERS the lesson — it does not sell.
-Format every idea as a "Dear ___" letter with a body of either a numbered list (3-7 items) OR 2-4 short sentences of advice.
+  product_id 3 (business honesty):
+    "Dear business owner who feels busy but broke: 1) You are looking at the wrong number. 2) Revenue is the number that makes people congratulate you. 3) Margin is the number that lets you sleep. 4) Until you know both, you do not own a business — you own a job that pays in receipts."
 
-For each idea, optionally tie it to ONE product (or null for general brand). Product mention will happen LATER in the caption only, NOT inside the post body. Available products for context:
-${products.map(p => `  id=${p.id}: ${p.name} — ${p.pitch}`).join('\n')}
+  product_id 4 (debt powerlessness):
+    "Dear me on month 4 of payments: You feel like you are running on a treadmill. That feeling is not weakness. It is a missing dashboard. You cannot see progress because no one shows you progress. Find the one that shows you what is moving and what is stuck. The shame goes when the picture appears."
+
+  product_id 5 (forward sight):
+    "Dear me three weeks before December: 1) The bills you are ignoring know the date. 2) The gifts you have not bought are already on the calendar. 3) Your future self is screaming and you cannot hear her yet. 4) Look at the next 12 months on one page. The panic loses its grip when the months are visible."
+
+  product_id null (general brand):
+    "Dear me at 22: The reason you keep saying 'I don't know where it went' is that you have never let yourself look. Looking is not punishment. Looking is the only door out."`;
+
+  const productsList = products.map(p => {
+    const m = PRODUCT_PSYCH_MAP[p.id];
+    return `  id=${p.id}: ${p.name}
+    psychological territory: ${m.name}
+    feeling-angles to pull from (rotate, do not reuse same one twice in a batch):
+${m.feelings.map(f => '      - ' + f).join('\n')}
+    NEVER USE these words for this product: ${m.never_say.join(', ')}`;
+  }).join('\n\n');
+
+  const user = `Research and write ${count} fresh PSYCHOLOGICAL ANGLE post bodies for today.
+
+Rules:
+- Each idea ties to EXACTLY ONE product id from the list below (rotate so each product gets at least 2 ideas).
+- Body is the "Dear ___" letter as described. NEVER mention the product noun. NEVER pitch.
+- Each "Dear ___" header must NAME A FEELING/MOMENT/CYCLE, not a task.
+
+Products and their psychological territory:
+${productsList}
 
 Return ONLY this JSON array:
 [
   {
-    "category": "wisdom-list",
-    "product_id": 2,
-    "body": "Dear paycheck-to-paycheck me: 4 things to do before your next payday: 1) Open your sheet. 2) Categorize last 30 days. 3) Find one expense to kill. 4) Move that money to savings before you see it."
+    "category": "wisdom-list" | "hard-truth" | "cycle-name" | "moment-name" | "myth-bust",
+    "product_id": <2|3|4|5|null>,
+    "body": "Dear ___: ..."
   }
 ]
-Exactly ${count} items. Mix categories — don't return 10 of the same.`;
+Exactly ${count} items. Distribute roughly evenly across the 4 products.`;
 
-  const ideas = await callClaude(env, { system, user, response_format: 'json', max_tokens: 3000 });
+  const ideas = await callClaude(env, { system, user, response_format: 'json', max_tokens: 3500 });
   if (!Array.isArray(ideas) || !ideas.length) throw new Error('Trend Scout returned no ideas');
   await saveIdeas(env, ideas);
   await log(env, `Trend Scout saved ${ideas.length} ideas`, { sample: ideas.slice(0, 3) });
