@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>AFWM Post Card Preview v2 — Forbidden Knowledge</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800;900&family=Cormorant+Garamond:ital,wght@1,500;1,700&display=swap" rel="stylesheet"/>
+<style>
+  body { background: #1a1a1a; font-family: Manrope, sans-serif; padding: 40px 20px; margin: 0; }
+  h2 { color: #D7B46A; text-align: center; margin: 0 0 8px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; font-size: 14px; }
+  .subtitle { color: #888; text-align: center; margin: 0 0 32px; font-size: 13px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 32px; max-width: 1400px; margin: 0 auto; }
+
+  /* THE CARD — 1080×1350 "leaked document" aesthetic */
+  .card {
+    aspect-ratio: 1080 / 1350;
+    background: radial-gradient(ellipse at 20% 10%, #1a2438 0%, #0B1220 60%, #050810 100%);
+    border-radius: 16px;
+    padding: 56px 48px;
+    display: flex;
+    flex-direction: column;
+    color: #F6F1E7;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8), inset 0 0 80px rgba(215,180,106,0.08);
+    position: relative;
+    overflow: hidden;
+  }
+  /* Gold corner accents — "classified document" feel */
+  .card::before, .card::after {
+    content: '';
+    position: absolute;
+    width: 50px; height: 50px;
+    border: 2px solid #D7B46A;
+    opacity: 0.5;
+  }
+  .card::before { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+  .card::after { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+
+  /* HEADER — small, classy */
+  .header { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+  .logo {
+    width: 50px; height: 50px;
+    background: radial-gradient(circle at 30% 30%, #F4D77A 0%, #D7B46A 40%, #B88935 100%);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #2a1f08; font-weight: 900; font-size: 12px; letter-spacing: 0.5px;
+    box-shadow: inset 0 -2px 4px rgba(0,0,0,0.3), 0 0 20px rgba(215,180,106,0.4);
+    border: 1px solid #F4D77A;
+  }
+  .brand-name {
+    font-weight: 800; font-size: 18px; color: #F6F1E7; line-height: 1;
+    letter-spacing: 0.02em;
+  }
+  .brand-handle { font-size: 12px; color: #D7B46A; margin-top: 4px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+
+  /* CLASSIFIED-style label */
+  .stamp {
+    display: inline-block;
+    border: 1.5px solid #D7B46A;
+    color: #D7B46A;
+    padding: 4px 12px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    align-self: flex-start;
+    background: rgba(215,180,106,0.06);
+  }
+
+  /* THE HOOK — big, dramatic */
+  .hook {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 44px;
+    line-height: 1.1;
+    color: #F6F1E7;
+    margin-bottom: 28px;
+    letter-spacing: -0.01em;
+  }
+  .hook .accent { color: #D7B46A; font-style: italic; }
+
+  /* BODY LIST */
+  .body { flex: 1; display: flex; flex-direction: column; }
+  .lead { font-size: 18px; line-height: 1.5; color: rgba(246,241,231,0.85); font-weight: 500; margin-bottom: 18px; }
+  .list { list-style: none; padding: 0; margin: 0; counter-reset: item; }
+  .list li {
+    counter-increment: item;
+    padding: 14px 0 14px 50px;
+    position: relative;
+    font-size: 19px;
+    line-height: 1.45;
+    color: rgba(246,241,231,0.92);
+    font-weight: 500;
+    border-bottom: 1px solid rgba(215,180,106,0.15);
+  }
+  .list li:last-child { border-bottom: none; }
+  .list li::before {
+    content: counter(item, decimal-leading-zero);
+    position: absolute; left: 0; top: 13px;
+    color: #D7B46A;
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 0.05em;
+    font-family: Manrope, sans-serif;
+  }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 28px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid rgba(215,180,106,0.25);
+    padding-top: 16px;
+    font-size: 12px; color: rgba(215,180,106,0.85); font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .footer .url { color: #F4D77A; }
+  .footer-logo {
+    width: 22px; height: 22px;
+    background: radial-gradient(circle at 30% 30%, #F4D77A 0%, #D7B46A 40%, #B88935 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(215,180,106,0.4);
+  }
+
+  .label { color: #aaa; text-align: center; margin-top: 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+<h2>AF Wealth Mindset — Forbidden Knowledge Cards</h2>
+<p class="subtitle">1080×1350 · Black + gold · Provokes curiosity → people screenshot/save → traffic to bio link</p>
+
+<div class="grid">
+
+  <!-- 1: Awareness / budget psychology -->
+  <div>
+    <div class="card">
+      <div class="header">
+        <div class="logo">AFWM</div>
+        <div>
+          <div class="brand-name">AF Wealth Mindset</div>
+          <div class="brand-handle">Money. Discipline. Truth.</div>
+        </div>
+      </div>
+      <div class="stamp">What they don't tell you</div>
+      <div class="hook"><span class="accent">3 questions</span> your bank hopes you never ask yourself</div>
+      <div class="body">
+        <ol class="list">
+          <li>Where did the last $1,000 you spent actually go?</li>
+          <li>What is your true monthly burn rate — not your "budget"?</li>
+          <li>If your income stopped today, how many weeks until you panic?</li>
+        </ol>
+      </div>
+      <div class="footer">
+        <span class="url">afwealthmindset.com</span>
+        <div class="footer-logo"></div>
+      </div>
+    </div>
+    <div class="label">Product 2 — Awareness</div>
+  </div>
+
+  <!-- 2: Profit psychology -->
+  <div>
+    <div class="card">
+      <div class="header">
+        <div class="logo">AFWM</div>
+        <div>
+          <div class="brand-name">AF Wealth Mindset</div>
+          <div class="brand-handle">Money. Discipline. Truth.</div>
+        </div>
+      </div>
+      <div class="stamp">Business school won't teach this</div>
+      <div class="hook"><span class="accent">5 reasons</span> small businesses fail in year two</div>
+      <div class="body">
+        <ol class="list">
+          <li>Revenue grew. Margin didn't. Nobody warned them.</li>
+          <li>The owner paid everyone but themselves.</li>
+          <li>"Busy" was confused with "profitable" for 18 months.</li>
+          <li>Taxes hit. Reserves didn't exist.</li>
+          <li>The numbers were never on one page.</li>
+        </ol>
+      </div>
+      <div class="footer">
+        <span class="url">afwealthmindset.com</span>
+        <div class="footer-logo"></div>
+      </div>
+    </div>
+    <div class="label">Product 3 — Profit truth</div>
+  </div>
+
+  <!-- 3: Debt psychology -->
+  <div>
+    <div class="card">
+      <div class="header">
+        <div class="logo">AFWM</div>
+        <div>
+          <div class="brand-name">AF Wealth Mindset</div>
+          <div class="brand-handle">Money. Discipline. Truth.</div>
+        </div>
+      </div>
+      <div class="stamp">The 4-month wall</div>
+      <div class="hook">Why most people <span class="accent">quit paying debt</span> at month 4</div>
+      <div class="body">
+        <p class="lead">It is not the money. It is the silence.</p>
+        <ol class="list">
+          <li>The first three months feel like sacrifice with no proof.</li>
+          <li>The brain needs to <em>see</em> progress, not just feel it.</li>
+          <li>Without one page showing the line move, you give up.</li>
+        </ol>
+      </div>
+      <div class="footer">
+        <span class="url">afwealthmindset.com</span>
+        <div class="footer-logo"></div>
+      </div>
+    </div>
+    <div class="label">Product 4 — Debt</div>
+  </div>
+
+  <!-- 4: Cash flow psychology -->
+  <div>
+    <div class="card">
+      <div class="header">
+        <div class="logo">AFWM</div>
+        <div>
+          <div class="brand-name">AF Wealth Mindset</div>
+          <div class="brand-handle">Money. Discipline. Truth.</div>
+        </div>
+      </div>
+      <div class="stamp">The 14-day illusion</div>
+      <div class="hook">3 money rules your <span class="accent">professor</span> will never touch</div>
+      <div class="body">
+        <ol class="list">
+          <li>Every dollar you can't see in 90 days is a dollar already spent.</li>
+          <li>Annual bills don't care that you live month-to-month.</li>
+          <li>December was on your calendar in January. You ignored it.</li>
+        </ol>
+      </div>
+      <div class="footer">
+        <span class="url">afwealthmindset.com</span>
+        <div class="footer-logo"></div>
+      </div>
+    </div>
+    <div class="label">Product 5 — Cash flow</div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top: 50px;">
+  Same "leaked document" formula, infinite topics. The Trend Scout researches a new forbidden angle every day.<br/>
+  Real production cards swap the "AFWM" circle for your actual gold coin logo PNG.
+</p>
+</body>
+</html>

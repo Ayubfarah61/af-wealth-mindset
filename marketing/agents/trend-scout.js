@@ -1,124 +1,196 @@
-// Trend Scout / Research Agent — PSYCHOLOGY-FIRST MODE
+// Trend Scout / Research Agent — FORBIDDEN KNOWLEDGE MODE (LOCKED)
 //
-// Job: every day, research and surface PSYCHOLOGICAL pain-angles tied to each product.
-// The angle must NAME the feeling, the moment, the shame, the cycle — never the task.
+// Format is law. See marketing/SPEC.md.
 //
-// Examples of correct vs wrong framing:
-//   ❌ "5 ways to budget better"        ← names the task (budgeting)
-//   ✅ "The Sunday-night dread before opening your bank app"   ← names the feeling
+// Every idea is one of these hook patterns (no exceptions):
+//   - "N questions <authority> hopes you never ask"
+//   - "N reasons <bad outcome> happens"
+//   - "What they don't tell you about <topic>"
+//   - "Why most people <action> at <moment>"
+//   - "N money rules your <authority> will never touch"
+//   - "The truth about <thing>"
+//   - "N silent killers of <thing>"
 //
-//   ❌ "How to manage cash flow"        ← names the task
-//   ✅ "The 3-week cycle of feeling rich then broke"           ← names the cycle
-//
-//   ❌ "Pay off debt faster"            ← names the task
-//   ✅ "Why minimum payments feel like running on a treadmill" ← names the feeling
-//
-//   ❌ "Track your business profit"     ← names the task
-//   ✅ "Why busy business owners still can't pay themselves"   ← names the contradiction
-//
-// The reader recognizes themselves first. The product is mentioned LATER, in the caption,
-// never in the body of the lesson.
+// Body: numbered list 3-7 items, each ≤ 18 words. No product nouns. No CTAs.
+// The body is what gets rendered on the visual card image. Make it screenshot-able.
 
 import { callClaude } from '../lib/claude.js';
 import { getProducts, saveIdeas, log } from '../lib/db.js';
 
-// Per-product psychological territory the scout researches in.
-const PRODUCT_PSYCH_MAP = {
-  2: { // Ultimate Budget Planner
-    name: 'awareness / visibility',
-    feelings: ['avoidance of bank app', 'sunday-night money dread', 'shame after impulse buys', 'why raises never feel like raises', 'fighting about money when income is fine', 'the small lie when partner asks "how much did you spend"', 'numbness scrolling spending', 'the calendar of regret'],
+const PRODUCT_TERRITORY = {
+  2: {
+    label: 'AWARENESS / VISIBILITY',
+    hooks: [
+      'questions your bank hopes you never ask',
+      'reasons your raises never feel like raises',
+      'truths about where the money actually goes',
+      'lies you tell yourself when the card declines',
+      'why most people avoid opening the bank app on Sunday'
+    ],
     never_say: ['budget', 'budgeting', 'budget planner', 'track your spending', 'expense tracker']
   },
-  3: { // Profit Tracker
-    name: 'business honesty / margin reality',
-    feelings: ['busy but broke business owner', 'revenue illusion', 'cant take a vacation from your own work', 'feeling guilty paying yourself', 'why year 2 is harder than year 1', 'comparing yourself to your gross', 'the lie of "growing"', 'shame of not knowing your margin'],
-    never_say: ['bookkeeping', 'profit tracker', 'track profit', 'business spreadsheet']
+  3: {
+    label: 'BUSINESS HONESTY / MARGIN',
+    hooks: [
+      'reasons small businesses fail in year two',
+      'lies business owners tell themselves about revenue',
+      'questions your accountant won\'t ask you',
+      'what business school will never teach you about cash',
+      'why "busy" feels like "broke"'
+    ],
+    never_say: ['bookkeeping', 'profit tracker', 'business spreadsheet', 'track profit']
   },
-  4: { // Debt Payoff Dashboard
-    name: 'powerlessness / progress invisibility',
-    feelings: ['treadmill feeling of minimums', 'debt feels permanent', 'why people quit at month 4', 'the mental weight of 6 different bills', 'shame at the loan totals', 'the silence when you check the balance', 'paying everything and feeling no closer', 'avoiding the apps because the numbers hurt'],
+  4: {
+    label: 'DEBT POWERLESSNESS / PROGRESS',
+    hooks: [
+      'why most people quit paying debt at month 4',
+      'lies the minimum payment is telling you',
+      'silent killers of debt-payoff momentum',
+      'what nobody told you about avalanche vs snowball',
+      'why you avoid logging into the loan app'
+    ],
     never_say: ['debt payoff', 'pay off debt', 'debt dashboard', 'debt tracker']
   },
-  5: { // 12-Month Cash Flow Budget
-    name: 'forward sight / future blindness',
-    feelings: ['the 3-week cycle of rich-then-broke', 'december sneaks up empty', 'saying yes to costs you cant cover next quarter', 'living one bad month from disaster', 'the dread before a big annual bill', 'why bonuses disappear', 'the surprise tax-time pit', 'no idea where you will be in 90 days'],
-    never_say: ['cash flow', 'cash flow planner', 'cash flow budget', '12-month plan']
+  5: {
+    label: 'FORWARD SIGHT / FUTURE BLINDNESS',
+    hooks: [
+      'money rules your professor will never touch',
+      'reasons December always sneaks up empty',
+      'why bonuses disappear in 14 days',
+      'truths about the bills you do not see coming',
+      'what the next 90 days already know about your account'
+    ],
+    never_say: ['cash flow', 'cash flow planner', '12-month plan']
   }
+};
+
+const STAMPS_BY_PRODUCT = {
+  2: ['WHAT THEY DON\'T TELL YOU', 'THE BANK\'S PLAYBOOK', 'INSIDE THE NUMBERS', 'THE QUIET TRUTH'],
+  3: ['BUSINESS SCHOOL WON\'T TEACH THIS', 'THE OWNER\'S BLIND SPOT', 'YEAR TWO REALITY', 'BEHIND THE REVENUE'],
+  4: ['THE 4-MONTH WALL', 'WHAT MINIMUM PAYMENTS HIDE', 'THE PROGRESS LIE', 'INSIDE THE PAYOFF GAME'],
+  5: ['THE 14-DAY ILLUSION', 'CALENDAR YOU IGNORED', 'WHAT 90 DAYS KNOW', 'THE SURPRISE BILL FORMULA']
 };
 
 export async function generateDailyIdeas(env, count = 12) {
   const products = await getProducts(env);
 
-  const system = `You are AF Wealth Mindset's RESEARCH AGENT.
+  const system = `You are AF Wealth Mindset's RESEARCH AGENT operating in FORBIDDEN KNOWLEDGE MODE.
 
-YOUR JOB: surface real PSYCHOLOGICAL PAIN ANGLES that real people feel about money — the kind of angles that get screenshotted and saved because they make someone go "this is me."
+YOUR JOB: surface scary, curiosity-driven, "they don't want you to know this" angles that get screenshotted and DM'd.
 
-OUR VOICE:
-- We are EDUCATORS. We never sell in the post body.
-- Wise-elder talking to younger self. Direct. Warm. Slightly stern when needed.
-- Short sentences. Plain words. Second-person address.
-- Banned words (never use): "unlock", "transform", "game-changer", "10x", "secret", "trick", "you won't believe", "revolutionary", "hack".
+OUR VOICE (LOCKED):
+- Insider warnings. Slight threat. We tell you what your bank / accountant / professor / boss / family won't.
+- Second person ("you", "your"). Blunt. Calm.
+- Banned words: "unlock", "transform", "secret", "trick", "hack", "10x", "game-changer", "you won't believe", "revolutionary", "transform your life".
 
-THE FORMAT — copy @dearson_ig (millions of views per post):
-  Line 1: "Dear ___" — direct-address letter opener that NAMES THE FEELING/CYCLE, not the task
-  Body: 30-90 words. EITHER a numbered list (3-7 short items) OR 2-4 short sentences.
-  Each line stands alone. Punchy. Each item ≤ 14 words.
+HOOK PATTERNS (every idea must use ONE — no exceptions):
+  A. "N questions <authority> hopes you never ask yourself"
+  B. "N reasons <bad outcome>"
+  C. "What they don't tell you about <thing>"
+  D. "Why most people <action> at <moment>"
+  E. "N money rules your <authority> will never touch"
+  F. "The truth about <thing>"
+  G. "N silent killers of <thing>"
+  H. "N lies you've been told about <thing>"
 
-STRICT RULES YOU MUST FOLLOW:
-1. The body NEVER mentions the product noun. NEVER use the words: "budget", "budgeting", "budget planner", "cash flow", "cash flow planner", "debt payoff", "debt tracker", "bookkeeping", "profit tracker", "spreadsheet", "template", "tool", "app".
-2. The body NEVER tells someone to use a thing. It only names the FEELING, the CYCLE, the SHAME, the CONTRADICTION, the MOMENT.
-3. The body does NOT contain a CTA. The CTA happens later in the caption, not here.
-4. Each idea is tied to ONE product (we route the CTA later). But the BODY only talks psychology.
+BODY (LOCKED):
+- Optional 1-line LEAD before the list (16-20 words, sharp).
+- Numbered list: 3 to 7 items, each ≤ 18 words.
+- Each item names a feeling, contradiction, cycle, or moment — NOT a task.
+- NEVER mention products, tools, apps, spreadsheets, budgets, trackers, planners.
+- NEVER include a CTA. The CTA lives in the caption later.
 
-EXAMPLES OF CORRECT IDEAS:
+GOLD EXAMPLES (use as reference for level, do NOT copy text):
+  product_id 2:
+    HOOK: "3 questions your bank hopes you never ask yourself"
+    LIST: ["Where did the last $1,000 you spent actually go?",
+           "What is your true monthly burn rate — not your guess?",
+           "If your income stopped today, how many weeks until you panic?"]
+    STAMP: "WHAT THEY DON'T TELL YOU"
 
-  product_id 2 (awareness):
-    "Dear me before I knew where the money went: You will check your bank app on a Sunday night and feel a small dread. That dread is not about the numbers. It is about not knowing. You can fix the not knowing in one weekend. You cannot fix it by hoping."
+  product_id 3:
+    HOOK: "5 reasons small businesses fail in year two"
+    LIST: ["Revenue grew. Margin didn't. Nobody warned them.",
+           "The owner paid everyone but themselves.",
+           "Busy was confused with profitable for 18 months.",
+           "Taxes hit. Reserves didn't exist.",
+           "The numbers were never on one page."]
+    STAMP: "BUSINESS SCHOOL WON'T TEACH THIS"
 
-  product_id 3 (business honesty):
-    "Dear business owner who feels busy but broke: 1) You are looking at the wrong number. 2) Revenue is the number that makes people congratulate you. 3) Margin is the number that lets you sleep. 4) Until you know both, you do not own a business — you own a job that pays in receipts."
+  product_id 4:
+    HOOK: "Why most people quit paying debt at month 4"
+    LEAD: "It is not the money. It is the silence."
+    LIST: ["The first three months feel like sacrifice with no proof.",
+           "The brain needs to see progress, not just feel it.",
+           "Without one page showing the line move, you give up."]
+    STAMP: "THE 4-MONTH WALL"
 
-  product_id 4 (debt powerlessness):
-    "Dear me on month 4 of payments: You feel like you are running on a treadmill. That feeling is not weakness. It is a missing dashboard. You cannot see progress because no one shows you progress. Find the one that shows you what is moving and what is stuck. The shame goes when the picture appears."
-
-  product_id 5 (forward sight):
-    "Dear me three weeks before December: 1) The bills you are ignoring know the date. 2) The gifts you have not bought are already on the calendar. 3) Your future self is screaming and you cannot hear her yet. 4) Look at the next 12 months on one page. The panic loses its grip when the months are visible."
-
-  product_id null (general brand):
-    "Dear me at 22: The reason you keep saying 'I don't know where it went' is that you have never let yourself look. Looking is not punishment. Looking is the only door out."`;
+  product_id 5:
+    HOOK: "3 money rules your professor will never touch"
+    LIST: ["Every dollar you can't see in 90 days is already spent.",
+           "Annual bills don't care that you live month-to-month.",
+           "December was on your calendar in January. You ignored it."]
+    STAMP: "THE 14-DAY ILLUSION"`;
 
   const productsList = products.map(p => {
-    const m = PRODUCT_PSYCH_MAP[p.id];
-    return `  id=${p.id}: ${p.name}
-    psychological territory: ${m.name}
-    feeling-angles to pull from (rotate, do not reuse same one twice in a batch):
-${m.feelings.map(f => '      - ' + f).join('\n')}
-    NEVER USE these words for this product: ${m.never_say.join(', ')}`;
+    const t = PRODUCT_TERRITORY[p.id];
+    const s = STAMPS_BY_PRODUCT[p.id];
+    return `  id=${p.id}: ${p.name}  [${t.label}]
+    HOOK SEEDS (riff, don't copy):
+${t.hooks.map(h => '      • ' + h).join('\n')}
+    STAMP options: ${s.join(' / ')}
+    NEVER USE these words in body: ${t.never_say.join(', ')}`;
   }).join('\n\n');
 
-  const user = `Research and write ${count} fresh PSYCHOLOGICAL ANGLE post bodies for today.
+  const user = `Research and write ${count} fresh FORBIDDEN-KNOWLEDGE post cards for today.
 
-Rules:
-- Each idea ties to EXACTLY ONE product id from the list below (rotate so each product gets at least 2 ideas).
-- Body is the "Dear ___" letter as described. NEVER mention the product noun. NEVER pitch.
-- Each "Dear ___" header must NAME A FEELING/MOMENT/CYCLE, not a task.
+Distribute roughly even across the 4 products (so each gets ~${Math.floor(count/4)} ideas).
 
-Products and their psychological territory:
+Products and their territories:
 ${productsList}
 
-Return ONLY this JSON array:
+Return ONLY this JSON array (exactly ${count} items):
 [
   {
-    "category": "wisdom-list" | "hard-truth" | "cycle-name" | "moment-name" | "myth-bust",
-    "product_id": <2|3|4|5|null>,
-    "body": "Dear ___: ..."
+    "category": "number-questions" | "number-reasons" | "what-they-dont-tell" | "why-most-people" | "money-rules" | "truth-about" | "silent-killers" | "lies-youve-been-told",
+    "product_id": 2 | 3 | 4 | 5,
+    "stamp": "<the classified stamp text, ALL CAPS, ≤ 35 chars>",
+    "hook": "<the hook headline, 6-12 words>",
+    "accent_word": "<the one or two words inside the hook to render in gold>",
+    "lead": "<optional 1-line lead, 14-20 words, OR empty string>",
+    "list": [
+      "first numbered item, ≤ 18 words",
+      "second numbered item",
+      "third numbered item"
+    ]
   }
 ]
-Exactly ${count} items. Distribute roughly evenly across the 4 products.`;
 
-  const ideas = await callClaude(env, { system, user, response_format: 'json', max_tokens: 3500 });
+Rules check before you return:
+- Every hook follows one of patterns A-H.
+- Every "list" has 3-7 items.
+- "accent_word" must be a substring of "hook".
+- No banned words. No product nouns inside lead/list/hook.
+- No emojis anywhere.`;
+
+  const ideas = await callClaude(env, { system, user, response_format: 'json', max_tokens: 4000 });
   if (!Array.isArray(ideas) || !ideas.length) throw new Error('Trend Scout returned no ideas');
-  await saveIdeas(env, ideas);
-  await log(env, `Trend Scout saved ${ideas.length} ideas`, { sample: ideas.slice(0, 3) });
+
+  // Store the FULL idea object (stamp, hook, lead, list) in `body` as JSON
+  // so the Card Renderer can reconstruct the card visually.
+  const rows = ideas.map(i => ({
+    category: i.category,
+    product_id: i.product_id,
+    body: JSON.stringify({
+      stamp: i.stamp,
+      hook: i.hook,
+      accent_word: i.accent_word,
+      lead: i.lead || '',
+      list: i.list
+    })
+  }));
+
+  await saveIdeas(env, rows);
+  await log(env, `Trend Scout saved ${ideas.length} forbidden-knowledge cards`, { sample: ideas.slice(0, 2) });
   return ideas;
 }
