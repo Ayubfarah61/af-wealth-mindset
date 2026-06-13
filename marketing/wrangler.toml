@@ -1,0 +1,23 @@
+name = "afwm-marketing"
+main = "worker.js"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# D1 binding (create with: wrangler d1 create afwm-marketing)
+[[d1_databases]]
+binding = "DB"
+database_name = "afwm-marketing"
+database_id = "REPLACE_WITH_D1_ID_AFTER_CREATE"
+
+# Cron triggers
+[triggers]
+crons = [
+  "*/30 * * * *",  # every 30 min — executor
+  "0 6 * * *"      # daily 06:00 UTC — Trend Scout + Director
+]
+
+# Non-secret defaults. Override via `wrangler secret put` for the real ones.
+[vars]
+ENABLED_PLATFORMS = "tiktok,instagram,facebook,youtube,pinterest"
+CLAUDE_MODEL = "claude-haiku-4-5-20251001"
+TIKTOK_DRAFT_ONLY = "1"   # flip to 0 once your TikTok Content Posting app is approved
