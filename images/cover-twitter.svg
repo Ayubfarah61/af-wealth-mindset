@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 500" width="1500" height="500">
+  <defs>
+    <radialGradient id="twBg" cx="65%" cy="40%" r="85%">
+      <stop offset="0%" stop-color="#1f3a5f"/>
+      <stop offset="55%" stop-color="#10243E"/>
+      <stop offset="100%" stop-color="#040A14"/>
+    </radialGradient>
+    <radialGradient id="twCoinFill" cx="32%" cy="32%" r="80%">
+      <stop offset="0%" stop-color="#1f3a5f"/>
+      <stop offset="55%" stop-color="#10243E"/>
+      <stop offset="100%" stop-color="#081628"/>
+    </radialGradient>
+    <linearGradient id="twGoldBar" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#8A6620"/>
+      <stop offset="100%" stop-color="#D7B46A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1500" height="500" fill="url(#twBg)"/>
+
+  <!-- Subtle teal grid -->
+  <g stroke="#1FE6D1" stroke-width="1" opacity="0.04">
+    <line x1="0" y1="166" x2="1500" y2="166"/>
+    <line x1="0" y1="333" x2="1500" y2="333"/>
+    <line x1="500"  y1="0" x2="500"  y2="500"/>
+    <line x1="1000" y1="0" x2="1000" y2="500"/>
+  </g>
+
+  <!-- Teal corner brackets (only top-right and bottom-right — profile pic covers left) -->
+  <g stroke="#1FE6D1" stroke-width="3" fill="none" opacity="0.5">
+    <path d="M 50 50 L 50 110 M 50 50 L 110 50"/>
+    <path d="M 1450 50 L 1450 110 M 1450 50 L 1390 50"/>
+    <path d="M 1450 450 L 1450 390 M 1450 450 L 1390 450"/>
+  </g>
+
+  <!-- Small AFWM coin on right side, since profile pic overlaps bottom-left -->
+  <g transform="translate(160, 100)">
+    <circle cx="80" cy="80" r="80" fill="url(#twCoinFill)" stroke="#0F766E" stroke-width="6"/>
+    <circle cx="80" cy="80" r="71" fill="none" stroke="#1FE6D1" stroke-width="1" opacity="0.35"/>
+    <text x="80" y="71" font-family="Manrope, sans-serif" font-size="32" font-weight="900"
+          text-anchor="middle" fill="#F7F8F5" letter-spacing="2">AFWM</text>
+    <g transform="translate(38, 92)">
+      <rect x="0"  y="26" width="14" height="24" fill="url(#twGoldBar)" opacity="0.75" rx="1"/>
+      <rect x="20" y="18" width="14" height="32" fill="url(#twGoldBar)" opacity="0.85" rx="1"/>
+      <rect x="40" y="9"  width="14" height="41" fill="url(#twGoldBar)" rx="1"/>
+      <rect x="60" y="0"  width="14" height="50" fill="url(#twGoldBar)" rx="1"/>
+    </g>
+    <g stroke="#1FE6D1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <path d="M 35 144 L 123 92"/>
+      <path d="M 113 86 L 126 90 L 121 104"/>
+    </g>
+  </g>
+
+  <!-- Brand name + tagline (right of small coin, top section) -->
+  <g transform="translate(345, 130)">
+    <text x="0" y="35" font-family="Manrope, sans-serif" font-size="32" font-weight="900" fill="#F7F8F5" letter-spacing="0.04em">AF WEALTH MINDSET</text>
+    <text x="0" y="68" font-family="Manrope, sans-serif" font-size="16" font-weight="700" fill="#1FE6D1" letter-spacing="0.32em">MONEY · DISCIPLINE · TRUTH</text>
+  </g>
+
+  <!-- Big italic hook (center-right, clears profile pic area on left) -->
+  <g transform="translate(345, 250)">
+    <text x="0" y="60" font-family="Cormorant Garamond, serif" font-style="italic" font-weight="700" font-size="56" fill="#F7F8F5">3 questions your bank</text>
+    <text x="0" y="118" font-family="Cormorant Garamond, serif" font-style="italic" font-weight="700" font-size="56" fill="#1FE6D1">hopes you never ask.</text>
+  </g>
+
+  <!-- URL bottom-right -->
+  <text x="1450" y="470" font-family="Manrope, sans-serif" font-size="18" font-weight="700"
+        text-anchor="end" fill="#1FE6D1" letter-spacing="0.18em">AFWEALTHMINDSET.COM</text>
+</svg>

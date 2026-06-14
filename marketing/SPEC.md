@@ -139,6 +139,19 @@ The canonical visual template lives in `marketing/card-preview.html`. Updating t
 
 ---
 
+## 5b. Cover Banners (LOCKED)
+
+| Platform | File | Size | URL |
+|---|---|---|---|
+| YouTube | `cover-youtube.svg` / `.png` | 2048×1152 | `/images/cover-youtube.png` |
+| Facebook Page | `cover-facebook.svg` / `.png` | 1640×624 | `/images/cover-facebook.png` |
+| X / Twitter | `cover-twitter.svg` / `.png` | 1500×500 | `/images/cover-twitter.png` |
+
+To regenerate after editing an SVG:
+```
+npx --yes sharp-cli -i images/cover-<platform>.svg -o images/cover-<platform>.png resize <W> <H>
+```
+
 ## 6. Profile Picture Standardization
 
 When user updates each platform's profile picture, use:
