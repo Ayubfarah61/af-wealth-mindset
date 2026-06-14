@@ -43,10 +43,10 @@ async function executeDue(env) {
   for (const item of items) {
     try {
       const copy = await writeCopy(env, item);
-      // For engagement posts, fall back to the static per-product card image.
-      // (Dynamic per-post rendering coming in a follow-up — workers-og setup pending.)
+      // Engagement posts: rotate through 8 dearson-style cards per product
+      // (32 total static images). Slot = ((calendar_id - 1) mod 8) + 1.
       const cardImageUrl = item.type === 'engagement' && item.product_id
-        ? `https://afwealthmindset.com/images/card-product-${item.product_id}.png`
+        ? `https://afwealthmindset.com/images/card-product-${item.product_id}-${(item.id - 1) % 8 + 1}.png`
         : null;
       const media = item.type === 'product_video'
         ? { videoUrl: item.video_url, thumbnailUrl: item.thumbnail_url }
