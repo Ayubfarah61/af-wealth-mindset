@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 1152" width="2048" height="1152">
   <defs>
-    <radialGradient id="ytBg" cx="30%" cy="40%" r="90%">
+    <radialGradient id="ytBg" cx="50%" cy="45%" r="80%">
       <stop offset="0%" stop-color="#1f3a5f"/>
       <stop offset="55%" stop-color="#10243E"/>
       <stop offset="100%" stop-color="#040A14"/>
@@ -19,56 +19,41 @@
   <!-- Background -->
   <rect width="2048" height="1152" fill="url(#ytBg)"/>
 
-  <!-- Decorative grid lines (subtle wealth chart feel) -->
+  <!-- Subtle grid -->
   <g stroke="#1FE6D1" stroke-width="1" opacity="0.04">
-    <line x1="0"   y1="288" x2="2048" y2="288"/>
-    <line x1="0"   y1="576" x2="2048" y2="576"/>
-    <line x1="0"   y1="864" x2="2048" y2="864"/>
-    <line x1="512"  y1="0" x2="512"  y2="1152"/>
-    <line x1="1024" y1="0" x2="1024" y2="1152"/>
-    <line x1="1536" y1="0" x2="1536" y2="1152"/>
+    <line x1="0" y1="288" x2="2048" y2="288"/>
+    <line x1="0" y1="576" x2="2048" y2="576"/>
+    <line x1="0" y1="864" x2="2048" y2="864"/>
   </g>
 
-  <!-- Outer teal corner brackets -->
-  <g stroke="#1FE6D1" stroke-width="3" fill="none" opacity="0.5">
-    <path d="M 80 80 L 80 180 M 80 80 L 180 80"/>
-    <path d="M 1968 80 L 1968 180 M 1968 80 L 1868 80"/>
-    <path d="M 80 1072 L 80 972 M 80 1072 L 180 1072"/>
-    <path d="M 1968 1072 L 1968 972 M 1968 1072 L 1868 1072"/>
-  </g>
+  <!-- ===== TV-SAFE AREA: centered 1235×338, content fits inside ===== -->
 
-  <!-- ===== TV-SAFE AREA: centered 1235×338 ===== -->
-  <!-- Logo coin (left of safe area) -->
-  <g transform="translate(485, 407)">
-    <circle cx="120" cy="120" r="120" fill="url(#ytCoinFill)" stroke="#0F766E" stroke-width="9"/>
-    <circle cx="120" cy="120" r="107" fill="none" stroke="#1FE6D1" stroke-width="1.2" opacity="0.35"/>
-    <text x="120" y="108" font-family="Manrope, sans-serif" font-size="48" font-weight="900"
+  <!-- Big centered logo -->
+  <g transform="translate(900, 380)">
+    <circle cx="124" cy="124" r="124" fill="url(#ytCoinFill)" stroke="#0F766E" stroke-width="9"/>
+    <circle cx="124" cy="124" r="111" fill="none" stroke="#1FE6D1" stroke-width="1.2" opacity="0.35"/>
+    <text x="124" y="112" font-family="Manrope, sans-serif" font-size="50" font-weight="900"
           text-anchor="middle" fill="#F7F8F5" letter-spacing="3">AFWM</text>
-    <g transform="translate(56, 138)">
+    <g transform="translate(58, 142)">
       <rect x="0"  y="40" width="22" height="36" fill="url(#ytGoldBar)" opacity="0.75" rx="1.5"/>
       <rect x="30" y="28" width="22" height="48" fill="url(#ytGoldBar)" opacity="0.85" rx="1.5"/>
       <rect x="60" y="14" width="22" height="62" fill="url(#ytGoldBar)" rx="1.5"/>
       <rect x="90" y="0"  width="22" height="76" fill="url(#ytGoldBar)" rx="1.5"/>
     </g>
     <g stroke="#1FE6D1" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-      <path d="M 52 218 L 184 138"/>
-      <path d="M 169 130 L 188 136 L 180 156"/>
+      <path d="M 52 222 L 188 142"/>
+      <path d="M 173 134 L 192 140 L 184 160"/>
     </g>
   </g>
 
-  <!-- Brand name + tagline + hook -->
-  <g transform="translate(780, 460)">
-    <text x="0" y="50" font-family="Manrope, sans-serif" font-size="46" font-weight="900" fill="#F7F8F5" letter-spacing="0.04em">AF WEALTH MINDSET</text>
-    <text x="0" y="105" font-family="Manrope, sans-serif" font-size="22" font-weight="700" fill="#1FE6D1" letter-spacing="0.32em" text-transform="uppercase">MONEY · DISCIPLINE · TRUTH</text>
+  <!-- Brand name -->
+  <text x="1024" y="730" font-family="Manrope, sans-serif" font-size="70" font-weight="900"
+        text-anchor="middle" fill="#F7F8F5" letter-spacing="0.05em">AF WEALTH MINDSET</text>
 
-    <!-- The hook headline -->
-    <text x="0" y="210" font-family="Cormorant Garamond, serif" font-style="italic" font-weight="700" font-size="68" fill="#F7F8F5">What they
-      <tspan fill="#1FE6D1">won't tell you</tspan> about money.
-    </text>
-    <text x="0" y="280" font-family="Manrope, sans-serif" font-size="24" font-weight="500" fill="#F7F8F5" opacity="0.78">Real spreadsheets. Forbidden insight. Zero subscriptions.</text>
-  </g>
+  <!-- Tagline -->
+  <text x="1024" y="790" font-family="Manrope, sans-serif" font-size="26" font-weight="700"
+        text-anchor="middle" fill="#1FE6D1" letter-spacing="0.4em">MONEY · DISCIPLINE · TRUTH</text>
 
-  <!-- URL bottom -->
-  <text x="1024" y="1015" font-family="Manrope, sans-serif" font-size="26" font-weight="700"
-        text-anchor="middle" fill="#1FE6D1" letter-spacing="0.18em">AFWEALTHMINDSET.COM</text>
+  <!-- Decorative gold rule -->
+  <line x1="934" y1="828" x2="1114" y2="828" stroke="#B88935" stroke-width="2" opacity="0.7"/>
 </svg>
