@@ -36,10 +36,14 @@ async function uploadBlob(jwt, did, imageUrl) {
   return data.blob;
 }
 
-export async function publish(env, { copy, media, productUrl, type }) {
+export async function publish(env, { copy, media, productUrl, type, allCopy }) {
   if (!env.BLUESKY_HANDLE || !env.BLUESKY_PASSWORD) throw new Error('Bluesky creds missing');
 
-  // Bluesky caps at 300 chars. Use the IG caption shaped to fit.
+  // Content Writer doesn't know about Bluesky. Fall back to Instagram or TikTok caption.
+  const fallback = (allCopy && (allCopy.instagram || allCopy.tiktok || allCopy.facebook)) || {};
+  copy = (copy && copy.caption) ? copy : fallback;
+
+  // Bluesky caps at 300 chars.
   const raw = (copy.caption || '') + (productUrl ? '\n' + productUrl : '');
   const text = raw.length > 300 ? raw.slice(0, 297) + '...' : raw;
 
