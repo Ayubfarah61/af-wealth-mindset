@@ -2,60 +2,86 @@
 <html>
 <head>
 <meta charset="utf-8"/>
-<title>AFWM Post Card Preview v2 — Forbidden Knowledge</title>
+<title>AFWM Cards — Brand Palette v3</title>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800;900&family=Cormorant+Garamond:ital,wght@1,500;1,700&display=swap" rel="stylesheet"/>
 <style>
-  body { background: #1a1a1a; font-family: Manrope, sans-serif; padding: 40px 20px; margin: 0; }
-  h2 { color: #D7B46A; text-align: center; margin: 0 0 8px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; font-size: 14px; }
+  :root {
+    --midnight: #10243E;
+    --midnight-deep: #081628;
+    --ivory: #F7F8F5;
+    --teal: #0F766E;
+    --teal-bright: #1FE6D1;
+    --gold: #B88935;
+    --gold-bright: #D7B46A;
+    --text-dark: #172033;
+  }
+  body { background: #0a0f17; font-family: Manrope, sans-serif; padding: 40px 20px; margin: 0; }
+  h2 { color: var(--teal-bright); text-align: center; margin: 0 0 8px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; font-size: 14px; }
   .subtitle { color: #888; text-align: center; margin: 0 0 32px; font-size: 13px; }
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 32px; max-width: 1400px; margin: 0 auto; }
 
-  /* THE CARD — 1080×1350 "leaked document" aesthetic */
+  /* THE CARD — 1080×1350 "leaked classified document" */
   .card {
     aspect-ratio: 1080 / 1350;
-    background: radial-gradient(ellipse at 20% 10%, #1a2438 0%, #0B1220 60%, #050810 100%);
+    background: radial-gradient(ellipse at 20% 10%, #1a3055 0%, var(--midnight) 60%, var(--midnight-deep) 100%);
     border-radius: 16px;
     padding: 56px 48px;
     display: flex;
     flex-direction: column;
-    color: #F6F1E7;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.8), inset 0 0 80px rgba(215,180,106,0.08);
+    color: var(--ivory);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8), inset 0 0 80px rgba(15,118,110,0.06);
     position: relative;
     overflow: hidden;
   }
-  /* Gold corner accents — "classified document" feel */
+  /* Teal corner accents */
   .card::before, .card::after {
     content: '';
     position: absolute;
     width: 50px; height: 50px;
-    border: 2px solid #D7B46A;
-    opacity: 0.5;
+    border: 2px solid var(--teal-bright);
+    opacity: 0.55;
   }
   .card::before { top: 20px; left: 20px; border-right: none; border-bottom: none; }
   .card::after { bottom: 20px; right: 20px; border-left: none; border-top: none; }
 
-  /* HEADER — small, classy */
+  /* === THE LOGO COIN — navy base, teal ring, ivory text, gold chart, teal arrow === */
   .header { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
-  .logo {
-    width: 50px; height: 50px;
-    background: radial-gradient(circle at 30% 30%, #F4D77A 0%, #D7B46A 40%, #B88935 100%);
+  .logo-coin {
+    width: 60px; height: 60px; position: relative; flex-shrink: 0;
     border-radius: 50%;
+    background:
+      radial-gradient(circle at 30% 30%, #1a3554 0%, var(--midnight) 50%, var(--midnight-deep) 100%);
+    border: 2.5px solid var(--teal);
+    box-shadow:
+      0 0 20px rgba(31,230,209,0.25),
+      inset 0 -2px 6px rgba(0,0,0,0.4),
+      inset 0 2px 4px rgba(31,230,209,0.15);
     display: flex; align-items: center; justify-content: center;
-    color: #2a1f08; font-weight: 900; font-size: 12px; letter-spacing: 0.5px;
-    box-shadow: inset 0 -2px 4px rgba(0,0,0,0.3), 0 0 20px rgba(215,180,106,0.4);
-    border: 1px solid #F4D77A;
+    overflow: hidden;
+  }
+  .logo-svg { width: 100%; height: 100%; }
+  .logo-text {
+    position: absolute;
+    top: 9px; left: 0; right: 0;
+    text-align: center;
+    color: var(--ivory);
+    font-weight: 900;
+    font-size: 12px;
+    letter-spacing: 1.2px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    line-height: 1;
   }
   .brand-name {
-    font-weight: 800; font-size: 18px; color: #F6F1E7; line-height: 1;
+    font-weight: 800; font-size: 18px; color: var(--ivory); line-height: 1;
     letter-spacing: 0.02em;
   }
-  .brand-handle { font-size: 12px; color: #D7B46A; margin-top: 4px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+  .brand-handle { font-size: 12px; color: var(--teal-bright); margin-top: 4px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
 
-  /* CLASSIFIED-style label */
+  /* CLASSIFIED-style stamp */
   .stamp {
     display: inline-block;
-    border: 1.5px solid #D7B46A;
-    color: #D7B46A;
+    border: 1.5px solid var(--teal-bright);
+    color: var(--teal-bright);
     padding: 4px 12px;
     font-size: 10px;
     font-weight: 800;
@@ -63,25 +89,26 @@
     text-transform: uppercase;
     margin-bottom: 24px;
     align-self: flex-start;
-    background: rgba(215,180,106,0.06);
+    background: rgba(15,118,110,0.1);
   }
 
-  /* THE HOOK — big, dramatic */
+  /* THE HOOK — big italic serif */
   .hook {
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     font-weight: 700;
     font-size: 44px;
     line-height: 1.1;
-    color: #F6F1E7;
+    color: var(--ivory);
     margin-bottom: 28px;
     letter-spacing: -0.01em;
   }
-  .hook .accent { color: #D7B46A; font-style: italic; }
+  .hook .accent { color: var(--teal-bright); font-style: italic; }
+  .hook .gold-accent { color: var(--gold-bright); font-style: italic; }
 
   /* BODY LIST */
   .body { flex: 1; display: flex; flex-direction: column; }
-  .lead { font-size: 18px; line-height: 1.5; color: rgba(246,241,231,0.85); font-weight: 500; margin-bottom: 18px; }
+  .lead { font-size: 18px; line-height: 1.5; color: rgba(247,248,245,0.82); font-weight: 500; margin-bottom: 18px; font-style: italic; }
   .list { list-style: none; padding: 0; margin: 0; counter-reset: item; }
   .list li {
     counter-increment: item;
@@ -89,15 +116,15 @@
     position: relative;
     font-size: 19px;
     line-height: 1.45;
-    color: rgba(246,241,231,0.92);
+    color: rgba(247,248,245,0.94);
     font-weight: 500;
-    border-bottom: 1px solid rgba(215,180,106,0.15);
+    border-bottom: 1px solid rgba(31,230,209,0.18);
   }
   .list li:last-child { border-bottom: none; }
   .list li::before {
     content: counter(item, decimal-leading-zero);
     position: absolute; left: 0; top: 13px;
-    color: #D7B46A;
+    color: var(--teal-bright);
     font-weight: 800;
     font-size: 16px;
     letter-spacing: 0.05em;
@@ -108,33 +135,81 @@
   .footer {
     margin-top: 28px;
     display: flex; justify-content: space-between; align-items: center;
-    border-top: 1px solid rgba(215,180,106,0.25);
+    border-top: 1px solid rgba(31,230,209,0.3);
     padding-top: 16px;
-    font-size: 12px; color: rgba(215,180,106,0.85); font-weight: 700;
+    font-size: 12px; color: rgba(247,248,245,0.7); font-weight: 700;
     letter-spacing: 0.12em; text-transform: uppercase;
   }
-  .footer .url { color: #F4D77A; }
-  .footer-logo {
-    width: 22px; height: 22px;
-    background: radial-gradient(circle at 30% 30%, #F4D77A 0%, #D7B46A 40%, #B88935 100%);
+  .footer .url { color: var(--teal-bright); }
+  .footer-coin {
+    width: 26px; height: 26px; position: relative;
     border-radius: 50%;
-    box-shadow: 0 0 8px rgba(215,180,106,0.4);
+    background: radial-gradient(circle at 30% 30%, #1a3554 0%, var(--midnight) 50%, var(--midnight-deep) 100%);
+    border: 1.5px solid var(--teal);
+    box-shadow: 0 0 6px rgba(31,230,209,0.4);
   }
 
   .label { color: #aaa; text-align: center; margin-top: 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+
+  /* Big standalone logo for review */
+  .logo-showcase {
+    display: flex; justify-content: center; gap: 40px; margin: 60px auto 40px; align-items: center; flex-wrap: wrap;
+  }
+  .logo-big {
+    width: 240px; height: 240px; position: relative;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #1a3554 0%, var(--midnight) 50%, var(--midnight-deep) 100%);
+    border: 6px solid var(--teal);
+    box-shadow: 0 0 60px rgba(31,230,209,0.3), inset 0 -8px 20px rgba(0,0,0,0.4), inset 0 4px 10px rgba(31,230,209,0.1);
+    display: flex; align-items: center; justify-content: center; flex-direction: column;
+    padding: 30px;
+  }
+  .logo-big .text { color: var(--ivory); font-weight: 900; font-size: 44px; letter-spacing: 4px; line-height: 1; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+  .logo-big svg { width: 90px; height: 50px; margin-top: 12px; }
 </style>
 </head>
 <body>
-<h2>AF Wealth Mindset — Forbidden Knowledge Cards</h2>
-<p class="subtitle">1080×1350 · Black + gold · Provokes curiosity → people screenshot/save → traffic to bio link</p>
+<h2>AFWM Logo v3 — Your Real Brand Palette</h2>
+<p class="subtitle">Navy + Ivory + Teal accent + Gold luxury touch</p>
+
+<!-- THE LOGO -->
+<div class="logo-showcase">
+  <div class="logo-big">
+    <div class="text">AFWM</div>
+    <svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
+      <!-- Bar chart -->
+      <rect x="8" y="35" width="10" height="13" fill="#B88935" opacity="0.85"/>
+      <rect x="24" y="28" width="10" height="20" fill="#B88935" opacity="0.9"/>
+      <rect x="40" y="20" width="10" height="28" fill="#D7B46A"/>
+      <rect x="56" y="12" width="10" height="36" fill="#D7B46A"/>
+      <!-- Teal arrow -->
+      <path d="M5 42 L75 8" stroke="#1FE6D1" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M68 4 L78 5 L75 14" stroke="#1FE6D1" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+</div>
+
+<h2 style="margin-top: 50px;">Sample Cards</h2>
+<p class="subtitle">1080×1350 · Same brand palette · Teal accents instead of gold</p>
 
 <div class="grid">
 
-  <!-- 1: Awareness / budget psychology -->
+  <!-- 1: Awareness -->
   <div>
     <div class="card">
       <div class="header">
-        <div class="logo">AFWM</div>
+        <div class="logo-coin">
+          <svg class="logo-svg" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+            <text x="30" y="26" font-family="Manrope" font-weight="900" font-size="13" fill="#F7F8F5" text-anchor="middle" letter-spacing="1.2">AFWM</text>
+            <g transform="translate(8, 32)">
+              <rect x="0" y="13" width="8" height="11" fill="#B88935" opacity="0.85"/>
+              <rect x="11" y="9" width="8" height="15" fill="#B88935" opacity="0.9"/>
+              <rect x="22" y="5" width="8" height="19" fill="#D7B46A"/>
+              <rect x="33" y="0" width="8" height="24" fill="#D7B46A"/>
+              <path d="M-2 22 L42 -2" stroke="#1FE6D1" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </div>
         <div>
           <div class="brand-name">AF Wealth Mindset</div>
           <div class="brand-handle">Money. Discipline. Truth.</div>
@@ -145,34 +220,45 @@
       <div class="body">
         <ol class="list">
           <li>Where did the last $1,000 you spent actually go?</li>
-          <li>What is your true monthly burn rate — not your "budget"?</li>
-          <li>If your income stopped today, how many weeks until you panic?</li>
+          <li>What is your true monthly burn rate — not your guess?</li>
+          <li>If your income stopped today, how many weeks until panic?</li>
         </ol>
       </div>
       <div class="footer">
         <span class="url">afwealthmindset.com</span>
-        <div class="footer-logo"></div>
+        <div class="footer-coin"></div>
       </div>
     </div>
-    <div class="label">Product 2 — Awareness</div>
+    <div class="label">Awareness</div>
   </div>
 
-  <!-- 2: Profit psychology -->
+  <!-- 2: Business -->
   <div>
     <div class="card">
       <div class="header">
-        <div class="logo">AFWM</div>
+        <div class="logo-coin">
+          <svg class="logo-svg" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+            <text x="30" y="26" font-family="Manrope" font-weight="900" font-size="13" fill="#F7F8F5" text-anchor="middle" letter-spacing="1.2">AFWM</text>
+            <g transform="translate(8, 32)">
+              <rect x="0" y="13" width="8" height="11" fill="#B88935" opacity="0.85"/>
+              <rect x="11" y="9" width="8" height="15" fill="#B88935" opacity="0.9"/>
+              <rect x="22" y="5" width="8" height="19" fill="#D7B46A"/>
+              <rect x="33" y="0" width="8" height="24" fill="#D7B46A"/>
+              <path d="M-2 22 L42 -2" stroke="#1FE6D1" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </div>
         <div>
           <div class="brand-name">AF Wealth Mindset</div>
           <div class="brand-handle">Money. Discipline. Truth.</div>
         </div>
       </div>
       <div class="stamp">Business school won't teach this</div>
-      <div class="hook"><span class="accent">5 reasons</span> small businesses fail in year two</div>
+      <div class="hook"><span class="accent">5 reasons</span> small businesses collapse in year two</div>
       <div class="body">
         <ol class="list">
-          <li>Revenue grew. Margin didn't. Nobody warned them.</li>
-          <li>The owner paid everyone but themselves.</li>
+          <li>Revenue doubled. Margin stayed flat. Nobody noticed.</li>
+          <li>The owner paid everyone but themselves for nine months.</li>
           <li>"Busy" was confused with "profitable" for 18 months.</li>
           <li>Taxes hit. Reserves didn't exist.</li>
           <li>The numbers were never on one page.</li>
@@ -180,17 +266,28 @@
       </div>
       <div class="footer">
         <span class="url">afwealthmindset.com</span>
-        <div class="footer-logo"></div>
+        <div class="footer-coin"></div>
       </div>
     </div>
-    <div class="label">Product 3 — Profit truth</div>
+    <div class="label">Profit truth</div>
   </div>
 
-  <!-- 3: Debt psychology -->
+  <!-- 3: Debt -->
   <div>
     <div class="card">
       <div class="header">
-        <div class="logo">AFWM</div>
+        <div class="logo-coin">
+          <svg class="logo-svg" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+            <text x="30" y="26" font-family="Manrope" font-weight="900" font-size="13" fill="#F7F8F5" text-anchor="middle" letter-spacing="1.2">AFWM</text>
+            <g transform="translate(8, 32)">
+              <rect x="0" y="13" width="8" height="11" fill="#B88935" opacity="0.85"/>
+              <rect x="11" y="9" width="8" height="15" fill="#B88935" opacity="0.9"/>
+              <rect x="22" y="5" width="8" height="19" fill="#D7B46A"/>
+              <rect x="33" y="0" width="8" height="24" fill="#D7B46A"/>
+              <path d="M-2 22 L42 -2" stroke="#1FE6D1" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </div>
         <div>
           <div class="brand-name">AF Wealth Mindset</div>
           <div class="brand-handle">Money. Discipline. Truth.</div>
@@ -202,23 +299,34 @@
         <p class="lead">It is not the money. It is the silence.</p>
         <ol class="list">
           <li>The first three months feel like sacrifice with no proof.</li>
-          <li>The brain needs to <em>see</em> progress, not just feel it.</li>
+          <li>The brain needs to see progress, not just feel it.</li>
           <li>Without one page showing the line move, you give up.</li>
         </ol>
       </div>
       <div class="footer">
         <span class="url">afwealthmindset.com</span>
-        <div class="footer-logo"></div>
+        <div class="footer-coin"></div>
       </div>
     </div>
-    <div class="label">Product 4 — Debt</div>
+    <div class="label">Debt powerlessness</div>
   </div>
 
-  <!-- 4: Cash flow psychology -->
+  <!-- 4: Cash flow -->
   <div>
     <div class="card">
       <div class="header">
-        <div class="logo">AFWM</div>
+        <div class="logo-coin">
+          <svg class="logo-svg" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+            <text x="30" y="26" font-family="Manrope" font-weight="900" font-size="13" fill="#F7F8F5" text-anchor="middle" letter-spacing="1.2">AFWM</text>
+            <g transform="translate(8, 32)">
+              <rect x="0" y="13" width="8" height="11" fill="#B88935" opacity="0.85"/>
+              <rect x="11" y="9" width="8" height="15" fill="#B88935" opacity="0.9"/>
+              <rect x="22" y="5" width="8" height="19" fill="#D7B46A"/>
+              <rect x="33" y="0" width="8" height="24" fill="#D7B46A"/>
+              <path d="M-2 22 L42 -2" stroke="#1FE6D1" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </div>
         <div>
           <div class="brand-name">AF Wealth Mindset</div>
           <div class="brand-handle">Money. Discipline. Truth.</div>
@@ -228,24 +336,24 @@
       <div class="hook">3 money rules your <span class="accent">professor</span> will never touch</div>
       <div class="body">
         <ol class="list">
-          <li>Every dollar you can't see in 90 days is a dollar already spent.</li>
+          <li>Every dollar you can't see in 90 days is already spent.</li>
           <li>Annual bills don't care that you live month-to-month.</li>
           <li>December was on your calendar in January. You ignored it.</li>
         </ol>
       </div>
       <div class="footer">
         <span class="url">afwealthmindset.com</span>
-        <div class="footer-logo"></div>
+        <div class="footer-coin"></div>
       </div>
     </div>
-    <div class="label">Product 5 — Cash flow</div>
+    <div class="label">Forward sight</div>
   </div>
 
 </div>
 
 <p class="subtitle" style="margin-top: 50px;">
-  Same "leaked document" formula, infinite topics. The Trend Scout researches a new forbidden angle every day.<br/>
-  Real production cards swap the "AFWM" circle for your actual gold coin logo PNG.
+  Navy coin + teal ring + ivory "AFWM" text + gold bar chart + teal arrow.<br/>
+  Readable at every size · Matches your actual website colors.
 </p>
 </body>
 </html>

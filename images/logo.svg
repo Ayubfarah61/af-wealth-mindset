@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <radialGradient id="coinFill" cx="32%" cy="32%" r="80%">
+      <stop offset="0%" stop-color="#1f3a5f"/>
+      <stop offset="55%" stop-color="#10243E"/>
+      <stop offset="100%" stop-color="#081628"/>
+    </radialGradient>
+    <radialGradient id="ringGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0F766E" stop-opacity="0"/>
+      <stop offset="95%" stop-color="#1FE6D1" stop-opacity="0.45"/>
+    </radialGradient>
+    <linearGradient id="goldBar" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#8A6620"/>
+      <stop offset="100%" stop-color="#D7B46A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer glow halo -->
+  <circle cx="128" cy="128" r="124" fill="url(#ringGlow)"/>
+
+  <!-- Coin face -->
+  <circle cx="128" cy="128" r="112" fill="url(#coinFill)" stroke="#0F766E" stroke-width="9"/>
+
+  <!-- Inner subtle ring -->
+  <circle cx="128" cy="128" r="100" fill="none" stroke="#1FE6D1" stroke-width="1.2" opacity="0.35"/>
+
+  <!-- AFWM TEXT -->
+  <text x="128" y="115" font-family="Manrope, Arial, sans-serif" font-size="46" font-weight="900"
+        text-anchor="middle" fill="#F7F8F5" letter-spacing="3">AFWM</text>
+
+  <!-- Bar chart (gold) -->
+  <g transform="translate(64, 145)">
+    <rect x="0"  y="38" width="22" height="34" fill="url(#goldBar)" opacity="0.75" rx="1.5"/>
+    <rect x="30" y="26" width="22" height="46" fill="url(#goldBar)" opacity="0.85" rx="1.5"/>
+    <rect x="60" y="14" width="22" height="58" fill="url(#goldBar)" rx="1.5"/>
+    <rect x="90" y="0"  width="22" height="72" fill="url(#goldBar)" rx="1.5"/>
+  </g>
+
+  <!-- Teal arrow soaring over the bars -->
+  <g stroke="#1FE6D1" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M 60 210 L 188 132"/>
+    <path d="M 173 124 L 192 130 L 184 149"/>
+  </g>
+</svg>

@@ -16,14 +16,21 @@
 
 ---
 
-## 2. The Logo
+## 2. The Logo (LOCKED — v2)
 
-- **Canonical file:** `https://afwealthmindset.com/images/logo.png` (gold AFWM coin with arrow + bar chart)
+- **Canonical SVG source:** `/images/logo.svg` (perfectly scalable, edit this to redesign)
+- **Public URL:** `https://afwealthmindset.com/images/logo.svg`
+- **PNG renders:**
+  - `/images/logo.png` — 1024×1024 (TikTok app icon, profile pictures)
+  - `/images/logo-512.png` — 512×512 (smaller profile pics)
+  - `/images/logo-200.png` — 200×200 (site header)
+  - `/images/favicon-64.png` — 64×64 (browser tab)
+- **Composition (fixed):** Navy `#10243E` coin · Teal `#0F766E` ring · Ivory `#F7F8F5` "AFWM" wordmark · Gold `#B88935→#D7B46A` bar chart · Bright teal `#1FE6D1` arrow soaring up-right
 - **Used:**
-  - Website header — `<img src="/images/logo.png">`
-  - Every generated post card — top-left and bottom-right watermark
-  - Every social profile picture (TikTok, IG, FB, YouTube, Pinterest) — manually uploaded once
-- **DO NOT redraw, AI-recreate, or substitute.** If a tool can't fetch the URL, the build fails.
+  - Website header — `<img src="/images/logo-200.png">`
+  - Every generated post card — top-left and bottom-right watermark, pulled from public URL
+  - Every social profile picture (TikTok, IG, FB, YouTube, Pinterest) — upload `logo.png` (1024×1024) once
+- **DO NOT redraw or AI-recreate.** To regenerate PNGs from SVG: `npx sharp-cli -i images/logo.svg -o images/logo.png resize 1024 1024`
 
 ---
 
