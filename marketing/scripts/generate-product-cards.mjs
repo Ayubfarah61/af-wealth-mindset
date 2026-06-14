@@ -9,7 +9,9 @@ import path from 'node:path';
 import { execSync } from 'node:child_process';
 
 const IMG_DIR = path.resolve(process.cwd(), 'images');
+const CARDS_DIR = path.join(IMG_DIR, 'cards');
 const LOGO_PATH = path.join(IMG_DIR, 'logo.png');
+if (!fs.existsSync(CARDS_DIR)) fs.mkdirSync(CARDS_DIR, { recursive: true });
 const LOGO_B64 = fs.readFileSync(LOGO_PATH).toString('base64');
 const LOGO = `data:image/png;base64,${LOGO_B64}`;
 
@@ -100,8 +102,8 @@ let count = 0;
 for (const productId of Object.keys(LETTERS)) {
   LETTERS[productId].forEach((letter, idx) => {
     const slot = idx + 1;
-    const svgPath = path.join(IMG_DIR, `card-product-${productId}-${slot}.svg`);
-    const pngPath = path.join(IMG_DIR, `card-product-${productId}-${slot}.png`);
+    const svgPath = path.join(CARDS_DIR, `card-product-${productId}-${slot}.svg`);
+    const pngPath = path.join(CARDS_DIR, `card-product-${productId}-${slot}.png`);
     fs.writeFileSync(svgPath, svg(letter), 'utf8');
     execSync(`npx --yes sharp-cli -i "${svgPath}" -o "${pngPath}" resize 1080 1350`, { stdio: 'inherit' });
     count++;

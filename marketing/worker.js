@@ -46,7 +46,7 @@ async function executeDue(env) {
       // Engagement posts: rotate through 8 dearson-style cards per product
       // (32 total static images). Slot = ((calendar_id - 1) mod 8) + 1.
       const cardImageUrl = item.type === 'engagement' && item.product_id
-        ? `https://afwealthmindset.com/images/card-product-${item.product_id}-${(item.id - 1) % 8 + 1}.png`
+        ? `https://afwealthmindset.com/images/cards/card-product-${item.product_id}-${(item.id - 1) % 8 + 1}.png`
         : null;
       const media = item.type === 'product_video'
         ? { videoUrl: item.video_url, thumbnailUrl: item.thumbnail_url }
@@ -59,6 +59,9 @@ async function executeDue(env) {
       });
       for (const r of results) {
         const p = copy[r.platform] || {};
+        // Treat platform "skipped" (no video / no image / missing setup) as a separate status,
+        // not "live". Keeps the dashboard honest.
+        const status = r.skipped ? 'skipped' : (r.ok ? 'live' : 'failed');
         await recordPost(env, {
           calendarId: item.id,
           platform: r.platform,
@@ -67,8 +70,8 @@ async function executeDue(env) {
           caption: p.caption || p.title || '',
           hashtags: (p.hashtags || []).join(' '),
           variant: copy.variant,
-          status: r.ok ? 'live' : 'failed',
-          error: r.error
+          status,
+          error: r.error || r.skipped || null
         });
       }
       const allFailed = results.length && results.every(r => !r.ok && !r.skipped);
@@ -144,9 +147,47 @@ async function loadState(env) {
   const { results: spend } = await env.DB.prepare(
     'SELECT * FROM spend ORDER BY day DESC LIMIT 14'
   ).all();
+
+  // Per-platform aggregates: live / failed / skipped counts (all time + today)
+  const { results: byPlatform } = await env.DB.prepare(`
+    SELECT platform, status, COUNT(*) AS n
+    FROM posts
+    GROUP BY platform, status
+  `).all();
+  const { results: byPlatformToday } = await env.DB.prepare(`
+    SELECT platform, status, COUNT(*) AS n
+    FROM posts
+    WHERE date(posted_at) = date('now')
+    GROUP BY platform, status
+  `).all();
+
+  // Roll into a per-platform object the UI can read directly
+  const enabled = (env.ENABLED_PLATFORMS || '').split(',').map(s => s.trim()).filter(Boolean);
+  const allPlatforms = ['tiktok','instagram','facebook','youtube','pinterest','threads','bluesky'];
+  const platforms = allPlatforms.map(name => {
+    const row = (status) => byPlatform.find(r => r.platform === name && r.status === status)?.n || 0;
+    const rowToday = (status) => byPlatformToday.find(r => r.platform === name && r.status === status)?.n || 0;
+    return {
+      name,
+      enabled: enabled.includes(name),
+      total_live: row('live'),
+      total_failed: row('failed'),
+      live_today: rowToday('live'),
+      failed_today: rowToday('failed'),
+    };
+  });
+
+  // Next scheduled engagement post
+  const next = upcoming.find(u => u.type === 'engagement') || upcoming[0] || null;
+  const ideaPool = await env.DB.prepare(`SELECT COUNT(*) AS n FROM ideas WHERE used = 0`).first();
+
   return {
     products, videos, upcoming, recent, log, spend,
-    budget: { daily_cap_usd: Number(env.DAILY_USD_CAP || '0.10') }
+    platforms,
+    next_post: next,
+    idea_pool: ideaPool?.n || 0,
+    budget: { daily_cap_usd: Number(env.DAILY_USD_CAP || '0.10') },
+    server_now: new Date().toISOString(),
   };
 }
 
@@ -158,28 +199,62 @@ function dashboardHtml() {
   return `<!doctype html><html><head><meta charset="utf-8"/>
 <title>AFWM Marketing Brain</title>
 <style>
-  body{font:14px/1.5 system-ui,sans-serif;max-width:1100px;margin:24px auto;padding:0 16px;color:#0B1220;background:#F6F1E7}
-  h1{color:#B88935;margin:0 0 4px}
-  h2{margin-top:28px;color:#0B1220}
-  input,button,textarea{font:inherit;padding:8px 10px;border-radius:8px;border:1px solid #d6c79a;background:#fff}
-  button{background:#0B1220;color:#F6F1E7;border-color:#0B1220;cursor:pointer}
-  button.ghost{background:#fff;color:#0B1220}
-  table{width:100%;border-collapse:collapse;margin-top:8px;background:#fff;border-radius:8px;overflow:hidden}
-  th,td{padding:8px 10px;border-bottom:1px solid #eadfbd;font-size:13px;text-align:left;vertical-align:top}
-  th{background:#eadfbd}
+  body{font:14px/1.5 system-ui,sans-serif;max-width:1180px;margin:24px auto;padding:0 16px;color:#0F141A;background:#F7F8F5}
+  h1{color:#0F766E;margin:0 0 4px;font-size:24px;letter-spacing:0.02em}
+  h2{margin-top:32px;color:#0F141A;font-size:18px;border-bottom:2px solid #0F766E;padding-bottom:6px;display:inline-block}
+  input,button,textarea,select{font:inherit;padding:8px 10px;border-radius:8px;border:1px solid #d0d4d8;background:#fff}
+  button{background:#0F141A;color:#F7F8F5;border-color:#0F141A;cursor:pointer}
+  button.ghost{background:#fff;color:#0F141A}
+  button:hover{filter:brightness(1.1)}
+  table{width:100%;border-collapse:collapse;margin-top:8px;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
+  th,td{padding:10px 12px;border-bottom:1px solid #eef0f2;font-size:13px;text-align:left;vertical-align:top}
+  th{background:#eef0f2;font-weight:700}
   .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .pill{display:inline-block;padding:2px 8px;border-radius:99px;background:#eadfbd;color:#0B1220;font-size:11px}
-  .ok{background:#cfe8c9}.bad{background:#f3c0c0}.warn{background:#f3dca0}
+  .pill{display:inline-block;padding:3px 10px;border-radius:99px;background:#eef0f2;color:#0F141A;font-size:11px;font-weight:700}
+  .ok{background:#d4edda;color:#155724}
+  .bad{background:#f8d7da;color:#721c24}
+  .warn{background:#fff3cd;color:#856404}
+  .info{background:#cfe5ff;color:#004085}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
+  .card{background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
+  .card .pname{font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:0.04em;color:#0F141A}
+  .card .big{font-size:22px;font-weight:800;color:#0F766E;margin-top:6px}
+  .card .small{font-size:12px;color:#5B6770;margin-top:2px}
+  .hero{display:grid;grid-template-columns:2fr 1fr 1fr;gap:14px;margin-top:14px}
+  .hero .card{padding:18px 20px}
   textarea{width:100%;min-height:80px;font-family:ui-monospace,monospace}
+  a{color:#0F766E}
 </style></head><body>
 <h1>AFWM Marketing Brain</h1>
-<p>Bearer token required for the API. Paste it once:</p>
-<div class="row"><input id="tok" placeholder="ADMIN_TOKEN" style="flex:1"/>
+<p style="margin:0;color:#5B6770">Paste your admin token once. The dashboard auto-refreshes every 60 seconds.</p>
+<div class="row" style="margin-top:8px"><input id="tok" placeholder="ADMIN_TOKEN" style="flex:1"/>
 <button onclick="save()">Save</button>
 <button class="ghost" onclick="run('/api/ideas')">Generate ideas</button>
 <button class="ghost" onclick="run('/api/plan')">Plan next 48h</button>
 <button class="ghost" onclick="run('/api/execute')">Execute due now</button>
 <button class="ghost" onclick="load()">Refresh</button></div>
+
+<!-- Hero stats -->
+<div class="hero">
+  <div class="card">
+    <div class="pname">Next post</div>
+    <div class="big" id="nextpost">—</div>
+    <div class="small" id="nextpostsub"></div>
+  </div>
+  <div class="card">
+    <div class="pname">Idea pool</div>
+    <div class="big" id="ideapool">—</div>
+    <div class="small">unused "Dear ___" letters in memory</div>
+  </div>
+  <div class="card">
+    <div class="pname">Spend today</div>
+    <div class="big" id="spendtoday">—</div>
+    <div class="small" id="spendsub"></div>
+  </div>
+</div>
+
+<h2>Platforms — live status</h2>
+<div class="grid" id="platforms"></div>
 
 <h2>Register a product video</h2>
 <div class="row">
@@ -206,9 +281,8 @@ function dashboardHtml() {
 <h2>Recent posts</h2>
 <table id="recent"><thead><tr><th>When</th><th>Platform</th><th>Status</th><th>Caption</th><th>Link</th></tr></thead><tbody></tbody></table>
 
-<h2>Spend (last 14 days)</h2>
-<div id="budgetline" style="margin-top:4px"></div>
-<table id="spend"><thead><tr><th>Day</th><th>USD</th><th>Calls</th><th>In tokens</th><th>Out tokens</th></tr></thead><tbody></tbody></table>
+<h2>Spend history (last 14 days)</h2>
+<table id="spend"<thead><tr><th>Day</th><th>USD</th><th>Calls</th><th>In tokens</th><th>Out tokens</th></tr></thead><tbody></tbody></table>
 
 <h2>Director log</h2>
 <table id="log"><thead><tr><th>When</th><th>Decision</th></tr></thead><tbody></tbody></table>
@@ -231,6 +305,31 @@ async function addVideo(){
   const r = await fetch('/api/videos',{method:'POST',headers:H(),body:JSON.stringify(body)});
   alert(await r.text()); load();
 }
+function fmtCountdown(targetIso, nowIso){
+  const t = new Date(targetIso).getTime();
+  const n = new Date(nowIso).getTime();
+  let s = Math.max(0, Math.round((t - n) / 1000));
+  const d = Math.floor(s/86400); s -= d*86400;
+  const h = Math.floor(s/3600); s -= h*3600;
+  const m = Math.floor(s/60);
+  if (d) return d+'d '+h+'h '+m+'m';
+  if (h) return h+'h '+m+'m';
+  return m+'m';
+}
+const PLATFORM_LABELS = {
+  tiktok:'TikTok', instagram:'Instagram', facebook:'Facebook',
+  youtube:'YouTube', pinterest:'Pinterest', threads:'Threads', bluesky:'Bluesky'
+};
+const PLATFORM_NOTES = {
+  tiktok:'awaiting app approval — drafts only',
+  instagram:'auto-posting cards',
+  facebook:'auto-posting cards',
+  youtube:'waits for product videos',
+  pinterest:'Trial mode — needs Standard approval',
+  threads:'auto-posting',
+  bluesky:'auto-posting',
+};
+
 async function load(){
   document.getElementById('tok').value = T();
   if(!T()) return;
@@ -238,16 +337,44 @@ async function load(){
   if(!r.ok){ alert('auth failed'); return; }
   const d = await r.json();
   const tb = id => document.querySelector('#'+id+' tbody');
-  tb('videos').innerHTML = d.videos.map(v => '<tr><td>'+v.product_id+'</td><td>'+v.slot+'</td><td>'+(v.persona||'')+'</td><td>'+(v.scenario||'')+'</td><td>'+(v.times_posted||0)+'</td></tr>').join('');
-  tb('upcoming').innerHTML = d.upcoming.map(u => '<tr><td>'+u.scheduled_at+'</td><td><span class="pill">'+u.type+'</span></td><td>'+(u.product_id||'-')+' / '+(u.video_id||'-')+'</td><td>'+u.cycle+'</td><td><button class="ghost" onclick="skip('+u.id+')">skip</button></td></tr>').join('');
-  tb('recent').innerHTML = d.recent.map(p => '<tr><td>'+p.posted_at+'</td><td>'+p.platform+'</td><td><span class="pill '+(p.status==='live'?'ok':'bad')+'">'+p.status+'</span></td><td>'+(p.caption||'').slice(0,90)+'</td><td>'+(p.url?'<a target=_blank href='+p.url+'>open</a>':'')+'</td></tr>').join('');
-  tb('log').innerHTML = d.log.map(l => '<tr><td>'+l.at+'</td><td>'+l.decision+'</td></tr>').join('');
-  const today = (d.spend||[])[0] || { usd: 0, day: 'today' };
+
+  // Hero: next post countdown
+  if (d.next_post) {
+    document.getElementById('nextpost').textContent = fmtCountdown(d.next_post.scheduled_at, d.server_now);
+    document.getElementById('nextpostsub').textContent = new Date(d.next_post.scheduled_at).toUTCString() + ' · ' + (d.next_post.type === 'engagement' ? 'engagement letter' : 'product video');
+  } else {
+    document.getElementById('nextpost').textContent = 'nothing queued';
+    document.getElementById('nextpostsub').textContent = 'click "Plan next 48h"';
+  }
+
+  document.getElementById('ideapool').textContent = d.idea_pool;
+
+  const today = (d.spend||[])[0] || { usd: 0, day: 'today', calls: 0 };
   const cap = d.budget?.daily_cap_usd || 0.10;
   const pct = Math.min(100, (today.usd / cap) * 100);
-  document.getElementById('budgetline').innerHTML = '<span class="pill '+(pct>80?'bad':pct>50?'warn':'ok')+'">Today: $'+today.usd.toFixed(4)+' / $'+cap.toFixed(2)+' cap ('+pct.toFixed(0)+'%)</span>';
+  document.getElementById('spendtoday').textContent = '$'+today.usd.toFixed(4);
+  document.getElementById('spendsub').textContent = today.calls + ' API calls · ' + pct.toFixed(0) + '% of $' + cap.toFixed(2) + ' daily cap';
+
+  // Platforms cards
+  document.getElementById('platforms').innerHTML = (d.platforms||[]).map(p => {
+    const status = !p.enabled ? '<span class="pill warn">disabled</span>'
+      : p.failed_today > 0 ? '<span class="pill bad">errors today</span>'
+      : p.live_today > 0 ? '<span class="pill ok">posting</span>'
+      : '<span class="pill info">enabled</span>';
+    return '<div class="card"><div class="pname">'+PLATFORM_LABELS[p.name]+' '+status+'</div>'
+      + '<div class="big">'+p.live_today+' <span style="font-size:14px;color:#5B6770">today</span></div>'
+      + '<div class="small">'+p.total_live+' lifetime · '+p.total_failed+' failures</div>'
+      + '<div class="small" style="margin-top:6px;color:#0F141A">'+PLATFORM_NOTES[p.name]+'</div></div>';
+  }).join('');
+
+  tb('videos').innerHTML = d.videos.map(v => '<tr><td>'+v.product_id+'</td><td>'+v.slot+'</td><td>'+(v.persona||'')+'</td><td>'+(v.scenario||'')+'</td><td>'+(v.times_posted||0)+'</td></tr>').join('') || '<tr><td colspan="5" style="color:#5B6770">No product videos uploaded yet. Add them via /api/videos.</td></tr>';
+  tb('upcoming').innerHTML = d.upcoming.map(u => '<tr><td>'+u.scheduled_at+' <span class="small" style="color:#5B6770">('+fmtCountdown(u.scheduled_at,d.server_now)+')</span></td><td><span class="pill">'+u.type+'</span></td><td>'+(u.product_id||'-')+' / '+(u.video_id||'-')+'</td><td>'+u.cycle+'</td><td><button class="ghost" onclick="skip('+u.id+')">skip</button></td></tr>').join('');
+  tb('recent').innerHTML = d.recent.map(p => '<tr><td>'+p.posted_at+'</td><td>'+PLATFORM_LABELS[p.platform]+'</td><td><span class="pill '+(p.status==='live'?'ok':'bad')+'">'+p.status+'</span></td><td>'+(p.caption||'').slice(0,90)+'</td><td>'+(p.url?'<a target=_blank href='+p.url+'>open</a>':p.error?'<span style="color:#721c24">'+p.error.slice(0,50)+'</span>':'')+'</td></tr>').join('');
+  tb('log').innerHTML = d.log.map(l => '<tr><td>'+l.at+'</td><td>'+l.decision+'</td></tr>').join('');
   tb('spend').innerHTML = (d.spend||[]).map(s => '<tr><td>'+s.day+'</td><td>$'+s.usd.toFixed(4)+'</td><td>'+s.calls+'</td><td>'+s.input_tokens+'</td><td>'+s.output_tokens+'</td></tr>').join('');
 }
+// auto-refresh every 60s
+setInterval(load, 60000);
 async function skip(id){ await fetch('/api/calendar/'+id+'/skip',{method:'POST',headers:H()}); load(); }
 load();
 </script>

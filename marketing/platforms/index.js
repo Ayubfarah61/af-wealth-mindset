@@ -4,8 +4,10 @@ import * as instagram from './instagram.js';
 import * as facebook from './facebook.js';
 import * as youtube from './youtube.js';
 import * as pinterest from './pinterest.js';
+import * as threads from './threads.js';
+import * as bluesky from './bluesky.js';
 
-export const PLATFORMS = { tiktok, instagram, facebook, youtube, pinterest };
+export const PLATFORMS = { tiktok, instagram, facebook, youtube, pinterest, threads, bluesky };
 
 // Fan out: given copy for ONE calendar entry, post to every enabled platform in parallel.
 // `copy` is the JSON from content-writer.
