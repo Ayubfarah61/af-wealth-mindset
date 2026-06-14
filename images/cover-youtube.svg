@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 1152" width="2048" height="1152">
   <defs>
-    <radialGradient id="ytBg" cx="50%" cy="45%" r="80%">
+    <radialGradient id="ytBg" cx="50%" cy="50%" r="80%">
       <stop offset="0%" stop-color="#1f3a5f"/>
       <stop offset="55%" stop-color="#10243E"/>
       <stop offset="100%" stop-color="#040A14"/>
@@ -16,44 +16,40 @@
     </linearGradient>
   </defs>
 
-  <!-- Background -->
   <rect width="2048" height="1152" fill="url(#ytBg)"/>
 
-  <!-- Subtle grid -->
   <g stroke="#1FE6D1" stroke-width="1" opacity="0.04">
-    <line x1="0" y1="288" x2="2048" y2="288"/>
-    <line x1="0" y1="576" x2="2048" y2="576"/>
-    <line x1="0" y1="864" x2="2048" y2="864"/>
+    <line x1="0" y1="384" x2="2048" y2="384"/>
+    <line x1="0" y1="768" x2="2048" y2="768"/>
   </g>
 
-  <!-- ===== TV-SAFE AREA: centered 1235×338, content fits inside ===== -->
-
-  <!-- Big centered logo -->
-  <g transform="translate(900, 380)">
-    <circle cx="124" cy="124" r="124" fill="url(#ytCoinFill)" stroke="#0F766E" stroke-width="9"/>
-    <circle cx="124" cy="124" r="111" fill="none" stroke="#1FE6D1" stroke-width="1.2" opacity="0.35"/>
-    <text x="124" y="112" font-family="Manrope, sans-serif" font-size="50" font-weight="900"
+  <!-- EVERYTHING CENTERED IN TV-SAFE AREA (1235x338 centered at 1024,576) -->
+  <!-- Logo coin on top, centered -->
+  <g transform="translate(908, 415)">
+    <circle cx="116" cy="116" r="116" fill="url(#ytCoinFill)" stroke="#0F766E" stroke-width="8"/>
+    <circle cx="116" cy="116" r="103" fill="none" stroke="#1FE6D1" stroke-width="1.4" opacity="0.35"/>
+    <text x="116" y="104" font-family="Manrope, sans-serif" font-size="48" font-weight="900"
           text-anchor="middle" fill="#F7F8F5" letter-spacing="3">AFWM</text>
-    <g transform="translate(58, 142)">
-      <rect x="0"  y="40" width="22" height="36" fill="url(#ytGoldBar)" opacity="0.75" rx="1.5"/>
-      <rect x="30" y="28" width="22" height="48" fill="url(#ytGoldBar)" opacity="0.85" rx="1.5"/>
-      <rect x="60" y="14" width="22" height="62" fill="url(#ytGoldBar)" rx="1.5"/>
-      <rect x="90" y="0"  width="22" height="76" fill="url(#ytGoldBar)" rx="1.5"/>
+    <g transform="translate(54, 134)">
+      <rect x="0"  y="38" width="22" height="34" fill="url(#ytGoldBar)" opacity="0.75" rx="1.5"/>
+      <rect x="30" y="26" width="22" height="46" fill="url(#ytGoldBar)" opacity="0.85" rx="1.5"/>
+      <rect x="60" y="13" width="22" height="59" fill="url(#ytGoldBar)" rx="1.5"/>
+      <rect x="90" y="0"  width="22" height="72" fill="url(#ytGoldBar)" rx="1.5"/>
     </g>
     <g stroke="#1FE6D1" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-      <path d="M 52 222 L 188 142"/>
-      <path d="M 173 134 L 192 140 L 184 160"/>
+      <path d="M 50 210 L 180 134"/>
+      <path d="M 165 126 L 184 132 L 176 152"/>
     </g>
   </g>
 
   <!-- Brand name -->
-  <text x="1024" y="730" font-family="Manrope, sans-serif" font-size="70" font-weight="900"
+  <text x="1024" y="715" font-family="Manrope, sans-serif" font-size="62" font-weight="900"
         text-anchor="middle" fill="#F7F8F5" letter-spacing="0.05em">AF WEALTH MINDSET</text>
 
   <!-- Tagline -->
-  <text x="1024" y="790" font-family="Manrope, sans-serif" font-size="26" font-weight="700"
-        text-anchor="middle" fill="#1FE6D1" letter-spacing="0.4em">MONEY · DISCIPLINE · TRUTH</text>
+  <text x="1024" y="765" font-family="Manrope, sans-serif" font-size="22" font-weight="700"
+        text-anchor="middle" fill="#1FE6D1" letter-spacing="0.42em">MONEY · DISCIPLINE · TRUTH</text>
 
-  <!-- Decorative gold rule -->
-  <line x1="934" y1="828" x2="1114" y2="828" stroke="#B88935" stroke-width="2" opacity="0.7"/>
+  <!-- Gold accent line -->
+  <line x1="934" y1="798" x2="1114" y2="798" stroke="#B88935" stroke-width="2.5" opacity="0.7"/>
 </svg>
