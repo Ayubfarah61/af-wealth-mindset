@@ -1,0 +1,19 @@
+{
+  "name": "marketing",
+  "version": "1.0.0",
+  "description": "A 4-agent system that posts to TikTok, Instagram, Facebook, YouTube, and Pinterest on a schedule — and rewrites itself when content rotates.",
+  "main": "worker.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "workers-og": "^0.0.27"
+  }
+}

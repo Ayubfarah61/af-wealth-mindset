@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+  <defs>
+    <radialGradient id="bg" cx="20%" cy="10%" r="100%">
+      <stop offset="0%" stop-color="#1f3a5f"/><stop offset="55%" stop-color="#10243E"/><stop offset="100%" stop-color="#081628"/>
+    </radialGradient>
+    <radialGradient id="cf" cx="32%" cy="32%" r="80%">
+      <stop offset="0%" stop-color="#1f3a5f"/><stop offset="55%" stop-color="#10243E"/><stop offset="100%" stop-color="#081628"/>
+    </radialGradient>
+    <linearGradient id="gb" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#8A6620"/><stop offset="100%" stop-color="#D7B46A"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1350" fill="url(#bg)"/>
+  <g stroke="#1FE6D1" stroke-width="3" fill="none" opacity="0.55">
+    <path d="M 50 50 L 50 130 M 50 50 L 130 50"/>
+    <path d="M 1030 1300 L 1030 1220 M 1030 1300 L 950 1300"/>
+  </g>
+  <g transform="translate(420, 330)">
+    <circle cx="120" cy="120" r="120" fill="url(#cf)" stroke="#0F766E" stroke-width="9"/>
+    <circle cx="120" cy="120" r="108" fill="none" stroke="#1FE6D1" stroke-width="1.4" opacity="0.35"/>
+    <text x="120" y="106" font-family="Manrope, Arial, sans-serif" font-size="48" font-weight="900" text-anchor="middle" fill="#F7F8F5" letter-spacing="3">AFWM</text>
+    <g transform="translate(54, 138)">
+      <rect x="0"  y="40" width="22" height="36" fill="url(#gb)" opacity="0.75" rx="1.5"/>
+      <rect x="30" y="28" width="22" height="48" fill="url(#gb)" opacity="0.85" rx="1.5"/>
+      <rect x="60" y="14" width="22" height="62" fill="url(#gb)" rx="1.5"/>
+      <rect x="90" y="0"  width="22" height="76" fill="url(#gb)" rx="1.5"/>
+    </g>
+    <g stroke="#1FE6D1" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <path d="M 52 222 L 188 142"/>
+      <path d="M 173 134 L 192 140 L 184 160"/>
+    </g>
+  </g>
+  <text x="540" y="660" font-family="Manrope, Arial, sans-serif" font-size="44" font-weight="900" text-anchor="middle" fill="#F7F8F5" letter-spacing="0.05em">AF WEALTH MINDSET</text>
+  <text x="540" y="700" font-family="Manrope, Arial, sans-serif" font-size="20" font-weight="700" text-anchor="middle" fill="#1FE6D1" letter-spacing="0.4em">MONEY · DISCIPLINE · TRUTH</text>
+  <line x1="450" y1="725" x2="630" y2="725" stroke="#B88935" stroke-width="2" opacity="0.7"/>
+  <text x="540" y="870" font-family="Georgia, serif" font-style="italic" font-weight="700" font-size="64" text-anchor="middle" fill="#F7F8F5">The 14-day illusion</text>
+  <text x="540" y="945" font-family="Georgia, serif" font-style="italic" font-weight="700" font-size="64" text-anchor="middle" fill="#1FE6D1">of feeling rich</text>
+  <text x="540" y="1020" font-family="Georgia, serif" font-style="italic" font-weight="700" font-size="64" text-anchor="middle" fill="#F7F8F5">after every payday.</text>
+  <text x="540" y="1130" font-family="Manrope, Arial, sans-serif" font-size="26" font-weight="500" text-anchor="middle" fill="#F7F8F5" opacity="0.78">Read the caption.</text>
+  <text x="540" y="1280" font-family="Manrope, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle" fill="#1FE6D1" letter-spacing="0.18em">AFWEALTHMINDSET.COM</text>
+</svg>

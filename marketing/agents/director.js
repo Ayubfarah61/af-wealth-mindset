@@ -7,12 +7,29 @@ import { nextVideoToPost, scheduleEntry, markIdeaUsed, log } from '../lib/db.js'
 import { generateDailyIdeas } from './trend-scout.js';
 
 // 3 daily slots — spread across global prime times.
-const ENGAGEMENT_SLOTS_UTC = ['13:00', '18:00', '23:00'];
-// 13:00 UTC = 9am ET / 6am PT / 2pm UK   — morning hook
-// 18:00 UTC = 1pm ET / 10am PT / 7pm UK  — lunch / UK evening
-// 23:00 UTC = 6pm ET / 3pm PT / 11pm UK  — US evening peak
+// These are BASE times; the actual slot is jittered ±60 min per day so platforms
+// don't see a rigid robotic posting schedule. Anchor times:
+//   13:00 UTC = 9am ET / 2pm UK   — morning hook
+//   18:00 UTC = 1pm ET / 7pm UK   — lunch / UK evening
+//   23:00 UTC = 6pm ET / 11pm UK  — US evening peak
+const BASE_SLOTS_UTC = ['13:00', '18:00', '23:00'];
 
 const PRODUCT_SLOT_UTC = '00:30';    // 7:30pm ET / 4:30pm PT — fits videos when registered
+
+// Deterministic ±60 min jitter from a base time, seeded by (day, slot index).
+function jitterSlot(baseHHMM, day, slotIdx) {
+  const seed = (day.getUTCFullYear() * 1000 + day.getUTCMonth() * 31 + day.getUTCDate()) * 7 + slotIdx * 31;
+  const offsetMin = ((seed * 9301 + 49297) % 121) - 60; // -60..+60
+  const [h, m] = baseHHMM.split(':').map(Number);
+  let total = h * 60 + m + offsetMin;
+  if (total < 0) total += 1440;
+  if (total >= 1440) total -= 1440;
+  return `${String(Math.floor(total/60)).padStart(2,'0')}:${String(total%60).padStart(2,'0')}`;
+}
+
+function slotsForDay(day) {
+  return BASE_SLOTS_UTC.map((base, idx) => jitterSlot(base, day, idx));
+}
 
 function isoAt(date, hhmm) {
   const [h, m] = hhmm.split(':').map(Number);
@@ -111,7 +128,8 @@ export async function plan(env) {
     const dayCounts = await dayProductCounts(env, dayIso);
     const pool = await topIdeasAny(env, 80);
 
-    for (const hhmm of ENGAGEMENT_SLOTS_UTC) {
+    const todaySlots = slotsForDay(day);
+    for (const hhmm of todaySlots) {
       const slotIso = isoAt(day, hhmm);
       const already = await env.DB.prepare(
         `SELECT id FROM calendar WHERE type='engagement' AND scheduled_at=?`
