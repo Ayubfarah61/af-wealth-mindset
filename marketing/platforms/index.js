@@ -10,20 +10,28 @@ import * as bluesky from './bluesky.js';
 export const PLATFORMS = { tiktok, instagram, facebook, youtube, pinterest, threads, bluesky };
 
 // Fan out: given copy for ONE calendar entry, post to every enabled platform in parallel.
-// `copy` is the JSON from content-writer.
-// `media` is { videoUrl, thumbnailUrl } for product_video, or null for engagement (text/image).
+// Each platform gets 2 attempts (initial + 1 retry after 4 seconds). Errors logged with detail.
 export async function fanOut(env, { copy, media, productUrl, type }) {
   const enabled = (env.ENABLED_PLATFORMS || 'tiktok,instagram,facebook,youtube,pinterest').split(',').map(s => s.trim());
   const results = [];
   await Promise.all(enabled.map(async (name) => {
     const adapter = PLATFORMS[name];
     if (!adapter) return;
-    try {
-      const r = await adapter.publish(env, { copy: copy[name], media, productUrl, type, allCopy: copy });
-      results.push({ platform: name, ok: true, ...r });
-    } catch (err) {
-      results.push({ platform: name, ok: false, error: String(err.message || err) });
+    let lastErr = null;
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        const r = await adapter.publish(env, { copy: copy[name], media, productUrl, type, allCopy: copy });
+        results.push({ platform: name, ok: true, attempts: attempt, ...r });
+        return;
+      } catch (err) {
+        lastErr = String(err.message || err);
+        // Skip retry for known permanent errors (auth, missing creds, scope, no-video)
+        const permanent = /missing|invalid|unauthor|forbidden|scope|trial access|needs a video|needs an image|needs a image/i.test(lastErr);
+        if (permanent) break;
+        if (attempt === 1) await new Promise(r => setTimeout(r, 4000));
+      }
     }
+    results.push({ platform: name, ok: false, attempts: 2, error: lastErr });
   }));
   return results;
 }

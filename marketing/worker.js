@@ -19,6 +19,8 @@ import { generateDailyIdeas } from './agents/trend-scout.js';
 import { writeCopy } from './agents/content-writer.js';
 import { fanOut } from './platforms/index.js';
 import { dueEntries, markCalendar, recordPost, log } from './lib/db.js';
+import { getCachedMetrics } from './lib/metrics.js';
+import { fetchSalesSummary } from './lib/sales.js';
 
 export default {
   async scheduled(event, env, ctx) {
@@ -46,7 +48,7 @@ async function executeDue(env) {
       // Engagement posts: rotate through 8 dearson-style cards per product
       // (32 total static images). Slot = ((calendar_id - 1) mod 8) + 1.
       const cardImageUrl = item.type === 'engagement' && item.product_id
-        ? `https://afwealthmindset.com/images/cards/card-product-${item.product_id}-${(item.id - 1) % 8 + 1}.png`
+        ? `https://afwealthmindset.com/images/cards/card-product-${item.product_id}-${(item.id - 1) % 15 + 1}.png`
         : null;
       const media = item.type === 'product_video'
         ? { videoUrl: item.video_url, thumbnailUrl: item.thumbnail_url }
@@ -181,9 +183,16 @@ async function loadState(env) {
   const next = upcoming.find(u => u.type === 'engagement') || upcoming[0] || null;
   const ideaPool = await env.DB.prepare(`SELECT COUNT(*) AS n FROM ideas WHERE used = 0`).first();
 
+  // Real metrics from each platform's API (cached 30 min in D1)
+  const metrics = await getCachedMetrics(env).catch(e => ({ error: String(e) }));
+  // Paddle sales (skipped if no key)
+  const sales = await fetchSalesSummary(env).catch(e => ({ error: String(e) }));
+
   return {
     products, videos, upcoming, recent, log, spend,
     platforms,
+    metrics,
+    sales,
     next_post: next,
     idea_pool: ideaPool?.n || 0,
     budget: { daily_cap_usd: Number(env.DAILY_USD_CAP || '0.10') },
@@ -227,6 +236,12 @@ function dashboardHtml() {
 </style></head><body>
 <h1>AFWM Marketing Brain</h1>
 <p style="margin:0;color:#5B6770">Paste your admin token once. The dashboard auto-refreshes every 60 seconds.</p>
+
+<!-- Status banner -->
+<div id="statusbanner" style="margin:14px 0;padding:14px 18px;background:#fff;border-radius:10px;border-left:6px solid #0F766E;box-shadow:0 1px 2px rgba(0,0,0,0.04);">
+  <div style="font-weight:800;color:#0F766E;font-size:13px;letter-spacing:0.04em;text-transform:uppercase;">Status</div>
+  <div id="statustext" style="margin-top:6px;color:#172033;font-size:14px;line-height:1.55">loading…</div>
+</div>
 <div class="row" style="margin-top:8px"><input id="tok" placeholder="ADMIN_TOKEN" style="flex:1"/>
 <button onclick="save()">Save</button>
 <button class="ghost" onclick="run('/api/ideas')">Generate ideas</button>
@@ -234,12 +249,31 @@ function dashboardHtml() {
 <button class="ghost" onclick="run('/api/execute')">Execute due now</button>
 <button class="ghost" onclick="load()">Refresh</button></div>
 
-<!-- Hero stats -->
+<!-- Hero stats — TOP ROW: business metrics -->
 <div class="hero">
+  <div class="card">
+    <div class="pname">Sales today</div>
+    <div class="big" id="salestoday">—</div>
+    <div class="small" id="salessub"></div>
+  </div>
+  <div class="card">
+    <div class="pname">Followers (all)</div>
+    <div class="big" id="totalfollowers">—</div>
+    <div class="small" id="followersub"></div>
+  </div>
   <div class="card">
     <div class="pname">Next post</div>
     <div class="big" id="nextpost">—</div>
     <div class="small" id="nextpostsub"></div>
+  </div>
+</div>
+
+<!-- Hero stats — SECOND ROW: ops metrics -->
+<div class="hero">
+  <div class="card">
+    <div class="pname">Posts today</div>
+    <div class="big" id="poststoday">—</div>
+    <div class="small" id="postssub">across all platforms</div>
   </div>
   <div class="card">
     <div class="pname">Idea pool</div>
@@ -348,6 +382,42 @@ async function load(){
   }
 
   document.getElementById('ideapool').textContent = d.idea_pool;
+
+  // Sales (Paddle)
+  const sales = d.sales || {};
+  if (sales.error) {
+    document.getElementById('salestoday').textContent = '—';
+    document.getElementById('salessub').textContent = sales.error;
+  } else {
+    document.getElementById('salestoday').textContent = (sales.today?.count || 0) + ' sales';
+    document.getElementById('salessub').textContent = '$' + (sales.today?.revenue_usd || 0).toFixed(2) + ' today · $' + (sales.week?.revenue_usd || 0).toFixed(2) + ' this week';
+  }
+
+  // Followers
+  const m = d.metrics || {};
+  const sumFollowers = ['facebook','instagram','pinterest','bluesky','youtube'].reduce((a, k) => a + (m[k]?.followers || 0), 0);
+  document.getElementById('totalfollowers').textContent = sumFollowers.toLocaleString();
+  const platformLines = [];
+  if (m.facebook?.followers != null) platformLines.push('FB ' + m.facebook.followers);
+  if (m.instagram?.followers != null) platformLines.push('IG ' + m.instagram.followers);
+  if (m.bluesky?.followers != null) platformLines.push('Bluesky ' + m.bluesky.followers);
+  if (m.pinterest?.followers != null) platformLines.push('Pin ' + m.pinterest.followers);
+  if (m.youtube?.followers != null) platformLines.push('YT ' + m.youtube.followers);
+  document.getElementById('followersub').textContent = platformLines.join(' · ') || 'no metrics yet';
+
+  // Posts today count
+  const postsToday = (d.platforms||[]).reduce((a, p) => a + (p.live_today || 0), 0);
+  document.getElementById('poststoday').textContent = postsToday;
+
+  // Status banner — what's running, what needs them
+  const live = (d.platforms||[]).filter(p => p.enabled && p.live_today > 0).map(p => PLATFORM_LABELS[p.name]);
+  const waiting = (d.platforms||[]).filter(p => p.enabled && p.live_today === 0 && p.failed_today === 0).map(p => PLATFORM_LABELS[p.name]);
+  const failing = (d.platforms||[]).filter(p => p.failed_today > 0).map(p => PLATFORM_LABELS[p.name]);
+  let status = '';
+  if (live.length) status += '<span class="pill ok">✓ Live posting</span> ' + live.join(', ') + '<br/>';
+  if (failing.length) status += '<span class="pill bad">✗ Errors today</span> ' + failing.join(', ') + '<br/>';
+  if (waiting.length) status += '<span class="pill info">⏸ Waiting</span> ' + waiting.join(', ') + '<br/>';
+  document.getElementById('statustext').innerHTML = status || 'system idle';
 
   const today = (d.spend||[])[0] || { usd: 0, day: 'today', calls: 0 };
   const cap = d.budget?.daily_cap_usd || 0.10;
