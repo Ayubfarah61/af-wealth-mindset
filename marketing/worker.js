@@ -96,6 +96,27 @@ async function handleHttp(request, env) {
     return new Response(dashboardHtml(), { headers: { 'Content-Type': 'text/html' } });
   }
 
+  // Public visitor tracking pixel — no auth, called from website pages.
+  if (url.pathname === '/api/track.gif' && request.method === 'GET') {
+    const path = url.searchParams.get('p') || '/';
+    const ref = request.headers.get('Referer') || '';
+    const ua = request.headers.get('User-Agent') || '';
+    const country = request.cf?.country || '';
+    const day = new Date().toISOString().slice(0, 10);
+    try {
+      await env.DB.prepare(`INSERT INTO visits (day, path, referer, ua, country) VALUES (?, ?, ?, ?, ?)`)
+        .bind(day, path.slice(0, 200), ref.slice(0, 200), ua.slice(0, 250), country).run();
+    } catch (_) {}
+    const gif = new Uint8Array([0x47,0x49,0x46,0x38,0x39,0x61,0x01,0x00,0x01,0x00,0x80,0x00,0x00,0x00,0x00,0x00,0xff,0xff,0xff,0x21,0xf9,0x04,0x01,0x00,0x00,0x00,0x00,0x2c,0x00,0x00,0x00,0x00,0x01,0x00,0x01,0x00,0x00,0x02,0x02,0x44,0x01,0x00,0x3b]);
+    return new Response(gif, {
+      headers: {
+        'Content-Type': 'image/gif',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Access-Control-Allow-Origin': '*',
+      }
+    });
+  }
+
 if (!url.pathname.startsWith('/api/')) return new Response('Not found', { status: 404 });
   const auth = request.headers.get('Authorization') || '';
   if (auth !== 'Bearer ' + env.ADMIN_TOKEN) return new Response('Unauthorized', { status: 401 });
@@ -187,12 +208,21 @@ async function loadState(env) {
   const metrics = await getCachedMetrics(env).catch(e => ({ error: String(e) }));
   // Paddle sales (skipped if no key)
   const sales = await fetchSalesSummary(env).catch(e => ({ error: String(e) }));
+  // Site visitors today + last 7 days
+  const visitorsToday = await env.DB.prepare(
+    `SELECT COUNT(*) AS n FROM visits WHERE day = date('now')`
+  ).first();
+  const visitors7d = await env.DB.prepare(
+    `SELECT COUNT(*) AS n FROM visits WHERE day >= date('now','-7 days')`
+  ).first();
+  const visitors = { today: visitorsToday?.n || 0, week: visitors7d?.n || 0 };
 
   return {
     products, videos, upcoming, recent, log, spend,
     platforms,
     metrics,
     sales,
+    visitors,
     next_post: next,
     idea_pool: ideaPool?.n || 0,
     budget: { daily_cap_usd: Number(env.DAILY_USD_CAP || '0.10') },
@@ -408,6 +438,8 @@ async function load(){
   // Posts today count
   const postsToday = (d.platforms||[]).reduce((a, p) => a + (p.live_today || 0), 0);
   document.getElementById('poststoday').textContent = postsToday;
+  const v = d.visitors || { today: 0, week: 0 };
+  document.getElementById('postssub').textContent = v.today + ' site visitors today · ' + v.week + ' last 7d';
 
   // Status banner — what's running, what needs them
   const live = (d.platforms||[]).filter(p => p.enabled && p.live_today > 0).map(p => PLATFORM_LABELS[p.name]);
