@@ -17,7 +17,10 @@ export async function publish(env, { copy, media, productUrl }) {
     board_id: env.PINTEREST_BOARD_ID,
     title: (copy.title || copy.caption || 'AF Wealth Mindset').slice(0, 100),
     description: (copy.description || copy.caption || '').slice(0, 800),
-    link: productUrl || 'https://afwealthmindset.com/pricing.html',
+    // Pinterest's API requires a destination URL on every pin (technical requirement).
+    // For engagement posts we point to the homepage (organic discovery), NOT a product page.
+    // Only product_video pins point to the actual product URL.
+    link: productUrl || 'https://afwealthmindset.com/',
     media_source: { source_type: 'image_url', url: image }
   };
 

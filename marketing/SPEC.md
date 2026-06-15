@@ -1,5 +1,25 @@
 # AFWM Marketing Brain — Locked Format Spec
 
+## ⚠️ CRITICAL — TWO POST TYPES, TWO DIFFERENT RULES
+
+### Engagement posts (text + card image) = AUDIENCE BUILDING ONLY
+- These are 3×/day, the bread and butter
+- **PURE EDUCATION.** NO links, NO product mentions, NO CTAs, NO "link in bio", NO selling language whatsoever
+- Hashtags ARE allowed (they're for discoverability, not selling)
+- The reader learns one thing per post. They follow because content is good, not because we asked.
+- These posts build the audience.
+
+### Product video posts = WHERE WE SELL
+- Only run when user has uploaded product videos (one per slot)
+- THIS is where CTAs, "link in bio", product URLs go
+- Currently inactive (no videos uploaded)
+- These posts convert the audience to customers.
+
+**Never blur the two.** A salesy engagement post burns trust faster than 10 educational posts can build it.
+
+---
+
+
 **THIS DOCUMENT IS LAW.** Every agent reads it. The Trend Scout, Content Writer, and Card Renderer all conform to what's below. Do not drift.
 
 ---

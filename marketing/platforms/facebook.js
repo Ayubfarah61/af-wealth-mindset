@@ -8,10 +8,15 @@ const GRAPH = 'https://graph.facebook.com/v21.0';
 
 export async function publish(env, { copy, media, productUrl, type }) {
   if (!env.FB_PAGE_ID || !env.META_ACCESS_TOKEN) throw new Error('FB creds missing');
-  const message = copy.caption + (productUrl ? '\n\n' + productUrl : '');
+  // Engagement posts are pure education — no product URL appended.
+  // Only product_video posts include the URL.
+  const isProductVideo = type === 'product_video';
+  const message = isProductVideo && productUrl
+    ? copy.caption + '\n\n' + productUrl
+    : copy.caption;
 
   let endpoint, params;
-  if (type === 'product_video' && media?.videoUrl) {
+  if (isProductVideo && media?.videoUrl) {
     endpoint = `${GRAPH}/${env.FB_PAGE_ID}/videos`;
     params = { file_url: media.videoUrl, description: message };
   } else if (media?.imageUrl) {
@@ -19,7 +24,7 @@ export async function publish(env, { copy, media, productUrl, type }) {
     params = { url: media.imageUrl, caption: message };
   } else {
     endpoint = `${GRAPH}/${env.FB_PAGE_ID}/feed`;
-    params = { message, link: productUrl };
+    params = { message };
   }
 
   const body = new URLSearchParams({ ...params, access_token: env.META_ACCESS_TOKEN });

@@ -44,7 +44,9 @@ export async function publish(env, { copy, media, productUrl, type, allCopy }) {
   copy = (copy && copy.caption) ? copy : fallback;
 
   // Bluesky caps at 300 chars.
+  // Engagement posts are pure education — productUrl is only set for product_video posts.
   const raw = (copy.caption || '') + (productUrl ? '\n' + productUrl : '');
+  // The fanOut already ensures productUrl is null for engagement, so no URL leaks.
   const text = raw.length > 300 ? raw.slice(0, 297) + '...' : raw;
 
   const session = await login(env);

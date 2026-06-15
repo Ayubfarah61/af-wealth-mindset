@@ -56,7 +56,9 @@ async function executeDue(env) {
       const results = await fanOut(env, {
         copy,
         media,
-        productUrl: item.product_url,
+        // Engagement posts: pure education, NO product URL passed to platforms.
+        // Only product_video posts include the URL (those are the ones that sell).
+        productUrl: item.type === 'product_video' ? item.product_url : null,
         type: item.type
       });
       for (const r of results) {
