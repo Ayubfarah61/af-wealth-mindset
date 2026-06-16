@@ -6,8 +6,10 @@ import * as youtube from './youtube.js';
 import * as pinterest from './pinterest.js';
 import * as threads from './threads.js';
 import * as bluesky from './bluesky.js';
+import * as mastodon from './mastodon.js';
+import * as linkedin from './linkedin.js';
 
-export const PLATFORMS = { tiktok, instagram, facebook, youtube, pinterest, threads, bluesky };
+export const PLATFORMS = { tiktok, instagram, facebook, youtube, pinterest, threads, bluesky, mastodon, linkedin };
 
 // Fan out: given copy for ONE calendar entry, post to every enabled platform in parallel.
 // Each platform gets 2 attempts (initial + 1 retry after 4 seconds). Errors logged with detail.

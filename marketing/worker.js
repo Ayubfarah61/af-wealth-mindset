@@ -21,6 +21,7 @@ import { fanOut } from './platforms/index.js';
 import { dueEntries, markCalendar, recordPost, log } from './lib/db.js';
 import { getCachedMetrics } from './lib/metrics.js';
 import { fetchSalesSummary } from './lib/sales.js';
+import { dailyTokenMaintenance } from './lib/token-refresh.js';
 
 export default {
   async scheduled(event, env, ctx) {
@@ -35,6 +36,8 @@ async function handleCron(event, env) {
   if (event.cron === '0 6 * * *') {
     try { await generateDailyIdeas(env, 12); } catch (e) { await log(env, 'trend-scout failed', { error: String(e) }); }
     try { await plan(env); } catch (e) { await log(env, 'planner failed', { error: String(e) }); }
+    // Daily token health check + auto-refresh Pinterest if needed
+    try { await dailyTokenMaintenance(env); } catch (e) { await log(env, 'token maintenance failed', { error: String(e) }); }
   } else {
     await executeDue(env);
   }
@@ -188,7 +191,7 @@ async function loadState(env) {
 
   // Roll into a per-platform object the UI can read directly
   const enabled = (env.ENABLED_PLATFORMS || '').split(',').map(s => s.trim()).filter(Boolean);
-  const allPlatforms = ['tiktok','instagram','facebook','youtube','pinterest','threads','bluesky'];
+  const allPlatforms = ['tiktok','instagram','facebook','youtube','pinterest','threads','bluesky','mastodon','linkedin'];
   const platforms = allPlatforms.map(name => {
     const row = (status) => byPlatform.find(r => r.platform === name && r.status === status)?.n || 0;
     const rowToday = (status) => byPlatformToday.find(r => r.platform === name && r.status === status)?.n || 0;
@@ -384,16 +387,19 @@ function fmtCountdown(targetIso, nowIso){
 }
 const PLATFORM_LABELS = {
   tiktok:'TikTok', instagram:'Instagram', facebook:'Facebook',
-  youtube:'YouTube', pinterest:'Pinterest', threads:'Threads', bluesky:'Bluesky'
+  youtube:'YouTube', pinterest:'Pinterest', threads:'Threads', bluesky:'Bluesky',
+  mastodon:'Mastodon', linkedin:'LinkedIn'
 };
 const PLATFORM_NOTES = {
   tiktok:'awaiting app approval — drafts only',
   instagram:'auto-posting cards',
   facebook:'auto-posting cards',
   youtube:'waits for product videos',
-  pinterest:'Trial mode — needs Standard approval',
-  threads:'auto-posting',
+  pinterest:'Trial mode — Standard pending',
+  threads:'waiting on OAuth (10 min when you return)',
   bluesky:'auto-posting',
+  mastodon:'waiting on instance + token (5 min when you return)',
+  linkedin:'waiting on OAuth (15 min when you return)',
 };
 
 async function load(){
