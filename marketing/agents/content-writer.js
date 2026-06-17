@@ -82,9 +82,9 @@ Return ONLY this JSON object:
 }
 
 export async function writeEngagementCopy(env, { idea, products }) {
-  // ENGAGEMENT POSTS = pure education, no selling.
-  let letter;
-  try { letter = JSON.parse(idea.body); } catch { letter = { persona: '', lines: [], closing: '' }; }
+  // ENGAGEMENT POSTS = pure education, no selling. 5-pillar format from Trend Scout.
+  let post;
+  try { post = JSON.parse(idea.body); } catch { post = { pillar: '', hook: '', body: '', closer: '' }; }
 
   const system = `You are AF Wealth Mindset's CONTENT WRITER (pure education mode).
 
@@ -94,17 +94,29 @@ ${CAPTION_RULES}
 
 ${PLATFORM_RULES}
 
-This is an IMAGE/TEXT post — a card with a "Dear ___" letter. Your job: write the surrounding CAPTION for each platform.
-The caption is teaching, not selling. The reader will learn something useful from the caption ITSELF, then go look at the image for more.`;
+Trend Scout gave you a finished short-form post (hook + body + closer) written in one of 5 pillars:
+psychology, principles, story, mistakes, statistics.
 
-  const user = `The research agent gave us this letter (it's on the card image):
+Your job: PORT that post to each platform's voice and length. Keep the SAME idea, hook, and tone — just adjust pacing/length to fit. Do NOT invent a new template, do NOT add "Dear ___" framing, do NOT add CTAs.
 
-  Dear ${letter.persona},
+PLATFORM PORTING RULES:
+- TikTok / Instagram / Bluesky: keep the hook as the opening line, condense body to fit char limits, end with the closer if there's room. Add 3-5 fitting hashtags at the end (no #money #tips spam — pick specific tags tied to the pillar).
+- Facebook / Threads / LinkedIn: use the full hook + body + closer. These platforms reward longer text — keep paragraph breaks.
+- YouTube Shorts: title = hook (≤ 70 chars). Description = body + 3-4 hashtags.
+- Pinterest: title = hook rephrased as an SEO-loaded statement (80-100 chars). Description = body (200-350 chars).`;
 
-  ${(letter.lines || []).join('\n  ')}
-  ${letter.closing ? '\n  ' + letter.closing : ''}
+  const user = `Trend Scout's post (pillar: ${post.pillar}):
 
-Write captions that EXPAND on the same idea — give one extra angle, one more reason, one quiet insight. Pure teaching.
+HOOK:
+${post.hook}
+
+BODY:
+${post.body}
+
+CLOSER:
+${post.closer || '(none)'}
+
+Port this same idea to every platform. Keep the voice. Keep the hook. Just adjust length.
 
 ABSOLUTELY DO NOT:
 - include any URL
@@ -113,8 +125,7 @@ ABSOLUTELY DO NOT:
 - mention any product, tool, template, spreadsheet, app
 - ask the reader to do anything
 - use sales language
-
-Just teach. The follower count grows from quality, not from begging.
+- start with "Dear "
 
 Return ONLY this JSON object:
 {

@@ -18,7 +18,7 @@ crons = [
 
 # Non-secret defaults. Override via `wrangler secret put` for the real ones.
 [vars]
-ENABLED_PLATFORMS = "youtube,pinterest,facebook,instagram,threads,bluesky,mastodon,linkedin"
+ENABLED_PLATFORMS = "youtube,pinterest,facebook,instagram,threads,bluesky,mastodon,linkedin,telegram"
 CLAUDE_MODEL = "claude-haiku-4-5-20251001"
 TIKTOK_DRAFT_ONLY = "1"   # flip to 0 once your TikTok Content Posting app is approved
 DAILY_USD_CAP = "0.08"     # hard daily ceiling on Claude API cost. ~$2.40/month max. Bump to 0.20 ($6/month) once sales come in.
